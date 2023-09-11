@@ -11,17 +11,20 @@ const MyComponent = forwardRef((options: any, ref) => {
     },
   }))
 
-  const titleBarRef = useRef()
-  const dialogRef = useRef()
-  const titleBarButtonsRef = useRef()
+  const titleBarRef = useRef<HTMLDivElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
+  const titleBarButtonsRef = useRef<HTMLDivElement | null>(null)
   const dWindowRef = useRef<WindowController>()
 
   useEffect(() => {
     dWindowRef.current = new WindowController({
+      // @ts-ignore
       dragHandleEl: titleBarRef.current,
+      // @ts-ignore
       dragTargetEl: dialogRef.current,
       allowOut: true,
       opacify: 0.8,
+      // @ts-ignore
       preventNode: titleBarButtonsRef.current,
       onMove(data) {},
       onActive,

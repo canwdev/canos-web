@@ -19,6 +19,7 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'no-console': 'off',
+    'no-unused-variable': 'warn',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/ban-ts-comment': 'warn',
     '@typescript-eslint/ban-types': 'warn',
