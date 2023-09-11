@@ -1,0 +1,73 @@
+.start-menu {
+  width: 400px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: silver;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+
+  .start-menu-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 10px;
+
+    .start-menu-left {
+      flex: 1;
+    }
+
+    .start-menu-right {
+      width: 150px;
+      margin-left: 10px;
+    }
+  }
+
+  .program-list {
+    border: 1px solid;
+    padding: 2px;
+    background-color: #fff;
+    border-radius: 4px;
+    min-height: 100px;
+  }
+
+  .shortcut-list {}
+
+  .shortcut-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px;
+
+    &:hover {
+      background-color: pink;
+    }
+
+    .shortcut-icon {
+      width: 24px;
+      height: 24px;
+      outline: 1px solid yellow;
+      margin-right: 5px;
+    }
+
+    .shortcut-title {
+      flex: 1;
+      font-size: 13px;
+    }
+  }
+
+  .shortcut-split {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-top: 1px solid;
+  }
+
+  .start-menu-bottom {
+    border-top: 1px solid;
+  }
+
+  .input-search {
+    box-sizing: border-box;
+    width: 100%;
+  }
+}

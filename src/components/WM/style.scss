@@ -1,0 +1,22 @@
+.window-manager {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  background-color: #008080;
+
+  .task-window-content {
+    min-width: 320px;
+    min-height: 240px;
+    background-color: white;
+    border: 2px solid;
+    border-top: 10px solid;
+    border-color: silver;
+
+    &.active {
+      border-color: #0063B1;
+    }
+  }
+}

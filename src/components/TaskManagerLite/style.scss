@@ -1,0 +1,39 @@
+.taskman-lite {
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background-color: silver;
+  border: 1px solid;
+
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 5px;
+  .task-item {
+    flex-shrink: 0;
+    height: 100%;
+    padding: 5px 0;
+
+    &.active {
+      .btn-taskname {
+        font-weight: bold;
+        color: red;
+      }
+    }
+    +.task-item {
+      margin-left: 10px;
+    }
+    .btn-taskname {
+      width: 100px;
+    }
+    button {
+      height: 100%;
+    }
+    .btn-add {
+      width: 50px;
+    }
+  }
+}
