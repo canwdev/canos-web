@@ -5,7 +5,7 @@ import {useSnapshot} from 'valtio'
 import Window from './Window.tsx'
 import {useEffect, useRef} from 'react'
 
-const MyComponent = () => {
+const MyComponent = ({children}) => {
   const {tasks, activeIndex, handleCloseTask} = useSnapshot(counterStore)
 
   const windowRefs = useRef([])
@@ -18,6 +18,7 @@ const MyComponent = () => {
 
   return (
     <div className="window-manager">
+      {children}
       {tasks.map((item, index) => {
         return (
           <Window

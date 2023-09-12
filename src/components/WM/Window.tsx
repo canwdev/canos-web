@@ -41,9 +41,9 @@ const MyComponent = forwardRef((options: any, ref) => {
   }, [])
 
   return (
-    <div className="vp-window" ref={dialogRef}>
+    <div className="vp-window _rounded _blur" ref={dialogRef}>
       <div className="vp-window-content">
-        <div ref={titleBarRef} className="page-craft-title-bar">
+        <div ref={titleBarRef} className="page-craft-title-bar ">
           <div className="page-craft-title-bar-text">{titleBarLeft}</div>
           <div ref={titleBarButtonsRef} className="vp-window-controls">
             {titleBarRightControls}

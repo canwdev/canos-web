@@ -2,7 +2,7 @@ import './style.scss'
 
 const MyComponent = () => {
   return (
-    <div className="start-menu">
+    <div className="start-menu themed-frame">
       <div className="start-menu-row">
         <div className="start-menu-left">
           <div className="program-list">
@@ -38,7 +38,7 @@ const MyComponent = () => {
           <input placeholder="Search apps" className="input-search" />
         </div>
         <div className="start-menu-right">
-          <button>Power Menu</button>
+          <button className='themed-frame'>Power Menu</button>
         </div>
       </div>
     </div>

@@ -1,0 +1,38 @@
+.desktop-content {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(auto-fill, 74px);
+  grid-template-rows: repeat(auto-fill, 70px);
+  place-content: flex-start;
+  gap: 28px 1px;
+  user-select: none;
+
+  .desktop-icon-wrap {
+    .desktop-icon {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      cursor: default;
+      &:hover {
+        background-color: rgba(224, 224, 224, 0.3);
+      }
+
+      .desktop-icon-image {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+      }
+
+      .desktop-icon-name {
+        text-align: center;
+        font-size: 13px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,49 @@
+.themed-frame {
+  background-color: silver;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+
+  @mixin active() {
+    box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey;
+    //text-shadow: 1px 1px #222;
+    //color: transparent;
+  }
+
+  @mixin disabled() {
+    text-shadow: 1px 1px 0 #fff;
+  }
+
+  @mixin focused() {
+    outline: 1px dotted #000000;
+    outline-offset: -4px;
+  }
+
+  &.active {
+    @include active();
+  }
+
+  &.disabled {
+    @include disabled();
+  }
+
+  &.focused {
+    @include focused();
+  }
+
+  &.btn-no-style {
+    &:active {
+      @include active();
+    }
+
+    &:disabled {
+      @include disabled();
+    }
+
+    &:focus {
+      @include focused();
+    }
+  }
+}
+
+.themed-field {
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px grey;
+}
