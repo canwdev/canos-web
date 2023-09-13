@@ -1,6 +1,5 @@
 import './style.scss'
-import {SystemShortcuts} from '@/enum'
-import {launchProgram} from '../../enum'
+import {launchProgram, SystemShortcuts} from '../../enum'
 
 const MyComponent = ({onClose}) => {
   const systemShortcuts = [
