@@ -379,7 +379,7 @@ export class WindowController {
       return
     }
     const {dragTargetEl} = this.options
-    const fixedElements = document.querySelectorAll('.vp-window')
+    const fixedElements = document.querySelectorAll('.canos-window')
     // 获取当前元素的 z-index
     const maxZIndex = Math.max(
       ...Array.from(fixedElements).map((elem) => {

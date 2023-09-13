@@ -1,8 +1,5 @@
-.vp-window {
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27), inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  padding: 0 6px 5px;
-  background-color: rgba(229, 229, 229, 0.8);
+.canos-window {
+  padding: 0 4px 4px;
   position: absolute;
   z-index: 100;
 
@@ -13,38 +10,44 @@
     left: 100px;
   }
 
-  .vp-window-content {
+  .canos-window-content {
     height: 100%;
     display: flex;
     flex-direction: column;
 
-    .page-craft-title-bar {
-      margin-left: -6px;
-      margin-right: -6px;
-      padding: 0 6px 4px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-shadow: 0 0 10px white;
+    .canos-title-bar {
+      margin-left: -4px;
+      margin-right: -4px;
+      padding: 4px 4px 2px;
       user-select: none;
-
-      img {
-        pointer-events: none;
-      }
-
-      .page-craft-title-bar-text {
-        margin-top: 4px;
+      .canos-title-bar-inner {
         display: flex;
         align-items: center;
-        height: 14px;
+        justify-content: space-between;
+        background: linear-gradient(45deg, gray, transparent);
+        padding-left: 4px;
 
         img {
-          margin-right: 5px;
+          pointer-events: none;
+        }
+
+        .canos-title-bar-text {
+          display: flex;
+          align-items: center;
+          height: 14px;
+          color: white;
+          font-size: 14px;
+
+          .window-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+          }
         }
       }
     }
 
-    .vp-window-body {
+    .canos-window-body {
       //flex: 1;
       height: calc(100% - 30px);
 
@@ -56,7 +59,7 @@
     }
   }
 
-  .vp-window-controls {
+  .canos-window-controls {
     border-radius: 0;
     display: flex;
     align-items: flex-start;
@@ -101,15 +104,17 @@
   }
 
   &._thin {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27), inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     padding: 0;
 
-    .page-craft-title-bar {
+    .canos-title-bar {
       margin-left: 0;
       margin-right: 0;
       padding-right: 0;
     }
 
-    .vp-window-controls {
+    .canos-window-controls {
       button {
         border: 0 !important;
         background-color: none;
@@ -128,7 +133,7 @@
       }
     }
 
-    .vp-window-body {
+    .canos-window-body {
       border: 0;
       height: calc(100% - 30px);
     }
@@ -137,13 +142,13 @@
   &._dark {
     background-color: rgba(56, 56, 56, 0.6);
 
-    .vp-window-content {
-      .page-craft-title-bar {
+    .canos-window-content {
+      .canos-title-bar {
         color: white;
         text-shadow: 0 0 10px black;
       }
 
-      .vp-window-controls {
+      .canos-window-controls {
         button {
           border: 1px solid rgba(255, 255, 255, 0.2);
 
@@ -166,13 +171,13 @@
       }
     }
 
-    .vp-window-body {
+    .canos-window-body {
       &._bg {
         background-color: rgba(30, 30, 30, 1);
       }
     }
 
-    .vp-window-controls {
+    .canos-window-controls {
       border-radius: 0;
       display: flex;
       align-items: flex-start;
@@ -196,8 +201,15 @@
   }
 
   &._active {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 1);
 
+    .canos-window-content {
+      .canos-title-bar {
+        .canos-title-bar-inner {
+          background: linear-gradient(45deg, #0063B1, transparent);
+        }
+      }
+    }
     &._dark {
       background-color: rgba(0, 0, 0, 0.6);
     }
@@ -206,15 +218,16 @@
   $radius: 8px;
 
   &._rounded {
+    background-color: rgba(229, 229, 229, 0.8);
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27), inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
     border-radius: $radius;
 
-    .page-craft-title-bar {
+    .canos-title-bar {
       overflow: hidden;
       border-radius: $radius;
     }
 
-    .vp-window-controls {
+    .canos-window-controls {
       padding-right: 1px;
 
       button {
@@ -228,7 +241,7 @@
       }
     }
 
-    .vp-window-body,
+    .canos-window-body,
     .code-editor-placeholder {
     }
   }
@@ -238,14 +251,14 @@
     box-shadow: 0px 8.5px 10px rgba(0, 0, 0, 0.115), 0px 68px 80px rgba(0, 0, 0, 0.23),
     inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
 
-    .vp-window-body {
+    .canos-window-body {
       &._bg {
         background-color: rgba(255, 255, 255, 0.5);
       }
     }
 
     &._dark {
-      .vp-window-body {
+      .canos-window-body {
         &._bg {
           background-color: rgba(30, 30, 30, 0.7);
         }
@@ -253,7 +266,7 @@
     }
 
     &._rounded {
-      .vp-window-body {
+      .canos-window-body {
         border-bottom-left-radius: $radius;
         border-bottom-right-radius: $radius;
       }

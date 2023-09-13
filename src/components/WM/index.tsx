@@ -1,12 +1,12 @@
 import './style.scss'
 import clsx from 'clsx'
-import {counterStore} from '../../store'
+import {taskStore} from '../../store'
 import {useSnapshot} from 'valtio'
 import Window from './Window.tsx'
 import {useEffect, useRef} from 'react'
 
 const MyComponent = ({children}) => {
-  const {tasks, activeIndex, handleCloseTask} = useSnapshot(counterStore)
+  const {tasks, activeIndex, handleCloseTask} = useSnapshot(taskStore)
 
   const windowRefs = useRef([])
 
@@ -22,17 +22,22 @@ const MyComponent = ({children}) => {
       {tasks.map((item, index) => {
         return (
           <Window
-            key={item}
+            key={item.guid}
+            taskItem={item}
             onClose={() => handleCloseTask(index)}
-            onActive={() => (counterStore.activeIndex = index)}
+            onActive={() => (taskStore.activeIndex = index)}
             ref={(el) => (windowRefs[index] = el)}
           >
             <div
-              className={clsx('task-window-content', index === activeIndex && 'active')}
-              key={item}
-              onClick={() => (counterStore.activeIndex = index)}
+              className={clsx(
+                'task-window-content',
+                'themed-field',
+                index === activeIndex && 'active'
+              )}
             >
-              {item}
+              {item.guid} <br />
+              {item.title} <br />
+              {item.icon} <br />
             </div>
           </Window>
         )

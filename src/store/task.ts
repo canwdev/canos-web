@@ -1,27 +1,20 @@
 import {proxy} from 'valtio'
+import {TaskItem} from '../enum'
 
 interface StoreType {
-  count: number
-  setCount: Function
-  tasks: string[]
+  tasks: TaskItem[]
   handleCloseTask: Function
   activeIndex: number
 }
 
-export const counterStore = proxy<StoreType>({
-  // state
-  count: 0,
-  // action
-  setCount: (val: number) => {
-    counterStore.count = val
-  },
+export const taskStore = proxy<StoreType>({
   tasks: [],
   handleCloseTask: (idx: number) => {
-    const t = [...counterStore.tasks]
+    const t = [...taskStore.tasks]
     t.splice(idx, 1)
-    counterStore.tasks = t
+    taskStore.tasks = t
     setTimeout(() => {
-      counterStore.activeIndex = t.length - 1
+      taskStore.activeIndex = t.length - 1
     })
   },
   activeIndex: 0,

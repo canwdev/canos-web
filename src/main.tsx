@@ -5,14 +5,14 @@ import 'normalize.css'
 import './styles/style.scss'
 import './styles/theme-win98.scss'
 import WM from './components/WM'
-import DesktopContent from "./components/DesktopContent";
-import DesktopWallpaper from "./components/DesktopWallpaper";
+import DesktopContent from './components/DesktopContent'
+import DesktopWallpaper from './components/DesktopWallpaper'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WM>
       <DesktopWallpaper>
-        <DesktopContent/>
+        <DesktopContent />
       </DesktopWallpaper>
     </WM>
     <TaskBar />

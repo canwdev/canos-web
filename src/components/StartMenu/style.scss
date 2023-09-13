@@ -6,6 +6,7 @@
   position: absolute;
   bottom: 34px;
   left: 0;
+  user-select: none;
 
   .start-menu-row {
     display: flex;
@@ -20,6 +21,10 @@
     .start-menu-right {
       width: 150px;
       margin-left: 10px;
+      button {
+        padding: 4px 10px;
+        font-size: 14px;
+      }
     }
   }
 
@@ -27,7 +32,6 @@
     border: 1px solid;
     padding: 2px;
     background-color: #fff;
-    border-radius: 4px;
     min-height: 300px;
   }
 
@@ -40,14 +44,18 @@
     padding: 4px;
 
     &:hover {
-      background-color: pink;
+      background-color: #3A6EA5;
+      color: white;
     }
 
     .shortcut-icon {
       width: 24px;
       height: 24px;
-      outline: 1px solid yellow;
       margin-right: 5px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
 
     .shortcut-title {
@@ -69,5 +77,7 @@
   .input-search {
     box-sizing: border-box;
     width: 100%;
+    font-size: 12px;
+    padding: 3px 5px;
   }
 }
