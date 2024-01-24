@@ -1,0 +1,1 @@
+Here is MUSIC_LIBRARY_PATH

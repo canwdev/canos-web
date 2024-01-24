@@ -1,0 +1,26 @@
+@import "./theme-default";
+@import "./theme-minimalism";
+@import "./theme-win8";
+@import "./theme-classic";
+
+.disable-animation {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .n-modal-mask {
+    background-color: transparent;
+  }
+
+  .n-modal, .n-card, .n-dropdown-menu, .n-notification, .n-message,
+  .n-date-panel {
+    box-shadow: none;
+    outline: 1px solid $primary;
+  }
+
+  .vp-window {
+    backdrop-filter: unset !important;
+    box-shadow: none !important;
+  }
+}

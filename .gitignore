@@ -1,0 +1,8 @@
+node_modules
+/.idea/
+/dist/
+
+.yarnclean
+/yarn-error.log
+/dist-frontend/
+.DS_Store

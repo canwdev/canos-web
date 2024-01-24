@@ -1,0 +1,20 @@
+:root {
+  --primary-rgb:37,130,146;
+  --primary:rgb(var(--primary-rgb));
+}
+$primary: var(--primary); // #8dbb72;
+$primary_opacity: rgba(var(--primary-rgb), .25); //opacify($primary, 0.3);
+
+$color_border: rgba(91, 85, 85, 0.2);
+$taskbar_height: 34px;
+
+$mq_mobile_min_width: 330px; // 618px // 426px
+$mq_mobile_width: 567px; // 618px // 426px
+$mq_mobile_height_land: 485px; // 手机横屏高度
+$mq_tablet_width: 1024px; // 768px
+$mq_pc_min_width: 1450px; // 1440px
+$mq_pc_min_height: 768px; // 768px
+$mq_pc_height: 900px;
+$mq_pc_2k_width: 2300px; // 2560px
+$mq_pc_2k_height: 1250px; // 1328px
+

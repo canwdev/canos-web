@@ -1,0 +1,144 @@
+.theme-classic {
+  $theme_color_inactive: #D4D0C8;
+  $border_width: 1px;
+  $border: $border_width solid rgba(45, 45, 45, 0.3);
+  $box-shadow: $border_width 0 #000, 0 $border_width #000, $border_width $border_width #000, inset $border_width $border_width #fff;
+
+  @mixin normal() {
+    box-shadow: $box-shadow;
+    //text-shadow: $border_width $border_width #222;
+    //color: transparent;
+  }
+  @mixin active() {
+    box-shadow: inset $border_width $border_width gray, $border_width 0 #fff, 0 $border_width #fff, $border_width $border_width #fff !important;
+    //text-shadow: $border_width $border_width #222;
+    //color: transparent;
+  }
+  @mixin disabled() {
+    text-shadow: 1px 1px 0 #fff;
+  }
+  @mixin focused() {
+    outline: 1px dotted #000000;
+    outline-offset: -4px;
+  }
+  @mixin field() {
+    box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px grey;
+  }
+
+  .vp-window {
+    padding: $border_width;
+    background: $theme_color_inactive;
+    border: $border;
+    box-shadow: $box-shadow !important;
+
+    .vp-window-content {
+      .page-craft-title-bar {
+        background: linear-gradient(45deg, #808080, #C0C0C0);
+        color: #D4D0C8;
+        padding: 1px 1px 1px 2px;
+        .page-craft-title-bar-text {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .vp-window-controls {
+      gap: 2px;
+      button {
+        @include normal();
+        background-color: $theme_color_inactive;
+        color: black;
+        padding: 0;
+        transition: none;
+        border: none;
+        height: 18px;
+        min-width: 24px;
+
+        i {
+          transform: scale(0.8);
+        }
+
+        &:hover {
+        }
+        &:active {
+          @include active();
+        }
+      }
+    }
+
+    .vp-window-body {
+      height: calc(100% - 23px) !important;
+    }
+
+    &._active {
+      .vp-window-content {
+        .page-craft-title-bar {
+          color: white;
+          //background: linear-gradient(45deg, #0A246A, #A6CAF0);
+          background: linear-gradient(45deg, $primary, $primary_opacity);
+        }
+      }
+    }
+  }
+
+  .vp-panel {
+    background-color: $theme_color_inactive;
+    @include normal();
+    border: $border;
+  }
+  .vp-button, .n-button {
+    border: none;
+    @include normal();
+    &:active,&.active {
+      @include active();
+    }
+  }
+  .vp-input, .n-input {
+    background: #fff;
+    border: none;
+    box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf;
+  }
+
+  .tool-item, {
+    @include normal();
+    &:active {
+      @include active();
+    }
+
+    .tool-item-bg {
+      opacity: 0 !important;
+    }
+  }
+
+
+  .n-tabs-tab {
+    @include normal();
+    &:active {
+      @include active();
+    }
+    &.n-tabs-tab--active {
+      @include active();
+    }
+  }
+
+
+  &._dark {
+    .vp-window {
+      color: white;
+      .vp-window-body {
+        &._bg {
+          background-color: rgba(30, 30, 30, 1);
+        }
+      }
+    }
+    .vp-panel {
+      background-color: #313131;
+      color: white;
+    }
+    .vp-input {
+      background: #313131;
+      color: white;
+    }
+  }
+
+}

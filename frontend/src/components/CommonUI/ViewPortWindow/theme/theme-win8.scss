@@ -1,0 +1,92 @@
+.theme-win8 {
+  $theme_color_inactive: #EBEBEB;
+  $border_width: 6px;
+  $box_shadow: 0 1px 5px rgba(0, 0, 0, 0.27);
+  $border: 1px solid rgba(0, 0, 0, 0.5);
+
+  .vp-window {
+    border: $border;
+    padding: 0 $border_width $border_width;
+    background-color: $theme_color_inactive;
+
+    .vp-window-content {
+      .page-craft-title-bar {
+        margin-left: -$border_width;
+        margin-right: -$border_width;
+        padding: 0 $border_width 5px;
+        .window-icon {
+          position: absolute;
+          left: $border_width;
+        }
+        .page-craft-title-bar-text {
+          margin-top: 4px;
+          flex: 1;
+          justify-content: center;
+        }
+      }
+    }
+
+    .vp-window-controls {
+      button {
+        margin-top: 0;
+        border: none;
+        min-width: 30px;
+
+        & + button {
+          border-left: 0 !important;
+        }
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.55);
+          transition: all 0.1s;
+          &._danger {
+            background-color: #f56767 !important;
+          }
+        }
+        &:active {
+          background-color: rgba(31, 31, 31, 0.55);
+          &._danger {
+            background-color: #9b3f3f !important;
+          }
+        }
+        &._danger {
+          background-color: #C75050;
+          color: white;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+      }
+    }
+
+    &._active {
+      box-shadow: $box_shadow;
+      background-color: $primary !important;
+      .page-craft-title-bar {
+        color: black !important;
+      }
+    }
+  }
+
+  .vp-panel {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: $border;
+    box-shadow: $box_shadow;
+  }
+
+
+  &._dark {
+    .vp-window {
+      background-color: black;
+      color: white;
+
+      .vp-window-body {
+        &._bg {
+          background-color: rgba(30, 30, 30, 1);
+        }
+      }
+    }
+    .vp-panel {
+      background-color: rgba(0, 0, 0, 0.75);
+      color: white;
+    }
+  }
+}
