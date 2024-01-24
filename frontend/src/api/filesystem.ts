@@ -3,12 +3,12 @@ import {HOST_URL} from '@/enum'
 import qs from 'qs'
 
 const service = Service({
-  baseURL: HOST_URL + '/api',
+  baseURL: HOST_URL + '/api/filesystem',
 })
 
 export function getList(params: any = {}) {
   const {path, getPlayStat} = params
-  return service.post('/filesystem/list', {
+  return service.post('/list', {
     path,
     getPlayStat,
   })
@@ -16,19 +16,17 @@ export function getList(params: any = {}) {
 
 export function getDetail(params: any = {}) {
   const {path, filename, updatePlayStat, updateStatOnly} = params
-  return service.get('/filesystem/detail', {
-    params: {
-      path,
-      filename,
-      updatePlayStat,
-      updateStatOnly,
-    },
+  return service.post('/media-details', {
+    path,
+    filename,
+    updatePlayStat,
+    updateStatOnly,
   })
 }
 
 export function fileAction(params: any = {}) {
   const {path, filename, action, actionValue} = params
-  return service.post('/filesystem/action', {
+  return service.post('/action', {
     path,
     filename,
     action,
@@ -39,14 +37,14 @@ export function fileAction(params: any = {}) {
 export function saveLyric(params: any = {}) {
   const {filename, lyric} = params
 
-  return service.post('/filesystem/save-lyric', {
+  return service.post('/save-lyric', {
     filename,
     lyric,
   })
 }
 
 export function getDownloadUrl(params: any = {}) {
-  return HOST_URL + '/api/filesystem/download?' + qs.stringify(params)
+  return HOST_URL + '/api/download?' + qs.stringify(params)
 }
 
 export function uploadFile(params, config = {}) {
@@ -64,7 +62,7 @@ export function uploadFile(params, config = {}) {
   formData.append('file', file)
   formData.append('filename', filename)
   formData.append('path', path)
-  return service.post('/filesystem/upload', formData, {
+  return service.post('/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

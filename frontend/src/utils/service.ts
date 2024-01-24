@@ -56,8 +56,8 @@ function Service(config: any) {
       // extract backend message
       if (response && response.data) {
         const {data} = response
-        if (data.detail) {
-          backendMessage = data.detail
+        if (data.message) {
+          backendMessage = data.message
         }
       }
       if (isToast) {

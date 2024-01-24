@@ -3,7 +3,7 @@ import {FsService} from './service'
 
 @Controller('/api/filesystem')
 export class FsController {
-  constructor(private readonly appService: FsService) {}
+  constructor(private readonly fsService: FsService) {}
 
   @Get()
   getHello() {
@@ -12,9 +12,11 @@ export class FsController {
 
   @Post('list')
   getList(@Body() params: any) {
-    const {path: musicPath = '', getPlayStat = false} = params
-    return {
-      params,
-    }
+    return this.fsService.getList(params)
+  }
+
+  @Post('media-details')
+  getDetails(@Body() params: any) {
+    return this.fsService.getMediaDetails(params)
   }
 }

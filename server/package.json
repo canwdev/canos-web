@@ -19,6 +19,11 @@
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/serve-static": "^4.0.0",
+    "@types/mime-types": "^2.1.4",
+    "fs-extra": "^11.2.0",
+    "mime-types": "^2.1.35",
+    "music-metadata": "^7.14.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   },
