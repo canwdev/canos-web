@@ -79,8 +79,6 @@
     border: $border;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27), inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
     border-radius: $radius;
-
-
   }
 
   .vp-button {
@@ -163,7 +161,8 @@
         height: calc(100% - 30px);
       }
     }
-    .vp-panel {
+    .vp-panel,
+    .vp-button {
       border-radius: 0;
     }
   }
@@ -260,6 +259,11 @@
         background-color: rgba(0, 0, 0, 0.3);
         color: white;
       }
+    }
+
+    .vp-button {
+      background-color: #4B4B4B;
+      color: white;
     }
   }
 }

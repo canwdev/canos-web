@@ -73,7 +73,7 @@ export default defineComponent({
                 <span v-html="sItem.tips"></span>
               </n-popover>
             </div>
-            <div class="item-subtitle" v-if="sItem.subtitle">{{ sItem.subtitle }}</div>
+            <div class="item-subtitle" v-if="sItem.subtitle" v-html="sItem.subtitle"></div>
           </div>
         </div>
         <div class="o-right">
@@ -92,7 +92,12 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: $color_border; //rgba(204, 204, 204, 0.2);
+    font-weight: bold;
+    border-bottom: 1px dashed $color_border;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+    z-index: 2;
 
     .p-left,
     .p-right {

@@ -13,6 +13,7 @@ export interface StOptionItem {
   selectOptions?: any[]
   // 是否已禁用
   disabled?: boolean
+  hidden?: boolean
   children?: StOptionItem[] | any
   // 图标
   icon?: string
@@ -33,6 +34,7 @@ export enum StOptionType {
   SELECT = 'select',
   INPUT = 'input',
   COLOR_PICKER = 'color_picker',
+  DYNAMIC_TAGS = 'dynamic_tags',
 }
 
 export type SwitchOption = {

@@ -6,6 +6,9 @@
     border: $border;
     padding: 0 $border_width;
 
+    .page-craft-title-bar-text {
+      padding: 4px 2px;
+    }
 
     .vp-window-controls {
       button {
@@ -28,6 +31,18 @@
     background-color: #F3F3F3;
     border: $border;
   }
+
+  .vp-button {
+    background-color: white;
+    border: 1px solid $color_border;
+
+    &:not(:disabled) {
+      &:hover {
+        border-color: $primary;
+      }
+    }
+  }
+
   &._dark {
     .vp-window {
       background-color: #3a3a3a;
@@ -44,6 +59,10 @@
     }
     .vp-panel {
       background-color: #3a3a3a;
+      color: white;
+    }
+    .vp-button {
+      background-color: #4B4B4B;
       color: white;
     }
   }
