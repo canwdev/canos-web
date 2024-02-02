@@ -5,7 +5,7 @@ import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import clickOutSide from '@/utils/directives/clickoutside'
-import {AllAppList, SystemAppList} from '@/enum/app'
+import {AllAppList, SystemAppList} from '@/apps/app-list'
 
 export default defineComponent({
   name: 'StartMenu',

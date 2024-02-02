@@ -12,7 +12,7 @@ import {
 } from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
 import {getServerInfo} from '@/api/server'
-import pkg from '../../../../package.json'
+import pkg from '../../../package.json'
 
 export default defineComponent({
   name: 'SettingsSystem',

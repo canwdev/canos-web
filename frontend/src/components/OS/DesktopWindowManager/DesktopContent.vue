@@ -2,7 +2,7 @@
 import {defineComponent} from 'vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
-import {AllAppList} from '@/enum/app'
+import {AllAppList} from '@/apps/app-list'
 
 export default defineComponent({
   name: 'DesktopContent',

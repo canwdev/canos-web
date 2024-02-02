@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useMusicStore} from '@/store/music'
-import CoverDisplay from '@/components/Apps/MusicPlayer/CoverDisplay.vue'
+import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
 
 const DetailTabEnum = {

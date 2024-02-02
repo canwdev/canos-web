@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    App: typeof import('./src/components/Apps/MediadevicesPlayer/App.vue')['default']
     AutoRatioBox: typeof import('./src/components/CommonUI/AutoRatioBox.vue')['default']
     CoverDisplay: typeof import('./src/components/Apps/MusicPlayer/CoverDisplay.vue')['default']
     CoverMini: typeof import('./src/components/Apps/MusicPlayer/CoverMini.vue')['default']

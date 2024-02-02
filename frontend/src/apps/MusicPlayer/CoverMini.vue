@@ -1,5 +1,5 @@
 <script>
-import CoverDisplay from '@/components/Apps/MusicPlayer/CoverDisplay.vue'
+import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
 
 export default {
   name: 'CoverMini',

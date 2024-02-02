@@ -2,7 +2,7 @@
 import {defineComponent} from 'vue'
 import {useMusicStore} from '@/store/music'
 import {formatTimeHMS} from '@/utils'
-import CoverMini from '@/components/Apps/MusicPlayer/CoverMini.vue'
+import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
 import TkSeekbar from '@/components/CommonUI/TkSeekBar.vue'
 import {loopModeMap, LoopModeTypeValues} from '@/enum/settings'
 import {useSettingsStore} from '@/store/settings'

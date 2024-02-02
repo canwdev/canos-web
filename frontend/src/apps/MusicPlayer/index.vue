@@ -1,9 +1,9 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import MusicDetail from '@/components/Apps/MusicPlayer/MusicDetail.vue'
-import PlayerCore from '@/components/Apps/MusicPlayer/PlayerCore.vue'
-import MusicControl from '@/components/Apps/MusicPlayer/MusicControl.vue'
-import MusicPlaylist from '@/components/Apps/MusicPlayer/MusicPlaylist/index.vue'
+import MusicDetail from '@/apps/MusicPlayer/MusicDetail.vue'
+import PlayerCore from '@/apps/MusicPlayer/PlayerCore.vue'
+import MusicControl from '@/apps/MusicPlayer/MusicControl.vue'
+import MusicPlaylist from '@/apps/MusicPlayer/MusicPlaylist/index.vue'
 
 export default defineComponent({
   name: 'MusicPlayer',

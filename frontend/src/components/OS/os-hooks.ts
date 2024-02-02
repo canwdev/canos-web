@@ -1,7 +1,7 @@
 import {useMusicStore} from '@/store/music'
 import {BackendFileItem, isSupportedMusicFormat} from '@/enum/file'
 import {useSystemStore} from '@/store/system'
-import {SystemAppMusicPlayer} from '@/enum/app'
+import {SystemAppMusicPlayer} from '@/apps/app-list'
 
 export const useFileOpener = () => {
   const musicStore = useMusicStore()

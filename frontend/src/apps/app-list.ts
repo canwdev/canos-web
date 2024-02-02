@@ -1,14 +1,10 @@
-import IconComputer from '@/assets/icons/shell32.dll(16).png'
-import IconMusic from '@/assets/icons/shell32.dll(237).png'
-import IconBrowser from '@/assets/icons/iexplore.exe(7).png'
-import IconSettings from '@/assets/icons/shell32.dll(16826).png'
-import IconPiano from '@/assets/icons/icon-piano.png'
 import {ShortcutItem} from '@/enum/os'
+import {handleAssetsUrl} from '@/utils/vite-utils'
 
 export const SystemAppSettings: ShortcutItem = {
   appid: 'os.settings',
   title: 'Settings',
-  icon: IconSettings,
+  icon: handleAssetsUrl('@/assets/icons/shell32.dll(16826).png'),
   winId: 'settings',
   winOptions: {
     top: '100px',
@@ -16,14 +12,14 @@ export const SystemAppSettings: ShortcutItem = {
     width: '800px',
     height: '600px',
   },
-  component: defineAsyncComponent(() => import('@/components/Apps/SettingsApp/index.vue')),
+  component: defineAsyncComponent(() => import('@/apps/SettingsApp/index.vue')),
   singleInstance: true,
 }
 
 export const SystemAppExplorer: ShortcutItem = {
   appid: 'os.explorer',
   title: 'Explorer',
-  icon: IconComputer,
+  icon: handleAssetsUrl('@/assets/icons/shell32.dll(16).png'),
   winId: 'explorer',
   winOptions: {
     top: '100px',
@@ -31,22 +27,22 @@ export const SystemAppExplorer: ShortcutItem = {
     width: '800px',
     height: '600px',
   },
-  component: defineAsyncComponent(() => import('@/components/Apps/FileManager/index.vue')),
+  component: defineAsyncComponent(() => import('@/apps/FileManager/index.vue')),
 }
 
 export const SystemAppMusicPlayer: ShortcutItem = {
   appid: 'os.music_player',
   title: 'Music Player',
-  icon: IconMusic,
+  icon: handleAssetsUrl('@/assets/icons/shell32.dll(237).png'),
   winId: 'music_player',
-  component: defineAsyncComponent(() => import('@/components/Apps/MusicPlayer/index.vue')),
+  component: defineAsyncComponent(() => import('@/apps/MusicPlayer/index.vue')),
   singleInstance: true,
 }
 
 export const SystemAppWebBrowser: ShortcutItem = {
   appid: 'os.web_browser',
   title: 'Iframe Browser',
-  icon: IconBrowser,
+  icon: handleAssetsUrl('@/assets/icons/iexplore.exe(7).png'),
   winId: 'browser',
   winOptions: {
     top: '150px',
@@ -54,21 +50,29 @@ export const SystemAppWebBrowser: ShortcutItem = {
     width: '800px',
     height: '600px',
   },
-  component: defineAsyncComponent(() => import('@/components/Apps/IframeBrowser/index.vue')),
+  component: defineAsyncComponent(() => import('@/apps/IframeBrowser/index.vue')),
 }
 
 export const AppPianoJs: ShortcutItem = {
   appid: 'com.pianojs',
   title: 'Garageband Piano Js',
-  icon: IconPiano,
+  icon: handleAssetsUrl('@/assets/icons/icon-piano.png'),
   winId: 'piano',
+  component: defineAsyncComponent(() => import('@/apps/PianoJs/index.vue')),
+}
+
+export const AppMediadevicesPlayer: ShortcutItem = {
+  appid: 'com.mediadevices-player',
+  title: 'Webcam',
+  icon: handleAssetsUrl('@/assets/icons/icon-camera.png'),
+  winId: 'mediadevices-player',
   winOptions: {
     top: '150px',
     left: '150px',
     width: '620px',
     height: '380px',
   },
-  component: defineAsyncComponent(() => import('@/components/Apps/PianoJs/index.vue')),
+  component: defineAsyncComponent(() => import('@/apps/MediadevicesPlayer/App.vue')),
 }
 
 export const SystemAppList: ShortcutItem[] = [SystemAppSettings]
@@ -77,5 +81,6 @@ export const AllAppList: ShortcutItem[] = [
   SystemAppMusicPlayer,
   SystemAppWebBrowser,
   AppPianoJs,
+  AppMediadevicesPlayer,
   ...SystemAppList,
 ]

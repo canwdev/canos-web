@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {StOptionItem} from '@/components/CommonUI/OptionUI/enum'
-import {AllAppList} from '@/enum/app'
+import {AllAppList} from '@/apps/app-list'
 import {NSpace, NSwitch} from 'naive-ui'
 
 export default defineComponent({

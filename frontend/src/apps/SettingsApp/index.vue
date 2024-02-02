@@ -3,9 +3,9 @@ import {defineComponent} from 'vue'
 import {SettingsTabType} from '@/enum/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {useI18n} from 'vue-i18n'
-import SettingsPersonalization from '@/components/Apps/SettingsApp/SettingsPersonalization.vue'
-import SettingsSystem from '@/components/Apps/SettingsApp/SettingsSystem.vue'
-import SettingsPrograms from '@/components/Apps/SettingsApp/SettingsPrograms.vue'
+import SettingsPersonalization from '@/apps/SettingsApp/SettingsPersonalization.vue'
+import SettingsSystem from '@/apps/SettingsApp/SettingsSystem.vue'
+import SettingsPrograms from '@/apps/SettingsApp/SettingsPrograms.vue'
 
 export default defineComponent({
   name: 'SettingsApp',

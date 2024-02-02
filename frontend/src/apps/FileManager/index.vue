@@ -3,7 +3,7 @@ import {defineComponent} from 'vue'
 import {getList} from '@/api/filesystem'
 import {BackendFileItem} from '@/enum/file'
 import {useFileOpener} from '@/components/OS/os-hooks'
-import FileListItem from '@/components/Apps/FileManager/FileListItem.vue'
+import FileListItem from './FileListItem.vue'
 import {
   ArrowUp20Regular,
   ArrowSync20Filled,

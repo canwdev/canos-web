@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import PlaylistItem from '@/components/Apps/MusicPlayer/MusicPlaylist/PlaylistItem.vue'
+import PlaylistItem from '@/apps/MusicPlayer/MusicPlaylist/PlaylistItem.vue'
 import {useMusicStore} from '@/store/music'
 import {MusicItem} from '@/enum/music'
 

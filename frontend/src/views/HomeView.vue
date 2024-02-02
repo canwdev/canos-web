@@ -3,7 +3,7 @@ import {defineComponent} from 'vue'
 import TaskBar from '@/components/OS/TaskBar/index.vue'
 import DesktopWindowManager from '@/components/OS/DesktopWindowManager/index.vue'
 import {useSystemStore} from '@/store/system'
-import {AllAppList} from '@/enum/app'
+import {AllAppList} from '@/apps/app-list'
 import {useSettingsStore} from '@/store/settings'
 
 export default defineComponent({

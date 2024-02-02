@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
 import {MusicItem} from '@/enum/music'
-import CoverMini from '@/components/Apps/MusicPlayer/CoverMini.vue'
+import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
 import {useMusicStore} from '@/store/music'
 
 export default defineComponent({
