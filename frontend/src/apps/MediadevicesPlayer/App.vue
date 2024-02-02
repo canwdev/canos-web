@@ -118,6 +118,7 @@ export default defineComponent({
       if (mouseHider.value) {
         mouseHider.value.stop()
       }
+      stopBothVideoAndAudio()
     })
 
     // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
@@ -293,7 +294,7 @@ export default defineComponent({
         class="action-bar font-emoji"
         :class="{visible: !currentVideoDeviceId && !currentAudioDeviceId}"
       >
-        <div>
+        <div class="action-bar-side">
           <label for="videoSelect">
             <span>Video:</span>
             <select title="Video" id="videoSelect" v-model="currentVideoDeviceId">
@@ -315,7 +316,7 @@ export default defineComponent({
           <button @click="handleStart">▶Start</button>
           <button @click="stopBothVideoAndAudio">⏹Stop</button>
           <button @click="clearSelect">🛑Reset</button>
-          <button @click="toggleFullScreen">📺Full Screen</button>
+          <button @click="toggleFullScreen">📺Fullscreen</button>
 
           <label for="toggleControls">
             <input
@@ -327,7 +328,7 @@ export default defineComponent({
             <span>Controls</span>
           </label>
 
-          <button @click="handleStartCaptureScreen">⏺Screen Capture</button>
+          <button @click="handleStartCaptureScreen">⏺Capture...</button>
           <button @click="handleScreenshot">📷Screenshot</button>
         </div>
 
@@ -356,57 +357,63 @@ export default defineComponent({
     user-select: none;
   }
 
-  .action-bar.visible {
-    visibility: visible;
-    opacity: 1;
-  }
-
   .action-bar {
     height: 100%;
     padding: 10px;
-
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.53), transparent);
     visibility: hidden;
     opacity: 0;
     transition: all 0.3s;
-
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-  }
 
-  .action-bar span,
-  a {
-    color: white;
-    font-size: 12px;
-  }
+    &.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+    span,
+    a {
+      color: white;
+      font-size: 12px;
+    }
+    select {
+      width: 150px;
+      line-height: 1;
+      option {
+        background: white;
+        color: black;
+      }
+    }
 
-  .action-bar select {
-    width: 150px;
-    margin-left: 5px;
-    margin-right: 8px;
-  }
-  .action-bar select option {
-    background: white;
-    color: black;
-  }
+    button,
+    select {
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 4px;
+      padding: 2px 4px;
+      box-sizing: border-box;
+      transition: all 0.3s;
+      height: 26px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transition: none;
+      }
+    }
 
-  .action-bar button,
-  .action-bar select {
-    margin-left: 3px;
-    margin-right: 3px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 4px;
-    padding: 2px 4px;
-    box-sizing: border-box;
-    transition: all 0.3s;
-  }
-  .action-bar button:hover,
-  .action-bar select:hover {
-    background: rgba(255, 255, 255, 0.5);
-    transition: none;
+    .action-bar-side {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+    }
   }
 
   video {
