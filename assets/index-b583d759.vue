@@ -254,6 +254,24 @@ export default defineComponent({
     }
   }
 
+  // 内容全屏
+  &._fullscreen_content {
+    z-index: 999;
+    border: none;
+    .vp-window-content {
+      border: none;
+      .vp-window-body {
+        border: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100% !important;
+        width: 100% !important;
+        z-index: 100;
+      }
+    }
+  }
+
   .vp-window-content {
     height: 100%;
     display: flex;
