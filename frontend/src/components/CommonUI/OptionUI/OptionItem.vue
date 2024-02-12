@@ -85,6 +85,14 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
+._dark {
+  .c-panel-item {
+    .panel-header {
+      background-color: black;
+      color: white;
+    }
+  }
+}
 .c-panel-item {
   .panel-header {
     min-height: 40px;
@@ -96,7 +104,8 @@ export default defineComponent({
     border-bottom: 1px dashed $color_border;
     position: sticky;
     top: 0;
-    backdrop-filter: blur(10px);
+    background-color: white;
+    color: black;
     z-index: 2;
 
     .p-left,
