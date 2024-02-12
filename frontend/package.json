@@ -21,9 +21,10 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "qs": "^6.11.2",
     "throttle-debounce": "^2.3.0",
-    "vue": "^3.3.13",
+    "vue": "^3.4.18",
     "vue-i18n": "^9.4.1",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "web-mediadevices-player": "https://github.com/canwdev/web-mediadevices-player.git"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.1.0",

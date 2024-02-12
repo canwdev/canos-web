@@ -1,6 +1,8 @@
 import {ShortcutItem, TaskItem} from '@/enum/os'
+import {AllAppList} from '@/apps/app-list'
 
 interface IStore {
+  isBackendAvailable: boolean
   tasks: TaskItem[]
   activeId: string
 }
@@ -10,7 +12,16 @@ export const useSystemStore = defineStore('system', {
     return {
       tasks: [],
       activeId: '',
+      isBackendAvailable: false,
     }
+  },
+  getters: {
+    allApps(): ShortcutItem[] {
+      if (this.isBackendAvailable) {
+        return AllAppList
+      }
+      return AllAppList.filter((item) => !item.requireBackend)
+    },
   },
   actions: {
     /**

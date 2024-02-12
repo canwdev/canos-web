@@ -28,6 +28,7 @@ export const SystemAppExplorer: ShortcutItem = {
     height: '600px',
   },
   component: defineAsyncComponent(() => import('@/apps/FileManager/index.vue')),
+  requireBackend: true,
 }
 
 export const SystemAppMusicPlayer: ShortcutItem = {
@@ -37,6 +38,7 @@ export const SystemAppMusicPlayer: ShortcutItem = {
   winId: 'music_player',
   component: defineAsyncComponent(() => import('@/apps/MusicPlayer/index.vue')),
   singleInstance: true,
+  requireBackend: true,
 }
 
 export const SystemAppWebBrowser: ShortcutItem = {

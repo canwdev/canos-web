@@ -13,6 +13,7 @@ import {
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
 import {getServerInfo} from '@/api/server'
 import pkg from '../../../package.json'
+import {useSystemStore} from '@/store/system'
 
 export default defineComponent({
   name: 'SettingsSystem',
@@ -20,11 +21,14 @@ export default defineComponent({
   setup(props, {emit}) {
     const {t: $t} = useI18n()
     const settingsStore = useSettingsStore()
+    const systemStore = useSystemStore()
     const serverInfo = ref<any>({})
 
     onMounted(async () => {
-      const res = await getServerInfo()
-      serverInfo.value = res || {}
+      if (systemStore.isBackendAvailable) {
+        const res = await getServerInfo()
+        serverInfo.value = res || {}
+      }
     })
 
     const optionList = computed((): StOptionItem[] => {
@@ -42,24 +46,27 @@ export default defineComponent({
             {
               key: 'backend_version',
               label: '后端服务器版本',
-              subtitle: serverInfo.value.name,
-              actionRender: h('div', serverInfo.value.version),
+              subtitle: systemStore.isBackendAvailable ? serverInfo.value.name : '后端服务不可用',
+              actionRender: h(
+                'div',
+                systemStore.isBackendAvailable ? serverInfo.value.version : 'N/A'
+              ),
             },
             {
               key: 'github',
               label: '仓库地址',
-              subtitle: `作者: ${serverInfo.value.author}`,
+              subtitle: `作者: Canwdev`,
               actionRender: h(
                 'a',
                 {
-                  href: serverInfo.value.repository,
+                  href: 'https://github.com/canwdev/canos-web',
                   target: '_blank',
                   rel: 'nofollow noopener',
                 },
                 'Github'
               ),
             },
-          ],
+          ].filter(Boolean),
         },
         {
           label: '媒体设置',

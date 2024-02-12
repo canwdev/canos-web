@@ -30,7 +30,7 @@ export default defineComponent({
     }
 
     const appListFiltered = computed(() => {
-      return AllAppList.filter((item) => {
+      return systemStore.allApps.filter((item) => {
         const reg = new RegExp(filterText.value, 'ig')
         return reg.test(item.title)
       })

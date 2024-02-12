@@ -2,7 +2,6 @@
 import {defineComponent} from 'vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
-import {AllAppList} from '@/apps/app-list'
 
 export default defineComponent({
   name: 'DesktopContent',
@@ -13,8 +12,8 @@ export default defineComponent({
       systemStore.createTask(item)
     }
     return {
+      systemStore,
       handleItemClick,
-      StartMenuAppList: AllAppList,
     }
   },
 })
@@ -23,7 +22,7 @@ export default defineComponent({
 <template>
   <div class="desktop-content">
     <button
-      v-for="(item, index) in StartMenuAppList"
+      v-for="(item, index) in systemStore.allApps"
       :key="index"
       @dblclick="handleItemClick(item)"
       class="desktop-icon-wrap btn-no-style"

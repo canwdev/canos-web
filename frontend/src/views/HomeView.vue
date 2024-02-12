@@ -3,12 +3,13 @@ import {defineComponent} from 'vue'
 import TaskBar from '@/components/OS/TaskBar/index.vue'
 import DesktopWindowManager from '@/components/OS/DesktopWindowManager/index.vue'
 import {useSystemStore} from '@/store/system'
-import {AllAppList} from '@/apps/app-list'
 import {useSettingsStore} from '@/store/settings'
+import SystemStartup from '@/components/OS/SystemStartup.vue'
 
 export default defineComponent({
   name: 'HomeView',
   components: {
+    SystemStartup,
     DesktopWindowManager,
     TaskBar,
   },
@@ -18,7 +19,7 @@ export default defineComponent({
     onMounted(() => {
       // 自动启动应用
       const idsMap = {}
-      AllAppList.forEach((item) => {
+      systemStore.allApps.forEach((item) => {
         idsMap[item.appid] = item
       })
       settingsStore.appAutoStartIds.forEach((id: string) => {
@@ -36,6 +37,7 @@ export default defineComponent({
 </script>
 
 <template>
+  <SystemStartup />
   <DesktopWindowManager>
     <TaskBar />
   </DesktopWindowManager>

@@ -14,6 +14,8 @@ export interface ShortcutItem {
   winOptions?: WinOptions | null
   // 是否为单实例
   singleInstance?: boolean
+  // 是否需要后端服务，如果后端服务未启动，则该程序不可用
+  requireBackend?: boolean
 }
 
 export interface TaskItem {

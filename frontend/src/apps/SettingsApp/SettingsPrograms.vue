@@ -4,8 +4,8 @@ import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {StOptionItem} from '@/components/CommonUI/OptionUI/enum'
-import {AllAppList} from '@/apps/app-list'
 import {NSpace, NSwitch} from 'naive-ui'
+import {useSystemStore} from '@/store/system'
 
 export default defineComponent({
   name: 'SettingsPrograms',
@@ -13,6 +13,7 @@ export default defineComponent({
   setup(props, {emit}) {
     const {t: $t} = useI18n()
     const settingsStore = useSettingsStore()
+    const systemStore = useSystemStore()
 
     const optionList = computed((): StOptionItem[] => {
       const aIdsMap = {}
@@ -23,7 +24,7 @@ export default defineComponent({
         {
           label: '应用管理',
           key: 'app_management',
-          children: AllAppList.map((item) => {
+          children: systemStore.allApps.map((item) => {
             return {
               icon: item.icon,
               label: item.title,
