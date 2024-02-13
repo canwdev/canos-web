@@ -4,12 +4,12 @@ import TaskBar from '@/components/OS/TaskBar/index.vue'
 import DesktopWindowManager from '@/components/OS/DesktopWindowManager/index.vue'
 import {useSystemStore} from '@/store/system'
 import {useSettingsStore} from '@/store/settings'
-import SystemStartup from '@/components/OS/SystemStartup.vue'
+import StartupLogs from '@/components/OS/StartupLogs.vue'
 
 export default defineComponent({
   name: 'HomeView',
   components: {
-    SystemStartup,
+    StartupLogs,
     DesktopWindowManager,
     TaskBar,
   },
@@ -37,7 +37,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <SystemStartup />
+  <StartupLogs />
   <DesktopWindowManager>
     <TaskBar />
   </DesktopWindowManager>

@@ -6,7 +6,7 @@ import {sleep} from '@/utils'
 import {useSystemStore} from '@/store/system'
 
 export default defineComponent({
-  name: 'SystemStartup',
+  name: 'StartupLogs',
   setup() {
     const systemStore = useSystemStore()
 

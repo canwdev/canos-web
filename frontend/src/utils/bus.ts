@@ -12,3 +12,12 @@ export const GlobalEvents = {
   ACTION_CHANGE_CURRENT_TIME: 'ACTION_CHANGE_CURRENT_TIME',
   ACTION_LOCATE_FILE: 'ACTION_LOCATE_FILE',
 }
+
+export const useGlobalBusOn = (event: string, fn: any) => {
+  onMounted(() => {
+    globalEventBus.on(event, fn)
+  })
+  onBeforeUnmount(() => {
+    globalEventBus.off(event, fn)
+  })
+}

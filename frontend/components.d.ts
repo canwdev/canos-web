@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AdvancedNumberInput: typeof import('./src/components/CommonUI/OptionUI/Tools/AdvancedNumberInput.vue')['default']
     AutoRatioBox: typeof import('./src/components/CommonUI/AutoRatioBox.vue')['default']
     DesktopContent: typeof import('./src/components/OS/DesktopWindowManager/DesktopContent.vue')['default']
     DesktopWallpaper: typeof import('./src/components/OS/DesktopWindowManager/DesktopWallpaper.vue')['default']
@@ -50,6 +51,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     StartMenu: typeof import('./src/components/OS/StartMenu/index.vue')['default']
     StartMenuItem: typeof import('./src/components/OS/StartMenu/StartMenuItem.vue')['default']
+    StartupLogs: typeof import('./src/components/OS/StartupLogs.vue')['default']
     SystemStartup: typeof import('./src/components/OS/SystemStartup.vue')['default']
     TaskBar: typeof import('./src/components/OS/TaskBar/index.vue')['default']
     TkSeekBar: typeof import('./src/components/CommonUI/TkSeekBar.vue')['default']

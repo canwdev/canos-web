@@ -3,6 +3,7 @@ import {defineComponent, PropType} from 'vue'
 import RectSwitch from './Tools/RectSwitch.vue'
 import {StOptionItem, StOptionType} from './enum'
 import VueRender from './Tools/VueRender.vue'
+import AdvancedNumberInput from './Tools/AdvancedNumberInput.vue'
 
 const swatches = [
   '#258292',
@@ -27,7 +28,7 @@ const swatches = [
 
 export default defineComponent({
   name: 'ItemAction',
-  components: {VueRender, RectSwitch},
+  components: {AdvancedNumberInput, VueRender, RectSwitch},
   props: {
     item: {
       type: Object as PropType<StOptionItem>,
@@ -111,6 +112,20 @@ export default defineComponent({
       v-model:value="dynamicValue"
       size="small"
     />
+
+    <!--      高级的数字输入框-->
+    <AdvancedNumberInput
+      v-else-if="item.type === StOptionType.INPUT_NUMBER"
+      v-model="dynamicValue"
+      :max="item.max"
+      :min="item.min"
+      :step="item.step"
+      :format="item.formatFn"
+      :parse="item.parseFn"
+      :marks="item.marks"
+      :disabled="item.disabled"
+    />
+
     <VueRender v-if="item.actionRender" :render-fn="item.actionRender" />
   </n-space>
 </template>
