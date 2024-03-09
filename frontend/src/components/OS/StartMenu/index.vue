@@ -5,7 +5,6 @@ import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import clickOutSide from '@/utils/directives/clickoutside'
-import {AllAppList, SystemAppList} from '@/apps/app-list'
 
 export default defineComponent({
   name: 'StartMenu',
@@ -41,7 +40,6 @@ export default defineComponent({
       systemStore,
       filterText,
       appListFiltered,
-      SystemAppList,
       handleItemClick,
       handlePowerMenu() {
         mVisible.value = false
@@ -85,12 +83,12 @@ export default defineComponent({
       </div>
       <div class="start-menu-right">
         <div class="shortcut-list">
-          <StartMenuItem
-            :item="item"
-            v-for="(item, index) in SystemAppList"
-            :key="index"
-            @click="handleItemClick(item)"
-          />
+          <!--          <StartMenuItem-->
+          <!--            :item="item"-->
+          <!--            v-for="(item, index) in SystemAppList"-->
+          <!--            :key="index"-->
+          <!--            @click="handleItemClick(item)"-->
+          <!--          />-->
         </div>
       </div>
     </div>

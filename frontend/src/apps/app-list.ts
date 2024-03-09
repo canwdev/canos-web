@@ -92,13 +92,14 @@ export const AppQuickLaunch: ShortcutItem = {
   singleInstance: true,
 }
 
-export const SystemAppList: ShortcutItem[] = [SystemAppSettings]
 export const AllAppList: ShortcutItem[] = [
   SystemAppExplorer,
   SystemAppMusicPlayer,
   SystemAppWebBrowser,
+  SystemAppSettings,
   AppPianoJs,
   AppMediadevicesPlayer,
   AppQuickLaunch,
-  ...SystemAppList,
 ]
+
+window.$appList = AllAppList

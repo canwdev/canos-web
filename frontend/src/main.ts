@@ -11,7 +11,7 @@ const naive = create({})
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import i18n from '@/i18n/index'
 import AutoRatioBox from '@/components/CommonUI/AutoRatioBox.vue'
-
+import '@/apps/app-list'
 const app = createApp(App)
 
 app.component(AutoRatioBox.name, AutoRatioBox)

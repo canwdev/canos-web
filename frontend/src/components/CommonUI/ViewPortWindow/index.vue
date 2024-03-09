@@ -65,7 +65,14 @@ export default defineComponent({
       default: 'mc-fade-scale',
     },
   },
-  emits: ['update:visible', 'resize', 'onActive', 'onClose'],
+  emits: [
+    'update:visible',
+    'resize',
+    'onActive',
+    'onClose',
+    'update:minimized',
+    'update:maximized',
+  ],
   setup(props, {emit}) {
     const {allowMaximum, allowMove} = toRefs(props)
     const storageKey = LS_KEY_VP_WINDOW_OPTION + '_' + props.wid

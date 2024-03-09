@@ -3,6 +3,20 @@
 \*-------------------------------------------*/
 
 .theme-xp {
+  .vp-window-panel {
+    box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9, inset -1px -1px #001ea0, inset 1px 1px #166aee,
+    inset -1px -1px #003bda, inset 1px 1px #0855dd;
+    -webkit-font-smoothing: antialiased;
+    &._panel-bg {
+      background: linear-gradient(
+          180deg,
+          rgba(9, 151, 255, 1) 0%,
+          rgba(0, 83, 238, 1) 100%,
+      );
+      color: white;
+    }
+  }
+
   .vp-window {
     box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9, inset -2px -2px #001ea0, inset 2px 2px #166aee,
     inset -3px -3px #003bda, inset 3px 3px #0855dd;

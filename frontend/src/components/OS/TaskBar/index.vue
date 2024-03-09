@@ -4,10 +4,12 @@ import TrayClock from '@/components/OS/TaskBar/TrayClock.vue'
 import StartMenu from '@/components/OS/StartMenu/index.vue'
 import {useSystemStore} from '@/store/system'
 import {useSettingsStore} from '@/store/settings'
+import TrayBattery from '@/components/OS/TaskBar/TrayBattery.vue'
+import TrayFps from '@/components/OS/TaskBar/TrayFps.vue'
 
 export default defineComponent({
   name: 'TaskBar',
-  components: {StartMenu, TrayClock},
+  components: {TrayFps, TrayBattery, StartMenu, TrayClock},
   setup() {
     const systemStore = useSystemStore()
     const settingsStore = useSettingsStore()
@@ -52,6 +54,8 @@ export default defineComponent({
       </div>
       <div class="task-tray _fc">
         <div class="tray-list _fc">
+          <TrayFps />
+          <TrayBattery />
           <TrayClock v-if="settingsStore.taskbarShowClock" />
         </div>
       </div>
@@ -172,6 +176,9 @@ export default defineComponent({
       .tray-list {
         height: 100%;
         padding: 0 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
     }
   }

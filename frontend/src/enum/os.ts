@@ -23,9 +23,9 @@ export interface TaskItem {
   guid: string
   title: string
   icon: string
-  winId: string | null
+  winId?: string
   // 窗口初始化大小和位置
-  winOptions: WinOptions | null
+  winOptions?: WinOptions
   // ViewPortWindow $ref
   windowRef: any
   // defineAsyncComponent(() => import(''))

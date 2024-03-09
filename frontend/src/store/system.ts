@@ -1,5 +1,4 @@
 import {ShortcutItem, TaskItem} from '@/enum/os'
-import {AllAppList} from '@/apps/app-list'
 
 interface IStore {
   isBackendAvailable: boolean
@@ -18,9 +17,9 @@ export const useSystemStore = defineStore('system', {
   getters: {
     allApps(): ShortcutItem[] {
       if (this.isBackendAvailable) {
-        return AllAppList
+        return window.$appList
       }
-      return AllAppList.filter((item) => !item.requireBackend)
+      return window.$appList.filter((item) => !item.requireBackend)
     },
   },
   actions: {
@@ -37,9 +36,13 @@ export const useSystemStore = defineStore('system', {
           return
         }
       }
-      const newTask = new TaskItem(shortcut)
+      const newTask = new TaskItem({...shortcut, minimized: true})
       this.tasks = [...this.tasks, newTask]
-      this.activeId = newTask.guid
+      setTimeout(() => {
+        // 窗口出现动画
+        newTask.minimized = false
+        this.activeId = newTask.guid
+      }, 100)
     },
     /**
      * 关闭任务
@@ -49,20 +52,28 @@ export const useSystemStore = defineStore('system', {
       const _tasks = [...this.tasks]
       const idx = _tasks.findIndex((i) => i.guid === guid)
 
-      _tasks.splice(idx, 1)
-      this.tasks = _tasks
+      // 窗口关闭动画
+      const task = _tasks[idx]
+      if (task) {
+        task.minimized = true
 
-      // 上一个应用的index
-      let lastIdx = idx - 1
-      if (!_tasks[lastIdx]) {
-        // 如果不存在则设置为最后一个
-        lastIdx = _tasks.length - 1
-        if (!_tasks[lastIdx]) {
-          lastIdx = -1
-        }
-      }
-      if (lastIdx > -1) {
-        this.setTaskActive(_tasks[lastIdx])
+        setTimeout(() => {
+          _tasks.splice(idx, 1)
+          this.tasks = _tasks
+
+          // 上一个应用的index
+          let lastIdx = idx - 1
+          if (!_tasks[lastIdx]) {
+            // 如果不存在则设置为最后一个
+            lastIdx = _tasks.length - 1
+            if (!_tasks[lastIdx]) {
+              lastIdx = -1
+            }
+          }
+          if (lastIdx > -1) {
+            this.setTaskActive(_tasks[lastIdx])
+          }
+        }, 300)
       }
     },
     /**
