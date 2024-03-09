@@ -65,7 +65,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-click-out-side="handleClickOutside" v-if="mVisible" class="start-menu vp-panel">
+  <div
+    v-click-out-side="handleClickOutside"
+    v-if="mVisible"
+    class="start-menu vp-panel vp-window-panel _panel-bg"
+  >
     <div class="start-menu-row">
       <div class="start-menu-left">
         <div class="program-list">
@@ -95,7 +99,7 @@ export default defineComponent({
         <input v-model="filterText" placeholder="Search apps" class="input-search vp-input" />
       </div>
       <div class="start-menu-right">
-        <button class="btn-no-style vp-button" @click="handlePowerMenu">Shutdown</button>
+        <button class="vp-button" @click="handlePowerMenu">Shutdown</button>
       </div>
     </div>
   </div>

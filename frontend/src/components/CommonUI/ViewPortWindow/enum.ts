@@ -2,7 +2,7 @@ export enum CustomThemeType {
   DEFAULT = 'theme-default',
   WIN98 = 'theme-win98',
   XP = 'theme-xp',
-  VISTA = 'theme-vista',
+  WIN7 = 'theme-win7',
   WIN8 = 'theme-win8',
   CLASSIC = 'theme-classic',
   MINIMALISM = 'theme-minimalism',
@@ -19,16 +19,16 @@ export const customThemeOptions = [
     value: CustomThemeType.MINIMALISM,
   },
   {
-    label: 'WIN98',
+    label: 'Win98',
     value: CustomThemeType.WIN98,
   },
   {
-    label: 'XP',
+    label: 'WinXP',
     value: CustomThemeType.XP,
   },
   {
-    label: 'Vista',
-    value: CustomThemeType.VISTA,
+    label: 'Win7',
+    value: CustomThemeType.WIN7,
   },
   {
     label: 'Win8',

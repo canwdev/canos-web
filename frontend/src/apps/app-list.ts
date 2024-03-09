@@ -77,6 +77,21 @@ export const AppMediadevicesPlayer: ShortcutItem = {
   component: defineAsyncComponent(() => import('@/apps/MediadevicesPlayer/App.vue')),
 }
 
+export const AppQuickLaunch: ShortcutItem = {
+  appid: 'os.quick-launch',
+  title: 'Quick Launch',
+  icon: handleAssetsUrl('@/assets/icons/everything.png'),
+  winId: 'quick-launch',
+  winOptions: {
+    top: '150px',
+    left: '150px',
+    width: '400px',
+    height: '400px',
+  },
+  component: defineAsyncComponent(() => import('@/apps/QuickLaunch/index.vue')),
+  singleInstance: true,
+}
+
 export const SystemAppList: ShortcutItem[] = [SystemAppSettings]
 export const AllAppList: ShortcutItem[] = [
   SystemAppExplorer,
@@ -84,5 +99,6 @@ export const AllAppList: ShortcutItem[] = [
   SystemAppWebBrowser,
   AppPianoJs,
   AppMediadevicesPlayer,
+  AppQuickLaunch,
   ...SystemAppList,
 ]

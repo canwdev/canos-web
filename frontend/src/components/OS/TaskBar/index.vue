@@ -31,15 +31,13 @@ export default defineComponent({
     <transition name="fade">
       <StartMenu v-model:visible="isShowStart" />
     </transition>
-    <div class="task-bar-container vp-panel">
+    <div class="task-bar-container vp-panel vp-window-panel _panel-bg">
       <div class="task-start-menu _fc">
-        <button class="start-button btn-no-style vp-button" @click="isShowStart = !isShowStart">
-          Start
-        </button>
+        <button class="start-button vp-button" @click="isShowStart = !isShowStart">Start</button>
       </div>
       <div class="task-list _fc">
         <button
-          class="btn-no-style task-item vp-button"
+          class="task-item vp-button"
           v-for="item in systemStore.tasks"
           :key="item.guid"
           :class="{active: item.guid === systemStore.activeId}"
@@ -104,7 +102,7 @@ export default defineComponent({
         border-radius: 0;
         height: 100%;
         padding: 2px 10px;
-        background-color: $primary;
+        background: $primary;
         color: white;
       }
     }

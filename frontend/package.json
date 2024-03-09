@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.9.0",
     "axios": "^1.6.2",
     "big.js": "^6.2.1",
     "lodash": "^4.17.21",
@@ -23,28 +24,28 @@
     "qs": "^6.11.2",
     "throttle-debounce": "^2.3.0",
     "vue": "^3.4.18",
-    "vue-i18n": "^9.4.1",
+    "vue-i18n": "^9.9.0",
     "vue-router": "^4.2.5",
     "web-mediadevices-player": "https://github.com/canwdev/web-mediadevices-player.git"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.1.0",
-    "@typescript-eslint/parser": "^6.1.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
     "@vicons/fluent": "^0.12.0",
-    "@vitejs/plugin-vue": "^4.2.3",
-    "@vitejs/plugin-vue-jsx": "^3.0.1",
-    "eslint": "^8.45.0",
-    "eslint-config-prettier": "^8.8.0",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^9.15.1",
-    "naive-ui": "^2.34.4",
+    "eslint-plugin-vue": "^9.20.0",
+    "naive-ui": "^2.37.3",
     "prettier": "^2.8.8",
-    "sass": "^1.69.5",
+    "sass": "^1.69.7",
     "typescript": "^5.3.3",
     "unplugin-auto-import": "^0.15.3",
     "unplugin-vue-components": "^0.24.1",
-    "vite": "^4.5.2",
-    "vite-plugin-pwa": "^0.14.7",
+    "vite": "^5.0.11",
+    "vite-plugin-pwa": "^0.17.4",
     "vue-tsc": "^0.38.4"
   }
 }

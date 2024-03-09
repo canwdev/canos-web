@@ -46,6 +46,7 @@ declare module '@vue/runtime-core' {
     OptionItem: typeof import('./src/components/CommonUI/OptionUI/OptionItem.vue')['default']
     OptionUI: typeof import('./src/components/CommonUI/OptionUI/index.vue')['default']
     OsStartup: typeof import('./src/components/OS/OsStartup.vue')['default']
+    QuickOptions: typeof import('./src/components/CommonUI/QuickOptions/index.vue')['default']
     RectSwitch: typeof import('./src/components/CommonUI/OptionUI/Tools/RectSwitch.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
