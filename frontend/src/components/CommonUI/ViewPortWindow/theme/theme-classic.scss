@@ -2,17 +2,22 @@
   $theme_color_inactive: #D4D0C8;
   $border_width: 1px;
   $border: $border_width solid rgba(45, 45, 45, 0.3);
-  $box-shadow: $border_width 0 #000, 0 $border_width #000, $border_width $border_width #000, inset $border_width $border_width #fff;
+
+  $box_shadow: $border_width 0 #000, 0 $border_width #000, $border_width $border_width #000, inset $border_width $border_width #fff;
+
+  $box_shadow_dark: $border_width 0 #2C3034, 0 $border_width #2C3034, $border_width $border_width #2C3034, inset $border_width $border_width #7E888F;
 
   @mixin normal() {
-    box-shadow: $box-shadow;
-    //text-shadow: $border_width $border_width #222;
-    //color: transparent;
+    box-shadow: $box_shadow;
+  }
+  @mixin normal_dark() {
+    box-shadow: $box_shadow_dark;
   }
   @mixin active() {
     box-shadow: inset $border_width $border_width gray, $border_width 0 #fff, 0 $border_width #fff, $border_width $border_width #fff !important;
-    //text-shadow: $border_width $border_width #222;
-    //color: transparent;
+  }
+  @mixin active_dark() {
+    box-shadow: inset $border_width $border_width #2C3034, $border_width 0 #89939C, 0 $border_width #89939C, $border_width $border_width #89939C !important;
   }
   @mixin disabled() {
     text-shadow: 1px 1px 0 #fff;
@@ -24,19 +29,22 @@
   @mixin field() {
     box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px grey;
   }
+  @mixin field_dark() {
+    box-shadow: inset -1px -1px #89939C, inset 1px 1px #1a1c1e;
+  }
 
   .vp-window {
     padding: $border_width;
     background: $theme_color_inactive;
     border: $border;
-    box-shadow: $box-shadow !important;
+    box-shadow: $box_shadow !important;
 
     .vp-window-content {
-      .page-craft-title-bar {
+      .vp-window-title-bar {
         background: linear-gradient(45deg, #808080, #C0C0C0);
         color: #D4D0C8;
         padding: 1px 1px 1px 2px;
-        .page-craft-title-bar-text {
+        .vp-window-title-bar-text {
           font-size: 12px;
         }
       }
@@ -60,8 +68,10 @@
 
         &:hover {
         }
-        &:active {
-          @include active();
+        &:not(&:disabled) {
+          &:active {
+            @include active();
+          }
         }
       }
     }
@@ -72,7 +82,7 @@
 
     &._active {
       .vp-window-content {
-        .page-craft-title-bar {
+        .vp-window-title-bar {
           color: white;
           //background: linear-gradient(45deg, #0A246A, #A6CAF0);
           background: linear-gradient(45deg, $primary, $primary_opacity);
@@ -89,27 +99,17 @@
   .vp-button, .n-button {
     border: none;
     @include normal();
-    &:active,&.active {
-      @include active();
+
+    &:not(&:disabled) {
+      &:active,&.active {
+        @include active();
+      }
     }
   }
   .vp-input, .n-input {
     background: #fff;
-    border: none;
-    box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf;
+    @include field();
   }
-
-  .tool-item, {
-    @include normal();
-    &:active {
-      @include active();
-    }
-
-    .tool-item-bg {
-      opacity: 0 !important;
-    }
-  }
-
 
   .n-tabs-tab {
     @include normal();
@@ -127,17 +127,31 @@
       color: white;
       .vp-window-body {
         &._bg {
-          background-color: rgba(30, 30, 30, 1);
+          background-color: #31363C;
         }
       }
     }
     .vp-panel {
-      background-color: #313131;
+      background-color: #31363C;
       color: white;
+      @include normal_dark()
     }
-    .vp-input {
-      background: #313131;
+    .vp-button, .n-button {
+      background-color: #3C434A;
+      border-color: #7E888F;
       color: white;
+      box-shadow: $box_shadow_dark;
+
+      &:not(&:disabled) {
+        &:active,&.active {
+          @include active_dark();
+        }
+      }
+    }
+    .vp-input, .n-input {
+      background: #31363C;
+      color: white;
+      @include field_dark();
     }
   }
 

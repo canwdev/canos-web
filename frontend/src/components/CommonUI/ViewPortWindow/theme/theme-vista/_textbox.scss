@@ -1,0 +1,18 @@
+.theme-vista {
+
+  .vp-input, .n-input {
+    font: var(--font);
+    border: 1px solid #ccc;
+    border-top-color: var(--button-border-color);
+    border-radius: 2px;
+    background-color: var(--button-highlight);
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--button-shade-light-hovered);
+      border-top-color: var(--button-shade-light-active);
+    }
+  }
+
+}

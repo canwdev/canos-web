@@ -3,6 +3,11 @@
 @import "./theme-win8";
 @import "./theme-classic";
 
+
+@import "./theme-xp/index";
+@import "./theme-vista/index";
+@import "./theme-98/index";
+
 .disable-animation {
   * {
     transition: none !important;
@@ -22,5 +27,33 @@
   .vp-window {
     backdrop-filter: unset !important;
     box-shadow: none !important;
+  }
+}
+
+.vp-button {
+  padding: 6px 8px;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .5;
+  }
+}
+
+.vp-input {
+  padding: 6px 8px;
+  border: 1px solid $color_border;
+  scrollbar-width: thin;
+
+  &:not(&:disabled) {
+    &:focus {
+      border: 1px solid $primary;
+      outline: none;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .5;
   }
 }

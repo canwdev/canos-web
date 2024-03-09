@@ -1,0 +1,18 @@
+/**
+ * XP theme for GUI.css
+ * Copyright (c) 2020 Adam Hammad <adamham.dev>
+ * Based on 98.css by Jordan Scales <thatjdanisso.cool>
+ * https://github.com/botoxparty/XP.css/blob/main/LICENSE
+ */
+
+ @import "_variables.scss";
+ @import "_window.scss";
+ @import "_buttons.scss";
+
+.theme-xp {
+ .vp-panel {
+  background: var(--surface);
+  color: #222;
+  border: 1px solid rgba(0, 0, 0, .7);
+ }
+}

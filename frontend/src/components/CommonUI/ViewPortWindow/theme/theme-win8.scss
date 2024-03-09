@@ -10,7 +10,7 @@
     background-color: $theme_color_inactive;
 
     .vp-window-content {
-      .page-craft-title-bar {
+      .vp-window-title-bar {
         margin-left: -$border_width;
         margin-right: -$border_width;
         padding: 0 $border_width 5px;
@@ -18,11 +18,11 @@
           position: absolute;
           left: $border_width;
         }
-        .page-craft-title-bar-text {
+        .vp-window-title-bar-text {
           margin-top: 4px;
           flex: 1;
           justify-content: center;
-          text-shadow: 0 0 3px black;
+          text-shadow: 0 0 5px black;
         }
       }
     }
@@ -61,7 +61,7 @@
     &._active {
       box-shadow: $box_shadow;
       background-color: $primary !important;
-      .page-craft-title-bar {
+      .vp-window-title-bar {
         color: white !important;
       }
     }
@@ -104,6 +104,9 @@
       background-color: #4B4B4B;
       color: white;
     }
-
+    .vp-input {
+      background-color: #2a2a2a;
+      color: white;
+    }
   }
 }

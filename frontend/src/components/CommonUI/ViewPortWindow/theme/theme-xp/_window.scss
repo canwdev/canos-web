@@ -1,0 +1,103 @@
+/*-------------------------------------------*\
+    Window
+\*-------------------------------------------*/
+
+.theme-xp {
+  .vp-window {
+    box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9, inset -2px -2px #001ea0, inset 2px 2px #166aee,
+    inset -3px -3px #003bda, inset 3px 3px #0855dd;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 0 0 3px 0;
+    -webkit-font-smoothing: antialiased;
+
+    .vp-window-title-bar {
+      font-family: "Trebuchet MS";
+      background: linear-gradient(
+          180deg,
+          rgba(9, 151, 255, 1) 0%,
+          rgba(0, 83, 238, 1) 8%,
+          rgba(0, 80, 238, 1) 40%,
+          rgba(0, 102, 255, 1) 88%,
+          rgba(0, 102, 255, 1) 93%,
+          rgba(0, 91, 255, 1) 95%,
+          rgba(0, 61, 215, 1) 96%,
+          rgba(0, 61, 215, 1) 100%
+      );
+      padding: 3px 5px 3px 3px;
+      border-top: 1px solid #0831d9;
+      border-left: 1px solid #0831d9;
+      border-right: 1px solid #001ea0;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 7px;
+      font-size: 13px;
+      text-shadow: 1px 1px #0f1089;
+      height: 21px;
+
+      .vp-window-title-bar-text {
+        padding-left: 3px;
+        color: white;
+      }
+    }
+    .vp-window-controls {
+      display: flex;
+      color: white;
+
+      button {
+        min-width: 21px;
+        min-height: 21px;
+        margin-left: 2px;
+        background-repeat: no-repeat;
+        background-position: center;
+        box-shadow: none;
+        background-color: #0050ee;
+        transition: background 100ms;
+        border: none;
+        padding: 1px;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+
+        &:active,
+        &:hover,
+        &:focus {
+          box-shadow: none !important;
+        }
+      }
+
+      button {
+        background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/minimize.svg");
+
+        &:hover {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/minimize-hover.svg");
+        }
+
+        &:not(:disabled):active {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/minimize-active.svg");
+        }
+      }
+
+      button.is-close {
+        background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/close.svg");
+
+        &:hover {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/close-hover.svg");
+        }
+
+        &:not(:disabled):active {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/close-active.svg");
+        }
+      }
+    }
+
+
+    .vp-window-body {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+  }
+}
+
+

@@ -3,14 +3,9 @@ import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
-import {
-  customThemeOptions,
-  CustomThemeType,
-  ldThemeOptions,
-  loopModeMap,
-  SettingsTabType,
-} from '@/enum/settings'
+import {ldThemeOptions, loopModeMap, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
+import {customThemeOptions, CustomThemeType} from '@/components/CommonUI/ViewPortWindow/enum'
 
 const getWallpaperText = () => {
   const list = [

@@ -19,32 +19,6 @@ export const ldThemeOptions = [
   },
 ]
 
-export enum CustomThemeType {
-  DEFAULT = 'theme-default',
-  WIN8 = 'theme-win8',
-  CLASSIC = 'theme-classic',
-  MINIMALISM = 'theme-minimalism',
-}
-
-export const customThemeOptions = [
-  {
-    label: 'Default',
-    value: CustomThemeType.DEFAULT,
-  },
-  {
-    label: 'Minimalism',
-    value: CustomThemeType.MINIMALISM,
-  },
-  {
-    label: 'Win8',
-    value: CustomThemeType.WIN8,
-  },
-  {
-    label: 'Classic',
-    value: CustomThemeType.CLASSIC,
-  },
-]
-
 export enum LoopModeType {
   NONE = 1, // Play stops after last track
   LOOP_SEQUENCE = 2, // Sequence play

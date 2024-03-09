@@ -13,7 +13,7 @@
 
     .vp-window-content {
 
-      .page-craft-title-bar {
+      .vp-window-title-bar {
         margin-left: -$border_width;
         margin-right: -$border_width;
         overflow: hidden;
@@ -21,7 +21,7 @@
         padding: 0 6px 4px;
         text-shadow: 0 0 10px white;
 
-        .page-craft-title-bar-text {
+        .vp-window-title-bar-text {
           margin-top: 4px;
         }
       }
@@ -94,13 +94,7 @@
   }
 
   .vp-input {
-    padding: 2px 4px;
-    border: 1px solid $color_border;
     border-radius: 4px;
-
-    &:focus {
-      outline-color: $primary;
-    }
   }
 
   &._aero {
@@ -126,9 +120,10 @@
     .vp-window {
       padding: 0;
       border-radius: 0;
+      box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27);
       .vp-window-content {
 
-        .page-craft-title-bar {
+        .vp-window-title-bar {
           margin-left: 0;
           margin-right: 0;
           padding-right: 0;
@@ -137,6 +132,7 @@
       }
 
       .vp-window-controls {
+        padding-right: 0;
         button {
           border: 0 !important;
           background-color: none;
@@ -162,29 +158,26 @@
       }
     }
     .vp-panel,
-    .vp-button {
+    .vp-button,
+    .vp-input {
       border-radius: 0;
     }
   }
   &._rounded {
-    .tool-item, .component-cover {
-      border-radius: calc($radius / 2);
-    }
-    .tool-item-bg {
-      border-radius: calc($radius / 4);
-    }
+
   }
   &._dark {
     .vp-window {
       background-color: #4B4B4B;
       color: white;
+      border-color: rgba(255, 255, 255, 0.2);
 
       &._active {
         background-color: #202020;
       }
 
       .vp-window-content {
-        .page-craft-title-bar {
+        .vp-window-title-bar {
           color: white;
           text-shadow: 0 0 10px black;
         }
@@ -234,7 +227,6 @@
           }
         }
       }
-
     }
 
     &._aero {
@@ -250,19 +242,14 @@
     .vp-panel {
       background-color: rgba(43, 43, 43, 0.85);
       color: white;
-
-      .vp-button {
-      }
-
-      .vp-input {
-        border: none;
-        background-color: rgba(0, 0, 0, 0.3);
-        color: white;
-      }
     }
 
     .vp-button {
-      background-color: #4B4B4B;
+      background-color: #757575;
+      color: white;
+    }
+    .vp-input {
+      background-color: rgba(0, 0, 0, 0.3);
       color: white;
     }
   }

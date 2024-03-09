@@ -6,6 +6,7 @@ export type WinOptions = {
   left: string
   width: string
   height: string
+  maximized?: boolean
 }
 
 const ClassNames = {
@@ -202,9 +203,10 @@ export class WindowController {
     }
 
     this.updateZIndex = this.updateZIndex.bind(this)
+    this.handleMouseDown = this.handleMouseDown.bind(this)
     ;['mousedown', 'touchstart'].forEach((eventName) => {
       dragHandleEl.addEventListener(eventName, this.handleDragStart)
-      dragTargetEl.addEventListener(eventName, this.updateZIndex)
+      dragTargetEl.addEventListener(eventName, this.handleMouseDown)
     })
 
     this.handleResizeStart = this.handleResizeStart.bind(this)
@@ -233,7 +235,7 @@ export class WindowController {
     const {dragTargetEl, dragHandleEl, autoPosOnResize, resizeable} = this.options
     ;['mousedown', 'touchstart'].forEach((eventName) => {
       dragHandleEl.removeEventListener(eventName, this.handleDragStart)
-      dragTargetEl.removeEventListener(eventName, this.updateZIndex)
+      dragTargetEl.removeEventListener(eventName, this.handleMouseDown)
     })
 
     if (autoPosOnResize) {
@@ -418,6 +420,14 @@ export class WindowController {
     ;['mouseup', 'touchend'].forEach((eventName) => {
       docEl.removeEventListener(eventName, this.handleResizeStop)
     })
+  }
+
+  handleMouseDown(event) {
+    // 鼠标中键和右键不触发更新
+    if (event.button === 1 || event.button === 2) {
+      return
+    }
+    this.updateZIndex()
   }
 
   isHidden() {

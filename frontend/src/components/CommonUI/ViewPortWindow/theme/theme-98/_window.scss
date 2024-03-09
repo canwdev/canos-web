@@ -1,0 +1,73 @@
+/*-------------------------------------------*\
+    Window
+\*-------------------------------------------*/
+.theme-win98 {
+    .vp-window {
+        font-family: var(--sans-serif);
+        -webkit-font-smoothing: none;
+        font-size: 11px;
+        box-shadow: var(--border-window-outer), var(--border-window-inner);
+        background: var(--surface);
+        padding: 3px;
+        fieldset {
+            margin-bottom: 9px;
+        }
+
+        .vp-window-title-bar {
+            font-size: 11px;
+            background: var(--title-bar-bg);
+            padding: 3px 2px 3px 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .vp-window-title-bar-text {
+                font-weight: bold;
+                color: white;
+                letter-spacing: 0;
+                margin-right: 24px;
+            }
+
+            .vp-window-controls {
+                display: flex;
+                button {
+                    display: block;
+                    min-width: 16px;
+                    min-height: 14px;
+                    &:focus {
+                        outline: none;
+                    }
+                    font-family: var(--sans-serif);
+                    -webkit-font-smoothing: none;
+                    font-size: 11px;
+                    box-sizing: border-box;
+                    border: none;
+                    background: var(--surface);
+                    box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+                    border-radius: 0;
+                    padding: 0 4px;
+                    height: auto;
+
+                    svg {
+                        height: 14px;
+                        width: 14px;
+                    }
+
+                    &:not(:disabled) {
+                        &:active,
+                        &.active {
+                            box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
+                        }
+                    }
+                    &:focus,
+                    &.focused {
+                        outline: 1px dotted #000000;
+                        outline-offset: -4px;
+                    }
+                    &::-moz-focus-inner {
+                        border: 0;
+                    }
+                }
+            }
+        }
+    }
+}

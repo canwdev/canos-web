@@ -1,0 +1,20 @@
+/**
+ * 98 theme for GUI.css
+ * Copyright (c) 2020 Adam Hammad <adamham.dev>
+ * Based on 98.css by Jordan Scales <thatjdanisso.cool>
+ * https://github.com/botoxparty/XP.css/blob/main/LICENSE
+ */
+
+@import "_variables.scss";
+@import "_window.scss";
+@import "_forms.scss";
+@import "_buttons.scss";
+
+.theme-win98 {
+
+  .vp-panel {
+    background-color: var(--surface);
+    color: black;
+    box-shadow: inset 1px 1px #fff, inset 2px 2px #dfdfdf, inset -1px -1px #0a0a0a, inset -2px -2px grey;
+  }
+}

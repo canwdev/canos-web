@@ -1,4 +1,5 @@
-import {CustomThemeType, LdThemeType, LoopModeType} from '@/enum/settings'
+import {LdThemeType, LoopModeType} from '@/enum/settings'
+import {CustomThemeType} from '@/components/CommonUI/ViewPortWindow/enum'
 
 interface IStore {
   // 明暗主题
