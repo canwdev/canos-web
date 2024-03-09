@@ -21,7 +21,7 @@ export default defineComponent({
         // 将滚动容器滚动到底部
         container.scrollTop = container.scrollHeight
       })
-      await sleep(100)
+      await sleep(10)
     }
     async function startup() {
       await appendLog(formatSiteTitle())
@@ -38,7 +38,7 @@ export default defineComponent({
       }
 
       await appendLog('Welcome to use!')
-      await sleep(500)
+      await sleep(100)
 
       showStartLog.value = false
     }

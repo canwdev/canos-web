@@ -44,14 +44,14 @@
         &:hover {
           background-color: rgb(233, 233, 233);
           transition: all 0.1s;
-          &._danger {
+          &.is-close {
             background-color: #ffa5aa !important;
           }
         }
 
         &:active {
           background-color: rgba(181, 181, 181, 0.46);
-          &._danger {
+          &.is-close {
             background-color: #ff6a72 !important;
           }
         }
@@ -187,13 +187,13 @@
 
             &:hover {
               background-color: rgba(255, 255, 255, 0.2);
-              &._danger {
+              &.is-close {
                 background-color: rgba(232, 17, 35, 0.7) !important;
               }
             }
             &:active {
               background-color: rgba(255, 255, 255, 0.1);
-              &._danger {
+              &.is-close {
                 background-color: rgba(151, 23, 34, 0.7) !important;
               }
             }

@@ -79,7 +79,48 @@
         }
       }
 
-      button.is-close {
+      .is-minimize {
+        &>i {
+          display: none;
+        }
+        background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/minimize.svg");
+        &:hover {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/minimize-hover.svg");
+        }
+        &:not(:disabled):active {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/minimize-active.svg");
+        }
+      }
+      .is-maximize {
+        &>i {
+          display: none;
+        }
+        background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/maximize.svg");
+        &:hover {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/maximize-hover.svg");
+        }
+        &:not(:disabled):active {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/maximize-active.svg");
+        }
+      }
+      .is-restore {
+        &>i {
+          display: none;
+        }
+        background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/restore.svg");
+        &:hover {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/restore-hover.svg");
+        }
+        &:not(:disabled):active {
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/restore-active.svg");
+        }
+      }
+
+      .is-close {
+        &>i {
+          display: none;
+        }
+
         background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-xp/icon/close.svg");
 
         &:hover {

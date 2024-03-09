@@ -43,8 +43,7 @@
     "typescript": "^5.3.3",
     "unplugin-auto-import": "^0.15.3",
     "unplugin-vue-components": "^0.24.1",
-    "vfonts": "^0.0.3",
-    "vite": "^4.4.9",
+    "vite": "^4.5.2",
     "vite-plugin-pwa": "^0.14.7",
     "vue-tsc": "^0.38.4"
   }

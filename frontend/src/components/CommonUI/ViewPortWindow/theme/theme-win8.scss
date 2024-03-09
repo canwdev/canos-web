@@ -39,17 +39,17 @@
         &:hover {
           background-color: rgba(255, 255, 255, 0.55);
           transition: all 0.1s;
-          &._danger {
+          &.is-close {
             background-color: #f56767 !important;
           }
         }
         &:active {
           background-color: rgba(31, 31, 31, 0.55);
-          &._danger {
+          &.is-close {
             background-color: #9b3f3f !important;
           }
         }
-        &._danger {
+        &.is-close {
           background-color: #C75050;
           color: white;
           padding-left: 10px;

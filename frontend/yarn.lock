@@ -4248,11 +4248,6 @@ vdirs@^0.1.4, vdirs@^0.1.8:
   dependencies:
     evtd "^0.2.2"
 
-vfonts@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.npmmirror.com/vfonts/-/vfonts-0.0.3.tgz#999d66fecea18efee3f2b966c81101ae8ce01a29"
-  integrity sha512-nguyw8L6Un8eelg1vQ31vIU2ESxqid7EYmy8V+MDeMaHBqaRSkg3dTBToC1PR00D89UzS/SLkfYPnx0Wf23IQQ==
-
 vite-plugin-pwa@^0.14.7:
   version "0.14.7"
   resolved "https://registry.npmmirror.com/vite-plugin-pwa/-/vite-plugin-pwa-0.14.7.tgz#56844ff767d54256f45f49f91bfdff9dd1ea7685"
@@ -4266,10 +4261,10 @@ vite-plugin-pwa@^0.14.7:
     workbox-build "^6.5.4"
     workbox-window "^6.5.4"
 
-vite@^4.4.9:
-  version "4.4.9"
-  resolved "https://registry.npmmirror.com/vite/-/vite-4.4.9.tgz#1402423f1a2f8d66fd8d15e351127c7236d29d3d"
-  integrity sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==
+vite@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.npmmirror.com/vite/-/vite-4.5.2.tgz#d6ea8610e099851dad8c7371599969e0f8b97e82"
+  integrity sha512-tBCZBNSBbHQkaGyhGCDUGqeo2ph8Fstyp6FMSvTtsXeZSPpSMGlviAOav2hxVTqFcx8Hj/twtWKsMJXNY0xI8w==
   dependencies:
     esbuild "^0.18.10"
     postcss "^8.4.27"

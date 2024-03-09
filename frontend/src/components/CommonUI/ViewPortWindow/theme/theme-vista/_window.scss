@@ -115,6 +115,16 @@
 
 .theme-vista {
 
+  .vp-window-panel {
+    box-shadow: 2px 2px 10px 1px var(--window-border-color), inset 0 0 0 1px #fffa;
+    border: var(--window-border) var(--window-border-color);
+    border-radius: var(--window-border-radius);
+    &._panel-bg {
+      backdrop-filter: blur(4px);
+      background: var(--window-background-glass-stripes);
+    }
+  }
+
   .vp-window {
     font: var(--font);
     box-shadow: 2px 2px 10px 1px var(--window-border-color), inset 0 0 0 1px #fffa;
@@ -196,7 +206,8 @@
       border: var(--window-border) var(--control-border-color);
       border-top: 0;
       border-radius: 0 0 var(--control-border-radius) var(--control-border-radius);
-      margin-top: calc(var(--window-spacing) * -1);
+      //margin-top: calc(var(--window-spacing) * -1);
+      margin-top: -8px;
       box-shadow: 0 1px 0 #fffa, 1px 0 0 #fffa, -1px 0 0 #fffa;
 
       button {
@@ -213,10 +224,16 @@
         color: white;
         height: auto;
 
-        svg {
-          filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
-          width: 16px;
-          height: 16px;
+        &>i {
+          filter:
+            drop-shadow( 1px  0px 0px #535665)
+            drop-shadow(-1px  0px 0px #535665)
+            drop-shadow( 0px  1px 0px #535665)
+            drop-shadow( 0px -1px 0px #535665);
+          svg {
+            width: 14px;
+            height: 14px;
+          }
         }
 
         &::after {
@@ -254,6 +271,9 @@
 
         &[aria-label="Minimize"],
         &.is-minimize {
+          &>i {
+            display: none;
+          }
           &::before {
             background: url("@/components/CommonUI/ViewPortWindow/theme/theme-vista/icon/minimize.png") no-repeat center 10px;
           }
@@ -261,6 +281,9 @@
 
         &[aria-label="Maximize"],
         &.is-maximize {
+          &>i {
+            display: none;
+          }
           &::before {
             background: url("@/components/CommonUI/ViewPortWindow/theme/theme-vista/icon/maximize.png") no-repeat center;
           }
@@ -268,6 +291,9 @@
 
         &[aria-label="Restore"],
         &.is-restore {
+          &>i {
+            display: none;
+          }
           &::before {
             background: url("@/components/CommonUI/ViewPortWindow/theme/theme-vista/icon/restore.png") no-repeat center;
           }
@@ -275,10 +301,10 @@
 
         &[aria-label="Close"],
         &.is-close {
-          min-width: 48px;
-          svg {
+          &>i {
             display: none;
           }
+          min-width: 48px;
 
           &::before {
             background: url("@/components/CommonUI/ViewPortWindow/theme/theme-vista/icon/close.png") no-repeat center;
