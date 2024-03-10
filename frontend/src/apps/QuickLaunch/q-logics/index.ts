@@ -1,11 +1,6 @@
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
-import {
-  qLogicBase64,
-  qLogicDateTime,
-  qLogicEval,
-  qLogicEyeDrop,
-} from '@/apps/QuickLaunch/q-logics/common'
-import {qLogicQrCode} from '@/apps/QuickLaunch/q-logics/qr-code'
+import {qLogicBase64, qLogicDateTime, qLogicEval, qLogicEyeDrop} from './common'
+import {qLogicQrCode} from './qr-code'
 import {Ref} from 'vue'
 
 export const useQLogics = (qlOptionsRef) => {
@@ -27,7 +22,6 @@ export const useQLogics = (qlOptionsRef) => {
     const extraOptions = [
       ...qlOptionsRef.value,
       qLogicEyeDrop,
-
       qLogicBase64(valRef),
       qLogicQrCode(valRef),
     ]

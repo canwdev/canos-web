@@ -176,7 +176,7 @@ export default defineComponent({
       <button class="btn-no-style" @click="mVisible = false">×</button>
     </div>
 
-    <div v-if="menuStack.length" class="option-item _back" @click="handleBack">
+    <div v-if="menuStack.length" class="option-item _back clickable" @click="handleBack">
       <div class="index-wrap">
         <div style="transform: scale(0.7)">
           <div class="css-arrow left"></div>

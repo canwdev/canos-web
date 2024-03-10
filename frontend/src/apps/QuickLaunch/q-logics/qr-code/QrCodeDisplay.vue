@@ -2,7 +2,7 @@
 import {useQRCode} from '@vueuse/integrations/useQRCode'
 
 interface Props {
-  text: string
+  text: any
 }
 
 const props = withDefaults(defineProps<Props>(), {

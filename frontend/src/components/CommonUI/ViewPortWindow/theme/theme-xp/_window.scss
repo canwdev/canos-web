@@ -151,6 +151,7 @@
     .vp-window-body {
       margin-left: 3px;
       margin-right: 3px;
+      height: calc(100% - 29px) !important;
     }
   }
 }
