@@ -6,7 +6,7 @@ export type QuickOptionItem = {
   icon?: string
   // 渲染函数
   render?: any
-  children?: QuickOptionItem[]
+  children?: QuickOptionItem[] | Function
   props?: {
     onClick?: any
   }

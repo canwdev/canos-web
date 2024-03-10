@@ -82,6 +82,7 @@ export default defineComponent({
   height: 100%;
   & > textarea {
     border-radius: 0 !important;
+    box-sizing: border-box;
   }
   .quick-options {
     flex: 1;

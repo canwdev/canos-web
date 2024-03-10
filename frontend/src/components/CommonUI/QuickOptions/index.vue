@@ -45,18 +45,27 @@ export default defineComponent({
       }
     })
 
+    const scrollToIndex = (index) => {
+      const el = quickRootRef.value.querySelector(`[data-index="${index}"]`)
+      nextTick(() => {
+        el && el.scrollIntoView({behavior: 'instant', block: 'center'})
+      })
+    }
+
     const curIndex = ref(0)
     const selectPrev = () => {
       curIndex.value--
       if (curIndex.value < 0) {
         curIndex.value = mOptions.value.length - 1
       }
+      scrollToIndex(curIndex.value)
     }
     const selectNext = () => {
       curIndex.value++
       if (curIndex.value > mOptions.value.length - 1) {
         curIndex.value = 0
       }
+      scrollToIndex(curIndex.value)
     }
     const focus = () => {
       setTimeout(() => {
@@ -102,6 +111,7 @@ export default defineComponent({
     }
 
     const handleKeyPress = (event) => {
+      event.preventDefault()
       if (event.key === 'Escape' || event.key === 'q') {
         handleBack()
       } else if (event.key === 'ArrowUp') {
@@ -138,9 +148,15 @@ export default defineComponent({
       handleOptionClick(item)
     }
 
-    const handleOptionClick = (item: QuickOptionItem) => {
-      if (item.children && item.children.length) {
-        menuStack.value.push(item.children)
+    const handleOptionClick = async (item: QuickOptionItem) => {
+      if (item.children) {
+        let subList: QuickOptionItem[] = []
+        if (typeof item.children === 'function') {
+          subList = await item.children()
+        } else if (item.children.length) {
+          subList = item.children
+        }
+        menuStack.value.push(subList)
         curIndex.value = 0
       } else if (item?.props?.onClick) {
         item.props.onClick(item)
@@ -192,8 +208,9 @@ export default defineComponent({
       @click="handleOptionClick(item)"
       :class="{
         focus: curIndex === index,
-        clickable: item?.props?.onClick || (item.children && item.children.length),
+        clickable: item?.props?.onClick || (item.children && item.children),
       }"
+      :data-index="index"
     >
       <div class="index-wrap" v-if="index < 9">
         <span>{{ index + 1 }}</span>
@@ -208,7 +225,7 @@ export default defineComponent({
       <div class="item-content" v-else>
         {{ item.label }}
       </div>
-      <div v-if="item.children && item.children.length" class="arrow-wrap">
+      <div v-if="item.children && item.children" class="arrow-wrap">
         <div class="css-arrow right"></div>
       </div>
     </div>
