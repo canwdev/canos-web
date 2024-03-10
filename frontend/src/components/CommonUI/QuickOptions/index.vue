@@ -45,8 +45,8 @@ export default defineComponent({
       }
     })
 
-    const scrollToIndex = (index) => {
-      const el = quickRootRef.value.querySelector(`[data-index="${index}"]`)
+    const scrollToIndex = () => {
+      const el = quickRootRef.value.querySelector(`[data-index="${curIndex.value}"]`)
       nextTick(() => {
         el && el.scrollIntoView({behavior: 'instant', block: 'center'})
       })
@@ -58,14 +58,14 @@ export default defineComponent({
       if (curIndex.value < 0) {
         curIndex.value = mOptions.value.length - 1
       }
-      scrollToIndex(curIndex.value)
+      scrollToIndex()
     }
     const selectNext = () => {
       curIndex.value++
       if (curIndex.value > mOptions.value.length - 1) {
         curIndex.value = 0
       }
-      scrollToIndex(curIndex.value)
+      scrollToIndex()
     }
     const focus = () => {
       setTimeout(() => {
@@ -108,6 +108,7 @@ export default defineComponent({
         }, 100)
       }
       curIndex.value = 0
+      scrollToIndex()
     }
 
     const handleKeyPress = (event) => {
