@@ -1,25 +1,115 @@
 .theme-mac {
+  $radius: 6px;
+
   .vp-window {
-    color: white;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 22px 70px 4px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
-    /*backdrop-filter: saturate(180%) blur(20px);*/
-    border-radius: 6px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+    // box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 22px 70px 4px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
+    // backdrop-filter: saturate(180%) blur(20px);
+    border-radius: $radius;
+    border: 1px solid #acacac;
+    // overflow: hidden;
 
     .vp-window-content {
-
       .vp-window-title-bar {
         display: flex;
         flex-direction: row-reverse;
         background: linear-gradient(to bottom, #ebebeb, #d5d5d5);
         color: #4d494d;
-        font-size: 14px;
-        text-align: center;
-        line-height: 1.6;
         user-select: none;
         border-top: 1px solid #f3f1f3;
+        border-top-left-radius: $radius;
+        border-top-right-radius: $radius;
+        padding: 0 8px;
+        height: 22px;
+        border-bottom: 1px solid #b1aeb1;
 
+        .vp-window-title-bar-text {
+          font-size: 14px;
+          flex-direction: row-reverse;
+        }
+      }
+
+      .vp-window-controls {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 6px;
+
+        button {
+          border-radius: 50%;
+          width: 14px;
+          height: 14px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          outline: none;
+          font-size: 12px;
+          color: inherit;
+          border: 1px solid currentColor;
+
+          &>i {
+            font-size: 12px !important;
+
+            svg {
+              width: 12px;
+              height: 12px;
+            }
+          }
+
+          @mixin autoShow() {
+            &>i {
+              visibility: hidden;
+            }
+
+            &:hover {
+              &>i {
+                visibility: visible;
+              }
+            }
+          }
+
+          &.is-close {
+            color: white;
+            background: #ff5c5c;
+            border: 1px solid #e33e41;
+            @include autoShow();
+          }
+
+          &.is-maximize,
+          &.is-restore {
+            background: #ffbd4c;
+            border: 1px solid #e09e3e;
+            @include autoShow();
+          }
+
+          &.is-minimize {
+            color: white;
+            background: #00ca56;
+            border: 1px solid #14ae46;
+            @include autoShow();
+          }
+        }
+      }
+
+      .vp-window-body {
+        border: none;
+        height: calc(100% - 22px);
       }
     }
+  }
 
+  .vp-panel {
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.test-root {
+  margin: 10px;
+
+  .vp-panel {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
