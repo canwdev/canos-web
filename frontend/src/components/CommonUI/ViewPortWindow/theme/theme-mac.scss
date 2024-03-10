@@ -1,0 +1,25 @@
+.theme-mac {
+  .vp-window {
+    color: white;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 22px 70px 4px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
+    /*backdrop-filter: saturate(180%) blur(20px);*/
+    border-radius: 6px;
+
+    .vp-window-content {
+
+      .vp-window-title-bar {
+        display: flex;
+        flex-direction: row-reverse;
+        background: linear-gradient(to bottom, #ebebeb, #d5d5d5);
+        color: #4d494d;
+        font-size: 14px;
+        text-align: center;
+        line-height: 1.6;
+        user-select: none;
+        border-top: 1px solid #f3f1f3;
+
+      }
+    }
+
+  }
+}

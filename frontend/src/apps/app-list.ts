@@ -1,5 +1,6 @@
 import {ShortcutItem} from '@/enum/os'
 import {handleAssetsUrl} from '@/utils/vite-utils'
+import {guid} from '@/utils'
 
 export const SystemAppSettings: ShortcutItem = {
   appid: 'os.settings',
@@ -92,6 +93,23 @@ export const AppQuickLaunch: ShortcutItem = {
   singleInstance: true,
 }
 
+const defineSimpleApp = (title = 'App', component): ShortcutItem => {
+  return {
+    appid: title,
+    title,
+    icon: handleAssetsUrl('@/assets/icons/shell32.dll(3).png'),
+    // winId: '',
+    winOptions: {
+      top: '150px',
+      left: '150px',
+      width: '480px',
+      height: '320px',
+    },
+    component,
+    singleInstance: false,
+  }
+}
+
 export const AllAppList: ShortcutItem[] = [
   SystemAppExplorer,
   SystemAppMusicPlayer,
@@ -100,6 +118,30 @@ export const AllAppList: ShortcutItem[] = [
   AppPianoJs,
   AppMediadevicesPlayer,
   AppQuickLaunch,
+  defineSimpleApp(
+    '简易计算器',
+    defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCalculator.vue'))
+  ),
+  defineSimpleApp(
+    '简易计数器',
+    defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCounter.vue'))
+  ),
+  defineSimpleApp(
+    'ObjectSize',
+    defineAsyncComponent(() => import('@/apps/OldUtils/ObjectSizeWrap/index.vue'))
+  ),
+  defineSimpleApp(
+    'Live2D',
+    defineAsyncComponent(() => import('@/apps/OldUtils/Live2DWrap/index.vue'))
+  ),
+  defineSimpleApp(
+    'BouncyBall',
+    defineAsyncComponent(() => import('@/apps/OldUtils/Games/BouncyBall/index.vue'))
+  ),
+  defineSimpleApp(
+    '多彩屏幕 (屏幕坏点测试)',
+    defineAsyncComponent(() => import('@/apps/OldUtils/ColorfulScreen.vue'))
+  ),
 ]
 
 window.$appList = AllAppList
