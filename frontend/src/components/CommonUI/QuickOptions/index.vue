@@ -32,7 +32,7 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: ['onClose'],
+  emits: ['onClose', 'update:visible'],
   setup(props, {emit}) {
     const {options, isStatic, autoFocus} = toRefs(props)
     const mVisible = useModelWrapper(props, emit, 'visible')
@@ -287,6 +287,11 @@ export default defineComponent({
         width: 100%;
         height: 100%;
       }
+    }
+
+    .item-content {
+      flex: 1;
+      word-break: break-word;
     }
 
     .arrow-wrap {

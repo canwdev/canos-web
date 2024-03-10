@@ -1,0 +1,16 @@
+/*-------------------------------------------*\
+    Forms
+\*-------------------------------------------*/
+.theme-win98 {
+  .vp-input, .n-input {
+    box-shadow: var(--border-field);
+  }
+
+  label,
+  select,
+  input,
+  textarea,
+  option {
+    -webkit-font-smoothing: none;
+  }
+}

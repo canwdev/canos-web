@@ -2,6 +2,7 @@ import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
 import {qLogicBase64, qLogicDateTime, qLogicEval, qLogicEyeDrop} from './common'
 import {qLogicQrCode} from './qr-code'
 import {Ref} from 'vue'
+import {qLogicStringManipulation} from './string-manipulation'
 
 export const useQLogics = (qlOptionsRef) => {
   const filteredOptions = ref<QuickOptionItem[]>([])
@@ -20,21 +21,21 @@ export const useQLogics = (qlOptionsRef) => {
       })
     }
     const extraOptions = [
-      ...qlOptionsRef.value,
-      qLogicEyeDrop,
+      qLogicStringManipulation(valRef),
       qLogicBase64(valRef),
       qLogicQrCode(valRef),
     ]
+    const filterableOptions = [...qlOptionsRef.value, qLogicEyeDrop]
 
     // 没有输入，显示默认内容
     if (!val) {
-      filteredOptions.value = [...options, ...extraOptions]
+      filteredOptions.value = [...options, ...filterableOptions, ...extraOptions]
       return
     }
     filteredOptions.value = [
       ...options,
       // 过滤列表功能
-      ...extraOptions.filter((i) => {
+      ...filterableOptions.filter((i) => {
         const sVal = val.trim().toLowerCase()
         let flag = false
         if (i.search) {
@@ -47,6 +48,7 @@ export const useQLogics = (qlOptionsRef) => {
       }),
       qLogicDateTime(val),
       qLogicEval(val),
+      ...extraOptions,
     ].filter((val) => !!val)
   }
 

@@ -3,6 +3,7 @@ import moment from 'moment/moment'
 import {EyeDropper, useFileDialog} from '@vueuse/core'
 import {Ref} from 'vue'
 import {copy} from './utils'
+import * as changeCase from 'change-case'
 
 const isTimestamp = (val) => {
   val = Number(val)

@@ -1,0 +1,30 @@
+/*-------------------------------------------*\
+    Buttons
+\*-------------------------------------------*/
+.theme-win98 {
+  .vp-button, .n-button {
+    font-family: var(--sans-serif);
+    -webkit-font-smoothing: none;
+    font-size: 11px;
+    box-sizing: border-box;
+    border: none;
+    background: var(--surface);
+    box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+    border-radius: 0;
+    padding: 4px 12px;
+    &:not(:disabled) {
+      &:active,
+      &.active {
+        box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
+      }
+    }
+    &:focus,
+    &.focused {
+      outline: 1px dotted #000000;
+      outline-offset: -4px;
+    }
+    &::-moz-focus-inner {
+      border: 0;
+    }
+  }
+}

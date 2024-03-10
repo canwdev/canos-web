@@ -1,6 +1,9 @@
 import {copyToClipboard} from '@/utils'
 
 export const copy = async (val, isShowVal = false) => {
+  if (!val) {
+    return
+  }
   if (typeof val === 'object') {
     console.info('object', val)
     val = JSON.stringify(val, null, 2)
