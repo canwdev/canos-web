@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
+    "@vueuse/integrations": "^10.9.0",
     "axios": "^1.6.2",
     "big.js": "^6.2.1",
     "lodash": "^4.17.21",
@@ -21,6 +22,7 @@
     "normalize.css": "^8.0.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "qrcode": "^1.5.3",
     "qs": "^6.11.2",
     "throttle-debounce": "^2.3.0",
     "vue": "^3.4.18",

@@ -54,8 +54,8 @@ export default defineComponent({
       </div>
       <div class="task-tray _fc">
         <div class="tray-list _fc">
-          <TrayFps />
-          <TrayBattery />
+          <TrayFps v-if="settingsStore.taskbarShowFps" />
+          <TrayBattery v-if="settingsStore.taskbarShowBattery" />
           <TrayClock v-if="settingsStore.taskbarShowClock" />
         </div>
       </div>

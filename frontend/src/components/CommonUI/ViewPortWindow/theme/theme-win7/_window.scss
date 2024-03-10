@@ -188,6 +188,7 @@
       border: var(--window-border) var(--window-border-color);
       background: var(--surface);
       box-shadow: 0 0 0 1px #fff9;
+      height: calc(100% - 37px) !important;
 
       &.has-space {
         padding: var(--window-spacing);

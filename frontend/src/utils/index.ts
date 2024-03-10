@@ -8,13 +8,44 @@ export const guid = () => {
   return S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4()
 }
 
-export const copyToClipboard = (text: string) => {
-  const input = document.createElement('textarea')
-  input.value = text
-  document.body.appendChild(input)
-  input.select()
-  document.execCommand('Copy')
-  document.body.removeChild(input)
+/**
+ * 复制字符串到剪贴板操作（兼容新旧接口）
+ * @param text 要复制的文本
+ */
+export const copyToClipboard = (text): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    // 如果支持 Clipboard API，就使用它
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    } else {
+      // 使用 document.execCommand 兼容旧 API
+      const textarea = document.createElement('textarea')
+      textarea.value = text
+      textarea.style.display = 'none'
+      document.body.appendChild(textarea)
+      textarea.select()
+
+      try {
+        const success = document.execCommand('copy')
+        if (!success) {
+          throw new Error('Unable to perform copy operation')
+        } else {
+          resolve()
+        }
+      } catch (error) {
+        reject(error)
+      } finally {
+        document.body.removeChild(textarea)
+      }
+    }
+  })
 }
 
 export const isCharacterKeyPress = (evt) => {

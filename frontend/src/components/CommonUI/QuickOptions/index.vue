@@ -3,9 +3,11 @@ import {defineComponent, PropType} from 'vue'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {QuickOptionItem} from './enum'
 import {onClickOutside, onKeyStroke} from '@vueuse/core'
+import VueRender from '@/components/CommonUI/OptionUI/Tools/VueRender.vue'
 
 export default defineComponent({
   name: 'QuickOptions',
+  components: {VueRender},
   props: {
     visible: {
       type: Boolean,
@@ -173,6 +175,16 @@ export default defineComponent({
       {{ title }}
       <button class="btn-no-style" @click="mVisible = false">×</button>
     </div>
+
+    <div v-if="menuStack.length" class="option-item _back" @click="handleBack">
+      <div class="index-wrap">
+        <div style="transform: scale(0.7)">
+          <div class="css-arrow left"></div>
+        </div>
+      </div>
+      Back (q)
+    </div>
+
     <div
       class="option-item"
       v-for="(item, index) in mOptions"
@@ -190,6 +202,9 @@ export default defineComponent({
         <img :src="item.icon" alt="icon" />
       </div>
       <div class="item-content" v-if="item.html" v-html="item.html"></div>
+      <div class="item-content" v-else-if="item.render">
+        <VueRender :render-fn="item.render" />
+      </div>
       <div class="item-content" v-else>
         {{ item.label }}
       </div>

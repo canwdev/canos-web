@@ -22,14 +22,21 @@ export default defineComponent({
     const anyText = ref('')
 
     const {qlOptions} = useCommonTools()
-    const {filteredOptions, handleInput} = useQLogics(qlOptions)
+    const {filteredOptions, handleSearch} = useQLogics(qlOptions)
 
     onMounted(() => {
-      handleInput(anyText.value)
+      handleSearch(anyText)
     })
     watch(route, () => {
-      handleInput(anyText.value)
+      handleSearch(anyText)
     })
+    const handleInput = () => {
+      handleSearch(anyText)
+    }
+    const cleanText = () => {
+      anyText.value = ''
+      handleSearch(anyText)
+    }
 
     return {
       inputRef,
@@ -39,6 +46,7 @@ export default defineComponent({
       handleInput,
       filteredOptions,
       focus,
+      cleanText,
     }
   },
 })
@@ -50,10 +58,11 @@ export default defineComponent({
       ref="inputRef"
       rows="1"
       v-model="anyText"
-      @input="() => handleInput(anyText)"
+      @input="handleInput"
       placeholder="/?"
       type="textarea"
       class="font-code vp-input"
+      @keyup.esc="cleanText"
     ></textarea>
     <QuickOptions
       ref="qRef"
