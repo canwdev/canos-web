@@ -30,7 +30,12 @@ export const qLogicStringManipulation = (valRef: Ref<string>): QuickOptionItem =
         },
         render: h(
           DynamicValueDisplay,
-          {class: 'font-code', label: type, text: valRef, formatFn: changeCase[type]},
+          {
+            class: 'font-code',
+            label: type,
+            text: valRef,
+            formatFn: (text) => changeCase[type](text || ''),
+          },
           () => `${type}: `
         ),
       }

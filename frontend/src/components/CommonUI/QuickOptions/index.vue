@@ -1,15 +1,18 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
-import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {QuickOptionItem} from './enum'
-import {onClickOutside, onKeyStroke} from '@vueuse/core'
-import VueRender from '@/components/CommonUI/OptionUI/Tools/VueRender.vue'
+import {onClickOutside, useVModel} from '@vueuse/core'
+import QOptionItem from './QOptionItem.vue'
 
 export default defineComponent({
   name: 'QuickOptions',
-  components: {VueRender},
+  components: {QOptionItem},
   props: {
     visible: {
+      type: Boolean,
+      default: false,
+    },
+    horizontal: {
       type: Boolean,
       default: false,
     },
@@ -31,11 +34,15 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    itemCls: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['onClose', 'update:visible'],
   setup(props, {emit}) {
-    const {options, isStatic, autoFocus} = toRefs(props)
-    const mVisible = useModelWrapper(props, emit, 'visible')
+    const {options, horizontal, isStatic, autoFocus} = toRefs(props)
+    const mVisible = useVModel(props, 'visible', emit)
     const quickRootRef = ref()
 
     // 点击外部隐藏
@@ -116,13 +123,29 @@ export default defineComponent({
       if (event.key === 'Escape' || event.key === 'q') {
         handleBack()
       } else if (event.key === 'ArrowUp') {
-        selectPrev()
+        if (horizontal.value) {
+          handleBack()
+        } else {
+          selectPrev()
+        }
       } else if (event.key === 'ArrowDown') {
-        selectNext()
+        if (horizontal.value) {
+          handleKeyEnter()
+        } else {
+          selectNext()
+        }
       } else if (event.key === 'ArrowLeft') {
-        handleBack()
+        if (horizontal.value) {
+          selectPrev()
+        } else {
+          handleBack()
+        }
       } else if (event.key === 'ArrowRight') {
-        handleKeyEnter()
+        if (horizontal.value) {
+          selectNext()
+        } else {
+          handleKeyEnter()
+        }
       } else if (event.key === 'Enter') {
         // Enter key is pressed
         handleKeyEnter()
@@ -149,8 +172,11 @@ export default defineComponent({
       handleOptionClick(item)
     }
 
-    const handleOptionClick = async (item: QuickOptionItem) => {
-      if (item.children) {
+    const handleOptionClick = async (item: QuickOptionItem, event?) => {
+      if (item?.props?.onClick) {
+        item.props.onClick(item, event)
+        mVisible.value = false
+      } else if (item.children) {
         let subList: QuickOptionItem[] = []
         if (typeof item.children === 'function') {
           subList = await item.children()
@@ -159,9 +185,16 @@ export default defineComponent({
         }
         menuStack.value.push(subList)
         curIndex.value = 0
-      } else if (item?.props?.onClick) {
-        item.props.onClick(item)
-        mVisible.value = false
+      }
+      if (item?.props?.isBack) {
+        handleBack()
+      }
+    }
+
+    const handleOptionContextmenu = async (item: QuickOptionItem, event?) => {
+      if (item?.props?.onContextmenu) {
+        event?.preventDefault()
+        item.props.onContextmenu(item, event)
       }
     }
 
@@ -174,6 +207,7 @@ export default defineComponent({
       handleBack,
       mOptions,
       handleOptionClick,
+      handleOptionContextmenu,
     }
   },
 })
@@ -182,8 +216,8 @@ export default defineComponent({
 <template>
   <div
     v-if="mVisible || isStatic"
-    class="quick-options vp-panel _scrollbar_mini"
-    :class="{_absolute: !isStatic, _s: isStatic}"
+    class="quick-options _scrollbar_mini"
+    :class="{_absolute: !isStatic, _s: isStatic, horizontal, 'vp-panel': !horizontal && !isStatic}"
     @keydown.stop="handleKeyPress"
     tabindex="0"
     ref="quickRootRef"
@@ -202,38 +236,32 @@ export default defineComponent({
       Back (q)
     </div>
 
-    <div
-      class="option-item"
-      v-for="(item, index) in mOptions"
-      :key="index"
-      @click="handleOptionClick(item)"
-      :class="{
-        focus: curIndex === index,
-        clickable: item?.props?.onClick || (item.children && item.children),
-      }"
-      :data-index="index"
-    >
-      <div class="index-wrap" v-if="index < 9">
-        <span>{{ index + 1 }}</span>
-      </div>
-      <div class="item-icon" v-if="item.icon">
-        <img :src="item.icon" alt="icon" />
-      </div>
-      <div class="item-content" v-if="item.html" v-html="item.html"></div>
-      <div class="item-content" v-else-if="item.render">
-        <VueRender :render-fn="item.render" />
-      </div>
-      <div class="item-content" v-else>
-        {{ item.label }}
-      </div>
-      <div v-if="item.children && item.children" class="arrow-wrap">
-        <div class="css-arrow right"></div>
-      </div>
-    </div>
+    <template v-for="(item, index) in mOptions" :key="index">
+      <n-dropdown v-if="item.dropdown" :options="item.dropdown" size="small">
+        <QOptionItem
+          :item="item"
+          :index="index"
+          :cur-index="curIndex"
+          :item-cls="itemCls"
+          @click="handleOptionClick(item, $event)"
+          @contextmenu="handleOptionContextmenu(item, $event)"
+        />
+      </n-dropdown>
+
+      <QOptionItem
+        v-else
+        :item="item"
+        :index="index"
+        :cur-index="curIndex"
+        :item-cls="itemCls"
+        @click="handleOptionClick(item, $event)"
+        @contextmenu="handleOptionContextmenu(item, $event)"
+      />
+    </template>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .quick-options {
   &:focus {
     border: 1px solid $primary;
@@ -260,6 +288,18 @@ export default defineComponent({
     border-radius: 0;
   }
 
+  &.horizontal {
+    display: flex;
+    .option-item {
+      padding: 4px 8px;
+      min-width: auto;
+      .index-wrap,
+      .arrow-wrap {
+        display: none;
+      }
+    }
+  }
+
   .option-title {
     padding: 0 6px;
     font-size: 10px;
@@ -275,7 +315,6 @@ export default defineComponent({
     min-width: 120px;
     position: relative;
     box-sizing: border-box;
-    border-bottom: 1px solid $color_border;
     transition: all 0.2s;
     display: flex;
     align-items: center;
