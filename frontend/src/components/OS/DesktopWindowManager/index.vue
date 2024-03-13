@@ -76,6 +76,12 @@ export default defineComponent({
         </template>
 
         <component v-if="task.component" :is="task.component"></component>
+        <iframe
+          v-else-if="task.url"
+          :src="task.url"
+          frameborder="0"
+          style="width: 100%; height: 100%"
+        ></iframe>
       </ViewPortWindow>
     </template>
 

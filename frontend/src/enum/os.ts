@@ -7,7 +7,8 @@ export interface ShortcutItem {
   title: string
   icon: string
   // 动态引入组件
-  component: any
+  component?: any
+  url?: string
   // 窗口id，设置用于保存窗口的位置和大小
   winId?: string | null
   // 窗口初始化大小和位置
@@ -30,6 +31,7 @@ export interface TaskItem {
   windowRef: any
   // defineAsyncComponent(() => import(''))
   component: Component | null
+  url?: string
   // 是否最小化
   minimized: boolean
   // 是否最大化
@@ -45,6 +47,7 @@ export class TaskItem {
     this.winId = options.winId
     this.winOptions = options.winOptions
     this.component = shallowRef(options.component)
+    this.url = options.url
     this.minimized = options.minimized || false
     this.maximized = options.maximized || false
   }

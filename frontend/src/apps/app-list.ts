@@ -93,7 +93,7 @@ export const AppQuickLaunch: ShortcutItem = {
   singleInstance: true,
 }
 
-const defineSimpleApp = (title = 'App', component): ShortcutItem => {
+const defineDemoApp = (title = 'App', component): ShortcutItem => {
   return {
     appid: title,
     title,
@@ -109,6 +109,22 @@ const defineSimpleApp = (title = 'App', component): ShortcutItem => {
     singleInstance: false,
   }
 }
+const defineWebApp = (title = 'WebApp', url): ShortcutItem => {
+  return {
+    appid: title,
+    title,
+    icon: handleAssetsUrl('@/assets/icons/chrome.png'),
+    // winId: '',
+    winOptions: {
+      top: '150px',
+      left: '150px',
+      width: '480px',
+      height: '320px',
+    },
+    url,
+    singleInstance: false,
+  }
+}
 
 export const AllAppList: ShortcutItem[] = [
   SystemAppExplorer,
@@ -118,30 +134,32 @@ export const AllAppList: ShortcutItem[] = [
   AppPianoJs,
   AppMediadevicesPlayer,
   AppQuickLaunch,
-  defineSimpleApp(
+  defineDemoApp(
     '简易计算器',
     defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCalculator.vue'))
   ),
-  defineSimpleApp(
+  defineDemoApp(
     '计数器',
     defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCounter.vue'))
   ),
-  defineSimpleApp(
+  defineDemoApp(
     'ObjectSize',
     defineAsyncComponent(() => import('@/apps/OldUtils/ObjectSizeWrap/index.vue'))
   ),
-  defineSimpleApp(
+  defineDemoApp(
     'Live2D',
     defineAsyncComponent(() => import('@/apps/OldUtils/Live2DWrap/index.vue'))
   ),
-  defineSimpleApp(
+  defineDemoApp(
     'BouncyBall',
     defineAsyncComponent(() => import('@/apps/OldUtils/Games/BouncyBall/index.vue'))
   ),
-  defineSimpleApp(
+  defineDemoApp(
     '多彩屏幕 (屏幕坏点测试)',
     defineAsyncComponent(() => import('@/apps/OldUtils/ColorfulScreen.vue'))
   ),
+  defineWebApp('Bing', 'https://bing.com'),
+  defineWebApp('CanOS', location.href),
 ]
 
 window.$appList = AllAppList
