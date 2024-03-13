@@ -123,7 +123,7 @@ export const AllAppList: ShortcutItem[] = [
     defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCalculator.vue'))
   ),
   defineSimpleApp(
-    '简易计数器',
+    '计数器',
     defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCounter.vue'))
   ),
   defineSimpleApp(

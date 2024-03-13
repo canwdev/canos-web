@@ -12,7 +12,25 @@ export default {
     return {
       is3D: false,
       currentId: 0,
-      objects: [
+      objectList: [
+        {
+          name: '小米6',
+          size: {
+            x: '70.49mm',
+            y: '145.17mm',
+            z: '7.45mm',
+            radius: '5mm',
+          },
+        },
+        {
+          name: '小米10 Pro',
+          size: {
+            x: '74.8mm',
+            y: '162.6mm',
+            z: '8.96mm',
+            radius: '0mm',
+          },
+        },
         {
           name: '极米 MOVIN 01X',
           size: {
@@ -31,44 +49,25 @@ export default {
             radius: '0mm',
           },
         },
-        {
-          name: '小米10 Pro',
-          size: {
-            x: '74.8mm',
-            y: '162.6mm',
-            z: '8.96mm',
-            radius: '0mm',
-          },
-        },
-        {
-          name: '小米6',
-          size: {
-            x: '70.49mm',
-            y: '145.17mm',
-            z: '7.45mm',
-            radius: '5mm',
-          },
-        },
       ],
     }
   },
   computed: {
     currentObject() {
-      return this.objects[Number(this.currentId)]
+      return this.objectList[Number(this.currentId)]
     },
   },
 }
 </script>
 
 <template>
-  <div class="container-1200">
-    <div class="head-title">设备尺寸预览</div>
-    <p class="object-list">
+  <div class="object-size-wrap">
+    <div class="object-options">
       <label for="selectModel">
         预设:
         <select id="selectModel" v-model="currentId">
           <option
-            v-for="(item, index) in objects"
+            v-for="(item, index) in objectList"
             :class="{active: currentId === index}"
             :key="index"
             :value="index"
@@ -78,37 +77,45 @@ export default {
         </select>
       </label>
 
-      <label for="inputX">x:<input id="inputX" type="text" v-model="currentObject.size.x" /></label>
-      <label for="inputY">y:<input id="inputY" type="text" v-model="currentObject.size.x" /></label>
-      <label for="inputZ">z:<input id="inputZ" type="text" v-model="currentObject.size.x" /></label>
+      <label for="inputX"
+        >x: <input id="inputX" type="text" v-model="currentObject.size.x"
+      /></label>
+      <label for="inputY"
+        >y: <input id="inputY" type="text" v-model="currentObject.size.x"
+      /></label>
+      <label for="inputZ"
+        >z: <input id="inputZ" type="text" v-model="currentObject.size.x"
+      /></label>
       <label for="inputR"
-        >r:<input id="inputR" type="text" v-model="currentObject.size.radius"
+        >圆角: <input id="inputR" type="text" v-model="currentObject.size.radius"
       /></label>
 
       <label for="3dSwitch">
         3D模式(Dev): <input id="3dSwitch" type="checkbox" v-model="is3D" />
       </label>
-    </p>
+    </div>
 
+    <span class="tip"> * 推荐使用 100% 缩放 </span>
     <ObjectSize3D v-if="is3D" :size="currentObject.size" />
 
     <ObjectSize v-else :size="currentObject.size" />
-
-    <span class="tip"> * 推荐使用 100% 缩放 </span>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.object-list {
-  margin-bottom: 10px;
-  option {
-    &.active {
-      color: red;
-    }
+.object-size-wrap {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 10px;
+  box-sizing: border-box;
+  .object-options {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 8px;
   }
-
-  label {
-    margin-right: 10px;
+  .tip {
+    margin-bottom: 10px;
   }
 }
 </style>

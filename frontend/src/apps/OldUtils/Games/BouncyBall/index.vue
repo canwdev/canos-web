@@ -15,10 +15,10 @@ const itv = ref()
 
 const setBounce = () => {
   let ys = 0
-  let yv = 10
+  let yv = 2
 
   let xs = 0
-  let xv = 10
+  let xv = 2
 
   clearInterval(itv.value)
   itv.value = setInterval(() => {
@@ -48,7 +48,7 @@ const setBounce = () => {
       xv = -xv
     }
     ballRef.value.style.left = xs + 'px'
-  }, 50)
+  }, 10)
 }
 
 onMounted(() => {
@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
     animation: rotate 1s infinite linear;
     //box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.56);
     //border-radius: 100px;
-    transition: all 0.05s linear;
+    //transition: all 0.05s linear;
 
     &._reverse {
       animation-direction: reverse;

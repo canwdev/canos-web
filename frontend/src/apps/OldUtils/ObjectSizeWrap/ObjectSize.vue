@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-  <div class="object-wrapper">
+  <div class="object-wrapper font-code">
     <div class="box" :style="[frontStyle, {borderRadius: size.radius}]">
       <div class="sign sign-top">{{ size.x }}</div>
       <div class="sign sign-left">{{ size.y }}</div>
@@ -56,13 +56,12 @@ export default {
     box-shadow: 0 0 1px 1px #000 inset;
     transition: all 0.3s;
     font-size: 12px;
-
-    .sign {
-    }
+    line-height: 1.1;
+    color: black;
 
     .sign-top {
       position: absolute;
-      top: 0;
+      top: 2px;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -70,8 +69,17 @@ export default {
     .sign-left {
       position: absolute;
       top: 50%;
-      left: 0;
+      left: 2px;
       transform: translateY(-50%);
+    }
+
+    .sign-top,
+    .sign-left {
+      background-color: white;
+      z-index: 2;
+      padding: 0 2px;
+      border: 1px solid currentColor;
+      user-select: all;
     }
 
     .center-text {
@@ -79,6 +87,8 @@ export default {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      font-size: 30px;
+      opacity: 0.3;
     }
   }
 
