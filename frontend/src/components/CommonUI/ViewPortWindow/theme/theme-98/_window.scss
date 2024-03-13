@@ -2,99 +2,119 @@
     Window
 \*-------------------------------------------*/
 .theme-win98 {
-    .vp-window {
-        font-family: var(--sans-serif);
-        -webkit-font-smoothing: none;
-        font-size: 11px;
-        box-shadow: var(--border-window-outer), var(--border-window-inner);
-        background: var(--surface);
-        padding: 3px;
-        fieldset {
-            margin-bottom: 9px;
-        }
+  .vp-window {
+    font-family: var(--sans-serif);
+    -webkit-font-smoothing: none;
+    font-size: 11px;
+    box-shadow: var(--border-window-outer), var(--border-window-inner);
+    background: var(--surface);
+    padding: 3px;
 
-        .vp-window-title-bar {
-            font-size: 11px;
-            background: var(--title-bar-bg);
-            padding: 3px 2px 3px 3px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            .vp-window-title-bar-text {
-                font-weight: bold;
-                color: white;
-                letter-spacing: 0;
-                margin-right: 24px;
-            }
-
-            .vp-window-controls {
-                display: flex;
-                button {
-                    display: block;
-                    min-width: 16px;
-                    min-height: 14px;
-                    &:focus {
-                        outline: none;
-                    }
-                    font-family: var(--sans-serif);
-                    -webkit-font-smoothing: none;
-                    font-size: 11px;
-                    box-sizing: border-box;
-                    border: none;
-                    background: var(--surface);
-                    box-shadow: var(--border-raised-outer), var(--border-raised-inner);
-                    border-radius: 0;
-                    padding: 0 4px;
-                    height: auto;
-
-                    svg {
-                        height: 14px;
-                        width: 14px;
-                    }
-
-                    &:not(:disabled) {
-                        &:active,
-                        &.active {
-                            box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
-                        }
-                    }
-                    &:focus,
-                    &.focused {
-                        outline: 1px dotted #000000;
-                        outline-offset: -4px;
-                    }
-                    &::-moz-focus-inner {
-                        border: 0;
-                    }
-                }
-
-
-                .is-minimize {
-                    &>i {
-                        display: none;
-                    }
-                    background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-98/icon/minimize.svg");
-                    background-repeat: no-repeat;
-                    background-position: bottom 3px left 4px;
-                }
-                .is-maximize,.is-restore {
-                    &>i {
-                        display: none;
-                    }
-                    background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-98/icon/maximize.svg");
-                    background-repeat: no-repeat;
-                    background-position: top 2px left 3px;
-                }
-                .is-close {
-                    &>i {
-                        display: none;
-                    }
-                    margin-left: 2px;
-                    background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-98/icon/close.svg");
-                    background-repeat: no-repeat;
-                    background-position: top 3px left 4px;
-                }
-            }
-        }
+    fieldset {
+      margin-bottom: 9px;
     }
+
+    .vp-window-title-bar {
+      font-size: 11px;
+      background: var(--title-bar-bg);
+      padding: 3px 2px 3px 3px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .vp-window-title-bar-text {
+        font-weight: bold;
+        color: white;
+        letter-spacing: 0;
+        margin-right: 24px;
+      }
+
+      .vp-window-controls {
+        display: flex;
+
+        button {
+          display: block;
+          min-width: 16px;
+          min-height: 14px;
+
+          &:focus {
+            outline: none;
+          }
+
+          font-family: var(--sans-serif);
+          -webkit-font-smoothing: none;
+          font-size: 11px;
+          box-sizing: border-box;
+          border: none;
+          background: var(--surface);
+          box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+          border-radius: 0;
+          padding: 0 4px;
+          height: auto;
+
+          svg {
+            height: 14px;
+            width: 14px;
+          }
+
+          &:not(:disabled) {
+            &:active,
+            &.active {
+              box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
+            }
+          }
+
+          &:focus,
+          &.focused {
+            outline: 1px dotted #000000;
+            outline-offset: -4px;
+          }
+
+          &::-moz-focus-inner {
+            border: 0;
+          }
+        }
+
+
+        .is-minimize {
+          & > i {
+            display: none;
+          }
+
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-98/icon/minimize.svg");
+          background-repeat: no-repeat;
+          background-position: bottom 3px left 4px;
+        }
+
+        .is-maximize, .is-restore {
+          & > i {
+            display: none;
+          }
+
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-98/icon/maximize.svg");
+          background-repeat: no-repeat;
+          background-position: top 2px left 3px;
+        }
+
+        .is-close {
+          & > i {
+            display: none;
+          }
+
+          margin-left: 2px;
+          background-image: url("@/components/CommonUI/ViewPortWindow/theme/theme-98/icon/close.svg");
+          background-repeat: no-repeat;
+          background-position: top 3px left 4px;
+        }
+      }
+    }
+
+    .vp-window-body {
+      height: calc(100% - 24px) !important;
+    }
+
+    &._maximized {
+      padding: 0;
+    }
+  }
 }

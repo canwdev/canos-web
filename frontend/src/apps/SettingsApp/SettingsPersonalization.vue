@@ -91,42 +91,6 @@ export default defineComponent({
             },
           ].filter(Boolean),
         },
-        {
-          label: '系统 UI',
-          key: 'system_ui',
-          children: [
-            {
-              label: '多窗口模式',
-              key: 'isWindowed',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-            {
-              label: '任务栏只显示图标',
-              key: 'taskbarIconOnly',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-            {
-              label: '托盘：显示FPS',
-              key: 'taskbarShowFps',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-            {
-              label: '托盘：显示电池',
-              key: 'taskbarShowBattery',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-            {
-              label: '托盘：显示时钟',
-              key: 'taskbarShowClock',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-          ],
-        },
       ]
     })
 

@@ -3,7 +3,7 @@ import moment from 'moment/moment'
 import {EyeDropper, useFileDialog} from '@vueuse/core'
 import {Ref} from 'vue'
 import {copy} from './utils'
-import * as changeCase from 'change-case'
+import DynamicValueDisplay from './DynamicValueDisplay.vue'
 
 const isTimestamp = (val) => {
   val = Number(val)
@@ -25,20 +25,51 @@ export const qLogicDateTime = (val: string): QuickOptionItem | undefined => {
   }
 }
 
+const evalCode = (val: string, isToast = false) => {
+  try {
+    return eval(val)
+  } catch (error: any) {
+    console.log(error)
+    if (isToast) {
+      window.$message.error(error.message)
+    } else {
+      return error.message
+    }
+  }
+}
+
 export const qLogicEval = (val: string): QuickOptionItem => {
   return {
-    label: '⚡ Eval JavaScript',
+    label: '⚡ JavaScript Eval',
     props: {
       onClick: async () => {
-        try {
-          const result = eval(val)
-          await copy(result, true)
-        } catch (error: any) {
-          console.log(error)
-          window.$message.error(error.message)
-        }
+        await copy(evalCode(val, true), true)
       },
     },
+  }
+}
+
+export const qLogicEval2 = (valRef: Ref<string>): QuickOptionItem => {
+  return {
+    label: '⚡ Realtime Eval',
+    children: [
+      {
+        label: '',
+        props: {
+          onClick: async () => {
+            await copy(evalCode(valRef.value, true), true)
+          },
+        },
+        render: h(DynamicValueDisplay, {
+          class: 'font-code',
+          label: 'eval()',
+          text: valRef,
+          formatFn: (val) => {
+            return evalCode(val)
+          },
+        }),
+      },
+    ],
   }
 }
 

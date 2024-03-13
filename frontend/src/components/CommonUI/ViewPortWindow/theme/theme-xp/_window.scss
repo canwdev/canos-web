@@ -147,11 +147,23 @@
       }
     }
 
-
     .vp-window-body {
       margin-left: 3px;
       margin-right: 3px;
       height: calc(100% - 29px) !important;
+    }
+
+
+    &._maximized {
+      .vp-window-content {
+        .vp-window-title-bar {
+          border-top-left-radius: unset;
+          border-top-right-radius: unset;
+        }
+        .vp-window-body {
+          margin: 0;
+        }
+      }
     }
   }
 }

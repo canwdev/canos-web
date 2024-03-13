@@ -23,7 +23,17 @@
     }
 
     .vp-window-body {
-      height: calc(100% - 28px) !important;
+      height: calc(100% - 32px) !important;
+    }
+
+    &._maximized {
+      padding: 0;
+      .vp-window-title-bar {
+        padding-left: $border_width;
+      }
+      .vp-window-body {
+        height: calc(100% - 29px) !important;
+      }
     }
 
     &._active {

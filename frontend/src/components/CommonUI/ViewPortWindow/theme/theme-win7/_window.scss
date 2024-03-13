@@ -352,6 +352,25 @@
       }
     }
 
+    &._maximized {
+      &::before{
+        border-radius: unset;
+      }
+      .vp-window-content {
+        .vp-window-title-bar {
+          border-top-left-radius: unset;
+          border-top-right-radius: unset;
+          box-shadow: none;
+        }
+        .vp-window-body {
+          border-bottom-left-radius: unset;
+          border-bottom-right-radius: unset;
+          margin: 0;
+          height: calc(100% - 31px) !important;
+        }
+      }
+    }
+
     &._active {
       .vp-window-controls {
         border-color: var(--window-border-color);

@@ -30,14 +30,13 @@ export default {
 </script>
 
 <template>
-  <div class="counter container">
-    <div class="head-title">计数器</div>
+  <div class="simple-counter">
     <div class="counter-number">{{ count }}</div>
     <p class="actions">
-      <button @click="reset">重置</button>
-      <input type="number" placeholder="step" v-model="step" />
-      <button autofocus @click="add">+</button>
-      <button autofocus @click="minus">-</button>
+      <button class="vp-button" @click="reset">重置</button>
+      <input class="vp-input" type="number" placeholder="step" v-model="step" />
+      <button class="vp-button" autofocus @click="add">+</button>
+      <button class="vp-button" autofocus @click="minus">-</button>
     </p>
     <ul class="history">
       <li v-for="(item, index) in history" :key="index">
@@ -51,14 +50,17 @@ export default {
   </div>
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.counter {
+.simple-counter {
   height: 100%;
   font-family: monospace;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: auto;
+  scrollbar-width: none;
 
   .counter-number {
-    font-size: 80px;
+    font-size: 50px;
     border: 1px solid;
     text-align: right;
     padding: 0 10px;
@@ -78,7 +80,7 @@ export default {
       box-sizing: border-box;
 
       &:focus {
-        outline: 3px solid red;
+        outline: 2px solid red;
       }
     }
   }

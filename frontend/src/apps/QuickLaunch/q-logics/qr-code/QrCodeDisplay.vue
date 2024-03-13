@@ -25,7 +25,7 @@ const qrcode = useQRCode(text, {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .qr-code-display {
   img {
     width: 200px;

@@ -1,14 +1,15 @@
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
-import {qLogicBase64, qLogicDateTime, qLogicEval, qLogicEyeDrop} from './common'
+import {qLogicBase64, qLogicDateTime, qLogicEval, qLogicEval2, qLogicEyeDrop} from './common'
 import {qLogicQrCode} from './qr-code'
 import {Ref} from 'vue'
 import {qLogicStringManipulation} from './string-manipulation'
 import {qLogicSpeechSynthesis} from './speech-synthesis'
+import {useDebounceFn} from '@vueuse/core'
 
 export const useQLogics = (qlOptionsRef) => {
   const filteredOptions = ref<QuickOptionItem[]>([])
 
-  const handleSearch = (valRef: Ref<string>) => {
+  const _handleSearch = (valRef: Ref<string>) => {
     let options: QuickOptionItem[] = []
     const val = valRef.value
     if (val === '/?') {
@@ -50,9 +51,12 @@ export const useQLogics = (qlOptionsRef) => {
       }),
       qLogicDateTime(val),
       qLogicEval(val),
+      qLogicEval2(valRef),
       ...extraOptions,
     ].filter((val) => !!val)
   }
+
+  const handleSearch = useDebounceFn(_handleSearch, 100)
 
   return {
     handleSearch,

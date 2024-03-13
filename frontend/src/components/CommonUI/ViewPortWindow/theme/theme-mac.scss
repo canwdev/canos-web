@@ -46,7 +46,7 @@
           color: inherit;
           border: 1px solid currentColor;
 
-          &>i {
+          & > i {
             font-size: 12px !important;
 
             svg {
@@ -56,12 +56,12 @@
           }
 
           @mixin autoShow() {
-            &>i {
+            & > i {
               visibility: hidden;
             }
 
             &:hover {
-              &>i {
+              & > i {
                 visibility: visible;
               }
             }
@@ -93,6 +93,23 @@
       .vp-window-body {
         border: none;
         height: calc(100% - 22px);
+        border-bottom-left-radius: $radius;
+        border-bottom-right-radius: $radius;
+      }
+
+    }
+
+
+    &._maximized {
+      .vp-window-content {
+        .vp-window-title-bar {
+          border-top-left-radius: unset;
+          border-top-right-radius: unset;
+        }
+        .vp-window-body {
+          border-bottom-left-radius: unset;
+          border-bottom-right-radius: unset;
+        }
       }
     }
   }

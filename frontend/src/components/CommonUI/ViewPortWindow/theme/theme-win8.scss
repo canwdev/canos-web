@@ -65,6 +65,10 @@
         color: white !important;
       }
     }
+
+    &._maximized {
+      padding: 0;
+    }
   }
 
   .vp-panel {

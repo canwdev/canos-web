@@ -4,22 +4,22 @@ import {useCommonTools} from './use-common-tools'
 import {useRoute, useRouter} from 'vue-router'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 import {useQLogics} from './q-logics'
+import {useTextareaAutosize} from '@vueuse/core'
 
 export default defineComponent({
   name: 'QuickLaunch',
   components: {QuickOptions},
   setup(props, {emit}) {
     const route = useRoute()
-    const inputRef = ref()
     const qRef = ref()
     const focus = () => {
-      inputRef.value.focus()
+      textareaRef.value.focus()
     }
     onMounted(() => {
       focus()
     })
 
-    const anyText = ref('')
+    const {textarea: textareaRef, input: anyText} = useTextareaAutosize()
 
     const {qlOptions} = useCommonTools()
     const {filteredOptions, handleSearch} = useQLogics(qlOptions)
@@ -39,7 +39,7 @@ export default defineComponent({
     }
 
     return {
-      inputRef,
+      textareaRef,
       qRef,
       anyText,
       qlOptions,
@@ -55,7 +55,7 @@ export default defineComponent({
 <template>
   <div class="quick-launch">
     <textarea
-      ref="inputRef"
+      ref="textareaRef"
       rows="1"
       v-model="anyText"
       @input="handleInput"
@@ -70,7 +70,7 @@ export default defineComponent({
       :options="filteredOptions"
       is-static
       class="font-emoji"
-      @onClose="inputRef.focus()"
+      @onClose="textareaRef.focus()"
     />
   </div>
 </template>
@@ -81,8 +81,10 @@ export default defineComponent({
   flex-direction: column;
   height: 100%;
   & > textarea {
-    border-radius: 0 !important;
     box-sizing: border-box;
+    width: 100% !important;
+    border-radius: 0 !important;
+    max-height: 150px !important;
   }
   .quick-options {
     flex: 1;

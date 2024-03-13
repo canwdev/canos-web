@@ -1,7 +1,7 @@
 .theme-default {
   $border_width: 6px;
   $border: 1px solid rgba(0, 0, 0, 0.45);
-  $radius: 8px;
+  $radius: 18px;
 
   .vp-window {
     border: $border;
@@ -64,6 +64,19 @@
 
         &:last-child {
           border-bottom-right-radius: 5px;
+        }
+      }
+    }
+
+    &._maximized {
+      padding: 0;
+      .vp-window-content {
+        .vp-window-title-bar {
+          margin-left: 0;
+          margin-right: -3px;
+        }
+        .vp-window-body {
+          border: none;
         }
       }
     }

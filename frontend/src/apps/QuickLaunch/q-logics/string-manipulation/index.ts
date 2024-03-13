@@ -2,7 +2,7 @@ import {Ref} from 'vue'
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
 import * as changeCase from 'change-case'
 import {copy} from '../utils'
-import DynamicValueDisplay from './DynamicValueDisplay.vue'
+import DynamicValueDisplay from '../DynamicValueDisplay.vue'
 
 export const qLogicStringManipulation = (valRef: Ref<string>): QuickOptionItem => {
   return {
