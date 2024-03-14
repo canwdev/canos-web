@@ -1,12 +1,12 @@
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
-import {qLogicBase64, qLogicDateTime, qLogicEval, qLogicEval2, qLogicEyeDrop} from './common'
 import {qLogicQrCode} from './qr-code'
 import {Ref} from 'vue'
-import {qLogicStringManipulation} from './string-manipulation'
-import {qLogicSpeechSynthesis} from './speech-synthesis'
 import {useDebounceFn} from '@vueuse/core'
+import {usePluginState} from './plugins'
 
 export const useQLogics = (qlOptionsRef) => {
+  const {staticPlugins, dynamicPlugins} = usePluginState()
+
   const filteredOptions = ref<QuickOptionItem[]>([])
 
   const _handleSearch = (valRef: Ref<string>) => {
@@ -22,17 +22,12 @@ export const useQLogics = (qlOptionsRef) => {
         label,
       })
     }
-    const extraOptions = [
-      qLogicStringManipulation(valRef),
-      qLogicBase64(valRef),
-      qLogicQrCode(valRef),
-      qLogicSpeechSynthesis(valRef),
-    ]
-    const filterableOptions = [...qlOptionsRef.value, qLogicEyeDrop]
+
+    const filterableOptions = [...qlOptionsRef.value, ...staticPlugins.value, qLogicQrCode(valRef)]
 
     // 没有输入，显示默认内容
     if (!val) {
-      filteredOptions.value = [...options, ...filterableOptions, ...extraOptions]
+      filteredOptions.value = [...options, ...filterableOptions]
       return
     }
     filteredOptions.value = [
@@ -49,10 +44,7 @@ export const useQLogics = (qlOptionsRef) => {
         }
         return flag
       }),
-      qLogicDateTime(val),
-      qLogicEval(val),
-      qLogicEval2(valRef),
-      ...extraOptions,
+      ...dynamicPlugins.value.map((f) => f(valRef)),
     ].filter((val) => !!val)
   }
 

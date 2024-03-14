@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    "/q-plugins/basic.js",
+    "/q-plugins/base64.js",
+    "/q-plugins/mc-utils.js",
+    "/q-plugins/string-man.js",
+    "/q-plugins/system-utils.js"
+  ]
+}

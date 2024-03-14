@@ -5,6 +5,7 @@ import {useRoute, useRouter} from 'vue-router'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 import {useQLogics} from './q-logics'
 import {useTextareaAutosize} from '@vueuse/core'
+import {useQuickLaunchPlugins} from './q-logics/plugins'
 
 export default defineComponent({
   name: 'QuickLaunch',
@@ -18,24 +19,24 @@ export default defineComponent({
     onMounted(() => {
       focus()
     })
-
     const {textarea: textareaRef, input: anyText} = useTextareaAutosize()
 
     const {qlOptions} = useCommonTools()
     const {filteredOptions, handleSearch} = useQLogics(qlOptions)
+    const update = () => {
+      handleSearch(anyText)
+    }
+    useQuickLaunchPlugins(update)
 
-    onMounted(() => {
-      handleSearch(anyText)
-    })
     watch(route, () => {
-      handleSearch(anyText)
+      update()
     })
     const handleInput = () => {
-      handleSearch(anyText)
+      update()
     }
     const cleanText = () => {
       anyText.value = ''
-      handleSearch(anyText)
+      update()
     }
 
     return {

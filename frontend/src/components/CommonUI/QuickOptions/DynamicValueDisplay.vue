@@ -4,7 +4,7 @@ import {watchDebounced} from '@vueuse/core'
 interface Props {
   text: any
   label: string
-  formatFn: any
+  formatFn?: any
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,6 +19,8 @@ watchDebounced(
   () => {
     if (typeof props.formatFn === 'function') {
       textDisplay.value = props.formatFn(text.value)
+    } else {
+      textDisplay.value = text.value
     }
   },
   {debounce: 300, immediate: true}
