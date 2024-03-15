@@ -1,11 +1,18 @@
 <script lang="ts" setup>
 import AnalogClock from '@/apps/AppUtils/ScreenClock/AnalogClock.vue'
 import DigitalClock from '@/apps/AppUtils/ScreenClock/DigitalClock.vue'
-import {useFullscreen, useStorage} from '@vueuse/core'
+import {useFullscreen, useStorage, useWakeLock} from '@vueuse/core'
 
 const rootRef = ref()
 const isDigital = useStorage('is_digital_clock', false)
 const {isFullscreen, toggle: toggleFullScreen} = useFullscreen(rootRef)
+const {isSupported, isActive, request, release} = useWakeLock()
+onMounted(() => {
+  request('screen')
+})
+onBeforeMount(() => {
+  release()
+})
 </script>
 
 <template>

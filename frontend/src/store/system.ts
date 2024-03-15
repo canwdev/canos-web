@@ -88,7 +88,7 @@ export const useSystemStore = defineStore('system', {
      * @param isTaskbar 是否来自任务栏
      */
     setTaskActive(task: TaskItem, isTaskbar = false) {
-      // console.log('[setTaskActive]', task, isTaskbar)
+      // console.log('[setTaskActive]', {task, isTaskbar})
       if (isTaskbar) {
         // 控制任务自动显示或隐藏
         if (this.activeId === task.guid) {
@@ -99,6 +99,8 @@ export const useSystemStore = defineStore('system', {
 
       // 防止重复操作
       if (this.activeId === task.guid) {
+        // console.log('[setTaskActive] return')
+        task.minimized = false
         return
       }
       this.activeId = task.guid
