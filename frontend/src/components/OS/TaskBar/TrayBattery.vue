@@ -29,7 +29,7 @@ const titleDisplay = computed(() => {
 </script>
 
 <template>
-  <div class="tray-battery" :title="titleDisplay">
+  <div class="tray-icon" :title="titleDisplay">
     <BatteryCharge20Regular v-if="charging" />
     <Battery1020Regular v-else-if="level >= 0.95" />
     <Battery920Regular v-else-if="level >= 0.9" />
@@ -44,13 +44,3 @@ const titleDisplay = computed(() => {
     <Battery020Regular v-else />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.tray-battery {
-  display: inline-flex;
-  & > svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-</style>

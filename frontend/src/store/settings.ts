@@ -22,6 +22,8 @@ interface IStore {
   isWindowed: boolean
   // 托盘显示
   taskbarShowFps: boolean
+  taskbarShowMemory: boolean
+  taskbarShowNetwork: boolean
   taskbarShowBattery: boolean
   taskbarShowClock: boolean
   // 任务栏只显示图标
@@ -45,9 +47,13 @@ export const useSettingsStore = defineStore('settingsStore', {
       desktopBgColor: '#258292',
       disableAnimation: false,
       isWindowed: true,
+
       taskbarShowFps: true,
+      taskbarShowMemory: true,
+      taskbarShowNetwork: true,
       taskbarShowBattery: true,
       taskbarShowClock: true,
+
       taskbarIconOnly: false,
       desktopWallpaper: '',
       appAutoStartIds: [],

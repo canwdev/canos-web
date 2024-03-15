@@ -32,6 +32,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .tray-datetime {
+  box-sizing: border-box;
   padding: 2px 4px;
   text-align: right;
   font-size: 10px;

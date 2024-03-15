@@ -28,7 +28,6 @@
     "vue": "^3.4.18",
     "vue-i18n": "^9.9.0",
     "vue-router": "^4.2.5",
-    "web-mediadevices-player": "https://github.com/canwdev/web-mediadevices-player.git",
     "change-case": "^4"
   },
   "devDependencies": {

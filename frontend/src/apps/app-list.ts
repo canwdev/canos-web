@@ -136,27 +136,35 @@ export const AllAppList: ShortcutItem[] = [
   AppQuickLaunch,
   defineDemoApp(
     '简易计算器',
-    defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCalculator.vue'))
+    defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCalculator.vue'))
   ),
   defineDemoApp(
     '计数器',
-    defineAsyncComponent(() => import('@/apps/OldUtils/SimpleCounter.vue'))
+    defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCounter.vue'))
   ),
   defineDemoApp(
     'ObjectSize',
-    defineAsyncComponent(() => import('@/apps/OldUtils/ObjectSizeWrap/index.vue'))
+    defineAsyncComponent(() => import('@/apps/AppUtils/ObjectSizeWrap/index.vue'))
   ),
   defineDemoApp(
     'Live2D',
-    defineAsyncComponent(() => import('@/apps/OldUtils/Live2DWrap/index.vue'))
+    defineAsyncComponent(() => import('@/apps/AppUtils/Live2DWrap/index.vue'))
   ),
   defineDemoApp(
     'BouncyBall',
-    defineAsyncComponent(() => import('@/apps/OldUtils/Games/BouncyBall/index.vue'))
+    defineAsyncComponent(() => import('@/apps/AppUtils/Games/BouncyBall/index.vue'))
   ),
   defineDemoApp(
     '多彩屏幕 (屏幕坏点测试)',
-    defineAsyncComponent(() => import('@/apps/OldUtils/ColorfulScreen.vue'))
+    defineAsyncComponent(() => import('@/apps/AppUtils/ColorfulScreen.vue'))
+  ),
+  defineDemoApp(
+    '唤醒锁定',
+    defineAsyncComponent(() => import('@/apps/AppUtils/WakeLock.vue'))
+  ),
+  defineDemoApp(
+    '屏幕时钟',
+    defineAsyncComponent(() => import('@/apps/AppUtils/ScreenClock/index.vue'))
   ),
   defineWebApp('Bing', 'https://bing.com'),
   defineWebApp('CanOS', location.href),

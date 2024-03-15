@@ -68,4 +68,5 @@ export enum SettingsTabType {
   PERSONALIZATION,
   PROGRAMS,
   SYSTEM,
+  HARDWARE,
 }

@@ -6,16 +6,24 @@ import {useI18n} from 'vue-i18n'
 import SettingsPersonalization from '@/apps/SettingsApp/SettingsPersonalization.vue'
 import SettingsSystem from '@/apps/SettingsApp/SettingsSystem.vue'
 import SettingsPrograms from '@/apps/SettingsApp/SettingsPrograms.vue'
+import SettingsHardware from '@/apps/SettingsApp/SettingsHardware.vue'
 
 export default defineComponent({
   name: 'SettingsApp',
-  components: {SettingsPrograms, SettingsSystem, SettingsPersonalization, OptionUI},
+  components: {
+    SettingsHardware,
+    SettingsPrograms,
+    SettingsSystem,
+    SettingsPersonalization,
+    OptionUI,
+  },
   setup(props, {emit}) {
     const {t: $t} = useI18n()
 
     const settingsTabs = ref([
       {label: '个性化', value: SettingsTabType.PERSONALIZATION},
       {label: '应用程序', value: SettingsTabType.PROGRAMS},
+      {label: '硬件', value: SettingsTabType.HARDWARE},
       {label: '系统', value: SettingsTabType.SYSTEM},
     ])
 
@@ -56,6 +64,7 @@ export default defineComponent({
       <n-layout-content>
         <SettingsPersonalization v-if="curTab === SettingsTabType.PERSONALIZATION" />
         <SettingsPrograms v-else-if="curTab === SettingsTabType.PROGRAMS" />
+        <SettingsHardware v-else-if="curTab === SettingsTabType.HARDWARE" />
         <SettingsSystem v-else-if="curTab === SettingsTabType.SYSTEM" />
       </n-layout-content>
     </n-layout>

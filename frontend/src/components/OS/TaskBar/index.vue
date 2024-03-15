@@ -6,10 +6,12 @@ import {useSystemStore} from '@/store/system'
 import {useSettingsStore} from '@/store/settings'
 import TrayBattery from '@/components/OS/TaskBar/TrayBattery.vue'
 import TrayFps from '@/components/OS/TaskBar/TrayFps.vue'
+import TrayNetwork from '@/components/OS/TaskBar/TrayNetwork.vue'
+import TrayMemory from '@/components/OS/TaskBar/TrayMemory.vue'
 
 export default defineComponent({
   name: 'TaskBar',
-  components: {TrayFps, TrayBattery, StartMenu, TrayClock},
+  components: {TrayMemory, TrayNetwork, TrayFps, TrayBattery, StartMenu, TrayClock},
   setup() {
     const systemStore = useSystemStore()
     const settingsStore = useSettingsStore()
@@ -55,6 +57,8 @@ export default defineComponent({
       <div class="task-tray _fc">
         <div class="tray-list _fc">
           <TrayFps v-if="settingsStore.taskbarShowFps" />
+          <TrayMemory v-if="settingsStore.taskbarShowMemory" />
+          <TrayNetwork v-if="settingsStore.taskbarShowNetwork" />
           <TrayBattery v-if="settingsStore.taskbarShowBattery" />
           <TrayClock v-if="settingsStore.taskbarShowClock" />
         </div>
@@ -71,7 +75,7 @@ export default defineComponent({
   }
 }
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
 .canos-task-bar {
   position: fixed;
   bottom: 0px;
@@ -179,6 +183,14 @@ export default defineComponent({
         display: flex;
         align-items: center;
         gap: 4px;
+
+        .tray-icon {
+          display: inline-flex;
+          & > svg {
+            width: 20px;
+            height: 20px;
+          }
+        }
       }
     }
   }
