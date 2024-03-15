@@ -3,6 +3,7 @@ import {copy} from './utils'
 import moment from 'moment/moment'
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
 import * as changeCase from 'change-case'
+import {filterLabel} from './utils'
 
 export type DynamicPlugin = (key: any) => QuickOptionItem
 
@@ -23,43 +24,81 @@ export const usePluginState = createGlobalState(() => {
 export const useQuickLaunchPlugins = (update) => {
   const {staticPlugins, dynamicPlugins} = usePluginState()
 
-  onBeforeMount(() => {
-    window.$qlUtils = {
-      copy,
-      moment,
-      useFileDialog,
-      changeCase,
-      // 刷新列表
-      update,
-      // 添加一个插件
-      addPlugin: (plugin: QuickOptionItem | DynamicPlugin) => {
-        if (typeof plugin === 'function') {
-          dynamicPlugins.value.push(plugin)
-        } else {
-          staticPlugins.value.push(plugin)
-        }
-        // 由于update函数使用了防抖，这里可以直接执行
-        update()
-      },
+  const basePath = `q-plugins`
+  const unloadFns = ref<any[]>([])
+
+  // 重新加载所有插件
+  const reloadPlugins = async () => {
+    dynamicPlugins.value = []
+    staticPlugins.value = []
+    if (unloadFns.value.length) {
+      console.log('[reloadPlugins] unloading plugin scripts...')
+      for (const key in unloadFns.value) {
+        const unload = unloadFns.value[key]
+        await unload()
+      }
+      unloadFns.value = []
     }
-  })
 
-  // 获取插件json
-  const {isFetching, onFetchResponse, data} = useFetch('q-plugins/index.json').get().json()
-
-  onFetchResponse(async (res) => {
-    const {plugins} = data.value
+    // 获取插件json
+    const res = await fetch(`${basePath}/index.json`)
+    const data = await res.json()
+    const {plugins} = data
+    console.log('[reloadPlugins] loading plugins...', plugins)
     // 逐个加载js文件
     for (const pluginsKey in plugins) {
-      const url = plugins[pluginsKey]
-      const {load} = useScriptTag(
+      let url = plugins[pluginsKey]
+
+      const outboundUrlRegex = /^(?:http(s)?:\/\/)/
+      // 允许相对路径
+      if (!outboundUrlRegex.test(url)) {
+        url = basePath + '/' + url
+      }
+      const {load, unload} = useScriptTag(
         url,
         () => {
           // do something
         },
         {manual: true}
       )
+      unloadFns.value.push(unload)
       await load()
     }
+  }
+
+  // 添加一个插件
+  const addPlugin = (plugin: QuickOptionItem | DynamicPlugin) => {
+    // console.log('[addPlugin]', plugin)
+    if (typeof plugin === 'function') {
+      dynamicPlugins.value.push(plugin)
+    } else {
+      staticPlugins.value.push(plugin)
+    }
+    // 由于update函数使用了防抖，这里可以直接执行
+    update()
+  }
+
+  onBeforeMount(() => {
+    window.$qlUtils = {
+      copy,
+      moment,
+      useFileDialog,
+      changeCase,
+
+      ref,
+      computed,
+      watch,
+
+      // 过滤列表功能
+      filterLabel,
+      // 刷新列表
+      update,
+      // 重新加载所有插件
+      reloadPlugins,
+      // 添加一个插件
+      addPlugin,
+    }
+
+    reloadPlugins()
   })
 }

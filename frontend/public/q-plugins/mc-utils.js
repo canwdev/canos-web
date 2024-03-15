@@ -50,7 +50,7 @@
 
   addPlugin((valRef) => {
     return {
-      label: '📝 Text Toolbox',
+      label: '🧰 PageCraft Utils',
       children: [
         {
           label: '📋 Copy i18n key',
@@ -81,7 +81,7 @@
           },
         },
         {
-          label: '📋 Text Convert: JSON',
+          label: '⌨️ Text Convert: JSON',
           props: {
             onClick: async () => {
               const text = window.$mcUtils.textConvertMultipleLine(
@@ -93,7 +93,7 @@
           },
         },
         {
-          label: '📋 Text Convert: HTML',
+          label: '⌨️ Text Convert: HTML',
           props: {
             onClick: async () => {
               const text = window.$mcUtils.textConvertMultipleLine(

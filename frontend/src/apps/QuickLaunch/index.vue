@@ -13,9 +13,13 @@ export default defineComponent({
   setup(props, {emit}) {
     const route = useRoute()
     const qRef = ref()
+    // 是否进入了子页面
+    const isEnterSub = ref(false)
+
     const focus = () => {
       textareaRef.value.focus()
     }
+
     onMounted(() => {
       focus()
     })
@@ -32,6 +36,10 @@ export default defineComponent({
       update()
     })
     const handleInput = () => {
+      if (isEnterSub.value) {
+        // 进入子页面后不刷新查询
+        return
+      }
       update()
     }
     const cleanText = () => {
@@ -48,6 +56,7 @@ export default defineComponent({
       filteredOptions,
       focus,
       cleanText,
+      isEnterSub,
     }
   },
 })
@@ -72,6 +81,8 @@ export default defineComponent({
       is-static
       class="font-emoji"
       @onClose="textareaRef.focus()"
+      @onEnter="isEnterSub = true"
+      @onBack="isEnterSub = false"
     />
   </div>
 </template>

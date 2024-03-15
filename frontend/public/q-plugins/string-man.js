@@ -17,8 +17,9 @@
         'sentenceCase',
         'noCase',
       ].map((type) => {
+        const label = changeCase[type](type)
         return {
-          label: type,
+          label,
           props: {
             onClick: async () => {
               const result = changeCase[type](valRef.value)
@@ -27,7 +28,7 @@
             class: 'font-code',
           },
           dynamicProps: {
-            label: type,
+            label,
             text: valRef,
             formatFn: (text) => changeCase[type](text || ''),
           },

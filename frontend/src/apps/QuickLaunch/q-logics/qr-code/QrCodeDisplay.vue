@@ -21,7 +21,7 @@ const qrcode = useQRCode(text, {
 <template>
   <div class="qr-code-display">
     <img v-if="text" :src="qrcode" :alt="text" />
-    <span v-else>-</span>
+    <span v-else>Input text to generate QR code</span>
   </div>
 </template>
 

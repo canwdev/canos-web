@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, PropType} from 'vue'
+import {ComputedRef, defineComponent, PropType, Ref} from 'vue'
 import {QuickOptionItem} from './enum'
 import {onClickOutside, useVModel} from '@vueuse/core'
 import QOptionItem from './QOptionItem.vue'
@@ -39,7 +39,7 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['onClose', 'update:visible'],
+  emits: ['onClose', 'update:visible', 'onBack', 'onEnter'],
   setup(props, {emit}) {
     const {options, horizontal, isStatic, autoFocus} = toRefs(props)
     const mVisible = useVModel(props, 'visible', emit)
@@ -98,7 +98,15 @@ export default defineComponent({
     })
 
     const menuStack = ref<QuickOptionItem[][]>([])
+    // 计算属性列表
+    const computedSubList = ref<any | null>(null)
+
     const mOptions = computed((): QuickOptionItem[] => {
+      if (computedSubList.value) {
+        // console.log(computedSubList.value)
+        // 获取计算属性
+        return computedSubList.value.value
+      }
       if (menuStack.value.length) {
         return menuStack.value[menuStack.value.length - 1]
       }
@@ -106,8 +114,14 @@ export default defineComponent({
     })
 
     const handleBack = () => {
+      if (computedSubList.value) {
+        computedSubList.value = null
+        emit('onBack')
+        return
+      }
       if (menuStack.value.length) {
         menuStack.value.pop()
+        emit('onBack')
       } else {
         mVisible.value = false
         setTimeout(() => {
@@ -177,14 +191,21 @@ export default defineComponent({
         item.props.onClick(item, event)
         mVisible.value = false
       } else if (item.children) {
-        let subList: QuickOptionItem[] = []
+        let subList: QuickOptionItem[] | any = []
         if (typeof item.children === 'function') {
           subList = await item.children()
         } else if (item.children.length) {
           subList = item.children
         }
-        menuStack.value.push(subList)
+
+        // 得到的列表为计算属性
+        if (subList.__v_isRef) {
+          computedSubList.value = subList
+        } else {
+          menuStack.value.push(subList)
+        }
         curIndex.value = 0
+        emit('onEnter')
       }
       if (item?.props?.isBack) {
         handleBack()
@@ -202,6 +223,7 @@ export default defineComponent({
       mVisible,
       quickRootRef,
       menuStack,
+      computedSubList,
       curIndex,
       handleKeyPress,
       handleBack,
@@ -227,7 +249,11 @@ export default defineComponent({
       <button class="btn-no-style" @click="mVisible = false">×</button>
     </div>
 
-    <div v-if="menuStack.length" class="option-item _back clickable" @click="handleBack">
+    <div
+      v-if="menuStack.length || computedSubList"
+      class="option-item vp-panel _back clickable"
+      @click="handleBack"
+    >
       <div class="index-wrap">
         <div style="transform: scale(0.7)">
           <div class="css-arrow left"></div>
@@ -323,6 +349,10 @@ export default defineComponent({
     &._back {
       padding: 2px 24px;
       font-size: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      border: none;
     }
 
     .index-wrap {

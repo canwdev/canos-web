@@ -1,5 +1,5 @@
 ;(function () {
-  const {addPlugin, copy} = window.$qlUtils
+  const {addPlugin, copy, ref, computed, watch} = window.$qlUtils
 
   addPlugin({
     label: '💧 Eye Drop',
@@ -18,25 +18,39 @@
     },
   })
 
-  addPlugin({
-    label: '🔠 System Fonts',
-    children: async () => {
-      const fonts = await window.queryLocalFonts()
+  let fonts = []
+  addPlugin((valRef) => {
+    return {
+      label: '🔠 System Fonts',
+      children: async () => {
+        if (!fonts.length) {
+          fonts = await window.queryLocalFonts()
+          console.log(fonts)
+        }
 
-      return [
-        ...fonts.map((v) => {
-          return {
-            label: v.fullName,
-            props: {
-              onClick: () => {
-                copy(v.fullName, true)
-              },
-              style: {fontFamily: v.fullName},
-            },
-          }
-        }),
-      ]
-    },
+        // 支持直接返回vue3计算属性
+        return computed(() => {
+          return [
+            ...fonts
+              .filter((v) => {
+                const sVal = valRef.value.trim().toLowerCase()
+                return v.fullName.toLowerCase().includes(sVal)
+              })
+              .map((v) => {
+                return {
+                  label: v.fullName,
+                  props: {
+                    onClick: () => {
+                      copy(v.fullName, true)
+                    },
+                    style: {fontFamily: v.fullName},
+                  },
+                }
+              }),
+          ]
+        })
+      },
+    }
   })
 
   // https://eeejay.github.io/webspeechdemos/
