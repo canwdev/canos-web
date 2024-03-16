@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import moment from 'moment'
+import moment from 'moment/moment'
 
 const timeFormat = 'HH:mm:ss<br>ddd YYYY/MM/DD'
 

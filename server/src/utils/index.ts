@@ -1,1 +1,1 @@
-export const isDev = process.env.NODE_ENV === 'development'
+export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))

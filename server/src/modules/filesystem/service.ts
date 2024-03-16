@@ -1,13 +1,16 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common'
 import {getExactPath, getMediaPath} from './utils/filesystem-utils'
 import * as fs from 'fs-extra'
-import * as path from 'path'
+import * as Path from 'path'
 import {mfpTool} from './utils/mfp-tool'
 import {getMetadata} from './utils/media-tool'
+import {serverInfo} from '@/enum'
+import {IDrive, IEntry} from '@/types/server'
+import * as nodeDiskInfo from 'node-disk-info'
 
 @Injectable()
 export class FsService {
-  async getList(params) {
+  async getMediaList(params) {
     const {path: musicPath = '', showHiddenFiles = false} = params
 
     const dir = getMediaPath(musicPath)
@@ -27,7 +30,7 @@ export class FsService {
     // TODO: 设定类型
     files.forEach((name, index) => {
       try {
-        const stat = fs.statSync(path.join(dir, name))
+        const stat = fs.statSync(Path.join(dir, name))
         const isDirectory = stat.isDirectory()
         const f = {
           id: index,
@@ -51,7 +54,7 @@ export class FsService {
     const list = [..._folders, ..._files]
 
     let playStat
-    if (fs.existsSync(path.join(dir, mfpTool.filename))) {
+    if (fs.existsSync(Path.join(dir, mfpTool.filename))) {
       playStat = await mfpTool.parseFromFolder(dir)
     }
 
@@ -122,5 +125,87 @@ export class FsService {
     const {method = '', args = []} = params
     const result = await fs[method](...args)
     return result
+  }
+
+  async getDrives(): Promise<IDrive[]> {
+    let dirs: IDrive[] = [
+      {
+        label: 'Home',
+        path: serverInfo.homeDir,
+      },
+    ]
+    if (serverInfo.platform === 'win32') {
+      const driveList = nodeDiskInfo.getDiskInfoSync()
+
+      dirs = [
+        ...dirs,
+        ...driveList.map((drive) => {
+          return {
+            label: drive.mounted,
+            path: drive.mounted,
+            free: drive.available,
+            total: drive.blocks,
+          }
+        }),
+      ]
+    } else {
+      dirs = [
+        ...dirs,
+        {
+          label: '/',
+          path: '/',
+        },
+      ]
+      console.warn(`platform ${serverInfo.platform} needs to be implemented`)
+    }
+    return dirs
+  }
+
+  async getList(params): Promise<IEntry[]> {
+    const {path} = params
+    if (!fs.existsSync(path)) {
+      throw new HttpException('Path not exist', HttpStatus.NOT_FOUND)
+    }
+    const files = await fs.readdir(path)
+    return files.map((entryName: string) => {
+      const entryPath = Path.join(path, entryName)
+      let stat: any = null
+      let error
+
+      try {
+        stat = fs.statSync(entryPath)
+      } catch (e) {
+        error = e.message
+      }
+
+      const isDirectory = stat && stat.isDirectory()
+      return {
+        name: entryName,
+        isDirectory,
+        hidden: entryName.startsWith('.'),
+        lastModified: stat?.ctimeMs || 0,
+        size: isDirectory ? undefined : stat?.size,
+        error,
+      }
+    })
+  }
+
+  uploadFile(path: string, buffer: Buffer) {
+    return new Promise((resolve, reject) => {
+      const stream = fs.createWriteStream(path)
+
+      stream.on('open', () => {
+        const chunkSize = 128
+        const bufferLength = buffer.length
+        const count = Math.ceil(bufferLength / chunkSize)
+        for (let i = 0; i < count; i++) {
+          const chunk = buffer.slice(chunkSize * i, Math.min(chunkSize * (i + 1), bufferLength))
+          stream.write(chunk)
+        }
+        stream.end()
+      })
+      stream.on('error', (error) => reject(error))
+      stream.on('finish', () => resolve(true))
+    })
   }
 }

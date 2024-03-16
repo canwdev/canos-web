@@ -3,11 +3,10 @@ import {AuthService} from './auth.service'
 import {AuthController} from './auth.controller'
 import {UsersModule} from '../users/users.module'
 import {JwtModule} from '@nestjs/jwt'
-import {APP_JWT_SECRET_FALLBACK} from '@/enum'
+import {APP_JWT_SECRET_FALLBACK, isDev} from '@/enum'
 import {LocalStrategy} from '@/modules/auth/local.strategy'
 import {PassportModule} from '@nestjs/passport'
 import {JwtStrategy} from '@/modules/auth/jwt.strategy'
-import {isDev} from '@/utils'
 import {ConfigModule} from '@nestjs/config'
 
 const envFilePath = isDev

@@ -4,6 +4,7 @@ import {FormInst, FormValidationError, useMessage, FormRules} from 'naive-ui'
 import {serverApi} from '@/api/server'
 import {useRouter} from 'vue-router'
 import {LsKeys} from '@/enum'
+import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
 
 interface ModelType {
   username: string | null
@@ -11,7 +12,7 @@ interface ModelType {
 }
 
 export default defineComponent({
-  components: {},
+  components: {ViewPortWindow},
   setup() {
     const router = useRouter()
     const formRef = ref<FormInst | null>(null)
@@ -90,34 +91,33 @@ export default defineComponent({
 </script>
 
 <template>
-  <n-layout class="login-view">
-    <n-layout-content>
-      <n-card class="card-wrap" title="Login to OS">
-        <n-form ref="formRef" :model="formModel" :rules="formRules">
-          <n-form-item path="username" label="Username">
-            <n-input
-              ref="inputUsernameRef"
-              v-model:value="formModel.username"
-              @keyup.enter="handleValidateButtonClick"
-            />
-          </n-form-item>
+  <div class="login-view">
+    <ViewPortWindow :show-close="false">
+      <template #titleBarLeft>Login</template>
+      <n-form class="card-wrap" ref="formRef" :model="formModel" :rules="formRules">
+        <n-form-item path="username" label="Username">
+          <n-input
+            ref="inputUsernameRef"
+            v-model:value="formModel.username"
+            @keyup.enter="handleValidateButtonClick"
+          />
+        </n-form-item>
 
-          <n-form-item path="password" label="Password">
-            <n-input
-              v-model:value="formModel.password"
-              type="password"
-              show-password-on="click"
-              @keyup.enter="handleValidateButtonClick"
-              class="font-code"
-            />
-          </n-form-item>
-          <n-space size="small" justify="end">
-            <n-button type="primary" @click="handleValidateButtonClick"> Login </n-button>
-          </n-space>
-        </n-form>
-      </n-card>
-    </n-layout-content>
-  </n-layout>
+        <n-form-item path="password" label="Password">
+          <n-input
+            v-model:value="formModel.password"
+            type="password"
+            show-password-on="click"
+            @keyup.enter="handleValidateButtonClick"
+            class="font-code"
+          />
+        </n-form-item>
+        <n-space size="small" justify="end">
+          <n-button @click="handleValidateButtonClick"> Login </n-button>
+        </n-space>
+      </n-form>
+    </ViewPortWindow>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -133,8 +133,7 @@ export default defineComponent({
     }
   }
   .card-wrap {
-    max-width: 500px;
-    margin: 20px;
+    padding: 20px;
   }
 }
 </style>

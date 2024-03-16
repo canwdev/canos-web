@@ -97,6 +97,9 @@ export const formatSelectOptions = (list: string[]) => {
 // 文件大小转换
 export const bytesToSize = (bytes, autoNo = '0B') => {
   bytes = Number(bytes)
+  if (Number.isNaN(bytes)) {
+    return '-'
+  }
   if (bytes === 0) return autoNo
   const k = 1024
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']

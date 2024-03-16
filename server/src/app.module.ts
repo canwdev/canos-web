@@ -2,7 +2,6 @@ import {MiddlewareConsumer, Module} from '@nestjs/common'
 import {AppController} from './app.controller'
 import {AppService} from './app.service'
 import {FsModule} from './modules/filesystem/module'
-import {isDev} from './utils'
 import {ServeStaticModule} from '@nestjs/serve-static'
 import {IMAGE_PATH, MUSIC_LIBRARY_PATH} from './modules/filesystem/utils/enum'
 import {JwtAuthGuard} from '@/modules/auth/jwt-auth.guard'
@@ -11,6 +10,7 @@ import {CryptInterceptor} from '@/modules/crypt/crypt.interceptor'
 import {CryptMiddleware} from '@/modules/crypt/crypt.middleware'
 import {UsersModule} from '@/modules/users/users.module'
 import {AuthModule} from '@/modules/auth/auth.module'
+import {isDev} from '@/enum'
 
 console.log('isDev', isDev)
 

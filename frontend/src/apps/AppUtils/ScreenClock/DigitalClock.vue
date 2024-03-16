@@ -1,5 +1,5 @@
 <script>
-import moment from 'moment'
+import moment from 'moment/moment'
 
 moment.locale(navigator.language || 'zh-CN')
 

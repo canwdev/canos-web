@@ -49,7 +49,7 @@ export default defineComponent({
         >
           <img v-if="item.icon" :src="item.icon" :alt="item.title" class="task-icon" />
           <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
-            {{ item.title }} {{ item.minimized }}
+            {{ item.title }}
           </span>
           <!--          <span class="btn-close" @click="systemStore.closeTask(item.guid)">✕</span>-->
         </button>

@@ -1,133 +1,128 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-import {getList, osWebApi} from '@/api/filesystem'
-import {BackendFileItem} from '@/enum/file'
-import {useFileOpener} from '@/components/OS/os-hooks'
-import FileListItem from './FileListItem.vue'
+<script setup lang="ts">
 import {
-  ArrowUp20Regular,
   ArrowSync20Filled,
+  ArrowUp20Regular,
   DocumentAdd20Regular,
   FolderAdd20Regular,
+  Star20Filled,
+  Star20Regular,
 } from '@vicons/fluent'
+import FileSidebar from '@/apps/FileManager/FileSidebar.vue'
+import {IEntry} from '@server/types/server'
+import {fsWebApi} from '@/api/filesystem'
+import FileList from '@/apps/FileManager/ExplorerUI/FileList.vue'
+import {showInputPrompt} from '@/components/CommonUI/input-prompt'
+import moment from 'moment/moment'
+import {useStorage} from '@vueuse/core'
+import {LsKeys} from '@/enum'
+import {
+  generateTextFile,
+  getLastDirName,
+  normalizePath,
+  toggleArrayElement,
+} from '@/apps/FileManager/utils'
+import {useFuse} from '@vueuse/integrations/useFuse'
 
-export default defineComponent({
-  name: 'FileManager',
-  components: {
-    FileListItem,
-    ArrowUp20Regular,
-    ArrowSync20Filled,
-    DocumentAdd20Regular,
-    FolderAdd20Regular,
-  },
-  setup() {
-    const files = ref<BackendFileItem[]>([])
-    const basePath = ref('/')
-    const isLoading = ref(false)
+const files = ref<IEntry[]>([])
+const basePath = ref('/')
+const basePathNormalized = computed(() => {
+  let path = normalizePath(basePath.value)
+  if (!/\/$/gi.test(path)) {
+    path += '/'
+  }
+  return path
+})
+const isLoading = ref(false)
 
-    const handleRefresh = async () => {
-      try {
-        isLoading.value = true
-        if (!basePath.value) {
-          basePath.value = '/'
-        }
-
-        await osWebApi.fsApi({
-          method: 'readdir',
-          args: ['D:\\Downloads'],
-        })
-
-        const res = await getList({
-          path: basePath.value,
-          getPlayStat: true,
-        })
-        const list = res.list as BackendFileItem[]
-
-        files.value = list
-      } catch (e) {
-        console.error(e)
-        files.value = []
-      } finally {
-        isLoading.value = false
-      }
-    }
-    const goUp = () => {
-      const arr = basePath.value.split('/').filter((i) => !!i)
-      console.log(arr)
-      arr.pop()
-      if (!arr.length) {
-        basePath.value = '/'
-        handleRefresh()
-        return
-      }
-      basePath.value = '/' + arr.join('/') + '/'
-      handleRefresh()
+const handleRefresh = async () => {
+  try {
+    basePath.value = basePathNormalized.value
+    isLoading.value = true
+    if (!basePath.value) {
+      basePath.value = '/'
     }
 
-    onMounted(() => {
-      handleRefresh()
+    const res = await fsWebApi.getList({
+      path: basePath.value,
     })
 
-    const handleCreateFile = () => {
-      // fs.writeFile(
-      //   basePath.value + `test_${Date.now()}.txt`,
-      //   `Cool, I can do this in the browser!\nDate: ${new Date()}`,
-      //   function (err) {
-      //     if (err) {
-      //       throw err
-      //     }
-      //   }
-      // )
-      handleRefresh()
-    }
-    const handleCreateFolder = () => {
-      // fs.mkdirSync(basePath.value + `folder_${Date.now()}`)
-      // handleRefresh()
-    }
+    files.value = res as unknown as IEntry[]
+  } catch (e) {
+    console.error(e)
+    files.value = []
+  } finally {
+    isLoading.value = false
+  }
+}
+const goUp = () => {
+  const arr = basePath.value.split('/').filter((i) => !!i)
+  // console.log(arr)
+  arr.pop()
+  if (!arr.length) {
+    handleRefresh()
+    return
+  }
+  basePath.value = arr.join('/') + '/'
+  handleRefresh()
+}
+const handleCreateFile = async () => {
+  try {
+    const name = await showInputPrompt({
+      title: 'Create File',
+      value: `file_${moment(new Date()).format('YYYYMMDD_HHmmss')}.txt`,
+    })
+    isLoading.value = true
+    await fsWebApi.createFile({
+      path: normalizePath(basePath.value + '/' + name),
+      file: generateTextFile('', name),
+    })
+    await handleRefresh()
+  } finally {
+    isLoading.value = false
+  }
+}
+const handleCreateFolder = async () => {
+  try {
+    const name = await showInputPrompt({
+      title: 'Create Folder',
+      value: `folder_${moment(new Date()).format('YYYYMMDD_HHmmss')}`,
+    })
+    isLoading.value = true
+    await fsWebApi.createDir({path: normalizePath(basePath.value + '/' + name)})
+    await handleRefresh()
+  } finally {
+    isLoading.value = false
+  }
+}
+const handleOpenPath = (path) => {
+  basePath.value = path
+  handleRefresh()
+}
+const openFileFile = async (item: IEntry) => {
+  await fsWebApi.getStream({path: normalizePath(basePath.value + '/' + item.name)})
+}
+const handleOpen = (item: IEntry) => {
+  if (item.isDirectory) {
+    basePath.value += '/' + item.name
+    handleRefresh()
+    return
+  } else {
+    openFileFile(item)
+  }
+}
 
-    const {openFile} = useFileOpener()
+const starList = useStorage<string[]>(LsKeys.STARED_PATH, [])
+const isStared = computed(() => {
+  return starList.value.includes(basePathNormalized.value)
+})
+const toggleStar = () => {
+  starList.value = toggleArrayElement([...starList.value], basePathNormalized.value)
+}
 
-    const handleFileAction = (type: string, item: BackendFileItem, index: number) => {
-      if (type === 'open') {
-        if (item.isDirectory) {
-          basePath.value += item.filename + '/'
-          handleRefresh()
-          return
-        } else {
-          openFile(item, files.value)
-        }
-        return
-      }
-      if (type === 'rename') {
-        const newName = prompt('input new path', item.filename)
-        if (!newName) {
-          return
-        }
-        // fs.renameSync(basePath.value + item.filename, basePath.value + newName)
-        handleRefresh()
-        return
-      }
-      if (type === 'delete') {
-        const path = basePath.value + item.filename
-        if (item.isDirectory) {
-          // deleteFolderRecursiveSync(path)
-        } else {
-          // fs.unlinkSync(path + item.filename)
-        }
-        handleRefresh()
-      }
-    }
-    return {
-      files,
-      basePath,
-      handleRefresh,
-      goUp,
-      handleCreateFile,
-      handleCreateFolder,
-      handleFileAction,
-      isLoading,
-    }
-  },
+const filterText = ref('')
+const filteredFiles = computed(() => {
+  const search = filterText.value.toLowerCase()
+  return files.value.filter((item) => item.name.toLowerCase().includes(search))
 })
 </script>
 
@@ -136,28 +131,17 @@ export default defineComponent({
     <div class="explorer-header">
       <div class="nav-address">
         <div class="nav-wrap">
-          <button
-            disabled
-            class="btn-action vp-button"
-            @click="handleCreateFile"
-            title="Create Document"
-          >
+          <button class="btn-action vp-button" @click="handleCreateFile" title="Create Document">
             <n-icon size="16">
               <DocumentAdd20Regular />
             </n-icon>
           </button>
-          <button
-            disabled
-            class="btn-action vp-button"
-            @click="handleCreateFolder"
-            title="Create Folder"
-          >
+          <button class="btn-action vp-button" @click="handleCreateFolder" title="Create Folder">
             <n-icon size="16">
               <FolderAdd20Regular />
             </n-icon>
           </button>
-          <!--          <button class="btn-action">Back</button>-->
-          <!--          <button class="btn-action">Forward</button>-->
+
           <button class="btn-action vp-button" @click="goUp" title="Up">
             <n-icon size="16">
               <ArrowUp20Regular />
@@ -169,38 +153,39 @@ export default defineComponent({
             placeholder="Path"
             v-model="basePath"
             class="input-addr vp-input"
-            @keyup.enter="handleRefresh"
+            @change="handleRefresh"
           />
           <button class="vp-button btn-action" @click="handleRefresh">
             <n-icon size="16"><ArrowSync20Filled /> </n-icon>
           </button>
+          <button class="vp-button btn-action" @click="toggleStar">
+            <n-icon size="16">
+              <Star20Filled v-if="isStared" />
+              <Star20Regular v-else />
+            </n-icon>
+          </button>
+
+          <input placeholder="Filter name" v-model="filterText" class="input-filter vp-input" />
+        </div>
+      </div>
+
+      <div v-if="starList.length" class="star-list">
+        <div v-for="path in starList" :key="path">
+          <button @click="handleOpenPath(path)" class="vp-button" :title="path">
+            {{ getLastDirName(path) }}
+          </button>
         </div>
       </div>
     </div>
-    <div class="explorer-content _scrollbar_mini">
-      <n-space align="center" justify="center" v-if="isLoading">
-        <n-spin />
-      </n-space>
-      <div v-show="!isLoading" class="file-list">
-        <div class="file-list-header file-list-row">
-          <div class="list-col c-filename">filename</div>
-          <!--          <div class="list-col c-type">type</div>-->
-          <div class="list-col c-size">size</div>
-          <div class="list-col c-time">Create Time</div>
-          <div class="list-col c-actions">actions</div>
-        </div>
-        <FileListItem
-          :item="item"
-          v-for="(item, index) in files"
-          :key="item.id"
-          @openFile="handleFileAction('open', item, index)"
-          @dblclick="handleFileAction('open', item, index)"
-        />
-
-        <div v-if="!files.length" style="text-align: center; padding: 50px">
-          This folder is empty
-        </div>
-      </div>
+    <div class="explorer-content-wrap _scrollbar_mini">
+      <FileSidebar @openDrive="(i) => handleOpenPath(i.path)" />
+      <FileList
+        v-model:is-loading="isLoading"
+        :files="filteredFiles"
+        @open="handleOpen"
+        @refresh="handleRefresh"
+        :base-path="basePathNormalized"
+      />
     </div>
   </div>
 </template>
@@ -211,14 +196,19 @@ export default defineComponent({
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
   .explorer-header {
-    padding: 0 5px;
+    padding: 4px;
+    border-bottom: 1px solid $color_border;
+
     .nav-address {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 5px 0;
-      gap: 10px;
+      gap: 4px;
+      .btn-action {
+        padding: 4px;
+      }
 
       .nav-wrap {
         display: flex;
@@ -235,13 +225,23 @@ export default defineComponent({
         .input-addr {
           flex: 1;
         }
+        .input-filter {
+          width: 100px;
+        }
       }
     }
+
+    .star-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
   }
-  .explorer-content {
+  .explorer-content-wrap {
     flex: 1;
     overflow: auto;
-    position: relative;
+    display: flex;
   }
 
   .btn-action {
@@ -249,64 +249,6 @@ export default defineComponent({
     cursor: pointer;
     &:disabled {
       cursor: not-allowed;
-    }
-  }
-
-  .file-list {
-    .file-list-header {
-      font-weight: 500;
-      text-transform: capitalize;
-      border: 1px solid $color_border;
-      border-left: 0;
-      border-right: 0;
-      position: sticky;
-      top: 0;
-      background-color: rgba(206, 206, 206, 0.27);
-      color: black;
-      padding: 0 !important;
-    }
-
-    .file-list-row {
-      padding: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .list-col {
-        padding: 0 5px;
-        &.c-icon {
-          padding-left: 10px;
-          width: 50px;
-        }
-
-        &.c-filename {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          min-width: 200px;
-        }
-
-        &.c-type {
-          width: 100px;
-        }
-
-        &.c-size {
-          width: 80px;
-        }
-
-        &.c-time {
-          width: 140px;
-        }
-
-        &.c-actions {
-          padding-right: 10px;
-          display: flex;
-          justify-content: flex-end;
-          gap: 4px;
-          width: 100px;
-        }
-      }
     }
   }
 }

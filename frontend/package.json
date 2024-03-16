@@ -14,6 +14,7 @@
     "@vueuse/integrations": "^10.9.0",
     "axios": "^1.6.2",
     "big.js": "^6.2.1",
+    "change-case": "^4",
     "lodash": "^4.17.21",
     "material-design-icons-iconfont": "^6.7.0",
     "mitt": "^3.0.1",
@@ -27,8 +28,7 @@
     "throttle-debounce": "^2.3.0",
     "vue": "^3.4.18",
     "vue-i18n": "^9.9.0",
-    "vue-router": "^4.2.5",
-    "change-case": "^4"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.18.1",
