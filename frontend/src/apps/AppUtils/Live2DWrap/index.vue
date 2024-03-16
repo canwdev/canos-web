@@ -52,7 +52,7 @@ onMounted(() => {
 
 const isInit = ref(false)
 useScriptTag(
-  'live2d/lib/live2d.js',
+  'live2d/lib/live2d.min.js',
   // on script tag loaded.
   (el: HTMLScriptElement) => {
     isInit.value = true
@@ -64,6 +64,7 @@ useScriptTag(
   <div class="live-2d-wrap">
     <textarea readonly>
 ## 备注
+- TODO: https://github.com/guansss/pixi-live2d-display?tab=readme-ov-file
 - https://github.com/canwdev/live2d-vue-component
 - 由于 live2d.js 过于古老，我找不到未压缩的源码及其api，所以报错了也无法调试。
 - 点击页面报错可能是一些[模型的问题](https://github.com/galnetwen/Live2D/issues/4)。

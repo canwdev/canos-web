@@ -2,6 +2,7 @@ import {ShortcutItem, TaskItem} from '@/enum/os'
 
 interface IStore {
   isBackendAvailable: boolean
+  serverInfo: any
   tasks: TaskItem[]
   activeId: string
 }
@@ -9,9 +10,10 @@ interface IStore {
 export const useSystemStore = defineStore('system', {
   state: (): IStore => {
     return {
+      isBackendAvailable: false,
+      serverInfo: null,
       tasks: [],
       activeId: '',
-      isBackendAvailable: false,
     }
   },
   getters: {

@@ -1,7 +1,7 @@
 import {Body, Controller, Get, Post} from '@nestjs/common'
 import {FsService} from './service'
 
-@Controller('/api/filesystem')
+@Controller('filesystem')
 export class FsController {
   constructor(private readonly fsService: FsService) {}
 
@@ -18,5 +18,10 @@ export class FsController {
   @Post('media-details')
   getDetails(@Body() params: any) {
     return this.fsService.getMediaDetails(params)
+  }
+
+  @Post('fs-api')
+  fsApi(@Body() params: any) {
+    return this.fsService.fsApi(params)
   }
 }

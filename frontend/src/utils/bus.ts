@@ -11,6 +11,7 @@ export const GlobalEvents = {
   ACTION_TOGGLE_PLAY: 'ACTION_TOGGLE_PLAY',
   ACTION_CHANGE_CURRENT_TIME: 'ACTION_CHANGE_CURRENT_TIME',
   ACTION_LOCATE_FILE: 'ACTION_LOCATE_FILE',
+  GLOBAL_EVENT_LOGOUT: 'GLOBAL_EVENT_LOGOUT',
 }
 
 export const useGlobalBusOn = (event: string, fn: any) => {

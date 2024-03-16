@@ -5,7 +5,7 @@ import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {ldThemeOptions, loopModeMap, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
-import {getServerInfo} from '@/api/server'
+import {getServerInfo, serverApi} from '@/api/server'
 import pkg from '../../../package.json'
 import {useSystemStore} from '@/store/system'
 import {customThemeOptions, CustomThemeType} from '@/components/CommonUI/ViewPortWindow/enum'
@@ -17,14 +17,6 @@ export default defineComponent({
     const {t: $t} = useI18n()
     const settingsStore = useSettingsStore()
     const systemStore = useSystemStore()
-    const serverInfo = ref<any>({})
-
-    onMounted(async () => {
-      if (systemStore.isBackendAvailable) {
-        const res = await getServerInfo()
-        serverInfo.value = res || {}
-      }
-    })
 
     const optionList = computed((): StOptionItem[] => {
       return [
@@ -41,10 +33,12 @@ export default defineComponent({
             {
               key: 'backend_version',
               label: '后端服务器版本',
-              subtitle: systemStore.isBackendAvailable ? serverInfo.value.name : '后端服务不可用',
+              subtitle: systemStore.isBackendAvailable
+                ? systemStore.serverInfo.name
+                : '后端服务不可用',
               actionRender: h(
                 'div',
-                systemStore.isBackendAvailable ? serverInfo.value.version : 'N/A'
+                systemStore.isBackendAvailable ? systemStore.serverInfo.version : 'N/A'
               ),
             },
             {

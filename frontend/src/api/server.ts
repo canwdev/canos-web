@@ -6,10 +6,14 @@ const service = Service({
   isToast: false,
 })
 
-export function getServerInfo() {
-  return service.get('/')
-}
-
-export function getAuth(params) {
-  return service.post('/auth', params)
+export const serverApi = {
+  getServerInfo() {
+    return service.get('/server')
+  },
+  userLogin(data: any) {
+    return service.post('/auth/login', data)
+  },
+  userGetInfo() {
+    return service.get('/auth/profile')
+  },
 }

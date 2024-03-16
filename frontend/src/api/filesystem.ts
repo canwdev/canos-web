@@ -6,6 +6,12 @@ const service = Service({
   baseURL: HOST_URL + '/api/filesystem',
 })
 
+export const osWebApi = {
+  fsApi(params) {
+    return service.post('/fs-api', params)
+  },
+}
+
 export function getList(params: any = {}) {
   const {path, getPlayStat} = params
   return service.post('/list', {

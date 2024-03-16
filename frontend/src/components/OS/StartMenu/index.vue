@@ -4,12 +4,12 @@ import StartMenuItem from '@/components/OS/StartMenu/StartMenuItem.vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
-import clickOutSide from '@/utils/directives/clickoutside'
+import {onClickOutside} from '@vueuse/core'
+import globalEventBus, {GlobalEvents} from '@/utils/bus'
 
 export default defineComponent({
   name: 'StartMenu',
   components: {StartMenuItem},
-  directives: {clickOutSide},
   props: {
     visible: {
       type: Boolean,
@@ -35,39 +35,45 @@ export default defineComponent({
       })
     })
 
+    const rootRef = ref()
+
+    onClickOutside(rootRef, (event) => {
+      if (mVisible.value) {
+        mVisible.value = false
+      }
+    })
+
+    const doShutdown = () => {
+      mVisible.value = false
+      systemStore.shutdown()
+      window.close()
+    }
+
+    const doRefresh = () => {
+      location.reload()
+    }
+
+    const doLogout = () => {
+      globalEventBus.emit(GlobalEvents.GLOBAL_EVENT_LOGOUT)
+    }
+
     return {
+      rootRef,
       mVisible,
       systemStore,
       filterText,
       appListFiltered,
       handleItemClick,
-      handlePowerMenu() {
-        mVisible.value = false
-        systemStore.shutdown()
-        window.close()
-
-        // location.reload()
-      },
-      handleClickOutside(e) {
-        // 防止重复点击弹出
-        if (e.target.classList.contains('start-button')) {
-          return
-        }
-        if (mVisible.value) {
-          mVisible.value = false
-        }
-      },
+      doShutdown,
+      doRefresh,
+      doLogout,
     }
   },
 })
 </script>
 
 <template>
-  <div
-    v-click-out-side="handleClickOutside"
-    v-if="mVisible"
-    class="start-menu vp-panel vp-window-panel _panel-bg"
-  >
+  <div ref="rootRef" v-if="mVisible" class="start-menu vp-panel vp-window-panel _panel-bg">
     <div class="start-menu-row">
       <div class="start-menu-left">
         <div class="program-list">
@@ -89,6 +95,8 @@ export default defineComponent({
           <!--            :key="index"-->
           <!--            @click="handleItemClick(item)"-->
           <!--          />-->
+          <button class="vp-button" @click="doRefresh">Refresh</button>
+          <button class="vp-button" @click="doLogout">Logout</button>
         </div>
       </div>
     </div>
@@ -97,7 +105,7 @@ export default defineComponent({
         <input v-model="filterText" placeholder="Search apps" class="input-search vp-input" />
       </div>
       <div class="start-menu-right">
-        <button class="vp-button" @click="handlePowerMenu">Shutdown</button>
+        <button class="vp-button" @click="doShutdown">Shutdown</button>
       </div>
     </div>
   </div>
@@ -143,6 +151,8 @@ export default defineComponent({
   }
 
   .shortcut-list {
+    max-height: 400px;
+    overflow: auto;
   }
 
   .shortcut-split {

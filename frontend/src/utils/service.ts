@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
-// import {getBackendUserToken} from '@/utils/cookies'
+import globalEventBus, {GlobalEvents} from '@/utils/bus'
+import {LsKeys} from '@/enum'
 
 function Service(config: any) {
   const {
@@ -23,14 +24,14 @@ function Service(config: any) {
   // 请求 拦截器
   service.interceptors.request.use(
     (config) => {
-      // window.$loadingBar.start()
-      // if (isAuth) {
-      //   const Authorization = getBackendUserToken()
-      //   if (Authorization) {
-      //     // @ts-ignore
-      //     config.headers.Authorization = 'bearer ' + Authorization
-      //   }
-      // }
+      window.$loadingBar.start()
+      if (isAuth) {
+        const Authorization = localStorage.getItem(LsKeys.LS_KEY_AUTHORIZATION)
+        if (Authorization) {
+          // @ts-ignore
+          config.headers.Authorization = 'Bearer ' + Authorization
+        }
+      }
 
       return config
     },
@@ -45,7 +46,7 @@ function Service(config: any) {
       }
       let {data} = response
 
-      // window.$loadingBar.finish()
+      window.$loadingBar.finish()
       return data
     },
     (error) => {
@@ -53,13 +54,13 @@ function Service(config: any) {
       let backendMessage
       const {response} = error || {}
 
-      // extract backend message
-      if (response && response.data) {
-        const {data} = response
-        if (data.message) {
-          backendMessage = data.message
-        }
+      if (response.status == 401) {
+        // 未授权，请重新登录
+        globalEventBus.emit(GlobalEvents.GLOBAL_EVENT_LOGOUT)
       }
+
+      // extract backend message
+      backendMessage = response?.data?.message
       if (isToast) {
         if (backendMessage) {
           window.$message.error(backendMessage)
@@ -67,7 +68,7 @@ function Service(config: any) {
           window.$message.error(message)
         }
       }
-      // window.$loadingBar.error()
+      window.$loadingBar.error()
       return Promise.reject(error)
     }
   )

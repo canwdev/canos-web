@@ -1,11 +1,13 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useSettingsStore} from '@/store/settings'
+import {useSystemStore} from '@/store/system'
 
 export default defineComponent({
   name: 'DesktopWallpaper',
   setup() {
     const settingsStore = useSettingsStore()
+    const systemStore = useSystemStore()
 
     const bgStyle = computed(() => {
       const s: any = {}
@@ -20,6 +22,7 @@ export default defineComponent({
 
     return {
       bgStyle,
+      systemStore,
     }
   },
 })
@@ -28,6 +31,10 @@ export default defineComponent({
 <template>
   <div class="desktop-wallpaper" :style="bgStyle">
     <slot></slot>
+
+    <span class="watermark-tip font-code">{{
+      `${!systemStore.isBackendAvailable ? '服务器离线模式' : '开发模式'}`
+    }}</span>
   </div>
 </template>
 
@@ -46,5 +53,14 @@ export default defineComponent({
   bottom: 0;
   color: white;
   text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.7);
+
+  .watermark-tip {
+    position: absolute;
+    bottom: 38px;
+    right: 8px;
+    text-shadow: none;
+    white-space: break-spaces;
+    text-align: right;
+  }
 }
 </style>

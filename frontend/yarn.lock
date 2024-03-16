@@ -4336,15 +4336,6 @@ sass@^1.69.7:
     immutable "^4.0.0"
     source-map-js ">=0.6.2 <2.0.0"
 
-sass@^1.70.0:
-  version "1.70.0"
-  resolved "https://registry.npmmirror.com/sass/-/sass-1.70.0.tgz#761197419d97b5358cb25f9dd38c176a8a270a75"
-  integrity sha512-uUxNQ3zAHeAx5nRFskBnrWzDUJrrvpCPD5FNAoRvTi0WwremlheES3tg+56PaVtCs5QDRX5CBLxxKMDJMEa1WQ==
-  dependencies:
-    chokidar ">=3.0.0 <4.0.0"
-    immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
-
 scule@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/scule/-/scule-1.0.0.tgz#895e6f4ba887e78d8b9b4111e23ae84fef82376d"
@@ -4900,7 +4891,7 @@ vue-tsc@^0.38.4:
   dependencies:
     "@volar/vue-typescript" "0.38.9"
 
-vue@^3.2.47, vue@^3.4.18:
+vue@^3.4.18:
   version "3.4.18"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.4.18.tgz#78dc26a3af616325dba6eb3156b87ec5e6d9b089"
   integrity sha512-0zLRYamFRe0wF4q2L3O24KQzLyLpL64ye1RUToOgOxuWZsb/FhaNRdGmeozdtVYLz6tl94OXLaK7/WQIrVCw1A==
@@ -4923,13 +4914,6 @@ vueuc@^0.4.58:
     seemly "^0.3.6"
     vdirs "^0.1.4"
     vooks "^0.2.4"
-
-"web-mediadevices-player@https://github.com/canwdev/web-mediadevices-player.git":
-  version "1.1.0"
-  resolved "https://github.com/canwdev/web-mediadevices-player.git#374210a6cc52f8445150ba29ddbfa46aa3d03e34"
-  dependencies:
-    sass "^1.70.0"
-    vue "^3.2.47"
 
 webidl-conversions@^4.0.2:
   version "4.0.2"

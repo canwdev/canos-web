@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {getList} from '@/api/filesystem'
+import {getList, osWebApi} from '@/api/filesystem'
 import {BackendFileItem} from '@/enum/file'
 import {useFileOpener} from '@/components/OS/os-hooks'
 import FileListItem from './FileListItem.vue'
@@ -31,6 +31,12 @@ export default defineComponent({
         if (!basePath.value) {
           basePath.value = '/'
         }
+
+        await osWebApi.fsApi({
+          method: 'readdir',
+          args: ['D:\\Downloads'],
+        })
+
         const res = await getList({
           path: basePath.value,
           getPlayStat: true,

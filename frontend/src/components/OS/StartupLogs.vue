@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {formatSiteTitle} from '@/router'
-import {getServerInfo} from '@/api/server'
+import {getServerInfo, serverApi} from '@/api/server'
 import {sleep} from '@/utils'
 import {useSystemStore} from '@/store/system'
 
@@ -26,17 +26,6 @@ export default defineComponent({
     async function startup() {
       await appendLog(formatSiteTitle())
       await appendLog('System is starting...')
-
-      try {
-        await appendLog('Get backend info...')
-        const res = await getServerInfo()
-        await appendLog(JSON.stringify(res))
-        systemStore.isBackendAvailable = true
-      } catch (e: any) {
-        await appendLog(e.message, true)
-        systemStore.isBackendAvailable = false
-      }
-
       await appendLog('Welcome to use!')
       await sleep(100)
 

@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common'
 import {getExactPath, getMediaPath} from './utils/filesystem-utils'
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
 import * as path from 'path'
 import {mfpTool} from './utils/mfp-tool'
 import {getMetadata} from './utils/media-tool'
@@ -116,5 +116,11 @@ export class FsService {
       sendData.cover = `/images/${coverFileName}`
     }
     return sendData
+  }
+
+  async fsApi(params) {
+    const {method = '', args = []} = params
+    const result = await fs[method](...args)
+    return result
   }
 }
