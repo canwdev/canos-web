@@ -7,6 +7,9 @@ import {fileURLToPath, URL} from 'url'
 import {VitePWA} from 'vite-plugin-pwa'
 // https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    BUILD_TIMESTAMP: Date.now(),
+  },
   base: './',
   resolve: {
     alias: {

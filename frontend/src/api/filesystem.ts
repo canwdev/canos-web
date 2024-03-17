@@ -26,12 +26,15 @@ export const fsWebApi = {
   createDir(params) {
     return service.post('/create-dir', params)
   },
-  createFile(params) {
+  createFile(params, config: any = {}) {
     const {path, file} = params
     let formData = new FormData()
     formData.append('file', file)
 
-    return service.post('/upload-file', formData, {params: {path}})
+    return service.post('/upload-file', formData, {
+      params: {path},
+      ...config,
+    })
   },
   renameEntry(params) {
     return service.post('/rename', params)

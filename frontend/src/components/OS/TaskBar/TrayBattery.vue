@@ -14,15 +14,23 @@ import {
   Battery120Regular,
   Battery020Regular,
 } from '@vicons/fluent'
+import moment from 'moment/moment'
 
 const {charging, chargingTime, dischargingTime, level} = useBattery()
+
+const formatTime = (seconds) => {
+  return moment.duration(seconds, 'seconds').format('HH:mm:ss', {
+    trim: false,
+  })
+}
+
 const titleDisplay = computed(() => {
   let title = `Battery: ${level.value * 100}%`
   if (charging.value) {
     title += ' (Charging)'
-    title += `\nchargingTime: ${chargingTime.value}(s)`
+    title += `\nchargingTime: ${formatTime(chargingTime.value)}`
   } else {
-    title += `\ndischargingTime: ${dischargingTime.value}(s)`
+    title += `\ndischargingTime: ${formatTime(dischargingTime.value)}`
   }
   return title
 })

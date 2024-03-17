@@ -77,9 +77,6 @@ Last Modified: ${formatDate(item.value.lastModified)}
     padding-top: 4px;
     line-height: 1.4;
     width: 100%;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
   }

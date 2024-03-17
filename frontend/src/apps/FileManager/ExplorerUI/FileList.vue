@@ -28,6 +28,7 @@ import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
 import {sortMethodMap} from '@/apps/FileManager/sort'
 import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
+import UploadQueue from '@/apps/FileManager/UploadQueue.vue'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -233,6 +234,7 @@ const {
 } = useFileDialog({
   multiple: true,
 })
+const uploadQueueRef = ref()
 onSelectFiles(async (files) => {
   try {
     if (!files) {
@@ -241,16 +243,22 @@ onSelectFiles(async (files) => {
     isLoading.value = true
     // @ts-ignore
     for (const file of files) {
-      console.log(file)
-      await fsWebApi.createFile({
+      // await fsWebApi.createFile({
+      //   path: normalizePath(basePath.value + '/' + file.name),
+      //   file,
+      // })
+      uploadQueueRef.value.addTask({
+        name: file.name,
         path: normalizePath(basePath.value + '/' + file.name),
         file,
       })
     }
-    emit('refresh')
+    resetSelectFiles()
+    // emit('refresh')
+  } catch (e) {
+    resetSelectFiles()
   } finally {
     isLoading.value = false
-    console.log('fin')
   }
 })
 
@@ -273,8 +281,9 @@ const handleDownload = async () => {
 }
 
 const ctxMenuOptions = computed(() => {
+  const isSingle = selectedItems.value.length === 1
   return [
-    {
+    isSingle && {
       label: 'Open',
       props: {
         onClick: () => {
@@ -282,15 +291,17 @@ const ctxMenuOptions = computed(() => {
         },
       },
     },
-    {label: 'Rename', props: {onClick: handleRename}},
+    isSingle && {label: 'Rename', props: {onClick: handleRename}},
     {label: 'Download', props: {onClick: handleDownload}},
     {label: 'Delete', props: {onClick: confirmDelete}},
-  ]
+  ].filter(Boolean)
 })
 
 const ctxMenuRef = ref()
 const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
-  selectedItems.value = [item]
+  if (!selectedItemsSet.value.has(item)) {
+    selectedItems.value = [item]
+  }
   ctxMenuRef.value.showMenu(event)
 }
 </script>
@@ -417,6 +428,8 @@ const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
 
       <QuickContextMenu :options="ctxMenuOptions" ref="ctxMenuRef" />
     </div>
+
+    <UploadQueue ref="uploadQueueRef" @complete="emit('refresh')" />
   </div>
 </template>
 
