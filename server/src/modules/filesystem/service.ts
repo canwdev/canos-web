@@ -7,6 +7,18 @@ import {getMetadata} from './utils/media-tool'
 import {serverInfo} from '@/enum'
 import {IDrive, IEntry} from '@/types/server'
 import * as nodeDiskInfo from 'node-disk-info'
+import {Response} from 'express'
+import * as moment from 'moment/moment'
+import * as Archiver from 'archiver'
+
+interface ZipResponseFile {
+  name: string
+  path: string
+}
+
+export interface ZipResponse extends Response {
+  zip: (files: ZipResponseFile[], name?: string, cb?: () => void) => void
+}
 
 @Injectable()
 export class FsService {
@@ -162,32 +174,36 @@ export class FsService {
   }
 
   async getList(params): Promise<IEntry[]> {
-    const {path} = params
-    if (!fs.existsSync(path)) {
-      throw new HttpException('Path not exist', HttpStatus.NOT_FOUND)
+    try {
+      const {path} = params
+      if (!fs.existsSync(path)) {
+        throw new HttpException('Path not exist', HttpStatus.NOT_FOUND)
+      }
+      const files = await fs.readdir(path)
+      return files.map((entryName: string) => {
+        const entryPath = Path.join(path, entryName)
+        let stat: any = null
+        let error
+
+        try {
+          stat = fs.statSync(entryPath)
+        } catch (e) {
+          error = e.message
+        }
+
+        const isDirectory = stat && stat.isDirectory()
+        return {
+          name: entryName,
+          isDirectory,
+          hidden: entryName.startsWith('.'),
+          lastModified: stat?.ctimeMs || 0,
+          size: isDirectory ? undefined : stat?.size,
+          error,
+        }
+      })
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }
-    const files = await fs.readdir(path)
-    return files.map((entryName: string) => {
-      const entryPath = Path.join(path, entryName)
-      let stat: any = null
-      let error
-
-      try {
-        stat = fs.statSync(entryPath)
-      } catch (e) {
-        error = e.message
-      }
-
-      const isDirectory = stat && stat.isDirectory()
-      return {
-        name: entryName,
-        isDirectory,
-        hidden: entryName.startsWith('.'),
-        lastModified: stat?.ctimeMs || 0,
-        size: isDirectory ? undefined : stat?.size,
-        error,
-      }
-    })
   }
 
   uploadFile(path: string, buffer: Buffer) {
@@ -207,5 +223,59 @@ export class FsService {
       stream.on('error', (error) => reject(error))
       stream.on('finish', () => resolve(true))
     })
+  }
+
+  downloadFiles(paths: string[], response: Response) {
+    try {
+      if (!paths.length) {
+        throw new Error('No file to download')
+      }
+      if (paths.length === 1) {
+        const path = paths[0]
+        if (!fs.existsSync(path)) {
+          throw new Error(`Path ${path} not exist!`)
+        }
+        const stat = fs.statSync(path)
+        if (!stat.isDirectory()) {
+          return response.download(path, Path.basename(path), {
+            // 允许隐藏文件，否则隐藏文件会下载失败
+            dotfiles: 'allow',
+          })
+        }
+      }
+      const downloadName = `archive_${moment(new Date()).format('YYYYMMDD_HHmmss')}.zip`
+
+      const archive = Archiver('zip', {
+        zlib: {level: 9},
+      })
+      paths.forEach((path) => {
+        if (!fs.existsSync(path)) {
+          throw new Error(`[getRecursiveFlatPaths] Path ${path} not exist!`)
+        }
+        const stat = fs.statSync(path)
+        if (!stat.isDirectory()) {
+          // console.log('add file', path)
+          archive.file(path, {name: Path.basename(path)})
+        } else {
+          // console.log('add dir', path)
+          const children = fs.readdirSync(path)
+          if (children.length) {
+            archive.directory(path, Path.basename(path))
+          } else {
+            // 空文件夹
+            archive.append(null, {name: Path.basename(path) + '/'})
+          }
+        }
+      })
+      response.header(
+        'Content-Disposition',
+        `attachment; filename="${encodeURIComponent(downloadName)}.zip"`,
+      )
+      archive.pipe(response)
+      archive.finalize()
+    } catch (e) {
+      console.log(e)
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
   }
 }

@@ -71,4 +71,7 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()],
     }),
   ],
+  optimizeDeps: {
+    exclude: ['@viselect/vanilla'],
+  },
 })

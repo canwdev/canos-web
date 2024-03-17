@@ -14,15 +14,16 @@ import {Response} from 'express'
 import {FsService} from './service'
 import * as fs from 'fs-extra'
 import {FileInterceptor} from '@nestjs/platform-express'
+import {SkipAuth} from '@/modules/auth/skip-auth'
+import {guid} from '@/utils'
 
-interface ZipResponseFile {
-  name: string
-  path: string
+type ShareLinkMap = {
+  // 由随机id到paths的影射
+  [key: string]: string[]
 }
 
-interface ZipResponse extends Response {
-  zip: (files: ZipResponseFile[], name?: string, cb?: () => void) => void
-}
+// 存储临时下载分享的key
+const shareLinkMap: ShareLinkMap = {}
 
 @Controller('filesystem')
 export class FsController {
@@ -105,13 +106,41 @@ export class FsController {
   }
 
   @Get('download')
-  async downloadEntry(@Query('path') path: string | string[], @Res() response: ZipResponse) {
+  async downloadEntry(@Query('paths') paths: string[], @Res() response: Response) {
+    return this.fsService.downloadFiles(paths, response)
+  }
+
+  // 由于下载需要鉴权，所以创建公开分享链接
+  @Post('create-share-link')
+  async createShareLink(@Body('paths') paths: string[]) {
+    const key = guid()
+    shareLinkMap[key] = paths
+    return {key}
+  }
+
+  // 不需要鉴权的下载
+  @Get('download-share')
+  @SkipAuth()
+  async downloadShare(@Query('key') key: string, @Res() response: Response) {
     try {
-      console.log(path)
-      if (typeof path === 'string') {
-        return response.download(path)
+      if (!shareLinkMap[key]) {
+        throw new Error('[downloadShare] share key is invalid')
       }
-      throw new Error('TBD')
+      return this.fsService.downloadFiles(shareLinkMap[key], response)
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  // 不需要鉴权的流式传输
+  @Get('stream-share')
+  @SkipAuth()
+  streamShare(@Query('key') key: string, @Res() response: Response) {
+    try {
+      if (!shareLinkMap[key]) {
+        throw new Error('[streamShare] share key is invalid')
+      }
+      return response.sendFile(shareLinkMap[key][0])
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }

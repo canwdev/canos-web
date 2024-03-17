@@ -2,8 +2,8 @@
 import {
   ArrowSync20Filled,
   ArrowUp20Regular,
-  DocumentAdd20Regular,
-  FolderAdd20Regular,
+  ArrowLeft20Regular,
+  ArrowRight20Regular,
   Star20Filled,
   Star20Regular,
 } from '@vicons/fluent'
@@ -21,7 +21,6 @@ import {
   normalizePath,
   toggleArrayElement,
 } from '@/apps/FileManager/utils'
-import {useFuse} from '@vueuse/integrations/useFuse'
 
 const files = ref<IEntry[]>([])
 const basePath = ref('/')
@@ -54,6 +53,35 @@ const handleRefresh = async () => {
     isLoading.value = false
   }
 }
+
+/* 历史记录功能 START */
+const backHistory = ref<string[]>([])
+const forwardHistory = ref<string[]>([])
+const addHistory = (list: string[], path = basePathNormalized.value) => {
+  const last = list[list.length - 1]
+  if (!last || (last && last !== path)) {
+    list.push(path)
+  }
+}
+const goBack = () => {
+  const path = backHistory.value[backHistory.value.length - 2]
+  if (!path) {
+    return
+  }
+  backHistory.value.pop()
+  addHistory(forwardHistory.value)
+  handleOpenPath(path, false)
+}
+const goForward = () => {
+  const path = forwardHistory.value.pop()
+  if (!path) {
+    return
+  }
+  addHistory(backHistory.value, path)
+  handleOpenPath(path, false)
+}
+/* 历史记录功能 END */
+
 const goUp = () => {
   const arr = basePath.value.split('/').filter((i) => !!i)
   // console.log(arr)
@@ -62,52 +90,37 @@ const goUp = () => {
     handleRefresh()
     return
   }
-  basePath.value = arr.join('/') + '/'
-  handleRefresh()
+  handleOpenPath(arr.join('/') + '/')
 }
-const handleCreateFile = async () => {
-  try {
-    const name = await showInputPrompt({
-      title: 'Create File',
-      value: `file_${moment(new Date()).format('YYYYMMDD_HHmmss')}.txt`,
-    })
-    isLoading.value = true
-    await fsWebApi.createFile({
-      path: normalizePath(basePath.value + '/' + name),
-      file: generateTextFile('', name),
-    })
-    await handleRefresh()
-  } finally {
-    isLoading.value = false
-  }
-}
-const handleCreateFolder = async () => {
-  try {
-    const name = await showInputPrompt({
-      title: 'Create Folder',
-      value: `folder_${moment(new Date()).format('YYYYMMDD_HHmmss')}`,
-    })
-    isLoading.value = true
-    await fsWebApi.createDir({path: normalizePath(basePath.value + '/' + name)})
-    await handleRefresh()
-  } finally {
-    isLoading.value = false
-  }
-}
-const handleOpenPath = (path) => {
+const handleOpenPath = (path, updateHistory = true) => {
   basePath.value = path
+  filterText.value = ''
   handleRefresh()
+  if (updateHistory) {
+    addHistory(backHistory.value)
+  }
 }
 const openFileFile = async (item: IEntry) => {
   await fsWebApi.getStream({path: normalizePath(basePath.value + '/' + item.name)})
 }
+const openFileNewTab = async (item: IEntry) => {
+  try {
+    isLoading.value = true
+    await fsWebApi.getStream({path: normalizePath(basePath.value + '/' + item.name)})
+    const {key} = (await fsWebApi.createShareLink({
+      paths: [normalizePath(basePath.value + '/' + item.name)],
+    })) as unknown as any
+    window.open(fsWebApi.getStreamShareLink({key}))
+  } finally {
+    isLoading.value = false
+  }
+}
 const handleOpen = (item: IEntry) => {
   if (item.isDirectory) {
-    basePath.value += '/' + item.name
-    handleRefresh()
+    handleOpenPath((basePath.value += '/' + item.name))
     return
   } else {
-    openFileFile(item)
+    openFileNewTab(item)
   }
 }
 
@@ -128,20 +141,29 @@ const filteredFiles = computed(() => {
 
 <template>
   <div class="explorer-wrap">
-    <div class="explorer-header">
+    <div class="explorer-header vp-panel">
       <div class="nav-address">
         <div class="nav-wrap">
-          <button class="btn-action vp-button" @click="handleCreateFile" title="Create Document">
+          <button
+            :disabled="backHistory.length <= 1"
+            class="btn-action vp-button"
+            @click="goBack"
+            title="Back"
+          >
             <n-icon size="16">
-              <DocumentAdd20Regular />
+              <ArrowLeft20Regular />
             </n-icon>
           </button>
-          <button class="btn-action vp-button" @click="handleCreateFolder" title="Create Folder">
+          <button
+            :disabled="forwardHistory.length <= 0"
+            class="btn-action vp-button"
+            @click="goForward"
+            title="Forward"
+          >
             <n-icon size="16">
-              <FolderAdd20Regular />
+              <ArrowRight20Regular />
             </n-icon>
           </button>
-
           <button class="btn-action vp-button" @click="goUp" title="Up">
             <n-icon size="16">
               <ArrowUp20Regular />
@@ -199,12 +221,16 @@ const filteredFiles = computed(() => {
   position: relative;
   .explorer-header {
     padding: 4px;
+    border: none;
     border-bottom: 1px solid $color_border;
+    box-shadow: none;
+    border-radius: 0;
 
     .nav-address {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 4px;
       .btn-action {
         padding: 4px;
@@ -219,6 +245,7 @@ const filteredFiles = computed(() => {
       .input-wrap {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         flex: 1;
         gap: 4px;
 

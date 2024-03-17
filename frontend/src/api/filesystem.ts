@@ -2,8 +2,9 @@ import Service from '@/utils/service'
 import {HOST_URL} from '@/enum'
 import qs from 'qs'
 
+const baseURL = HOST_URL + '/api/filesystem'
 const service = Service({
-  baseURL: HOST_URL + '/api/filesystem',
+  baseURL,
 })
 
 export const fsWebApi = {
@@ -40,6 +41,15 @@ export const fsWebApi = {
   },
   downloadEntry(params) {
     return service.get('/download', {params})
+  },
+  createShareLink(params) {
+    return service.post('/create-share-link', params)
+  },
+  getDownloadShareLink(params) {
+    return baseURL + `/download-share?key=${params.key}`
+  },
+  getStreamShareLink(params) {
+    return baseURL + `/stream-share?key=${params.key}`
   },
 }
 

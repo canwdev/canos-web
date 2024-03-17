@@ -112,6 +112,11 @@ html, body, #app {
   }
 }
 
+.selection-area {
+  background: $primary_opacity;
+  border: 1px solid $primary;
+}
+
 /* Vue transitions */
 .fade-enter-active,
 .fade-leave-active {

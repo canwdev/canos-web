@@ -1,36 +1,45 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
+import {useSelectionArea} from '@/hooks/use-selection-area'
 
-export default defineComponent({
-  name: 'DesktopContent',
-  setup() {
-    const systemStore = useSystemStore()
+const systemStore = useSystemStore()
 
-    const handleItemClick = (item: ShortcutItem) => {
-      systemStore.createTask(item)
-    }
-    return {
-      systemStore,
-      handleItemClick,
-    }
+const handleItemClick = (item: ShortcutItem) => {
+  systemStore.createTask(item)
+}
+
+const selected = reactive<Set<number>>(new Set())
+const rootRef = ref()
+useSelectionArea({
+  containerRef: rootRef,
+  selectables: ['.desktop-icon'],
+  onStart: () => {
+    selected.clear()
+  },
+  onStop: (stored) => {
+    stored.forEach((el) => {
+      const index = el.getAttribute('data-index')
+      console.log(index)
+      selected.add(Number(index))
+    })
   },
 })
 </script>
 
 <template>
-  <div class="desktop-content">
+  <div ref="rootRef" class="desktop-content" @click="selected.clear()">
     <button
       v-for="(item, index) in systemStore.allApps"
       :key="index"
-      @dblclick="handleItemClick(item)"
-      class="desktop-icon-wrap btn-no-style"
+      :data-index="index"
+      :class="{active: selected.has(index)}"
+      @dblclick.stop="handleItemClick(item)"
+      @click.stop
+      class="desktop-icon btn-no-style"
     >
-      <span class="desktop-icon">
-        <img class="desktop-icon-image" :src="item.icon" :alt="item.title" />
-        <span class="desktop-icon-name">{{ item.title }}</span>
-      </span>
+      <img class="desktop-icon-image" :src="item.icon" :alt="item.title" />
+      <span class="desktop-icon-name">{{ item.title }}</span>
     </button>
   </div>
 </template>
@@ -48,34 +57,39 @@ export default defineComponent({
   gap: 28px 1px;
   user-select: none;
 
-  .desktop-icon-wrap {
-    .desktop-icon {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      cursor: default;
-      &:active {
-        outline: 1px dashed white;
-      }
-      &:hover {
-        background-color: rgba(224, 224, 224, 0.3);
-      }
+  .desktop-icon {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: default;
+    border-radius: 2px;
 
-      .desktop-icon-image {
-        flex-shrink: 0;
-        width: 48px;
-        height: 48px;
-        pointer-events: none;
-      }
+    &:focus {
+      outline: 1px dashed white;
+    }
 
-      .desktop-icon-name {
-        text-align: center;
-        font-size: 12px;
-        padding-top: 2px;
-        padding-bottom: 2px;
-        line-height: 1.4;
-        text-shadow: 1px 1px 2px #000;
-      }
+    &:hover {
+      background-color: rgba(224, 224, 224, 0.3);
+    }
+
+    &.active {
+      background-color: rgba(224, 224, 224, 0.3);
+    }
+
+    .desktop-icon-image {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      pointer-events: none;
+    }
+
+    .desktop-icon-name {
+      text-align: center;
+      font-size: 12px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      line-height: 1.4;
+      text-shadow: 1px 1px 2px #000;
     }
   }
 }

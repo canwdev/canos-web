@@ -9,4 +9,5 @@ export const LsKeys = {
   SHOW_HIDDEN_FILES: 'canos_web_explorer_show_hidden_files',
   EXPLORER_IS_GRID_VIEW: 'canos_web_explorer_is_grid_view',
   EXPLORER_SORT_MODE: 'canos_web_explorer_sort_mode',
+  EXPLORER_SHOW_SIDEBAR: 'canos_web_explorer_show_sidebar',
 }
