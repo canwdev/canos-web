@@ -97,6 +97,7 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
     transform: translateY(-50%);
     opacity: 0.3;
     transition: all 1s;
+    z-index: 10;
     &._folded {
       right: -20px;
       svg {

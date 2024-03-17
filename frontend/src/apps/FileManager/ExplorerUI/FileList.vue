@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {IEntry} from '@server/types/server'
+import {IEntry, SortType} from '@server/types/server'
 import FileListItem from '@/apps/FileManager/ExplorerUI/FileListItem.vue'
 import {generateTextFile, normalizePath, toggleArrayElement} from '@/apps/FileManager/utils'
 import {showInputPrompt} from '@/components/CommonUI/input-prompt'
@@ -24,6 +24,10 @@ import {
   ArrowSortDownLines16Regular,
 } from '@vicons/fluent'
 import {useSelectionArea} from '@/hooks/use-selection-area'
+import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
+import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
+import {sortMethodMap} from '@/apps/FileManager/sort'
+import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -37,14 +41,43 @@ const props = withDefaults(defineProps<Props>(), {})
 const {basePath, files} = toRefs(props)
 const isLoading = useVModel(props, 'isLoading', emit)
 
+const isGridView = useStorage(LsKeys.EXPLORER_IS_GRID_VIEW, false)
+const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, SortType.default)
+const showSortMenu = ref(false)
+const sortOptions = computed((): QuickOptionItem[] => {
+  return [
+    {label: 'Default', value: SortType.default},
+    {label: 'Name ▲', value: SortType.name},
+    {label: 'Name ▼', value: SortType.nameDesc},
+    {label: 'Size ▲', value: SortType.size},
+    {label: 'Size ▼', value: SortType.sizeDesc},
+    {label: 'Extension ▲', value: SortType.extension},
+    {label: 'Extension ▼', value: SortType.extensionDesc},
+    {label: 'Last Modified ▲', value: SortType.lastModified},
+    {label: 'Last Modified ▼', value: SortType.lastModifiedDesc},
+  ].map((i) => {
+    return {
+      label: i.label,
+      props: {
+        class: sortMode.value === i.value ? 'active' : '',
+        onClick: () => {
+          sortMode.value = i.value
+        },
+      },
+    }
+  })
+})
+
 const showHidden = useStorage(LsKeys.SHOW_HIDDEN_FILES, false)
 const filteredFiles = computed(() => {
-  return files.value.filter((item) => {
-    if (showHidden.value) {
-      return true
-    }
-    return !item.hidden
-  })
+  return files.value
+    .filter((item) => {
+      if (showHidden.value) {
+        return true
+      }
+      return !item.hidden
+    })
+    .sort(sortMethodMap[sortMode.value])
 })
 
 const selectedItems = ref<IEntry[]>([])
@@ -239,12 +272,31 @@ const handleDownload = async () => {
   }
 }
 
-const isGridView = useStorage(LsKeys.EXPLORER_IS_GRID_VIEW, false)
-const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, '')
+const ctxMenuOptions = computed(() => {
+  return [
+    {
+      label: 'Open',
+      props: {
+        onClick: () => {
+          return emit('open', selectedItems.value[0])
+        },
+      },
+    },
+    {label: 'Rename', props: {onClick: handleRename}},
+    {label: 'Download', props: {onClick: handleDownload}},
+    {label: 'Delete', props: {onClick: confirmDelete}},
+  ]
+})
+
+const ctxMenuRef = ref()
+const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
+  selectedItems.value = [item]
+  ctxMenuRef.value.showMenu(event)
+}
 </script>
 
 <template>
-  <div class="explorer-list-wrap">
+  <div class="explorer-list-wrap" @contextmenu.prevent>
     <transition name="fade">
       <div class="os-loading-container _absolute" v-if="isLoading">
         <n-spin />
@@ -319,11 +371,14 @@ const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, '')
             <AppsList20Regular v-else />
           </n-icon>
         </button>
-        <button class="vp-button" title="Toggle Sort">
-          <n-icon size="16">
-            <ArrowSortDownLines16Regular />
-          </n-icon>
-        </button>
+        <div class="action-button-wrap">
+          <button class="vp-button" title="Toggle Sort" @click="showSortMenu = true">
+            <n-icon size="16">
+              <ArrowSortDownLines16Regular />
+            </n-icon>
+          </button>
+          <QuickOptions v-model:visible="showSortMenu" :options="sortOptions" />
+        </div>
       </div>
     </div>
     <div ref="explorerContentRef" class="explorer-content" @click="selectedItems = []">
@@ -343,6 +398,7 @@ const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, '')
           :active="selectedItemsSet.has(item)"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
+          @contextmenu.prevent="handleShowCtxMenu(item, $event)"
         />
       </div>
       <div v-else class="explorer-grid-view">
@@ -355,8 +411,11 @@ const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, '')
           :active="selectedItemsSet.has(item)"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
+          @contextmenu.prevent="handleShowCtxMenu(item, $event)"
         />
       </div>
+
+      <QuickContextMenu :options="ctxMenuOptions" ref="ctxMenuRef" />
     </div>
   </div>
 </template>
@@ -384,6 +443,18 @@ const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, '')
       .vp-button {
         display: inline-flex;
         padding: 4px 6px;
+      }
+      .action-button-wrap {
+        display: inline-flex;
+        position: relative;
+        .quick-options {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          left: unset;
+          transform: unset;
+          width: 200px;
+        }
       }
     }
   }

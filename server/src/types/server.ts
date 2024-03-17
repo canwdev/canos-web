@@ -21,3 +21,15 @@ export interface IDrive {
   free?: number
   total?: number
 }
+
+export enum SortType {
+  default = 'default',
+  name = 'name',
+  nameDesc = 'nameDesc',
+  size = 'size',
+  sizeDesc = 'sizeDesc',
+  extension = 'extension',
+  extensionDesc = 'extensionDesc',
+  lastModified = 'lastModified',
+  lastModifiedDesc = 'lastModifiedDesc',
+}
