@@ -10,7 +10,7 @@ import {
   Subtract20Filled,
 } from '@vicons/fluent'
 
-const LS_KEY_VP_WINDOW_OPTION = 'page_craft_vp_window'
+const LS_KEY_VP_WINDOW_OPTION = 'vp_window'
 
 export default defineComponent({
   name: 'ViewPortWindow',
@@ -54,10 +54,15 @@ export default defineComponent({
       type: [String],
       default: null,
     },
-    // 窗口初始化配置
+    // 窗口初始化配置，可传入部分 WinOptions
     initWinOptions: {
-      type: Object as PropType<WinOptions>,
+      type: Object,
       default: null,
+    },
+    // 初始化使窗口在视口中间
+    initCenter: {
+      type: Boolean,
+      default: true,
     },
     // 窗口出现/隐藏的过度动画名字
     transitionName: {
@@ -85,21 +90,15 @@ export default defineComponent({
     const isMaximized = useModelWrapperV2(props, emit, 'maximized')
     const isMinimized = useModelWrapperV2(props, emit, 'minimized')
 
-    const getInitWinOptions = () => {
-      const defaultValue = props.initWinOptions || {
-        top: '50px',
-        left: '50px',
-        width: '300px',
-        height: '300px',
-        maximized: false,
-      }
-      if (!props.wid) {
-        return props.initWinOptions || defaultValue
-      }
-      return JSON.parse(localStorage.getItem(storageKey) || 'null') || defaultValue
+    let defaultWinOptions: WinOptions = {
+      top: '10px',
+      left: '10px',
+      width: '300px',
+      height: 'auto',
+      maximized: false,
     }
 
-    const winOptions = reactive<WinOptions>(getInitWinOptions())
+    const winOptions = reactive<WinOptions>({...defaultWinOptions})
     watch(
       winOptions,
       () => {
@@ -172,22 +171,47 @@ export default defineComponent({
         handleResizeDebounced()
       }).observe(winElRef.value)
 
-      initDialogStyle()
+      initWindowStyle()
     })
 
-    const initDialogStyle = () => {
-      const lsState = getInitWinOptions()
-      if (lsState) {
-        winOptions.top = lsState.top
-        winOptions.left = lsState.left
-        winOptions.width = lsState.width
-        winOptions.height = lsState.height
+    const isInit = ref(false)
+    const initWindowStyle = () => {
+      let defaultValue = {
+        ...defaultWinOptions,
+      }
+      if (props.initWinOptions) {
+        defaultValue = {
+          ...defaultValue,
+          ...props.initWinOptions,
+        }
       }
 
-      winElRef.value.style.top = winOptions.top
-      winElRef.value.style.left = winOptions.left
-      winElRef.value.style.width = winOptions.width
-      winElRef.value.style.height = winOptions.height
+      let lsState
+      let lsVal
+      if (!props.wid) {
+        lsState = defaultValue
+      } else {
+        lsVal = JSON.parse(localStorage.getItem(storageKey) || 'null')
+        lsState = lsVal || defaultValue
+      }
+
+      winElRef.value.style.left = winOptions.left = lsState.left
+      winElRef.value.style.top = winOptions.top = lsState.top
+      winElRef.value.style.width = winOptions.width = lsState.width
+      winElRef.value.style.height = winOptions.height = lsState.height
+      isInit.value = true
+
+      if (props.initCenter && !lsVal) {
+        setTimeout(() => {
+          const rect = winElRef.value.getBoundingClientRect()
+          console.log(rect)
+          const cx = Math.round(window.innerWidth / 2 - rect.width / 2)
+          const cy = Math.round(window.innerHeight / 2 - rect.height / 2)
+
+          winOptions.left = winElRef.value.style.left = cx + 'px'
+          winOptions.top = winElRef.value.style.top = cy + 'px'
+        })
+      }
     }
 
     const handleMoveDebounced = throttle(500, false, ({top, left}) => {
@@ -228,15 +252,18 @@ export default defineComponent({
       }
     }
 
+    const handleClose = () => {
+      mVisible.value = false
+      emit('onClose')
+    }
+
     return {
+      isInit,
       mVisible,
       winElRef,
       titleBarRef,
       titleBarButtonsRef,
-      handleClose() {
-        mVisible.value = false
-        emit('onClose')
-      },
+      handleClose,
       setActive,
       setSize,
       isMaximized,
@@ -250,7 +277,7 @@ export default defineComponent({
 <template>
   <transition :name="transitionName">
     <div
-      v-show="mVisible"
+      v-show="isInit && mVisible"
       class="vp-window"
       :class="{
         _allow_move: allowMove && !isMaximized,

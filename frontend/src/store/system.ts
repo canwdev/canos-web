@@ -38,13 +38,9 @@ export const useSystemStore = defineStore('system', {
           return
         }
       }
-      const newTask = new TaskItem({...shortcut, minimized: true})
+      const newTask = new TaskItem({...shortcut})
       this.tasks = [...this.tasks, newTask]
-      setTimeout(() => {
-        // 窗口出现动画
-        newTask.minimized = false
-        this.activeId = newTask.guid
-      }, 100)
+      this.activeId = newTask.guid
     },
     /**
      * 关闭任务

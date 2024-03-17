@@ -96,7 +96,7 @@ export default defineComponent({
           <!--            @click="handleItemClick(item)"-->
           <!--          />-->
           <button class="vp-button" @click="doRefresh">Refresh</button>
-          <button class="vp-button" @click="doLogout">Logout</button>
+          <button class="vp-button" @click="doShutdown">Shutdown</button>
         </div>
       </div>
     </div>
@@ -105,7 +105,7 @@ export default defineComponent({
         <input v-model="filterText" placeholder="Search apps" class="input-search vp-input" />
       </div>
       <div class="start-menu-right">
-        <button class="vp-button" @click="doShutdown">Shutdown</button>
+        <button class="vp-button" @click="doLogout">Logout</button>
       </div>
     </div>
   </div>

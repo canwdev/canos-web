@@ -1,5 +1,4 @@
-<script lang="ts">
-import {defineComponent, ref} from 'vue'
+<script setup lang="ts">
 import {FormInst, FormValidationError, useMessage, FormRules} from 'naive-ui'
 import {serverApi} from '@/api/server'
 import {useRouter} from 'vue-router'
@@ -11,83 +10,72 @@ interface ModelType {
   password: string | null
 }
 
-export default defineComponent({
-  components: {ViewPortWindow},
-  setup() {
-    const router = useRouter()
-    const formRef = ref<FormInst | null>(null)
-    const message = useMessage()
-    const formModel = ref<ModelType>({
-      username: import.meta.env.VITE_USER_NAME || '',
-      password: import.meta.env.VITE_USER_PASSWORD || '',
-    })
-
-    const formRules: FormRules = {
-      username: [
-        {
-          required: true,
-          message: 'Username is required',
-          trigger: ['blur'],
-        },
-      ],
-      password: [
-        {
-          required: true,
-          message: 'Password is required',
-          trigger: ['blur'],
-        },
-      ],
-    }
-
-    const handleLogin = async () => {
-      try {
-        const {username, password} = formModel.value
-        const res = await serverApi.userLogin({
-          username: (username || '').trim(),
-          password: password,
-        })
-        const {access_token} = res
-        if (!access_token) {
-          window.$message.error('Invalid token!')
-          return
-        }
-        console.log(access_token)
-        localStorage.setItem(LsKeys.LS_KEY_AUTHORIZATION, access_token)
-        await router.push({path: '/'})
-      } catch (e) {
-        console.error(e)
-      } finally {
-      }
-    }
-
-    // 自动聚焦输入框
-    const inputUsernameRef = ref()
-    const autoFocusInput = () => {
-      inputUsernameRef.value?.focus()
-    }
-
-    onMounted(async () => {
-      autoFocusInput()
-    })
-
-    return {
-      formRef,
-      formModel,
-      formRules,
-      handleValidateButtonClick(e: MouseEvent) {
-        e.preventDefault()
-        formRef.value?.validate((errors: Array<FormValidationError> | undefined) => {
-          if (errors) {
-            message.error('Invalid Form!')
-            return
-          }
-          handleLogin()
-        })
-      },
-      inputUsernameRef,
-    }
-  },
+const router = useRouter()
+const formRef = ref<FormInst | null>(null)
+const message = useMessage()
+const formModel = ref<ModelType>({
+  username: import.meta.env.VITE_USER_NAME || '',
+  password: import.meta.env.VITE_USER_PASSWORD || '',
 })
+
+const formRules: FormRules = {
+  username: [
+    {
+      required: true,
+      message: 'Username is required',
+      trigger: ['blur'],
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: 'Password is required',
+      trigger: ['blur'],
+    },
+  ],
+}
+
+const handleLogin = async () => {
+  try {
+    const {username, password} = formModel.value
+    const res = await serverApi.userLogin({
+      username: (username || '').trim(),
+      password: password,
+    })
+    const {access_token} = res as unknown as any
+    if (!access_token) {
+      window.$message.error('Invalid token!')
+      return
+    }
+    console.log(access_token)
+    localStorage.setItem(LsKeys.LS_KEY_AUTHORIZATION, access_token)
+    await router.push({path: '/'})
+  } catch (e) {
+    console.error(e)
+  } finally {
+  }
+}
+
+// 自动聚焦输入框
+const inputUsernameRef = ref()
+const autoFocusInput = () => {
+  inputUsernameRef.value?.focus()
+}
+
+onMounted(async () => {
+  autoFocusInput()
+})
+
+const handleValidateButtonClick = (e: MouseEvent) => {
+  e.preventDefault()
+  formRef.value?.validate((errors: Array<FormValidationError> | undefined) => {
+    if (errors) {
+      message.error('Invalid Form!')
+      return
+    }
+    handleLogin()
+  })
+}
 </script>
 
 <template>

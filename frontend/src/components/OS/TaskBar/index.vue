@@ -117,12 +117,12 @@ export default defineComponent({
 
     .task-list {
       flex: 1;
-      padding-left: 5px;
-      padding-right: 5px;
+      padding: 0 4px;
       display: flex;
       gap: 2px;
       flex-wrap: wrap;
       overflow-y: auto;
+      box-sizing: border-box;
 
       .task-item {
         height: 100%;

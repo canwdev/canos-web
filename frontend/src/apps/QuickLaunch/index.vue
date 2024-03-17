@@ -22,6 +22,7 @@ export default defineComponent({
 
     onMounted(() => {
       focus()
+      update()
     })
     const {textarea: textareaRef, input: anyText} = useTextareaAutosize()
 

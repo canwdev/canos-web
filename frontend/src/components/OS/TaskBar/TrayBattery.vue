@@ -39,16 +39,16 @@ const titleDisplay = computed(() => {
 <template>
   <div class="tray-icon" :title="titleDisplay">
     <BatteryCharge20Regular v-if="charging" />
-    <Battery1020Regular v-else-if="level >= 0.95" />
-    <Battery920Regular v-else-if="level >= 0.9" />
-    <Battery820Regular v-else-if="level >= 0.8" />
-    <Battery720Regular v-else-if="level >= 0.7" />
-    <Battery620Regular v-else-if="level >= 0.6" />
-    <Battery520Regular v-else-if="level >= 0.5" />
-    <Battery420Regular v-else-if="level >= 0.4" />
-    <Battery320Regular v-else-if="level >= 0.3" />
-    <Battery220Regular v-else-if="level >= 0.2" />
-    <Battery120Regular v-else-if="level >= 0.1" />
+    <Battery1020Regular v-else-if="level >= 0.9" />
+    <Battery920Regular v-else-if="level >= 0.8" />
+    <Battery820Regular v-else-if="level >= 0.7" />
+    <Battery720Regular v-else-if="level >= 0.6" />
+    <Battery620Regular v-else-if="level >= 0.5" />
+    <Battery520Regular v-else-if="level >= 0.4" />
+    <Battery420Regular v-else-if="level >= 0.3" />
+    <Battery320Regular v-else-if="level >= 0.2" />
+    <Battery220Regular v-else-if="level >= 0.1" />
+    <Battery120Regular v-else-if="level >= 0.05" />
     <Battery020Regular v-else />
   </div>
 </template>

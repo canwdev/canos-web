@@ -100,8 +100,8 @@ const defineDemoApp = (title = 'App', component): ShortcutItem => {
     icon: handleAssetsUrl('@/assets/icons/shell32.dll(3).png'),
     // winId: '',
     winOptions: {
-      top: '150px',
-      left: '150px',
+      top: '0px',
+      left: '0px',
       width: '480px',
       height: '320px',
     },
