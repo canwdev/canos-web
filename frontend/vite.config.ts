@@ -16,6 +16,8 @@ export default defineConfig({
   base: './',
   build: {
     outDir: '../server/dist-frontend',
+    minify: 'terser',
+    emptyOutDir: true,
   },
   resolve: {
     alias: {
