@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useModelWrapper} from '@/hooks/use-model-wrapper'
+import {useVModel} from '@vueuse/core'
 
 export interface ILayout {
   xRatio: number
@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
 })
 
-const mVisible = useModelWrapper(props, emit, 'visible')
+const mVisible = useVModel(props, 'visible', emit)
 
 const layoutList: ILayout[] = [
   // 3个一组

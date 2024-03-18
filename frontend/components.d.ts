@@ -67,7 +67,6 @@ declare module '@vue/runtime-core' {
     TrayMemory: typeof import('./src/components/OS/TaskBar/TrayMemory.vue')['default']
     TrayNetwork: typeof import('./src/components/OS/TaskBar/TrayNetwork.vue')['default']
     ViewPortWindow: typeof import('./src/components/CommonUI/ViewPortWindow/index.vue')['default']
-    VueMonaco: typeof import('./src/components/CommonUI/Others/VueMonaco.vue')['default']
     VueRender: typeof import('./src/components/CommonUI/OptionUI/Tools/VueRender.vue')['default']
   }
 }

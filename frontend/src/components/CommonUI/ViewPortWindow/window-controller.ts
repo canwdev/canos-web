@@ -1,4 +1,4 @@
-import {throttle} from 'throttle-debounce'
+import {useThrottleFn} from '@vueuse/core'
 
 // 初始化窗口状态
 export type WinOptions = {
@@ -66,7 +66,6 @@ type DraggableOptions = {
   // 移动中回调函数
   onMove?: Function
   onActive?: Function
-  onActiveChange?: Function
   // 包含在这个元素下面的子元素将不会触发移动
   preventNode?: HTMLElement
   // 调整窗口大小时始终让内容显示在视口内
@@ -183,7 +182,7 @@ export class WindowController {
     this.handleDragMove = this.handleDragMove.bind(this)
     this.handleDragStop = this.handleDragStop.bind(this)
     this.currentResizeDirection = null
-    this.handleResizeDebounced = throttle(500, false, () => {
+    this.handleResizeDebounced = useThrottleFn(() => {
       if (this.isHidden()) {
         return
       }
@@ -196,7 +195,7 @@ export class WindowController {
       if (typeof onMove === 'function') {
         onMove({top, left})
       }
-    })
+    }, 500)
 
     if (autoPosOnResize) {
       window.addEventListener('resize', this.handleResizeDebounced)
@@ -474,8 +473,8 @@ export class WindowController {
     const {
       preventOnActive = false, // 传入 true 用于防止死循环
     } = opt
-    const {onActive, onActiveChange} = this.options
     if (!preventOnActive) {
+      const {onActive} = this.options
       if (typeof onActive === 'function') {
         onActive()
       }
@@ -509,7 +508,7 @@ export class WindowController {
 
     // console.log('[updateZIndex]', els, maxZIndex)
 
-    onActiveChange && onActiveChange(true)
+    dragTargetEl.classList.add('_active')
 
     // 是当前窗口不进行操作
     if (dragTargetEl === maxZIndexEl) {
@@ -523,7 +522,7 @@ export class WindowController {
       if (el !== dragTargetEl) {
         // @ts-ignore
         el.style.zIndex = parseInt(getComputedStyle(el)['z-index']) - 1
-        onActiveChange && onActiveChange(false)
+        el.classList.remove('_active')
       }
     })
   }

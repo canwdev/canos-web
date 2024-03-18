@@ -1,8 +1,6 @@
 <script lang="ts">
 import {defineComponent, PropType, shallowRef} from 'vue'
-import {useModelWrapper, useModelWrapperV2} from '@/hooks/use-model-wrapper'
 import {WindowController, WinOptions} from './window-controller'
-import {throttle} from 'throttle-debounce'
 import {
   ArrowMaximize20Regular,
   ArrowMinimize20Regular,
@@ -10,7 +8,8 @@ import {
   Subtract20Filled,
 } from '@vicons/fluent'
 import LayoutHelper from './LayoutHelper/index.vue'
-import {useMouseEnter} from '@/components/CommonUI/ViewPortWindow/LayoutHelper/use-mouse-enter'
+import {useDynamicClassName, useMouseOver} from './LayoutHelper/use-utils'
+import {useThrottleFn, useVModel} from '@vueuse/core'
 
 const LS_KEY_VP_WINDOW_OPTION = 'vp_window'
 
@@ -89,15 +88,14 @@ export default defineComponent({
   setup(props, {emit}) {
     const {allowMaximum, allowMove} = toRefs(props)
     const storageKey = LS_KEY_VP_WINDOW_OPTION + '_' + props.wid
-    const mVisible = useModelWrapper(props, emit, 'visible')
-    const winElRef = ref()
+    const mVisible = useVModel(props, 'visible', emit)
+    const rootRef = ref()
     const titleBarRef = ref()
     const titleBarButtonsRef = ref()
     const dWindow = shallowRef<any>(null)
 
-    const isActive = ref(false)
-    const isMaximized = useModelWrapperV2(props, emit, 'maximized')
-    const isMinimized = useModelWrapperV2(props, emit, 'minimized')
+    const isMaximized = useVModel(props, 'maximized', emit, {passive: true})
+    const isMinimized = useVModel(props, 'minimized', emit, {passive: true})
 
     const isTransition = ref(false)
     const setIsTransition = (val: boolean) => {
@@ -110,6 +108,14 @@ export default defineComponent({
         }, 300)
       }
     }
+
+    // 请勿使用vue :class="{}" 进行类的绑定，因为vue会覆盖DOM动态添加的class
+    useDynamicClassName(rootRef, '_maximized', isMaximized)
+    useDynamicClassName(rootRef, '_transition', isTransition)
+    const isAllowMove = computed(() => {
+      return allowMove.value && !isMaximized.value
+    })
+    useDynamicClassName(rootRef, '_allow_move', isAllowMove)
 
     let defaultWinOptions: WinOptions = {
       top: '10px',
@@ -166,7 +172,7 @@ export default defineComponent({
     onMounted(() => {
       dWindow.value = new WindowController({
         dragHandleEl: titleBarRef.value,
-        dragTargetEl: winElRef.value,
+        dragTargetEl: rootRef.value,
         allowOut: true,
         // opacify: 0.8,
         preventNode: titleBarButtonsRef.value,
@@ -175,9 +181,6 @@ export default defineComponent({
         },
         onActive(data) {
           emit('onActive')
-        },
-        onActiveChange(flag) {
-          isActive.value = flag
         },
         autoPosOnResize: true,
         isDebug: false,
@@ -189,7 +192,7 @@ export default defineComponent({
 
       new ResizeObserver(() => {
         handleResizeDebounced()
-      }).observe(winElRef.value)
+      }).observe(rootRef.value)
 
       initWindowStyle()
     })
@@ -215,21 +218,21 @@ export default defineComponent({
         lsState = lsVal || defaultValue
       }
 
-      winElRef.value.style.left = winOptions.left = lsState.left
-      winElRef.value.style.top = winOptions.top = lsState.top
-      winElRef.value.style.width = winOptions.width = lsState.width
-      winElRef.value.style.height = winOptions.height = lsState.height
+      rootRef.value.style.left = winOptions.left = lsState.left
+      rootRef.value.style.top = winOptions.top = lsState.top
+      rootRef.value.style.width = winOptions.width = lsState.width
+      rootRef.value.style.height = winOptions.height = lsState.height
       isInit.value = true
 
       setTimeout(() => {
         if (props.initCenter && !lsVal) {
-          const rect = winElRef.value.getBoundingClientRect()
+          const rect = rootRef.value.getBoundingClientRect()
           console.log(rect)
           const cx = Math.round(window.innerWidth / 2 - rect.width / 2)
           const cy = Math.round(window.innerHeight / 2 - rect.height / 2)
 
-          winOptions.left = winElRef.value.style.left = cx + 'px'
-          winOptions.top = winElRef.value.style.top = cy + 'px'
+          winOptions.left = rootRef.value.style.left = cx + 'px'
+          winOptions.top = rootRef.value.style.top = cy + 'px'
         } else {
           // 初始化后检查窗口是否在视口外，如果在则修复
           dWindow.value.handleResizeDebounced()
@@ -237,20 +240,20 @@ export default defineComponent({
       })
     }
 
-    const handleMoveDebounced = throttle(500, false, ({top, left}) => {
+    const handleMoveDebounced = useThrottleFn(({top, left}) => {
       winOptions.top = top
       winOptions.left = left
-    })
+    }, 500)
 
-    const handleResizeDebounced = throttle(50, false, () => {
-      if (!mVisible.value || !winElRef.value) {
+    const handleResizeDebounced = useThrottleFn(() => {
+      if (!mVisible.value || !rootRef.value) {
         return
       }
       emit('resize')
 
-      winOptions.width = getComputedStyle(winElRef.value).width
-      winOptions.height = getComputedStyle(winElRef.value).height
-    })
+      winOptions.width = getComputedStyle(rootRef.value).width
+      winOptions.height = getComputedStyle(rootRef.value).height
+    }, 50)
 
     onBeforeUnmount(() => {
       if (dWindow.value) {
@@ -284,17 +287,17 @@ export default defineComponent({
       setIsTransition(true)
 
       setTimeout(() => {
-        winElRef.value.style.left = winOptions.left = size.left + 'px'
-        winElRef.value.style.top = winOptions.top = size.top + 'px'
-        winElRef.value.style.width = winOptions.width = size.width + 'px'
-        winElRef.value.style.height = winOptions.height = size.height + 'px'
+        rootRef.value.style.left = winOptions.left = size.left + 'px'
+        rootRef.value.style.top = winOptions.top = size.top + 'px'
+        rootRef.value.style.width = winOptions.width = size.width + 'px'
+        rootRef.value.style.height = winOptions.height = size.height + 'px'
         setIsTransition(false)
       })
     }
 
     // 鼠标悬浮一定时间后，显示
     const mButtonRef = ref()
-    useMouseEnter(mButtonRef, {
+    useMouseOver(mButtonRef, {
       timeout: 800,
       onEnter: () => {
         isShowLayoutHelper.value = true
@@ -304,12 +307,11 @@ export default defineComponent({
     return {
       isInit,
       mVisible,
-      winElRef,
+      rootRef,
       titleBarRef,
       titleBarButtonsRef,
       handleClose,
       setActive,
-      isActive,
       isMaximized,
       isMinimized,
       toggleMaximized,
@@ -324,17 +326,7 @@ export default defineComponent({
 
 <template>
   <transition :name="transitionName">
-    <div
-      v-show="isInit && mVisible"
-      class="vp-window"
-      :class="{
-        _allow_move: allowMove && !isMaximized,
-        _maximized: isMaximized,
-        _transition: isTransition,
-        _active: isActive,
-      }"
-      ref="winElRef"
-    >
+    <div v-show="isInit && mVisible" class="vp-window" ref="rootRef">
       <LayoutHelper v-model:visible="isShowLayoutHelper" @setWindowLayout="setWindowLayout" />
       <div class="vp-window-content">
         <div ref="titleBarRef" class="vp-window-title-bar" @dblclick="toggleMaximized">
