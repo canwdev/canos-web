@@ -16,10 +16,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    
+
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"]
     }
-  }
+  },
+  "exclude": [
+    "dist-frontend"
+  ]
 }

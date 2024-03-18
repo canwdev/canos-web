@@ -1,0 +1,6 @@
+{
+  "main": "dist/main.js",
+  "output": "sea-prep.blob",
+  "assets": {
+  }
+}

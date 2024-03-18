@@ -3,7 +3,6 @@ import {AppController} from './app.controller'
 import {AppService} from './app.service'
 import {FsModule} from './modules/filesystem/module'
 import {ServeStaticModule} from '@nestjs/serve-static'
-import {IMAGE_PATH, MUSIC_LIBRARY_PATH} from './modules/filesystem/utils/enum'
 import {JwtAuthGuard} from '@/modules/auth/jwt-auth.guard'
 import {APP_GUARD, APP_INTERCEPTOR} from '@nestjs/core'
 import {CryptInterceptor} from '@/modules/crypt/crypt.interceptor'
@@ -11,6 +10,7 @@ import {CryptMiddleware} from '@/modules/crypt/crypt.middleware'
 import {UsersModule} from '@/modules/users/users.module'
 import {AuthModule} from '@/modules/auth/auth.module'
 import {isDev} from '@/enum'
+import {join} from 'path'
 
 console.log('isDev', isDev)
 
@@ -18,13 +18,9 @@ console.log('isDev', isDev)
   imports: [
     AuthModule,
     UsersModule,
+    //  静态资源（前端）目录
     ServeStaticModule.forRoot({
-      rootPath: MUSIC_LIBRARY_PATH,
-      serveRoot: '/mfs',
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: IMAGE_PATH,
-      serveRoot: '/images',
+      rootPath: join(__dirname, '../dist-frontend', '/'),
     }),
     FsModule,
   ],
