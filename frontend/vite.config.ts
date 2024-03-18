@@ -1,16 +1,22 @@
 import {defineConfig} from 'vite'
-import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import {NaiveUiResolver} from 'unplugin-vue-components/resolvers'
-import {fileURLToPath, URL} from 'url'
-import {VitePWA} from 'vite-plugin-pwa'
+import { fileURLToPath, URL } from 'node:url'
+import fs from 'node:fs'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import VueDevTools from 'vite-plugin-vue-devtools'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
     BUILD_TIMESTAMP: Date.now(),
   },
   base: './',
+  build: {
+    outDir: '../server/dist-frontend',
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -32,34 +38,16 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/styles/_variables.scss";`,
+        // additionalData: `@import "@/styles/_variables.scss";`,
+        // 临时修复：error during build: Error: This file is already being loaded.
+        additionalData: fs.readFileSync('./src/styles/_variables.scss', {encoding: 'utf-8'})
       },
     },
   },
   plugins: [
-    // VitePWA({
-    //   registerType: 'autoUpdate',
-    //   includeAssets: ['favicon.png', 'favicon-192.png', 'favicon-512.png'],
-    //   manifest: {
-    //     name: '',
-    //     short_name: '',
-    //     description: '',
-    //     theme_color: '#83B253',
-    //     icons: [
-    //       {
-    //         src: 'favicon-192.png',
-    //         sizes: '192x192',
-    //         type: 'image/png',
-    //       },
-    //       {
-    //         src: 'favicon-512.png',
-    //         sizes: '512x512',
-    //         type: 'image/png',
-    //       },
-    //     ],
-    //   },
-    // }),
     vue(),
+    vueJsx(),
+    VueDevTools(),
     AutoImport({
       dts: './src/auto-import.d.ts',
       imports: [
