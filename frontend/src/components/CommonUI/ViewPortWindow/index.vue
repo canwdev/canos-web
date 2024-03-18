@@ -9,12 +9,20 @@ import {
   Dismiss20Regular,
   Subtract20Filled,
 } from '@vicons/fluent'
+import LayoutHelper from './LayoutHelper/index.vue'
+import {useMouseEnter} from '@/components/CommonUI/ViewPortWindow/LayoutHelper/use-mouse-enter'
 
 const LS_KEY_VP_WINDOW_OPTION = 'vp_window'
 
 export default defineComponent({
   name: 'ViewPortWindow',
-  components: {Subtract20Filled, ArrowMinimize20Regular, ArrowMaximize20Regular, Dismiss20Regular},
+  components: {
+    LayoutHelper,
+    Subtract20Filled,
+    ArrowMinimize20Regular,
+    ArrowMaximize20Regular,
+    Dismiss20Regular,
+  },
   props: {
     // 是否显示窗口
     visible: {
@@ -87,8 +95,21 @@ export default defineComponent({
     const titleBarButtonsRef = ref()
     const dWindow = shallowRef<any>(null)
 
+    const isActive = ref(false)
     const isMaximized = useModelWrapperV2(props, emit, 'maximized')
     const isMinimized = useModelWrapperV2(props, emit, 'minimized')
+
+    const isTransition = ref(false)
+    const setIsTransition = (val: boolean) => {
+      if (val) {
+        isTransition.value = val
+      } else {
+        setTimeout(() => {
+          // 等待动画播放结束
+          isTransition.value = val
+        }, 300)
+      }
+    }
 
     let defaultWinOptions: WinOptions = {
       top: '10px',
@@ -134,10 +155,6 @@ export default defineComponent({
       dWindow.value.maximized = val
 
       winOptions.maximized = val
-
-      setTimeout(() => {
-        dWindow.value.updateZIndex()
-      }, 100)
     })
 
     watch(mVisible, (val) => {
@@ -158,6 +175,9 @@ export default defineComponent({
         },
         onActive(data) {
           emit('onActive')
+        },
+        onActiveChange(flag) {
+          isActive.value = flag
         },
         autoPosOnResize: true,
         isDebug: false,
@@ -201,8 +221,8 @@ export default defineComponent({
       winElRef.value.style.height = winOptions.height = lsState.height
       isInit.value = true
 
-      if (props.initCenter && !lsVal) {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (props.initCenter && !lsVal) {
           const rect = winElRef.value.getBoundingClientRect()
           console.log(rect)
           const cx = Math.round(window.innerWidth / 2 - rect.width / 2)
@@ -210,8 +230,11 @@ export default defineComponent({
 
           winOptions.left = winElRef.value.style.left = cx + 'px'
           winOptions.top = winElRef.value.style.top = cy + 'px'
-        })
-      }
+        } else {
+          // 初始化后检查窗口是否在视口外，如果在则修复
+          dWindow.value.handleResizeDebounced()
+        }
+      })
     }
 
     const handleMoveDebounced = throttle(500, false, ({top, left}) => {
@@ -239,16 +262,11 @@ export default defineComponent({
       dWindow.value.updateZIndex({preventOnActive: true})
     }
 
-    const setSize = (w, h) => {
-      dWindow.value.updateZIndex({preventOnActive: true})
-      winElRef.value.style.width = w
-      winElRef.value.style.height = h
-      // handleResizeDebounced()
-    }
-
-    const handleTitlebarDbClick = () => {
+    const toggleMaximized = () => {
       if (allowMaximum.value) {
+        setIsTransition(true)
         isMaximized.value = !isMaximized.value
+        setIsTransition(false)
       }
     }
 
@@ -256,6 +274,32 @@ export default defineComponent({
       mVisible.value = false
       emit('onClose')
     }
+
+    const isShowLayoutHelper = ref(false)
+
+    const setWindowLayout = (size) => {
+      if (isMaximized.value) {
+        isMaximized.value = false
+      }
+      setIsTransition(true)
+
+      setTimeout(() => {
+        winElRef.value.style.left = winOptions.left = size.left + 'px'
+        winElRef.value.style.top = winOptions.top = size.top + 'px'
+        winElRef.value.style.width = winOptions.width = size.width + 'px'
+        winElRef.value.style.height = winOptions.height = size.height + 'px'
+        setIsTransition(false)
+      })
+    }
+
+    // 鼠标悬浮一定时间后，显示
+    const mButtonRef = ref()
+    useMouseEnter(mButtonRef, {
+      timeout: 800,
+      onEnter: () => {
+        isShowLayoutHelper.value = true
+      },
+    })
 
     return {
       isInit,
@@ -265,10 +309,14 @@ export default defineComponent({
       titleBarButtonsRef,
       handleClose,
       setActive,
-      setSize,
+      isActive,
       isMaximized,
       isMinimized,
-      handleTitlebarDbClick,
+      toggleMaximized,
+      isTransition,
+      isShowLayoutHelper,
+      setWindowLayout,
+      mButtonRef,
     }
   },
 })
@@ -282,11 +330,14 @@ export default defineComponent({
       :class="{
         _allow_move: allowMove && !isMaximized,
         _maximized: isMaximized,
+        _transition: isTransition,
+        _active: isActive,
       }"
       ref="winElRef"
     >
+      <LayoutHelper v-model:visible="isShowLayoutHelper" @setWindowLayout="setWindowLayout" />
       <div class="vp-window-content">
-        <div ref="titleBarRef" class="vp-window-title-bar" @dblclick="handleTitlebarDbClick">
+        <div ref="titleBarRef" class="vp-window-title-bar" @dblclick="toggleMaximized">
           <div class="vp-window-title-bar-text text-overflow">
             <slot name="titleBarLeft"></slot>
           </div>
@@ -301,7 +352,8 @@ export default defineComponent({
 
               <button
                 v-if="allowMaximum"
-                @click="isMaximized = !isMaximized"
+                ref="mButtonRef"
+                @click="toggleMaximized"
                 :class="[isMaximized ? 'is-restore' : 'is-maximize']"
               >
                 <n-icon size="20">
@@ -330,6 +382,7 @@ export default defineComponent({
   z-index: 100;
   min-height: 50px;
   min-width: 50px;
+  box-sizing: border-box;
   &._allow_move {
     position: fixed;
     z-index: 100;
@@ -362,6 +415,10 @@ export default defineComponent({
     .draggable-window-resize {
       pointer-events: none;
     }
+  }
+
+  &._transition {
+    transition: all 0.2s !important;
   }
 
   .vp-window-content {

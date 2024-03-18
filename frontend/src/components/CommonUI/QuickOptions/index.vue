@@ -294,7 +294,7 @@ export default defineComponent({
     outline: none;
     .option-item {
       &.focus {
-        box-shadow: 0 0 0 1px currentColor inset;
+        outline-color: currentColor;
       }
     }
   }
@@ -338,10 +338,12 @@ export default defineComponent({
     min-width: 120px;
     position: relative;
     box-sizing: border-box;
-    transition: all 0.2s;
+    transition: all 0.1s;
     display: flex;
     align-items: center;
     gap: 8px;
+    outline: 1px dashed transparent;
+    outline-offset: -1px;
 
     &._back {
       padding: 2px 24px;
@@ -389,9 +391,11 @@ export default defineComponent({
       outline: none;
     }
 
-    &:hover {
-      background-color: $color_border;
-      transition: all 0s;
+    &:not(&._back) {
+      &:hover {
+        background-color: $color_hover;
+        transition: all 0s;
+      }
     }
 
     &.active {

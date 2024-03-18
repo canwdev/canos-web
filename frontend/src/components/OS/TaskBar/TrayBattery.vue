@@ -37,9 +37,9 @@ const titleDisplay = computed(() => {
 </script>
 
 <template>
-  <div class="tray-icon" :title="titleDisplay">
-    <BatteryCharge20Regular v-if="charging" />
-    <Battery1020Regular v-else-if="level >= 0.9" />
+  <div class="tray-icon battery-icon-wrap" :title="titleDisplay">
+    <span v-if="charging" class="i-charging" title="🗲">+</span>
+    <Battery1020Regular v-if="level >= 0.9" />
     <Battery920Regular v-else-if="level >= 0.8" />
     <Battery820Regular v-else-if="level >= 0.7" />
     <Battery720Regular v-else-if="level >= 0.6" />
@@ -52,3 +52,18 @@ const titleDisplay = computed(() => {
     <Battery020Regular v-else />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.battery-icon-wrap {
+  position: relative;
+  .i-charging {
+    left: -2px;
+    bottom: -2px;
+    font-size: 12px;
+    position: absolute;
+    color: black;
+    font-weight: bolder;
+    text-shadow: 1px 1px white, -1px -1px white, 1px -1px white, -1px 1px white;
+  }
+}
+</style>

@@ -66,6 +66,7 @@ type DraggableOptions = {
   // 移动中回调函数
   onMove?: Function
   onActive?: Function
+  onActiveChange?: Function
   // 包含在这个元素下面的子元素将不会触发移动
   preventNode?: HTMLElement
   // 调整窗口大小时始终让内容显示在视口内
@@ -473,8 +474,8 @@ export class WindowController {
     const {
       preventOnActive = false, // 传入 true 用于防止死循环
     } = opt
+    const {onActive, onActiveChange} = this.options
     if (!preventOnActive) {
-      const {onActive} = this.options
       if (typeof onActive === 'function') {
         onActive()
       }
@@ -508,7 +509,7 @@ export class WindowController {
 
     // console.log('[updateZIndex]', els, maxZIndex)
 
-    dragTargetEl.classList.add('_active')
+    onActiveChange && onActiveChange(true)
 
     // 是当前窗口不进行操作
     if (dragTargetEl === maxZIndexEl) {
@@ -522,7 +523,7 @@ export class WindowController {
       if (el !== dragTargetEl) {
         // @ts-ignore
         el.style.zIndex = parseInt(getComputedStyle(el)['z-index']) - 1
-        el.classList.remove('_active')
+        onActiveChange && onActiveChange(false)
       }
     })
   }
