@@ -1,9 +1,13 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
+import {useStorage} from '@vueuse/core'
+import {useRemoteOptions} from '@/components/CommonUI/QuickOptions/use-remote-options'
+import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 
 export default defineComponent({
   name: 'IframeBrowser',
+  components: {QuickOptions},
   props: {
     visible: {
       type: Boolean,
@@ -12,18 +16,23 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const mVisible = useModelWrapper(props, emit, 'visible')
-    const isMaximum = ref(false)
     const isLoading = ref(false)
 
     const iframeRef = ref()
     const iframeSrc = ref('')
-    const addressBarUrl = ref('')
+    const addressBarUrl = useStorage('pagecraft_iframe_browser_url', '')
 
     const titleText = computed(() => {
       if (isLoading.value) {
         return '(Loading...)'
       }
       return ''
+    })
+
+    onMounted(() => {
+      if (addressBarUrl.value) {
+        handleGo()
+      }
     })
 
     const handleGo = () => {
@@ -39,42 +48,39 @@ export default defineComponent({
       console.error('[handleIframeError]', e)
     }
 
-    const shortcutList = computed(() => {
-      return [
-        {label: 'Google', value: 'https://www.google.com/webhp?igu=1'},
-        {label: 'Bing', value: 'https://www.bing.com'},
-        {label: 'Win11React', value: 'https://win11.blueedge.me/'},
-        {label: 'Grid Layout it', value: 'https://grid.layoutit.com/'},
-        {label: 'Can I use', value: 'https://caniuse.com/'},
-        {label: 'CSS Gradient Generator', value: 'https://www.colorzilla.com/gradient-editor/'},
-        {label: 'CSS clip-path maker', value: 'https://bennettfeely.com/clippy/'},
-        {label: 'JSON Editor Online', value: 'https://jsoneditoronline.org/'},
-        {label: '在线工具 tool.lu', value: 'https://tool.lu/'},
-        {label: '二维码生成 cli.im', value: 'https://cli.im/'},
-      ].map((item) => {
+    const {options: shortcutList} = useRemoteOptions({
+      fetchFn: async () => {
+        const res = await fetch('./bookmarks.json')
+        return await res.json()
+      },
+      mapFn: (item) => {
         return {
           label: '🌎 ' + (item.label || item.value),
           value: item.value,
+          props: {
+            onClick: !item.children
+              ? () => {
+                  addressBarUrl.value = item.value
+                  handleGo()
+                }
+              : undefined,
+          },
         }
-      })
+      },
     })
-    const handleSelectShortcut = (url) => {
-      addressBarUrl.value = url
-      handleGo()
-    }
+    const showShortcuts = ref(false)
 
     return {
       mVisible,
       iframeRef,
       iframeSrc,
       addressBarUrl,
-      isMaximum,
       handleGo,
       handleIframeLoad,
       handleIframeError,
       titleText,
       shortcutList,
-      handleSelectShortcut,
+      showShortcuts,
     }
   },
 })
@@ -83,15 +89,10 @@ export default defineComponent({
 <template>
   <div class="iframe-browser-inner-wrap">
     <div class="iframe-browser-address-bar-wrap">
-      <n-dropdown
-        :options="shortcutList"
-        key-field="value"
-        size="small"
-        placement="bottom-start"
-        @select="handleSelectShortcut"
-      >
-        <n-button size="tiny">@</n-button>
-      </n-dropdown>
+      <div class="button-wrap">
+        <n-button size="tiny" @click="showShortcuts = true">@</n-button>
+        <QuickOptions :options="shortcutList" v-model:visible="showShortcuts" title="Shortcuts" />
+      </div>
 
       <n-input
         class="iframe-browser-input font-code"
@@ -121,6 +122,16 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 
+  .button-wrap {
+    position: relative;
+    .quick-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 250px;
+    }
+  }
+
   .iframe-browser-address-bar-wrap {
     display: flex;
     .iframe-browser-input {
@@ -130,8 +141,6 @@ export default defineComponent({
 
   .iframe-browser-inner-iframe {
     flex: 1;
-    margin: 2px;
-    border-radius: 8px;
   }
 }
 </style>
