@@ -40,9 +40,9 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // additionalData: `@import "@/styles/_variables.scss";`,
+        additionalData: `@import "@/styles/_variables.scss";`,
         // 临时修复：error during build: Error: This file is already being loaded.
-        additionalData: fs.readFileSync('./src/styles/_variables.scss', {encoding: 'utf-8'})
+        // additionalData: fs.readFileSync('./src/styles/_variables.scss', {encoding: 'utf-8'})
       },
     },
   },

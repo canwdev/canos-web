@@ -8,7 +8,10 @@ import {
   Subtract20Filled,
 } from '@vicons/fluent'
 import LayoutHelper from '@/components/CommonUI/ViewPortWindow/utils/LayoutHelper.vue'
-import {useDynamicClassName, useMouseOver} from '@/components/CommonUI/ViewPortWindow/utils/use-utils'
+import {
+  useDynamicClassName,
+  useMouseOver,
+} from '@/components/CommonUI/ViewPortWindow/utils/use-utils'
 import {useThrottleFn, useVModel} from '@vueuse/core'
 
 const LS_KEY_VP_WINDOW_OPTION = 'vp_window'
@@ -74,7 +77,7 @@ export default defineComponent({
     // 窗口出现/隐藏的过度动画名字
     transitionName: {
       type: String,
-      default: 'mc-fade-scale',
+      default: 'fade-scale',
     },
   },
   emits: [
@@ -138,7 +141,7 @@ export default defineComponent({
               JSON.stringify({
                 ...s,
                 maximized: isMaximized.value,
-              })
+              }),
             )
           }
           return
@@ -147,7 +150,7 @@ export default defineComponent({
           localStorage.setItem(storageKey, JSON.stringify({...winOptions}))
         }
       },
-      {deep: Boolean(props.wid)}
+      {deep: Boolean(props.wid)},
     )
 
     watch(allowMove, (val) => {

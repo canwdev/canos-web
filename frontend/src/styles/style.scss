@@ -117,31 +117,6 @@ html, body, #app {
   border: 1px solid $primary;
 }
 
-/* Vue transitions */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-
-.mc-fade-scale-enter-active,
-.mc-fade-scale-leave-active {
-  transform: scale(1);
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-.mc-fade-scale-enter-from,
-.mc-fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 0.3s, transform 0.3s;
-}
-
 
 * {
 

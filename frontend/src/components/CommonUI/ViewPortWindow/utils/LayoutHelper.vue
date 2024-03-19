@@ -19,6 +19,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const mVisible = useVModel(props, 'visible', emit)
 
+watch(mVisible, (val) => {
+  if (!val) {
+    setTimeout(() => {
+      layoutPreview.value = null
+    })
+  }
+})
+
 const layoutList: ILayout[] = [
   // 3个一组
   {xRatio: 0, yRatio: 0, widthRatio: 0.5, heightRatio: 0.5},
@@ -59,16 +67,18 @@ const setWindowLayout = (layout: ILayout) => {
     height,
   })
   mVisible.value = false
-  layoutPreview.value = null
+  setTimeout(() => {
+    layoutPreview.value = null
+  })
 }
 </script>
 
 <template>
-  <transition name="mc-fade">
+  <transition name="fade">
     <div v-if="mVisible" @mouseleave="mVisible = false" class="vp-layout-helper vp-panel">
       <div
         v-for="(layout, index) in layoutList"
-        :key="LayoutHelper"
+        :key="index"
         class="layout-item"
         @mouseover="layoutPreview = layout"
         @mouseleave="layoutPreview = null"
@@ -86,7 +96,7 @@ const setWindowLayout = (layout: ILayout) => {
       </div>
     </div>
   </transition>
-  <transition name="mc-fade-scale">
+  <transition name="fade-scale">
     <div
       v-if="layoutPreview"
       class="vp-demo-layout"
