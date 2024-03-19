@@ -1,14 +1,14 @@
 <script lang="ts">
 import {defineComponent, PropType, shallowRef} from 'vue'
-import {WindowController, WinOptions} from './window-controller'
+import {WindowController, WinOptions} from './utils/window-controller'
 import {
   ArrowMaximize20Regular,
   ArrowMinimize20Regular,
   Dismiss20Regular,
   Subtract20Filled,
 } from '@vicons/fluent'
-import LayoutHelper from './LayoutHelper/index.vue'
-import {useDynamicClassName, useMouseOver} from './LayoutHelper/use-utils'
+import LayoutHelper from '@/components/CommonUI/ViewPortWindow/utils/LayoutHelper.vue'
+import {useDynamicClassName, useMouseOver} from '@/components/CommonUI/ViewPortWindow/utils/use-utils'
 import {useThrottleFn, useVModel} from '@vueuse/core'
 
 const LS_KEY_VP_WINDOW_OPTION = 'vp_window'

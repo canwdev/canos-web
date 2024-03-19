@@ -5,7 +5,7 @@ import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {ldThemeOptions, loopModeMap, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
-import {customThemeOptions, CustomThemeType} from '@/components/CommonUI/ViewPortWindow/enum'
+import {useThemeOptions} from "@/components/CommonUI/ViewPortWindow/utils/use-theme";
 
 const getWallpaperText = () => {
   const list = [
@@ -29,6 +29,7 @@ export default defineComponent({
   setup(props, {emit}) {
     const {t: $t} = useI18n()
     const settingsStore = useSettingsStore()
+    const {themeOptions} = useThemeOptions()
 
     const optionList = computed((): StOptionItem[] => {
       return [
@@ -68,7 +69,7 @@ export default defineComponent({
               key: 'customTheme',
               store: settingsStore,
               type: StOptionType.SELECT,
-              selectOptions: customThemeOptions,
+              selectOptions: themeOptions.value,
             },
             {
               label: 'Disable Animation',

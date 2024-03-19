@@ -21,7 +21,7 @@ declare module '@vue/runtime-core' {
     FileChooser: typeof import('./src/components/CommonUI/Others/FileChooser.vue')['default']
     FileDrop: typeof import('./src/components/CommonUI/Others/FileDrop.vue')['default']
     ItemAction: typeof import('./src/components/CommonUI/OptionUI/ItemAction.vue')['default']
-    LayoutHelper: typeof import('./src/components/CommonUI/ViewPortWindow/LayoutHelper/index.vue')['default']
+    LayoutHelper: typeof import('./src/components/CommonUI/ViewPortWindow/utils/LayoutHelper.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NColorPicker: typeof import('naive-ui')['NColorPicker']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']

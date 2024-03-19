@@ -68,7 +68,7 @@ const setWindowLayout = (layout: ILayout) => {
     <div v-if="mVisible" @mouseleave="mVisible = false" class="vp-layout-helper vp-panel">
       <div
         v-for="(layout, index) in layoutList"
-        :key="index"
+        :key="LayoutHelper"
         class="layout-item"
         @mouseover="layoutPreview = layout"
         @mouseleave="layoutPreview = null"

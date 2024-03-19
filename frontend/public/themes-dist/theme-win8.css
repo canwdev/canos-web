@@ -1,0 +1,88 @@
+.theme-win8 .vp-window {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 0 6px 6px;
+  background-color: #EBEBEB;
+}
+.theme-win8 .vp-window .vp-window-content .vp-window-title-bar {
+  margin-left: -6px;
+  margin-right: -6px;
+  padding: 0 6px 5px;
+}
+.theme-win8 .vp-window .vp-window-content .vp-window-title-bar .window-icon {
+  position: absolute;
+  left: 6px;
+}
+.theme-win8 .vp-window .vp-window-content .vp-window-title-bar .vp-window-title-bar-text {
+  margin-top: 4px;
+  flex: 1;
+  justify-content: center;
+  text-shadow: 0 0 2px black;
+}
+.theme-win8 .vp-window .vp-window-controls button {
+  margin-top: 0;
+  border: none;
+  min-width: 30px;
+}
+.theme-win8 .vp-window .vp-window-controls button + button {
+  border-left: 0 !important;
+}
+.theme-win8 .vp-window .vp-window-controls button:hover {
+  background-color: rgba(255, 255, 255, 0.55);
+  transition: all 0.1s;
+}
+.theme-win8 .vp-window .vp-window-controls button:hover.is-close {
+  background-color: #f56767 !important;
+}
+.theme-win8 .vp-window .vp-window-controls button:active {
+  background-color: rgba(31, 31, 31, 0.55);
+}
+.theme-win8 .vp-window .vp-window-controls button:active.is-close {
+  background-color: #9b3f3f !important;
+}
+.theme-win8 .vp-window .vp-window-controls button.is-close {
+  background-color: #C75050;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.theme-win8 .vp-window._active {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.27);
+  background-color: var(--primary) !important;
+}
+.theme-win8 .vp-window._active .vp-window-title-bar {
+  color: white !important;
+}
+.theme-win8 .vp-window._maximized {
+  padding: 0;
+}
+.theme-win8 .vp-panel {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.27);
+}
+.theme-win8 .vp-button {
+  background-color: white;
+  border: 1px solid rgba(91, 85, 85, 0.2);
+}
+.theme-win8 .vp-button:not(:disabled):hover {
+  border-color: var(--primary);
+}
+.theme-win8._dark .vp-window {
+  background-color: black;
+  color: white;
+}
+.theme-win8._dark .vp-window .vp-window-body._bg {
+  background-color: rgb(30, 30, 30);
+}
+.theme-win8._dark .vp-panel {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+}
+.theme-win8._dark .vp-button {
+  background-color: #4B4B4B;
+  color: white;
+}
+.theme-win8._dark .vp-input {
+  background-color: #2a2a2a;
+  color: white;
+}

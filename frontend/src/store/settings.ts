@@ -1,11 +1,11 @@
 import {LdThemeType, LoopModeType} from '@/enum/settings'
-import {CustomThemeType} from '@/components/CommonUI/ViewPortWindow/enum'
+import {DEFAULT_THEME} from "@/components/CommonUI/ViewPortWindow/utils/use-theme";
 
 interface IStore {
   // 明暗主题
   ldTheme: LdThemeType
   // 自定义主题类型
-  customTheme: CustomThemeType
+  customTheme: string
   // 主题色
   themeColor: string
   // 桌面壁纸url
@@ -36,7 +36,7 @@ export const useSettingsStore = defineStore('settingsStore', {
   state: (): IStore => {
     return {
       ldTheme: LdThemeType.SYSTEM,
-      customTheme: CustomThemeType.DEFAULT,
+      customTheme: DEFAULT_THEME,
       themeColor: '#258292',
       desktopBgColor: '#258292',
       disableAnimation: false,

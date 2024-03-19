@@ -5,10 +5,8 @@ import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {ldThemeOptions, loopModeMap, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
-import {getServerInfo, serverApi} from '@/api/server'
 import pkg from '../../../package.json'
 import {useSystemStore} from '@/store/system'
-import {customThemeOptions, CustomThemeType} from '@/components/CommonUI/ViewPortWindow/enum'
 
 export default defineComponent({
   name: 'SettingsSystem',

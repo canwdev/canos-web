@@ -2,6 +2,8 @@
   $theme_color_inactive: #D4D0C8;
   $border_width: 1px;
   $border: $border_width solid rgba(45, 45, 45, 0.3);
+  $primary: var(--primary); // #8dbb72;
+  $primary_opacity: rgba(var(--primary-rgb), .25); //opacify($primary, 0.3);
 
   $box_shadow: $border_width 0 #000, 0 $border_width #000, $border_width $border_width #000, inset $border_width $border_width #fff;
 

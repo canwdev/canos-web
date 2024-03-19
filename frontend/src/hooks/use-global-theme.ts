@@ -4,7 +4,6 @@ import {LdThemeType} from '@/enum/settings'
 import {useMainStore} from '@/store/main'
 import {getSystemIsDarkMode, hexToRgb} from '@/utils/color'
 import {GlobalThemeOverrides} from 'naive-ui'
-import {CustomThemeType} from '@/components/CommonUI/ViewPortWindow/enum'
 
 export const useGlobalTheme = () => {
   const mainStore = useMainStore()
