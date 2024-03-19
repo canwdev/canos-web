@@ -4,10 +4,12 @@ import {LdThemeType} from '@/enum/settings'
 import {useMainStore} from '@/store/main'
 import {getSystemIsDarkMode, hexToRgb} from '@/utils/color'
 import {GlobalThemeOverrides} from 'naive-ui'
+import {useThemeOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
 
 export const useGlobalTheme = () => {
   const mainStore = useMainStore()
   const settingsStore = useSettingsStore()
+  useThemeOptions()
 
   const handleThemeChange = (val: LdThemeType) => {
     if (val === LdThemeType.SYSTEM) {
@@ -54,7 +56,7 @@ export const useGlobalTheme = () => {
     () => settingsStore.themeColor,
     () => {
       updateThemeColor()
-    }
+    },
   )
 
   watch(
@@ -68,7 +70,7 @@ export const useGlobalTheme = () => {
     },
     {
       immediate: true,
-    }
+    },
   )
 
   onBeforeUnmount(() => {

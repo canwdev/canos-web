@@ -230,7 +230,7 @@ export default defineComponent({
       setTimeout(() => {
         if (props.initCenter && !lsVal) {
           const rect = rootRef.value.getBoundingClientRect()
-          console.log(rect)
+          // console.log(rect)
           const cx = Math.round(window.innerWidth / 2 - rect.width / 2)
           const cy = Math.round(window.innerHeight / 2 - rect.height / 2)
 
