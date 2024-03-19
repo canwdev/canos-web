@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import globalEventBus, {GlobalEvents} from '@/utils/bus'
+import musicBus, {MusicEvents, useMusicBusOn} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
-import {MusicItem, MusicStore} from '@/apps/MusicPlayer/utils/music-state'
-import {toReactive} from '@vueuse/core'
+import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
 import {fsWebApi} from '@/api/filesystem'
 
-interface Props {
-  musicStore: MusicStore
-}
+// interface Props {}
+// const props = withDefaults(defineProps<Props>(), {})
 
-const props = withDefaults(defineProps<Props>(), {})
-
-const musicStore = toReactive(toRefs(props).musicStore)
+const musicStore = useMusicStore()
 
 const {t: $t} = useI18n()
 const audioRef = ref()
@@ -104,7 +100,7 @@ watch(() => settingsStore.audioVolume, changeVolume)
 watch(() => musicStore.playbackRate, changeSpeed)
 
 watch(
-  musicStore.musicItem,
+  () => musicStore.musicItem,
   async (item: MusicItem) => {
     if (!item) {
       audioSrc.value = undefined
@@ -118,22 +114,17 @@ watch(
 )
 
 onMounted(() => {
-  globalEventBus.on(GlobalEvents.ACTION_TOGGLE_PLAY, togglePlay)
-  globalEventBus.on(GlobalEvents.ACTION_PLAY, play)
-  globalEventBus.on(GlobalEvents.ACTION_PAUSE, pause)
-  globalEventBus.on(GlobalEvents.ACTION_CHANGE_CURRENT_TIME, changeCurrentTime)
-
   registerAudioEvents(audioRef.value)
   changeVolume(settingsStore.audioVolume)
   changeSpeed(musicStore.playbackRate)
 })
 
-onBeforeUnmount(() => {
-  globalEventBus.off(GlobalEvents.ACTION_TOGGLE_PLAY, togglePlay)
-  globalEventBus.off(GlobalEvents.ACTION_PLAY, play)
-  globalEventBus.off(GlobalEvents.ACTION_PAUSE, pause)
-  globalEventBus.off(GlobalEvents.ACTION_CHANGE_CURRENT_TIME, changeCurrentTime)
-})
+useMusicBusOn(MusicEvents.ACTION_TOGGLE_PLAY, togglePlay)
+useMusicBusOn(MusicEvents.ACTION_PLAY, play)
+useMusicBusOn(MusicEvents.ACTION_PAUSE, pause)
+useMusicBusOn(MusicEvents.ACTION_CHANGE_CURRENT_TIME, changeCurrentTime)
+
+onBeforeUnmount(() => {})
 </script>
 
 <template>

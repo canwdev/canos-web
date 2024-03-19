@@ -1,29 +1,20 @@
-<script>
+<script setup lang="ts">
 import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
+import {MusicNote220Filled} from '@vicons/fluent'
 
-export default {
-  name: 'CoverMini',
-  components: {
-    CoverDisplay,
-  },
-  props: {
-    iconName: {
-      type: String,
-      default: 'audiotrack', // headset
-    },
-    src: {
-      type: String,
-      default: null,
-    },
-  },
+interface Props {
+  src?: string
 }
+const props = withDefaults(defineProps<Props>(), {})
 </script>
 
 <template>
   <button class="btn-no-style btn-cover flex items-center justify-center">
     <slot></slot>
     <CoverDisplay v-if="src" :src="src" />
-    <i v-else class="material-icons">{{ iconName }}</i>
+    <i v-else class="icon-wrap">
+      <MusicNote220Filled />
+    </i>
   </button>
 </template>
 
@@ -37,8 +28,11 @@ export default {
     width: 100%;
     height: 100%;
   }
-  .material-icons {
-    font-size: 12px;
+  .icon-wrap {
+    svg {
+      width: 40px;
+      height: 40px;
+    }
   }
 }
 </style>

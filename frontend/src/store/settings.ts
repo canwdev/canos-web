@@ -33,7 +33,7 @@ interface IStore {
 }
 
 export const useSettingsStore = defineStore('settingsStore', {
-  state: (): ISStore => {
+  state: (): IStore => {
     return {
       ldTheme: LdThemeType.SYSTEM,
       customTheme: DEFAULT_THEME,

@@ -1,8 +1,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useMusicStore} from '@/store/music'
 import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
-import globalEventBus, {GlobalEvents} from '@/utils/bus'
+import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
+import {useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
 
 const DetailTabEnum = {
   LYRIC: 'LYRIC',
@@ -36,10 +36,10 @@ export default defineComponent({
       musicStore,
       musicItem: computed(() => musicStore.musicItem),
       jumpForward() {
-        globalEventBus.emit(GlobalEvents.ACTION_CHANGE_CURRENT_TIME, (musicStore.currentTime += 5))
+        musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (musicStore.currentTime += 5))
       },
       jumpBackward() {
-        globalEventBus.emit(GlobalEvents.ACTION_CHANGE_CURRENT_TIME, (musicStore.currentTime -= 5))
+        musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (musicStore.currentTime -= 5))
       },
       handlePlaybackRateChange(val) {
         musicStore.playbackRate = Number(val)

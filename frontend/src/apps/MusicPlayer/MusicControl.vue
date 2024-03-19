@@ -1,15 +1,25 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-import {useMusicStore} from '@/store/music'
+<script setup lang="ts">
 import {formatTimeHMS} from '@/utils'
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
 import TkSeekbar from '@/components/CommonUI/TkSeekBar.vue'
 import {loopModeMap, LoopModeTypeValues} from '@/enum/settings'
 import {useSettingsStore} from '@/store/settings'
 import Mousetrap from 'mousetrap'
-import globalEventBus, {GlobalEvents} from '@/utils/bus'
+import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'
-import {LoopModeType} from '@/enum/settings'
+import {useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import {
+  PlayCircle20Regular,
+  PauseCircle20Regular,
+  Previous20Filled,
+  Next20Filled,
+  Speaker220Filled,
+} from '@vicons/fluent'
+
+// interface Props {}
+// const props = withDefaults(defineProps<Props>(), {})
+
+const musicStore = useMusicStore()
 
 const KEY_SPACE = 'space'
 const KEY_PREVIOUS = ['left', 'pageup', 'k', 'l']
@@ -17,127 +27,88 @@ const KEY_NEXT = ['right', 'pagedown', 'h', 'j']
 const KEY_UP = 'up'
 const KEY_DOWN = 'down'
 
-export default defineComponent({
-  name: 'MusicControl',
-  components: {TkSeekbar, CoverMini},
-  emits: ['onCoverClick', 'onTitleClick'],
-  setup() {
-    const {t: $t} = useI18n()
-    const musicStore = useMusicStore()
-    const settingsStore = useSettingsStore()
-    const mCurrentTime = ref(0)
-    const isSeeking = ref(false)
-    const isDisabled = ref(false)
+const emit = defineEmits(['onCoverClick', 'onTitleClick'])
 
-    const mousetrapRef = shallowRef()
+const {t: $t} = useI18n()
+const settingsStore = useSettingsStore()
+const mCurrentTime = ref(0)
+const isSeeking = ref(false)
+const isDisabled = ref(false)
 
-    const togglePlay = (e) => {
-      e.preventDefault()
-      globalEventBus.emit(GlobalEvents.ACTION_TOGGLE_PLAY)
-    }
-    const previous = () => {
-      musicStore.playPrev()
-    }
-    const next = () => {
-      musicStore.playNext()
-    }
-    const volumeUpFn = (e) => {
-      e.preventDefault()
-      settingsStore.volumeUp()
-    }
-    const volumeDownFn = (e) => {
-      e.preventDefault()
-      settingsStore.volumeDown()
-    }
-    const switchLoopMode = () => {
-      let index = LoopModeTypeValues.findIndex((i) => i === settingsStore.loopMode)
-      ++index
-      if (index > LoopModeTypeValues.length - 1) {
-        index = 0
-      }
-      if (LoopModeTypeValues[index]) {
-        settingsStore.loopMode = LoopModeTypeValues[index]
-        window.$message.info($t(currentLoopMode.value.i18nKey))
-      }
-    }
+const mousetrapRef = shallowRef()
 
-    const progressSeeking = (value) => {
-      isSeeking.value = true
-      mCurrentTime.value = Number(value)
-    }
-    const progressChange = (value) => {
-      value = Number(value)
-      globalEventBus.emit(GlobalEvents.ACTION_CHANGE_CURRENT_TIME, value)
-      isSeeking.value = false
-    }
+const togglePlay = (e) => {
+  e.preventDefault()
+  musicBus.emit(MusicEvents.ACTION_TOGGLE_PLAY)
+}
+const previous = () => {
+  musicStore.playPrev()
+}
+const next = () => {
+  musicStore.playNext()
+}
+const volumeUpFn = (e) => {
+  e.preventDefault()
+  settingsStore.volumeUp()
+}
+const volumeDownFn = (e) => {
+  e.preventDefault()
+  settingsStore.volumeDown()
+}
+const switchLoopMode = () => {
+  let index = LoopModeTypeValues.findIndex((i) => i === settingsStore.loopMode)
+  ++index
+  if (index > LoopModeTypeValues.length - 1) {
+    index = 0
+  }
+  if (LoopModeTypeValues[index]) {
+    settingsStore.loopMode = LoopModeTypeValues[index]
+    window.$message.info($t(currentLoopMode.value.i18nKey))
+  }
+}
 
-    const currentLoopMode = computed(() => {
-      return loopModeMap[settingsStore.loopMode]
-    })
+const progressSeeking = (value) => {
+  isSeeking.value = true
+  mCurrentTime.value = Number(value)
+}
+const progressChange = (value) => {
+  value = Number(value)
+  musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, value)
+  isSeeking.value = false
+}
 
-    onMounted(() => {
-      const mousetrap = new Mousetrap()
-      mousetrap.bind(KEY_SPACE, togglePlay)
-      mousetrap.bind(KEY_PREVIOUS, previous)
-      mousetrap.bind(KEY_NEXT, next)
-      mousetrap.bind('ctrl+x', switchLoopMode)
-      mousetrap.bind(KEY_UP, volumeUpFn)
-      mousetrap.bind(KEY_DOWN, volumeDownFn)
+const currentLoopMode = computed(() => {
+  return loopModeMap[settingsStore.loopMode]
+})
 
-      mousetrapRef.value = mousetrap
-    })
+onMounted(() => {
+  const mousetrap = new Mousetrap()
+  mousetrap.bind(KEY_SPACE, togglePlay)
+  mousetrap.bind(KEY_PREVIOUS, previous)
+  mousetrap.bind(KEY_NEXT, next)
+  mousetrap.bind('ctrl+x', switchLoopMode)
+  mousetrap.bind(KEY_UP, volumeUpFn)
+  mousetrap.bind(KEY_DOWN, volumeDownFn)
 
-    onBeforeUnmount(() => {
-      if (mousetrapRef.value) {
-        mousetrapRef.value.reset()
-      }
-    })
+  mousetrapRef.value = mousetrap
+})
 
-    watch(
-      () => musicStore.currentTime,
-      (val) => {
-        if (!isSeeking.value) {
-          mCurrentTime.value = val
-        }
-      },
-    )
+onBeforeUnmount(() => {
+  if (mousetrapRef.value) {
+    mousetrapRef.value.reset()
+  }
+})
 
-    return {
-      formatTimeHMS,
-      loopModeMap,
-      mCurrentTime,
-      isSeeking,
-      isDisabled,
-      musicStore,
-      settingsStore,
-      musicItem: computed(() => musicStore.musicItem),
-      togglePlay,
-      previous,
-      next,
-      volumeUpFn,
-      volumeDownFn,
-      switchLoopMode,
-      currentLoopMode,
-      progressSeeking,
-      progressChange,
-      volumeIcon: computed(() => {
-        const audioVolume = settingsStore.audioVolume
-        if (audioVolume > 50) {
-          return 'volume_up'
-        }
-        if (audioVolume < 50) {
-          if (audioVolume == 0) {
-            return 'volume_off'
-          }
-          if (audioVolume < 10) {
-            return 'volume_mute'
-          }
-        }
-        return 'volume_down'
-      }),
+watch(
+  () => musicStore.currentTime,
+  (val) => {
+    if (!isSeeking.value) {
+      mCurrentTime.value = val
     }
   },
-})
+)
+
+const musicItem = computed(() => musicStore.musicItem)
 </script>
 
 <template>
@@ -168,7 +139,7 @@ export default defineComponent({
           :title="$t('previous')"
           @click="previous"
         >
-          <i class="material-icons">prev</i>
+          <i class="icon-wrap"><Previous20Filled /></i>
         </button>
 
         <button
@@ -177,8 +148,10 @@ export default defineComponent({
           :title="musicStore.paused ? $t('play') : $t('pause')"
           @click="togglePlay"
         >
-          <i v-show="musicStore.paused" class="material-icons">play</i>
-          <i v-show="!musicStore.paused" class="material-icons">pause</i>
+          <i class="icon-wrap _lg">
+            <PlayCircle20Regular v-if="musicStore.paused" />
+            <PauseCircle20Regular v-else />
+          </i>
         </button>
 
         <button
@@ -187,7 +160,7 @@ export default defineComponent({
           :title="$t('next')"
           @click="next"
         >
-          <i class="material-icons">next</i>
+          <i class="icon-wrap"><Next20Filled /></i>
         </button>
 
         <button
@@ -196,15 +169,15 @@ export default defineComponent({
           :title="$t(currentLoopMode.i18nKey)"
           @click="switchLoopMode"
         >
-          <i class="material-icons" :class="currentLoopMode.className">{{
-            currentLoopMode.icon
-          }}</i>
+          <i class="icon-wrap" :class="currentLoopMode.className">{{ currentLoopMode.icon }}</i>
         </button>
 
         <n-popover placement="top" trigger="click">
           <template #trigger>
             <button class="btn-action btn-no-style" :title="$t('volume')">
-              <i class="material-icons">{{ volumeIcon }}</i>
+              <i class="icon-wrap">
+                <Speaker220Filled />
+              </i>
             </button>
           </template>
           <div style="display: flex; align-items: center; flex-direction: column">
@@ -227,6 +200,19 @@ export default defineComponent({
 .actionbar-wrapper {
   width: 100%;
   $bottomZIndex: 2100;
+
+  .icon-wrap {
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+    &._lg {
+      svg {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
 
   .progressbar {
     display: flex;

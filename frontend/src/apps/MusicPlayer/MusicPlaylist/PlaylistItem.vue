@@ -1,42 +1,27 @@
-<script lang="ts">
-import {defineComponent, PropType} from 'vue'
-import {MusicItem} from '@/enum/music'
+<script setup lang="ts">
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
-import {useMusicStore} from '@/store/music'
+import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import {Play20Filled, Pause20Filled} from '@vicons/fluent'
 
-export default defineComponent({
-  name: 'PlaylistItem',
-  components: {CoverMini},
-  props: {
-    item: {
-      type: Object as PropType<MusicItem>,
-      required: true,
-    },
-  },
-  setup(props, {emit}) {
-    const {item} = toRefs(props)
-    const musicStore = useMusicStore()
-    return {
-      musicStore,
-      statusIconName: computed(() => {
-        if (item.value.guid === musicStore.musicItem?.guid) {
-          if (musicStore.paused) {
-            return 'pause'
-          } else {
-            return 'play_arrow'
-          }
-        }
-        return ''
-      }),
-    }
-  },
+interface Props {
+  item: MusicItem
+}
+const props = withDefaults(defineProps<Props>(), {})
+const musicStore = useMusicStore()
+
+const {item} = toRefs(props)
+const isCurrent = computed(() => {
+  return item.value.guid === musicStore.musicItem?.guid
 })
 </script>
 
 <template>
   <div class="playlist-item">
     <div class="item-left">
-      <div class="status-icon">{{ statusIconName }}</div>
+      <div v-if="isCurrent" class="status-icon">
+        <Play20Filled v-if="!musicStore.paused" />
+        <Pause20Filled v-else />
+      </div>
       <CoverMini :src="item.cover" force-show-icon />
     </div>
     <div class="item-main">
@@ -67,8 +52,11 @@ export default defineComponent({
     position: relative;
     .status-icon {
       position: absolute;
-      font-size: 12px;
       z-index: 1;
+      svg {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
 

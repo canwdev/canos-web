@@ -5,7 +5,7 @@ import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {onClickOutside} from '@vueuse/core'
-import globalEventBus, {GlobalEvents} from '@/utils/bus'
+import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 
 export default defineComponent({
   name: 'StartMenu',
@@ -54,7 +54,7 @@ export default defineComponent({
     }
 
     const doLogout = () => {
-      globalEventBus.emit(GlobalEvents.GLOBAL_EVENT_LOGOUT)
+      musicBus.emit(MusicEvents.GLOBAL_EVENT_LOGOUT)
     }
 
     return {

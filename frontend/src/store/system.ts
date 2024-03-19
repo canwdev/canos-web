@@ -41,6 +41,7 @@ export const useSystemStore = defineStore('system', {
         // 查找实例是否已经存在，防止重复启动
         const task = this.tasks.find((i) => i.component === shortcut.component)
         if (task) {
+          task.params = params
           this.setTaskActive(task)
           return
         }

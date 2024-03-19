@@ -60,7 +60,8 @@ Last Modified: ${formatDate(item.value.lastModified)}
   }
 
   &.active {
-    background-color: $primary;
+    background-color: $primary_opacity;
+    outline: 1px solid $primary;
     color: white;
   }
 

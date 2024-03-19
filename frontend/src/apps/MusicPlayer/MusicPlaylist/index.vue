@@ -1,43 +1,29 @@
-<script lang="ts">
+<script setup lang="ts">
 import {defineComponent} from 'vue'
 import PlaylistItem from '@/apps/MusicPlayer/MusicPlaylist/PlaylistItem.vue'
-import {useMusicStore} from '@/store/music'
-import {MusicItem} from '@/enum/music'
+import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
 
-export default defineComponent({
-  name: 'MusicPlaylist',
-  components: {PlaylistItem},
-  setup() {
-    const musicStore = useMusicStore()
-    const filterText = ref('')
+const musicStore = useMusicStore()
+const filterText = ref('')
 
-    const handleItemClick = (item: MusicItem) => {
-      const idx = musicStore.playingList.findIndex((i) => i.guid === item.guid)
-      if (!idx) {
-        console.error('idx not found!')
-      }
-      musicStore.playByIndex(idx)
-    }
+const handleItemClick = (item: MusicItem) => {
+  const idx = musicStore.playingList.findIndex((i) => i.guid === item.guid)
+  if (!idx) {
+    console.error('idx not found!')
+  }
+  musicStore.playByIndex(idx)
+}
 
-    const playlistFiltered = computed(() => {
-      if (!filterText.value) {
-        return musicStore.playingList
-      }
+const playlistFiltered = computed(() => {
+  if (!filterText.value) {
+    return musicStore.playingList
+  }
 
-      const reg = new RegExp(filterText.value, 'ig')
-      return musicStore.playingList.filter((item) => {
-        const title = item.titleDisplay
-        return reg.test(item.titleDisplay) || reg.test(item.artistsAlbumDisplay)
-      })
-    })
-
-    return {
-      musicStore,
-      playlistFiltered,
-      filterText,
-      handleItemClick,
-    }
-  },
+  const reg = new RegExp(filterText.value, 'ig')
+  return musicStore.playingList.filter((item) => {
+    const title = item.titleDisplay
+    return reg.test(item.titleDisplay) || reg.test(item.artistsAlbumDisplay)
+  })
 })
 </script>
 

@@ -54,7 +54,7 @@ function Service(config: any) {
     },
     (error) => {
       const message = error.message
-      let backendMessage
+      let backendMessage: any
       const {response} = error || {}
 
       if (response.status == 401) {
