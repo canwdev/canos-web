@@ -4,10 +4,10 @@
  * https://github.com/khang-nd/7.css/blob/main/LICENSE
  */
 
-@import "_variables.scss";
-@import "_button.scss";
+@import "variables";
+@import "button";
 @import "textbox";
-@import "_window.scss";
+@import "window";
 .theme-win7 {
   .vp-panel {
     background: var(--surface);

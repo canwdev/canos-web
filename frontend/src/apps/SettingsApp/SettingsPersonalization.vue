@@ -70,18 +70,6 @@ export default defineComponent({
               type: StOptionType.SELECT,
               selectOptions: customThemeOptions,
             },
-            settingsStore.customTheme === CustomThemeType.DEFAULT && {
-              label: '圆角样式',
-              key: 'enableRoundedTheme',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-            settingsStore.customTheme === CustomThemeType.DEFAULT && {
-              label: 'Aero 效果',
-              key: 'enableAeroTheme',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
             {
               label: 'Disable Animation',
               subtitle: 'E-Ink optimization',

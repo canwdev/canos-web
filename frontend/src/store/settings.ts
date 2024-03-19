@@ -6,10 +6,6 @@ interface IStore {
   ldTheme: LdThemeType
   // 自定义主题类型
   customTheme: CustomThemeType
-  // 圆角主题
-  enableRoundedTheme: boolean
-  // 开启半透明模糊UI
-  enableAeroTheme: boolean
   // 主题色
   themeColor: string
   // 桌面壁纸url
@@ -41,8 +37,6 @@ export const useSettingsStore = defineStore('settingsStore', {
     return {
       ldTheme: LdThemeType.SYSTEM,
       customTheme: CustomThemeType.DEFAULT,
-      enableRoundedTheme: true,
-      enableAeroTheme: false,
       themeColor: '#258292',
       desktopBgColor: '#258292',
       disableAnimation: false,

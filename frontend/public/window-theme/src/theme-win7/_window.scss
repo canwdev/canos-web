@@ -299,7 +299,7 @@
             display: none;
           }
           &::before {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/minimize.png") no-repeat center 10px;
+            background: url("icon/minimize.png") no-repeat center 10px;
           }
         }
 
@@ -309,7 +309,7 @@
             display: none;
           }
           &::before {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/maximize.png") no-repeat center;
+            background: url("icon/maximize.png") no-repeat center;
           }
         }
 
@@ -319,7 +319,7 @@
             display: none;
           }
           &::before {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/restore.png") no-repeat center;
+            background: url("icon/restore.png") no-repeat center;
           }
         }
 
@@ -331,7 +331,7 @@
           min-width: 48px;
 
           &::before {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/close.png") no-repeat center;
+            background: url("icon/close.png") no-repeat center;
           }
         }
 
@@ -409,13 +409,13 @@
 
           &[aria-label="Minimize"],
           &.is-minimize {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/minimize.png") no-repeat center 10px,
+            background: url("icon/minimize.png") no-repeat center 10px,
             var(--control-background);
 
             &::before {
               content: "";
               box-shadow: 0 0 7px 3px #5dc4f0, var(--control-inset-shadow);
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/minimize.png") no-repeat center 10px,
+              background: url("icon/minimize.png") no-repeat center 10px,
               var(--control-background-hovered);
               border-bottom-left-radius: var(--control-border-radius);
               opacity: 0;
@@ -429,20 +429,20 @@
             }
 
             &:active::before {
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/minimize.png") no-repeat center 10px,
+              background: url("icon/minimize.png") no-repeat center 10px,
               var(--control-background-active);
             }
           }
 
           &[aria-label="Maximize"],
           &.is-maximize {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/maximize.png") no-repeat center,
+            background: url("icon/maximize.png") no-repeat center,
             var(--control-background);
 
             &::before {
               content: "";
               box-shadow: 0 0 7px 3px #5dc4f0, var(--control-inset-shadow);
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/maximize.png") no-repeat center,
+              background: url("icon/maximize.png") no-repeat center,
               var(--control-background-hovered);
               opacity: 0;
               transition: opacity 0.3s linear;
@@ -455,20 +455,20 @@
             }
 
             &:active::before {
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/maximize.png") no-repeat center,
+              background: url("icon/maximize.png") no-repeat center,
               var(--control-background-active);
             }
           }
 
           &[aria-label="Restore"],
           &.is-restore {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/restore.png") no-repeat center,
+            background: url("icon/restore.png") no-repeat center,
             var(--control-background);
 
             &::before {
               content: "";
               box-shadow: 0 0 7px 3px #5dc4f0, var(--control-inset-shadow);
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/restore.png") no-repeat center,
+              background: url("icon/restore.png") no-repeat center,
               var(--control-background-hovered);
               opacity: 0;
               transition: opacity 0.3s linear;
@@ -481,21 +481,21 @@
             }
 
             &:active::before {
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/restore.png") no-repeat center,
+              background: url("icon/restore.png") no-repeat center,
               var(--control-background-active);
             }
           }
 
           &[aria-label="Close"],
           &.is-close {
-            background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/close.png") no-repeat center,
+            background: url("icon/close.png") no-repeat center,
             var(--control-background), var(--control-background-close);
             box-shadow: var(--control-inset-shadow);
 
 
             &::before {
               content: "";
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/close.png") no-repeat center,
+              background: url("icon/close.png") no-repeat center,
               var(--control-background), var(--control-background-close-hovered);
               box-shadow: 0 0 7px 3px #e68e75, var(--control-inset-shadow);
               border-bottom-right-radius: var(--control-border-radius);
@@ -510,7 +510,7 @@
             }
 
             &:active::before {
-              background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/close.png") no-repeat center,
+              background: url("icon/close.png") no-repeat center,
               var(--control-background), var(--control-background-close-active);
             }
           }
@@ -522,7 +522,7 @@
 
               &::before {
                 content: "";
-                background: url("@/components/CommonUI/ViewPortWindow/theme/theme-win7/icon/maximize.png") no-repeat center;
+                background: url("icon/maximize.png") no-repeat center;
                 opacity: 0.4;
               }
             }

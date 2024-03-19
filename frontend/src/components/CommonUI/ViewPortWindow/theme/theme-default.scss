@@ -1,48 +1,53 @@
 .theme-default {
-  $border_width: 6px;
   $border: 1px solid rgba(0, 0, 0, 0.45);
-  $radius: 8px;
 
   .vp-window {
     border: $border;
-    padding: 0 6px 5px;
     background-color: #F3F3F3;
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27), inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
-    border-radius: $radius;
     transition: opacity 0.3s, transform 0.3s, background-color 0.5s;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27);
 
     .vp-window-content {
 
       .vp-window-title-bar {
-        margin-left: -$border_width;
-        margin-right: -$border_width;
         overflow: hidden;
-        border-radius: $radius;
-        padding: 0 6px 4px;
         text-shadow: 0 0 10px white;
+        margin-left: 0;
+        margin-right: 0;
+        padding-right: 0;
+        border-radius:0;
+        height: 30px;
 
         .vp-window-title-bar-text {
-          margin-top: 4px;
+          padding-left: 6px;
         }
       }
       .vp-window-body {
-        border: $border;
+        border: 0;
+        height: calc(100% - 30px);
       }
     }
 
     .vp-window-controls {
-      padding-right: 1px;
+      padding-right: 0;
 
       button {
-        margin-top: -1px;
-        min-width: 30px;
+        display: inline-flex;
+        align-items: center;
         border: $border;
+        border: 0 !important;
+        margin-top: 0;
+        min-width: 40px;
+        height: 30px;
+        border-radius:0;
         & + button {
           border-left: 0 !important;
         }
 
         &:hover {
-          background-color: rgb(233, 233, 233);
+          background-color: rgba(222, 222, 222, 1);
           transition: all 0.1s;
           &.is-close {
             background-color: #ffa5aa !important;
@@ -50,20 +55,10 @@
         }
 
         &:active {
-          background-color: rgba(181, 181, 181, 0.46);
+          background-color: rgba(116, 116, 116, 0.46);
           &.is-close {
             background-color: #ff6a72 !important;
           }
-        }
-
-
-
-        &:first-child {
-          border-bottom-left-radius: 5px;
-        }
-
-        &:last-child {
-          border-bottom-right-radius: 5px;
         }
       }
     }
@@ -91,13 +86,13 @@
     background-color: rgba(255, 255, 255, 0.9);
     border: $border;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27), inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
-    border-radius: $radius;
+    border-radius: 0;
   }
 
   .vp-button {
     background-color: #FDFDFD;
     border: 1px solid $color_border;
-    border-radius: 4px;
+    border-radius: 0;
 
     &:not(:disabled) {
       &:hover {
@@ -107,78 +102,9 @@
   }
 
   .vp-input {
-    border-radius: 4px;
+    border-radius: 0;
   }
 
-  &._aero {
-    .vp-window {
-      .vp-window-body {
-        &._bg {
-          background-color: rgba(255, 255, 255, 0.5);
-        }
-      }
-
-      &._active {
-        background-color: rgba(255, 255, 255, 0.65);
-        box-shadow: 0px 8.5px 10px rgba(0, 0, 0, 0.115), 0px 68px 80px rgba(0, 0, 0, 0.23), inset 0 0 1px 1px rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(4px);
-      }
-
-    }
-    .vp-panel {
-      backdrop-filter: blur(4px);
-    }
-  }
-  &._rect {
-    .vp-window {
-      padding: 0;
-      border-radius: 0;
-      box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27);
-      .vp-window-content {
-
-        .vp-window-title-bar {
-          margin-left: 0;
-          margin-right: 0;
-          padding-right: 0;
-          border-radius:0;
-        }
-      }
-
-      .vp-window-controls {
-        padding-right: 0;
-        button {
-          border: 0 !important;
-          background-color: none;
-          margin-top: 0;
-          min-width: 40px;
-          height: 30px;
-          margin-bottom: -4px;
-          border-radius:0;
-
-          &:hover {
-            background-color: rgba(222, 222, 222, 1);
-          }
-
-          &:active {
-            background-color: rgba(116, 116, 116, 0.46);
-          }
-        }
-      }
-
-      .vp-window-body {
-        border: 0;
-        height: calc(100% - 30px);
-      }
-    }
-    .vp-panel,
-    .vp-button,
-    .vp-input {
-      border-radius: 0;
-    }
-  }
-  &._rounded {
-
-  }
   &._dark {
     .vp-window {
       background-color: #4B4B4B;
