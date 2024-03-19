@@ -99,7 +99,7 @@ export default defineComponent({
         if (!isSeeking.value) {
           mCurrentTime.value = val
         }
-      }
+      },
     )
 
     return {
@@ -168,7 +168,7 @@ export default defineComponent({
           :title="$t('previous')"
           @click="previous"
         >
-          <i class="material-icons">skip_previous</i>
+          <i class="material-icons">prev</i>
         </button>
 
         <button
@@ -177,7 +177,7 @@ export default defineComponent({
           :title="musicStore.paused ? $t('play') : $t('pause')"
           @click="togglePlay"
         >
-          <i v-show="musicStore.paused" class="material-icons">play_arrow</i>
+          <i v-show="musicStore.paused" class="material-icons">play</i>
           <i v-show="!musicStore.paused" class="material-icons">pause</i>
         </button>
 
@@ -187,7 +187,7 @@ export default defineComponent({
           :title="$t('next')"
           @click="next"
         >
-          <i class="material-icons">skip_next</i>
+          <i class="material-icons">next</i>
         </button>
 
         <button
@@ -301,8 +301,8 @@ export default defineComponent({
       & > button {
         height: 100%;
         width: 55px;
-        font-size: 28px;
         flex-shrink: 0;
+        font-size: 12px;
         display: flex;
         align-items: center;
         justify-content: center;

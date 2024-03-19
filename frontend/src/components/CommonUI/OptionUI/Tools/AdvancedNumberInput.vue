@@ -1,5 +1,13 @@
 <script lang="ts">
-import Big from 'big.js'
+// 使用BigInt对象实现add方法
+function add(a, b) {
+  return Number(BigInt(a) + BigInt(b))
+}
+
+// 使用BigInt对象实现minus方法
+function minus(a, b) {
+  return Number(BigInt(a) - BigInt(b))
+}
 
 /**
  * 返回数组中最接近的值
@@ -127,7 +135,7 @@ export default defineComponent({
       // 处理正常逻辑
       const _max = max.value
 
-      const val = new Big(mValue.value).add(step.value).toNumber()
+      const val = add(mValue.value, step.value)
       // const val = mValue.value + step.value
 
       if (_max !== undefined) {
@@ -151,7 +159,7 @@ export default defineComponent({
       // 处理正常逻辑
       const _min = min.value
       // fix js number float precision bug: 0.4-0.3 = 0.10000000000000003
-      const val = new Big(mValue.value).minus(step.value).toNumber()
+      const val = minus(mValue.value, step.value)
       // const val = mValue.value - step.value
 
       if (_min !== undefined) {

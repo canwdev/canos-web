@@ -3,7 +3,7 @@
  * gagu-front-end/src/utils/sorter.util.ts
  */
 import {SortType, IEntry} from '@server/types/server'
-import {getExtension} from '@/apps/FileManager/utils'
+import {getExtension} from '@/apps/FileManager/utils/index'
 
 export const defaultSorter = (a: IEntry, b: IEntry) => {
   const aVal = a.isDirectory ? 1 : 2

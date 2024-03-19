@@ -24,6 +24,8 @@ type ShareLinkMap = {
 
 // 存储临时下载分享的key
 const shareLinkMap: ShareLinkMap = {}
+// 缓存文件数组列表到guid
+const pathCacheMap = new Map<string, string>()
 
 @Controller('filesystem')
 export class FsController {
@@ -113,7 +115,18 @@ export class FsController {
   // 由于下载需要鉴权，所以创建公开分享链接
   @Post('create-share-link')
   async createShareLink(@Body('paths') paths: string[]) {
-    const key = guid()
+    let key
+    // 缓存
+    const pathStr = paths.join(',')
+    const k = pathCacheMap.get(pathStr)
+    if (k) {
+      // console.log('命中缓存', pathStr, k)
+      key = k
+    } else {
+      key = guid()
+      pathCacheMap.set(pathStr, key)
+      // console.log('添加缓存', pathStr, key)
+    }
     shareLinkMap[key] = paths
     return {key}
   }
@@ -132,7 +145,7 @@ export class FsController {
     }
   }
 
-  // 不需要鉴权的流式传输
+  // 不需要鉴权的流式传输，仅支持单文件
   @Get('stream-share')
   @SkipAuth()
   streamShare(@Query('key') key: string, @Res() response: Response) {

@@ -38,7 +38,7 @@ export default {
     height: 100%;
   }
   .material-icons {
-    font-size: 29px;
+    font-size: 12px;
   }
 }
 </style>

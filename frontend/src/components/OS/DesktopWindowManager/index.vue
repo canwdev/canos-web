@@ -1,5 +1,4 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script lang="ts" setup>
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
 import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
 import {useSystemStore} from '@/store/system'
@@ -8,46 +7,30 @@ import DesktopContent from '@/components/OS/DesktopWindowManager/DesktopContent.
 import {useSettingsStore} from '@/store/settings'
 import {TaskItem} from '@/enum/os'
 
-export default defineComponent({
-  name: 'DesktopWindowManager',
-  components: {
-    DesktopContent,
-    ViewPortWindow,
-    DesktopWallpaper,
-    Subtract20Filled,
-  },
-  setup() {
-    const systemStore = useSystemStore()
-    const settingsStore = useSettingsStore()
-    const vpWindowRefs = ref()
+const systemStore = useSystemStore()
+const settingsStore = useSettingsStore()
+const vpWindowRefs = ref()
 
-    watch(
-      () => systemStore.tasks,
-      (list) => {
-        setTimeout(() => {
-          // 给每一个任务设置窗口ref
-          list.forEach((i: TaskItem, index) => {
-            if (!i.windowRef) {
-              i.windowRef = vpWindowRefs.value[index]
-            }
-          })
-        })
-      }
-    )
-
-    return {
-      systemStore,
-      settingsStore,
-      vpWindowRefs,
-      getIsMaximum(task: TaskItem) {
-        if (!settingsStore.isWindowed) {
-          return true
+watch(
+  () => systemStore.tasks,
+  (list) => {
+    setTimeout(() => {
+      // 给每一个任务设置窗口ref
+      list.forEach((i: TaskItem, index) => {
+        if (!i.windowRef) {
+          i.windowRef = vpWindowRefs.value[index]
         }
-        return task.maximized
-      },
-    }
+      })
+    })
   },
-})
+)
+
+const getIsMaximum = (task: TaskItem) => {
+  if (!settingsStore.isWindowed) {
+    return true
+  }
+  return task.maximized
+}
 </script>
 
 <template>
@@ -75,7 +58,7 @@ export default defineComponent({
           <span>{{ task.title }}</span>
         </template>
 
-        <component v-if="task.component" :is="task.component"></component>
+        <component v-if="task.component" :is="task.component" :appParams="task.params"></component>
         <iframe
           v-else-if="task.url"
           :src="task.url"

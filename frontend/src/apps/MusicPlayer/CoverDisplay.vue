@@ -25,7 +25,7 @@ export default {
 <template>
   <div class="cover-display">
     <img v-if="src" :src="src" :class="{rounded: isRounded, rotating: isRotating}" />
-    <span v-else-if="isShowIcon" class="material-icons">audiotrack</span>
+    <span v-else-if="isShowIcon" class="cover-icon">CC</span>
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
   overflow: hidden;
   display: flex;
 
-  .material-icons {
+  .cover-icon {
     position: absolute;
     top: 50%;
     left: 50%;

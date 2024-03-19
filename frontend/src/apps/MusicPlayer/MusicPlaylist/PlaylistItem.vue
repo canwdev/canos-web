@@ -36,7 +36,7 @@ export default defineComponent({
 <template>
   <div class="playlist-item">
     <div class="item-left">
-      <div class="material-icons status-icon">{{ statusIconName }}</div>
+      <div class="status-icon">{{ statusIconName }}</div>
       <CoverMini :src="item.cover" force-show-icon />
     </div>
     <div class="item-main">

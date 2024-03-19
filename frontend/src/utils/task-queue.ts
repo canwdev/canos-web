@@ -1,4 +1,4 @@
-import {guid} from '../index'
+import {guid} from './index'
 import EventEmitter from './event-emitter'
 
 // 任务对象封装
@@ -15,7 +15,7 @@ export class TaskItem {
 }
 
 // 通用异步任务队列
-export class Index extends EventEmitter {
+export class TaskQueue extends EventEmitter {
   public taskMap: {[key: string]: TaskItem}
   public tasks: TaskItem[]
   public executing: Promise<any>[]

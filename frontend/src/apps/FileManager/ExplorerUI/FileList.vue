@@ -26,7 +26,7 @@ import {
 import {useSelectionArea} from '@/hooks/use-selection-area'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
-import {sortMethodMap} from '@/apps/FileManager/sort'
+import {sortMethodMap} from '@/apps/FileManager/utils/sort'
 import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
 import UploadQueue from '@/apps/FileManager/UploadQueue.vue'
 
@@ -274,7 +274,7 @@ const handleDownload = async () => {
     const {key} = (await fsWebApi.createShareLink({
       paths,
     })) as unknown as any
-    window.open(fsWebApi.getDownloadShareLink({key}))
+    window.open(fsWebApi.getDownloadShareLink(key))
   } finally {
     isLoading.value = false
   }
@@ -487,9 +487,10 @@ const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
       border-right: 0;
       position: sticky;
       top: 0;
-      background-color: rgba(206, 206, 206, 0.27);
+      background-color: rgb(206, 206, 206);
       color: black;
       padding: 0 !important;
+      z-index: 1;
     }
 
     :deep(.file-list-row) {

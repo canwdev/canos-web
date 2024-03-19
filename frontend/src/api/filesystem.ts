@@ -1,4 +1,4 @@
-import Service from '@/utils/service'
+import Service, {getToken} from '@/utils/service'
 import {HOST_URL} from '@/enum'
 import qs from 'qs'
 
@@ -28,7 +28,7 @@ export const fsWebApi = {
   },
   createFile(params, config: any = {}) {
     const {path, file} = params
-    let formData = new FormData()
+    const formData = new FormData()
     formData.append('file', file)
 
     return service.post('/upload-file', formData, {
@@ -48,11 +48,11 @@ export const fsWebApi = {
   createShareLink(params) {
     return service.post('/create-share-link', params)
   },
-  getDownloadShareLink(params) {
-    return baseURL + `/download-share?key=${params.key}`
+  getDownloadShareLink(key) {
+    return baseURL + `/download-share?key=${key}`
   },
-  getStreamShareLink(params) {
-    return baseURL + `/stream-share?key=${params.key}`
+  getStreamShareLink(key) {
+    return baseURL + `/stream-share?key=${key}`
   },
 }
 

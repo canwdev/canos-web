@@ -9,7 +9,7 @@ console.info(
   `%c ${pkg.name} ${import.meta.env.MODE} %c ${timeDisplay} %c`,
   'background:#258292; border-radius: 3px 0 0 3px; padding:2px 0; color: #f9f9f9; font-size: 10px;',
   'background:#f9f9f9; border-radius: 0 3px 3px 0; padding:2px 0; color: #258292; font-size: 10px; font-weight: bold;',
-  'background:transparent'
+  'background:transparent',
 )
 import momentDurationFormatSetup from 'moment-duration-format'
 momentDurationFormatSetup(moment)
@@ -19,7 +19,6 @@ import App from './App.vue'
 import {create} from 'naive-ui'
 import './styles/style.scss'
 import 'normalize.css'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@/components/CommonUI/ViewPortWindow/theme/index.scss'
 import router from './router'
 import {createPinia} from 'pinia'

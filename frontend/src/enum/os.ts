@@ -36,6 +36,8 @@ export interface TaskItem {
   minimized: boolean
   // 是否最大化
   maximized: boolean
+  // 启动传入的参数
+  params?: any
 }
 
 export class TaskItem {
@@ -50,5 +52,6 @@ export class TaskItem {
     this.url = options.url
     this.minimized = options.minimized || false
     this.maximized = options.maximized || false
+    this.params = options.params
   }
 }

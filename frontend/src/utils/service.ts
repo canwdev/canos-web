@@ -2,6 +2,13 @@ import axios, {AxiosResponse} from 'axios'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
 import {LsKeys} from '@/enum'
 
+export const getToken = () => {
+  const Authorization = localStorage.getItem(LsKeys.LS_KEY_AUTHORIZATION)
+  if (Authorization) {
+    return 'Bearer ' + Authorization
+  }
+}
+
 function Service(config: any) {
   const {
     baseURL,
@@ -26,16 +33,12 @@ function Service(config: any) {
     (config) => {
       // window.$loadingBar.start()
       if (isAuth) {
-        const Authorization = localStorage.getItem(LsKeys.LS_KEY_AUTHORIZATION)
-        if (Authorization) {
-          // @ts-ignore
-          config.headers.Authorization = 'Bearer ' + Authorization
-        }
+        config.headers.Authorization = getToken()
       }
 
       return config
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error),
   )
 
   // 响应 拦截器
@@ -44,13 +47,13 @@ function Service(config: any) {
       if (isRawResponse) {
         return response
       }
-      let {data} = response
+      const {data} = response
 
       // window.$loadingBar.finish()
       return data
     },
     (error) => {
-      let message = error.message
+      const message = error.message
       let backendMessage
       const {response} = error || {}
 
@@ -70,7 +73,7 @@ function Service(config: any) {
       }
       // window.$loadingBar.error()
       return Promise.reject(error)
-    }
+    },
   )
 
   return service

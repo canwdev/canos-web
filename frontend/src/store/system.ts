@@ -25,11 +25,18 @@ export const useSystemStore = defineStore('system', {
     },
   },
   actions: {
+    createTaskById(appid: string, params?: any) {
+      const shortcut = window.$appList.find((i) => i.appid === appid)
+      if (shortcut) {
+        return this.createTask(shortcut, params)
+      }
+      alert(`appid ${appid} not found!`)
+    },
     /**
      * 从快捷方式创建任务
      * @param shortcut
      */
-    createTask(shortcut: ShortcutItem) {
+    createTask(shortcut: ShortcutItem, params?: any) {
       if (shortcut.singleInstance) {
         // 查找实例是否已经存在，防止重复启动
         const task = this.tasks.find((i) => i.component === shortcut.component)
@@ -38,7 +45,8 @@ export const useSystemStore = defineStore('system', {
           return
         }
       }
-      const newTask = new TaskItem({...shortcut})
+      const newTask = new TaskItem({...shortcut, params})
+      console.log(newTask)
       this.tasks = [...this.tasks, newTask]
       this.activeId = newTask.guid
     },

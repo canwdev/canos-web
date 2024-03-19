@@ -1,5 +1,5 @@
 import {LdThemeType, LoopModeType} from '@/enum/settings'
-import {DEFAULT_THEME} from "@/components/CommonUI/ViewPortWindow/utils/use-theme";
+import {DEFAULT_THEME} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
 
 interface IStore {
   // 明暗主题
@@ -33,7 +33,7 @@ interface IStore {
 }
 
 export const useSettingsStore = defineStore('settingsStore', {
-  state: (): IStore => {
+  state: (): ISStore => {
     return {
       ldTheme: LdThemeType.SYSTEM,
       customTheme: DEFAULT_THEME,

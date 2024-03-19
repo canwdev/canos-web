@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
-import {TaskItem, Index} from '@/utils/task-queue'
+import {TaskItem, TaskQueue} from '@/utils/task-queue'
 import {fsWebApi} from '@/api/filesystem'
 import {
   CheckmarkCircle20Regular,
@@ -42,7 +42,7 @@ const taskHandler = (task: TaskItem) => {
             data.progress = event.progress
           },
           signal: abortController.value.signal,
-        }
+        },
       )
       data.success = true
       resolve(data)
@@ -56,7 +56,7 @@ const taskHandler = (task: TaskItem) => {
 
 const taskQueueRef = ref()
 onMounted(() => {
-  taskQueueRef.value = new Index({
+  taskQueueRef.value = new TaskQueue({
     concurrent: 2,
     taskHandler,
   })

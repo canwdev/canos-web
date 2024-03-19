@@ -21,6 +21,8 @@ import {
   normalizePath,
   toggleArrayElement,
 } from '@/apps/FileManager/utils'
+import {useOpener} from '@/apps/FileManager/utils/use-opener'
+import {isSupportedMusicFormat} from '@/utils/is'
 
 const files = ref<IEntry[]>([])
 const basePath = ref('/')
@@ -100,27 +102,15 @@ const handleOpenPath = (path, updateHistory = true) => {
     addHistory(backHistory.value)
   }
 }
-const openFileFile = async (item: IEntry) => {
-  await fsWebApi.getStream({path: normalizePath(basePath.value + '/' + item.name)})
-}
-const openFileNewTab = async (item: IEntry) => {
-  try {
-    isLoading.value = true
-    await fsWebApi.getStream({path: normalizePath(basePath.value + '/' + item.name)})
-    const {key} = (await fsWebApi.createShareLink({
-      paths: [normalizePath(basePath.value + '/' + item.name)],
-    })) as unknown as any
-    window.open(fsWebApi.getStreamShareLink({key}))
-  } finally {
-    isLoading.value = false
-  }
-}
+
+const {openFile} = useOpener(basePath, isLoading)
+
 const handleOpen = (item: IEntry) => {
   if (item.isDirectory) {
     handleOpenPath((basePath.value += '/' + item.name))
     return
   } else {
-    openFileNewTab(item)
+    openFile(item, filteredFiles.value)
   }
 }
 
