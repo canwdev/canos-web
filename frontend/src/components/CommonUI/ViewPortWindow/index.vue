@@ -248,15 +248,20 @@ export default defineComponent({
       winOptions.left = left
     }, 500)
 
-    const handleResizeDebounced = useThrottleFn(() => {
-      if (!mVisible.value || !rootRef.value) {
-        return
-      }
-      emit('resize')
+    const handleResizeDebounced = useThrottleFn(
+      () => {
+        if (!mVisible.value || !rootRef.value) {
+          return
+        }
 
-      winOptions.width = getComputedStyle(rootRef.value).width
-      winOptions.height = getComputedStyle(rootRef.value).height
-    }, 50)
+        winOptions.width = getComputedStyle(rootRef.value).width
+        winOptions.height = getComputedStyle(rootRef.value).height
+
+        emit('resize', winOptions)
+      },
+      50,
+      true,
+    )
 
     onBeforeUnmount(() => {
       if (dWindow.value) {

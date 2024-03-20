@@ -79,6 +79,7 @@ type DraggableOptions = {
 }
 
 const RESIZE_BAR_WITH = 6
+const RESIZE_BAR_OFFSET = 4
 const RESIZE_BAR_HALF_WITH = 2
 
 // 管理多个窗口的状态
@@ -106,7 +107,7 @@ const createResizeBar = (parentEl: HTMLElement, direction: ResizeDirection) => {
   switch (direction) {
     case ResizeDirection.n:
       resizeHandle.style.height = `${RESIZE_BAR_WITH}px`
-      resizeHandle.style.top = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.top = `-${RESIZE_BAR_OFFSET}px`
       resizeHandle.style.left = `${RESIZE_BAR_HALF_WITH}px`
       resizeHandle.style.right = `${RESIZE_BAR_HALF_WITH}px`
       // resizeHandle.style.background = `cyan`
@@ -115,39 +116,39 @@ const createResizeBar = (parentEl: HTMLElement, direction: ResizeDirection) => {
       resizeHandle.style.width = `${RESIZE_BAR_WITH}px`
       resizeHandle.style.top = `${RESIZE_BAR_HALF_WITH}px`
       resizeHandle.style.bottom = `${RESIZE_BAR_HALF_WITH}px`
-      resizeHandle.style.right = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.right = `-${RESIZE_BAR_OFFSET}px`
       break
     case ResizeDirection.s:
       resizeHandle.style.height = `${RESIZE_BAR_WITH}px`
-      resizeHandle.style.bottom = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.bottom = `-${RESIZE_BAR_OFFSET}px`
       resizeHandle.style.left = `${RESIZE_BAR_HALF_WITH}px`
       resizeHandle.style.right = `${RESIZE_BAR_HALF_WITH}px`
       break
     case ResizeDirection.w:
       resizeHandle.style.width = `${RESIZE_BAR_WITH}px`
       resizeHandle.style.top = `${RESIZE_BAR_HALF_WITH}px`
-      resizeHandle.style.left = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.left = `-${RESIZE_BAR_OFFSET}px`
       resizeHandle.style.bottom = `${RESIZE_BAR_HALF_WITH}px`
       break
     case ResizeDirection.nw:
       setBoxStyle()
-      resizeHandle.style.top = `-${RESIZE_BAR_WITH}px`
-      resizeHandle.style.left = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.top = `-${RESIZE_BAR_OFFSET}px`
+      resizeHandle.style.left = `-${RESIZE_BAR_OFFSET}px`
       break
     case ResizeDirection.ne:
       setBoxStyle()
-      resizeHandle.style.right = `-${RESIZE_BAR_WITH}px`
-      resizeHandle.style.top = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.right = `-${RESIZE_BAR_OFFSET}px`
+      resizeHandle.style.top = `-${RESIZE_BAR_OFFSET}px`
       break
     case ResizeDirection.sw:
       setBoxStyle()
-      resizeHandle.style.left = `-${RESIZE_BAR_WITH}px`
-      resizeHandle.style.bottom = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.left = `-${RESIZE_BAR_OFFSET}px`
+      resizeHandle.style.bottom = `-${RESIZE_BAR_OFFSET}px`
       break
     case ResizeDirection.se:
       setBoxStyle()
-      resizeHandle.style.right = `-${RESIZE_BAR_WITH}px`
-      resizeHandle.style.bottom = `-${RESIZE_BAR_WITH}px`
+      resizeHandle.style.right = `-${RESIZE_BAR_OFFSET}px`
+      resizeHandle.style.bottom = `-${RESIZE_BAR_OFFSET}px`
       break
   }
 
