@@ -14,6 +14,7 @@ export type QuickOptionItem = {
   // 传入此选项以启用 DynamicValueDisplay 组件
   dynamicProps?: any
   subSearchable?: any
+  disabled?: boolean
   props?: {
     // 点击的同时返回
     isBack?: boolean

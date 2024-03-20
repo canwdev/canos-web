@@ -187,6 +187,9 @@ export default defineComponent({
     }
 
     const handleOptionClick = async (item: QuickOptionItem, event?) => {
+      if (item.disabled) {
+        return
+      }
       if (item?.props?.onClick) {
         item.props.onClick(item, event)
         mVisible.value = false
@@ -403,12 +406,19 @@ export default defineComponent({
       background-color: $primary !important;
     }
 
-    &.clickable {
-      cursor: pointer;
-      &:active {
-        color: white;
-        background-color: $primary !important;
+    &:not(.disabled) {
+      &.clickable {
+        cursor: pointer;
+        &:active {
+          color: white;
+          background-color: $primary !important;
+        }
       }
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   }
 }
