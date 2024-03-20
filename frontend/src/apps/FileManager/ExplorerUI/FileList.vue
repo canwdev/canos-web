@@ -394,7 +394,7 @@ const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
     </div>
     <div ref="explorerContentRef" class="explorer-content" @click="selectedItems = []">
       <div v-if="!isGridView" class="explorer-list-view">
-        <div class="file-list-header file-list-row">
+        <div class="vp-bg file-list-header file-list-row">
           <div class="list-col c-filename">Name</div>
           <div class="list-col c-size">Size</div>
           <div class="list-col c-time">Last Modified</div>
@@ -487,8 +487,6 @@ const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
       border-right: 0;
       position: sticky;
       top: 0;
-      background-color: rgb(206, 206, 206);
-      color: black;
       padding: 0 !important;
       z-index: 1;
     }

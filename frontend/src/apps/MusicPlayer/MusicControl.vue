@@ -2,18 +2,22 @@
 import {formatTimeHMS} from '@/utils'
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
 import TkSeekbar from '@/components/CommonUI/TkSeekBar.vue'
-import {loopModeMap, LoopModeTypeValues} from '@/enum/settings'
-import {useSettingsStore} from '@/store/settings'
 import Mousetrap from 'mousetrap'
 import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'
-import {useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import {
+  loopModeMap,
+  LoopModeTypeValues,
+  useMusicSettingsStore,
+  useMusicStore,
+} from '@/apps/MusicPlayer/utils/music-state'
 import {
   PlayCircle20Regular,
   PauseCircle20Regular,
   Previous20Filled,
   Next20Filled,
   Speaker220Filled,
+  SpeakerOff20Regular,
 } from '@vicons/fluent'
 
 // interface Props {}
@@ -30,7 +34,7 @@ const KEY_DOWN = 'down'
 const emit = defineEmits(['onCoverClick', 'onTitleClick'])
 
 const {t: $t} = useI18n()
-const settingsStore = useSettingsStore()
+const mSettingsStore = useMusicSettingsStore()
 const mCurrentTime = ref(0)
 const isSeeking = ref(false)
 const isDisabled = ref(false)
@@ -49,20 +53,20 @@ const next = () => {
 }
 const volumeUpFn = (e) => {
   e.preventDefault()
-  settingsStore.volumeUp()
+  mSettingsStore.volumeUp()
 }
 const volumeDownFn = (e) => {
   e.preventDefault()
-  settingsStore.volumeDown()
+  mSettingsStore.volumeDown()
 }
 const switchLoopMode = () => {
-  let index = LoopModeTypeValues.findIndex((i) => i === settingsStore.loopMode)
+  let index = LoopModeTypeValues.findIndex((i) => i === mSettingsStore.loopMode)
   ++index
   if (index > LoopModeTypeValues.length - 1) {
     index = 0
   }
   if (LoopModeTypeValues[index]) {
-    settingsStore.loopMode = LoopModeTypeValues[index]
+    mSettingsStore.loopMode = LoopModeTypeValues[index]
     window.$message.info($t(currentLoopMode.value.i18nKey))
   }
 }
@@ -78,7 +82,7 @@ const progressChange = (value) => {
 }
 
 const currentLoopMode = computed(() => {
-  return loopModeMap[settingsStore.loopMode]
+  return loopModeMap[mSettingsStore.loopMode]
 })
 
 onMounted(() => {
@@ -169,14 +173,18 @@ const musicItem = computed(() => musicStore.musicItem)
           :title="$t(currentLoopMode.i18nKey)"
           @click="switchLoopMode"
         >
-          <i class="icon-wrap" :class="currentLoopMode.className">{{ currentLoopMode.icon }}</i>
+          <i class="icon-wrap" :class="currentLoopMode.className">
+            <component v-if="currentLoopMode.icon" :is="currentLoopMode.icon"></component>
+            <span v-else>{{ $t(currentLoopMode.i18nKey) }}</span>
+          </i>
         </button>
 
         <n-popover placement="top" trigger="click">
           <template #trigger>
             <button class="btn-action btn-no-style" :title="$t('volume')">
               <i class="icon-wrap">
-                <Speaker220Filled />
+                <Speaker220Filled v-if="mSettingsStore.audioVolume > 0" />
+                <SpeakerOff20Regular v-else />
               </i>
             </button>
           </template>
@@ -186,9 +194,9 @@ const musicItem = computed(() => musicStore.musicItem)
               style="height: 100px"
               :max="100"
               :tooltip="false"
-              v-model:value="settingsStore.audioVolume"
+              v-model:value="mSettingsStore.audioVolume"
             />
-            <span style="font-size: 12px">{{ settingsStore.audioVolume }}</span>
+            <span style="font-size: 12px">{{ mSettingsStore.audioVolume }}</span>
           </div>
         </n-popover>
       </div>

@@ -1,4 +1,4 @@
-import {LdThemeType, LoopModeType} from '@/enum/settings'
+import {LdThemeType} from '@/enum/settings'
 import {DEFAULT_THEME} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
 
 interface IStore {
@@ -26,10 +26,6 @@ interface IStore {
   taskbarIconOnly: boolean
   // 应用自启动appid列表
   appAutoStartIds: string[]
-  // 循环模式
-  loopMode: LoopModeType
-  // 音量
-  audioVolume: number
 }
 
 export const useSettingsStore = defineStore('settingsStore', {
@@ -38,7 +34,7 @@ export const useSettingsStore = defineStore('settingsStore', {
       ldTheme: LdThemeType.SYSTEM,
       customTheme: DEFAULT_THEME,
       themeColor: '#258292',
-      desktopBgColor: '#258292',
+      desktopBgColor: '#17515b',
       disableAnimation: false,
       isWindowed: true,
 
@@ -51,35 +47,9 @@ export const useSettingsStore = defineStore('settingsStore', {
       taskbarIconOnly: false,
       desktopWallpaper: '',
       appAutoStartIds: [],
-      loopMode: LoopModeType.LOOP_SEQUENCE,
-      audioVolume: 100,
     }
   },
-  actions: {
-    setAudioVolume(value) {
-      value = Number(value)
-
-      if (value > 100) {
-        value = 100
-      }
-      if (value < 0) {
-        value = 0
-      }
-
-      // console.log(value)
-
-      this.audioVolume = value
-    },
-    volumeUp(step = 5) {
-      const volume = this.audioVolume + step
-      this.setAudioVolume(volume)
-    },
-    volumeDown(step = 5) {
-      const volume = this.audioVolume - step
-      this.setAudioVolume(volume)
-    },
-  },
   persist: {
-    key: 'ls_key_localweb_settings',
+    key: 'ls_key_canos_settings',
   },
 })

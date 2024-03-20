@@ -11,8 +11,8 @@ export interface ShortcutItem {
   url?: string
   // 窗口id，设置用于保存窗口的位置和大小
   winId?: string | null
-  // 窗口初始化大小和位置
-  winOptions?: WinOptions | null
+  // 窗口初始化大小和位置，可传入部分 WinOptions 参数
+  winOptions?: any
   // 是否为单实例
   singleInstance?: boolean
   // 是否需要后端服务，如果后端服务未启动，则该程序不可用
@@ -26,7 +26,7 @@ export interface TaskItem {
   icon: string
   winId?: string
   // 窗口初始化大小和位置
-  winOptions?: WinOptions
+  winOptions?: any
   // ViewPortWindow $ref
   windowRef: any
   // defineAsyncComponent(() => import(''))

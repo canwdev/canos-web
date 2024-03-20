@@ -3,10 +3,11 @@ import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
-import {ldThemeOptions, loopModeMap, SettingsTabType} from '@/enum/settings'
+import {ldThemeOptions, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
 import pkg from '../../../package.json'
 import {useSystemStore} from '@/store/system'
+import {loopModeMap} from '@/apps/MusicPlayer/utils/music-state'
 
 export default defineComponent({
   name: 'SettingsSystem',
@@ -36,7 +37,7 @@ export default defineComponent({
                 : '后端服务不可用',
               actionRender: h(
                 'div',
-                systemStore.isBackendAvailable ? systemStore.serverInfo.version : 'N/A'
+                systemStore.isBackendAvailable ? systemStore.serverInfo.version : 'N/A',
               ),
             },
             {
@@ -50,33 +51,10 @@ export default defineComponent({
                   target: '_blank',
                   rel: 'nofollow noopener',
                 },
-                'Github'
+                'Github',
               ),
             },
           ].filter(Boolean),
-        },
-        {
-          label: '媒体设置',
-          key: 'media_settings',
-          children: [
-            {
-              label: '音量',
-              key: 'audioVolume',
-              store: settingsStore,
-              type: StOptionType.SLIDER,
-              selectOptions: ldThemeOptions,
-            },
-            {
-              label: '播放模式',
-              key: 'loopMode',
-              store: settingsStore,
-              type: StOptionType.SELECT,
-              selectOptions: Object.values(loopModeMap).map((i) => ({
-                label: $t(i.i18nKey),
-                value: i.value,
-              })),
-            },
-          ],
         },
         {
           label: '系统 UI',

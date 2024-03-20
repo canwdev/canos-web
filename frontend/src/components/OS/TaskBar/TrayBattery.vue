@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useBattery} from '@vueuse/core'
 import {
-  BatteryCharge20Regular,
+  BatteryCharge20Filled,
   Battery1020Regular,
   Battery920Regular,
   Battery820Regular,
@@ -38,8 +38,9 @@ const titleDisplay = computed(() => {
 
 <template>
   <div class="tray-icon battery-icon-wrap" :title="titleDisplay">
-    <span v-if="charging" class="i-charging" title="🗲">+</span>
-    <Battery1020Regular v-if="level >= 0.9" />
+    <!--    <span v-if="charging" class="i-charging" title="🗲">+</span>-->
+    <BatteryCharge20Filled v-if="charging" />
+    <Battery1020Regular v-else-if="level >= 0.9" />
     <Battery920Regular v-else-if="level >= 0.8" />
     <Battery820Regular v-else-if="level >= 0.7" />
     <Battery720Regular v-else-if="level >= 0.6" />
@@ -63,7 +64,11 @@ const titleDisplay = computed(() => {
     position: absolute;
     color: black;
     font-weight: bolder;
-    text-shadow: 1px 1px white, -1px -1px white, 1px -1px white, -1px 1px white;
+    text-shadow:
+      1px 1px white,
+      -1px -1px white,
+      1px -1px white,
+      -1px 1px white;
   }
 }
 </style>

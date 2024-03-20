@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import musicBus, {MusicEvents, useMusicBusOn} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'
-import {useSettingsStore} from '@/store/settings'
-import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import {MusicItem, useMusicSettingsStore, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
 import {fsWebApi} from '@/api/filesystem'
 
 // interface Props {}
@@ -12,7 +11,7 @@ const musicStore = useMusicStore()
 
 const {t: $t} = useI18n()
 const audioRef = ref()
-const settingsStore = useSettingsStore()
+const mSettingsStore = useMusicSettingsStore()
 const audioSrc = ref<string | undefined>()
 
 const play = () => {
@@ -96,7 +95,7 @@ const changeSpeed = (val = 1) => {
   }
 }
 
-watch(() => settingsStore.audioVolume, changeVolume)
+watch(() => mSettingsStore.audioVolume, changeVolume)
 watch(() => musicStore.playbackRate, changeSpeed)
 
 watch(
@@ -115,7 +114,7 @@ watch(
 
 onMounted(() => {
   registerAudioEvents(audioRef.value)
-  changeVolume(settingsStore.audioVolume)
+  changeVolume(mSettingsStore.audioVolume)
   changeSpeed(musicStore.playbackRate)
 })
 

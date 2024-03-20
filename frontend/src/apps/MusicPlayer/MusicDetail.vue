@@ -144,6 +144,7 @@ export default defineComponent({
       <div class="actions-wrap">
         <button class="btn-no-style" @click="jumpBackward">
           <i class="material-icons">replay_5</i>
+          <!--          SkipBack1020Regular-->
         </button>
 
         <button
@@ -223,21 +224,20 @@ export default defineComponent({
     }
 
     .title {
-      margin-top: 10px;
-      font-size: 22px;
+      font-size: 18px;
       font-weight: bold;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .subtitle {
       font-size: 14px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
   }
 
   .actions-wrap {
     user-select: none;
-    margin-top: 15px;
+    margin-top: 8px;
 
     button {
       &.active {

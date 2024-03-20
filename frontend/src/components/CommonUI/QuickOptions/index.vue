@@ -251,7 +251,7 @@ export default defineComponent({
 
     <div
       v-if="menuStack.length || computedSubList"
-      class="option-item vp-panel _back clickable"
+      class="option-item vp-bg _back clickable"
       @click="handleBack"
     >
       <div class="index-wrap">

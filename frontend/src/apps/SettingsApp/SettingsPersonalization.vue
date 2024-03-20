@@ -3,9 +3,10 @@ import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
-import {ldThemeOptions, loopModeMap, SettingsTabType} from '@/enum/settings'
+import {ldThemeOptions, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
-import {useThemeOptions} from "@/components/CommonUI/ViewPortWindow/utils/use-theme";
+import {useThemeOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
+import {loopModeMap} from '@/apps/MusicPlayer/utils/music-state'
 
 const getWallpaperText = () => {
   const list = [

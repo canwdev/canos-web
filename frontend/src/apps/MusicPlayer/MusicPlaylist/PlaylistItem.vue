@@ -34,11 +34,11 @@ const isCurrent = computed(() => {
 
 <style lang="scss" scoped>
 .playlist-item {
-  padding: 5px;
+  padding: 4px;
   word-break: break-word;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   transition: all 0.3s;
   cursor: pointer;
   border-bottom: 1px solid $color_border;

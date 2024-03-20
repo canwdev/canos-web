@@ -2,14 +2,20 @@
 import {defineComponent} from 'vue'
 import PlaylistItem from '@/apps/MusicPlayer/MusicPlaylist/PlaylistItem.vue'
 import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 
 const musicStore = useMusicStore()
 const filterText = ref('')
 
 const handleItemClick = (item: MusicItem) => {
   const idx = musicStore.playingList.findIndex((i) => i.guid === item.guid)
-  if (!idx) {
+  if (idx === -1) {
     console.error('idx not found!')
+    return
+  }
+  if (idx === musicStore.playingIndex) {
+    musicBus.emit(MusicEvents.ACTION_TOGGLE_PLAY)
+    return
   }
   musicStore.playByIndex(idx)
 }
@@ -29,10 +35,10 @@ const playlistFiltered = computed(() => {
 
 <template>
   <div class="music-play-list">
-    <n-space class="playlist-action-bar">
-      <n-input :placeholder="$t('filter-by-name')" v-model:value="filterText" size="tiny" />
-      {{ musicStore.playingIndex + 1 }} / {{ musicStore.playingList.length }}
-    </n-space>
+    <div class="vp-bg playlist-action-bar">
+      <input class="vp-input" :placeholder="$t('filter-by-name')" v-model="filterText" />
+      <span>{{ musicStore.playingIndex + 1 }} / {{ musicStore.playingList.length }}</span>
+    </div>
     <div class="music-list">
       <PlaylistItem
         v-for="item in playlistFiltered"
@@ -56,7 +62,12 @@ const playlistFiltered = computed(() => {
   .playlist-action-bar {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
   }
 }
 </style>

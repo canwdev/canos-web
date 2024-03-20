@@ -1,6 +1,5 @@
+import {ArrowRepeatAll20Regular} from '@vicons/fluent'
 import {getRandomInt, guid} from '@/utils'
-import {useSettingsStore} from '@/store/settings'
-import {LoopModeType} from '@/enum/settings'
 import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 import {normalizePath} from '@/apps/FileManager/utils'
 
@@ -37,6 +36,47 @@ type IStore = {
   stopCountdown: any // setTimeout timer
   isPlayEnded: boolean
   isLoadedAutoplay: boolean // 是否在加载结束后自动播放
+}
+
+export enum LoopModeType {
+  NONE = 1, // Play stops after last track
+  LOOP_SEQUENCE = 2, // Sequence play
+  LOOP_REVERSE = 3, // Reverse play
+  LOOP_SINGLE = 4, // Single cycle
+  SHUFFLE = 5, // Shuffle next
+}
+
+export const LoopModeTypeValues = [
+  LoopModeType.NONE,
+  LoopModeType.LOOP_SEQUENCE,
+  LoopModeType.LOOP_REVERSE,
+  LoopModeType.LOOP_SINGLE,
+  LoopModeType.SHUFFLE,
+]
+export const loopModeMap = {
+  [LoopModeType.NONE]: {
+    value: LoopModeType.NONE,
+    i18nKey: 'msg.play-in-order',
+  },
+  [LoopModeType.SHUFFLE]: {
+    value: LoopModeType.SHUFFLE,
+    i18nKey: 'shuffle',
+  },
+  [LoopModeType.LOOP_SEQUENCE]: {
+    value: LoopModeType.LOOP_SEQUENCE,
+    icon: ArrowRepeatAll20Regular,
+    i18nKey: 'msg.sequential-loop',
+  },
+  [LoopModeType.LOOP_REVERSE]: {
+    value: LoopModeType.LOOP_REVERSE,
+    icon: ArrowRepeatAll20Regular,
+    className: 'reverse-x',
+    i18nKey: 'msg.reverse-loop',
+  },
+  [LoopModeType.LOOP_SINGLE]: {
+    value: LoopModeType.LOOP_SINGLE,
+    i18nKey: 'msg.single-cycle',
+  },
 }
 
 export const useMusicStore = defineStore('music', {
@@ -92,14 +132,14 @@ export const useMusicStore = defineStore('music', {
       this.playByIndex(getRandomIndex(this.playingList, this.playingIndex))
     },
     playNext() {
-      const settingsStore = useSettingsStore()
-      if (settingsStore.loopMode === LoopModeType.SHUFFLE) {
+      const mSettingsStore = useMusicSettingsStore()
+      if (mSettingsStore.loopMode === LoopModeType.SHUFFLE) {
         this.playShuffle()
         return
       }
       let index = this.playingIndex + 1
       if (index > this.playingList.length - 1) {
-        if (settingsStore.loopMode === LoopModeType.LOOP_SEQUENCE) {
+        if (mSettingsStore.loopMode === LoopModeType.LOOP_SEQUENCE) {
           // loop list from first
           index = 0
         } else {
@@ -110,19 +150,19 @@ export const useMusicStore = defineStore('music', {
       this.playByIndex(index)
     },
     handlePlayEnded() {
-      const settingsStore = useSettingsStore()
+      const mSettingsStore = useMusicSettingsStore()
       this.isPlayEnded = true
-      if (settingsStore.loopMode === LoopModeType.LOOP_SINGLE) {
+      if (mSettingsStore.loopMode === LoopModeType.LOOP_SINGLE) {
         // single loop
         musicBus.emit(MusicEvents.ACTION_PLAY)
         return
       }
-      if (settingsStore.loopMode === LoopModeType.LOOP_REVERSE) {
+      if (mSettingsStore.loopMode === LoopModeType.LOOP_REVERSE) {
         // reverse play
         this.playPrev()
         return
       }
-      if (settingsStore.loopMode === LoopModeType.SHUFFLE) {
+      if (mSettingsStore.loopMode === LoopModeType.SHUFFLE) {
         this.playShuffle()
         return
       }
@@ -141,5 +181,48 @@ export const useMusicStore = defineStore('music', {
         }
       }, 100)
     },
+  },
+})
+
+interface IMusicSettings {
+  // 循环模式
+  loopMode: LoopModeType
+  // 音量
+  audioVolume: number
+}
+
+export const useMusicSettingsStore = defineStore('musicSettings', {
+  state: (): IMusicSettings => {
+    return {
+      loopMode: LoopModeType.LOOP_SEQUENCE,
+      audioVolume: 100,
+    }
+  },
+  actions: {
+    setAudioVolume(value) {
+      value = Number(value)
+
+      if (value > 100) {
+        value = 100
+      }
+      if (value < 0) {
+        value = 0
+      }
+
+      // console.log(value)
+
+      this.audioVolume = value
+    },
+    volumeUp(step = 5) {
+      const volume = this.audioVolume + step
+      this.setAudioVolume(volume)
+    },
+    volumeDown(step = 5) {
+      const volume = this.audioVolume - step
+      this.setAudioVolume(volume)
+    },
+  },
+  persist: {
+    key: 'ls_key_canos_music_settings',
   },
 })
