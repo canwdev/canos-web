@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    "basic.js",
+    "base64.js",
+    "mc-utils.js",
+    "string-man.js",
+    "system-utils.js"
+  ]
+}
