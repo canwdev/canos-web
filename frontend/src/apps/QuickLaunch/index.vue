@@ -98,6 +98,7 @@ export default defineComponent({
     width: 100% !important;
     border-radius: 0 !important;
     max-height: 150px !important;
+    scrollbar-width: none;
   }
   .quick-options {
     flex: 1;

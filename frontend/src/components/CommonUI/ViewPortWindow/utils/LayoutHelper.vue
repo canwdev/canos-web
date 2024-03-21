@@ -23,7 +23,7 @@ watch(mVisible, (val) => {
   if (!val) {
     setTimeout(() => {
       layoutPreview.value = null
-    })
+    }, 200)
   }
 })
 

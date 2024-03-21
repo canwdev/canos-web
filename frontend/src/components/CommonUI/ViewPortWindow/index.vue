@@ -336,7 +336,7 @@ export default defineComponent({
           <div class="vp-window-title-bar-text text-overflow">
             <slot name="titleBarLeft"></slot>
           </div>
-          <div ref="titleBarButtonsRef" class="vp-window-controls">
+          <div @dblclick.stop ref="titleBarButtonsRef" class="vp-window-controls">
             <slot name="titleBarRightControls"> </slot>
             <slot name="titleBarRight">
               <button v-if="allowMinimum" @click="isMinimized = true" class="is-minimize">
