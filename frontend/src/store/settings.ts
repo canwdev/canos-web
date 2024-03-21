@@ -1,7 +1,7 @@
 import {LdThemeType} from '@/enum/settings'
 import {DEFAULT_THEME} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
 
-interface IStore {
+type IStore = {
   // 明暗主题
   ldTheme: LdThemeType
   // 自定义主题类型

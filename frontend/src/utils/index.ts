@@ -117,3 +117,16 @@ export function getRandomInt(min, max) {
 export const sleep = (t) => {
   return new Promise((resolve) => setTimeout(resolve, t))
 }
+
+// 文件对象转换为base64
+export function blobToBase64(blob): Promise<string> {
+  console.log('b', blob)
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader()
+    fr.onload = (e) => {
+      resolve(e.target!.result as string)
+    }
+    fr.onerror = reject
+    fr.readAsDataURL(blob)
+  })
+}

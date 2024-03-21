@@ -29,6 +29,7 @@ import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
 import {sortMethodMap} from '@/apps/FileManager/utils/sort'
 import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
 import UploadQueue from '@/apps/FileManager/UploadQueue.vue'
+import {useDropUpload} from '@/apps/FileManager/ExplorerUI/use-drop-upload'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -227,6 +228,25 @@ const confirmDelete = () => {
   })
 }
 
+const uploadFiles = async (files: File[] | FileList | null) => {
+  if (!files) {
+    return
+  }
+  isLoading.value = true
+  // @ts-ignore
+  for (const file of files) {
+    // await fsWebApi.createFile({
+    //   path: normalizePath(basePath.value + '/' + file.name),
+    //   file,
+    // })
+    uploadQueueRef.value.addTask({
+      name: file.name,
+      path: normalizePath(basePath.value + '/' + file.name),
+      file,
+    })
+  }
+}
+
 const {
   open: openSelectFiles,
   reset: resetSelectFiles,
@@ -240,25 +260,12 @@ onSelectFiles(async (files) => {
     if (!files) {
       return
     }
-    isLoading.value = true
-    // @ts-ignore
-    for (const file of files) {
-      // await fsWebApi.createFile({
-      //   path: normalizePath(basePath.value + '/' + file.name),
-      //   file,
-      // })
-      uploadQueueRef.value.addTask({
-        name: file.name,
-        path: normalizePath(basePath.value + '/' + file.name),
-        file,
-      })
-    }
+
+    await uploadFiles(files)
     resetSelectFiles()
     // emit('refresh')
   } catch (e) {
     resetSelectFiles()
-  } finally {
-    isLoading.value = false
   }
 })
 
@@ -304,10 +311,14 @@ const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
   }
   ctxMenuRef.value.showMenu(event)
 }
+
+const {isOverDropZone, dropZoneRef} = useDropUpload((files: File[] | null) => {
+  uploadFiles(files)
+})
 </script>
 
 <template>
-  <div class="explorer-list-wrap" @contextmenu.prevent>
+  <div ref="dropZoneRef" :class="{isOverDropZone}" class="explorer-list-wrap" @contextmenu.prevent>
     <transition name="fade">
       <div class="os-loading-container _absolute" v-if="isLoading">
         <n-spin />
@@ -440,6 +451,12 @@ const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  &.isOverDropZone {
+    outline: 2px dashed $primary;
+    outline-offset: -3px;
+  }
+
   .explorer-actions {
     padding: 4px;
     display: flex;
