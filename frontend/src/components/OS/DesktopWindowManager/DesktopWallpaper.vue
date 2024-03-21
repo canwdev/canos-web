@@ -1,35 +1,39 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
 import {useSettingsStore} from '@/store/settings'
 import {useSystemStore} from '@/store/system'
+import {useDropZone} from '@vueuse/core'
+import {blobToBase64} from '@/utils'
 
-export default defineComponent({
-  name: 'DesktopWallpaper',
-  setup() {
-    const settingsStore = useSettingsStore()
-    const systemStore = useSystemStore()
+const settingsStore = useSettingsStore()
+const systemStore = useSystemStore()
 
-    const bgStyle = computed(() => {
-      const s: any = {}
-      if (settingsStore.desktopWallpaper) {
-        s.backgroundImage = `url(${settingsStore.desktopWallpaper})`
-      }
-      if (settingsStore.desktopBgColor) {
-        s.backgroundColor = settingsStore.desktopBgColor
-      }
-      return s
-    })
+const bgStyle = computed(() => {
+  const s: any = {}
+  if (settingsStore.desktopWallpaper) {
+    s.backgroundImage = `url(${settingsStore.desktopWallpaper})`
+  }
+  if (settingsStore.desktopBgColor) {
+    s.backgroundColor = settingsStore.desktopBgColor
+  }
+  return s
+})
 
-    return {
-      bgStyle,
-      systemStore,
-    }
-  },
+async function onDrop(files: File[] | null) {
+  if (files && files[0]) {
+    // TODO 文件单独存储
+    settingsStore.desktopWallpaper = await blobToBase64(files[0])
+  }
+}
+const dropZoneRef = ref<HTMLDivElement>()
+
+const {isOverDropZone} = useDropZone(dropZoneRef, {
+  onDrop,
+  dataTypes: ['image/png'],
 })
 </script>
 
 <template>
-  <div class="desktop-wallpaper" :style="bgStyle">
+  <div ref="dropZoneRef" :class="{isOverDropZone}" class="desktop-wallpaper" :style="bgStyle">
     <slot></slot>
 
     <span class="watermark-tip font-code">{{
@@ -53,6 +57,11 @@ export default defineComponent({
   bottom: 0;
   color: white;
   text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.7);
+
+  &.isOverDropZone {
+    outline: 2px dashed $primary;
+    outline-offset: -3px;
+  }
 
   .watermark-tip {
     position: absolute;

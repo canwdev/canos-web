@@ -1,6 +1,6 @@
 import {ShortcutItem, TaskItem} from '@/enum/os'
 
-interface IStore {
+type IStore = {
   isBackendAvailable: boolean
   serverInfo: any
   tasks: TaskItem[]
