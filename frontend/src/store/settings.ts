@@ -38,8 +38,8 @@ export const useSettingsStore = defineStore('settingsStore', {
       disableAnimation: false,
       isWindowed: true,
 
-      taskbarShowFps: true,
-      taskbarShowMemory: true,
+      taskbarShowFps: false,
+      taskbarShowMemory: false,
       taskbarShowNetwork: true,
       taskbarShowBattery: true,
       taskbarShowClock: true,

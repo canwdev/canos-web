@@ -94,7 +94,7 @@ export const formatSelectOptions = (list: string[]) => {
   })
 }
 
-// 文件大小转换
+// 字节转换为可读的单位
 export const bytesToSize = (bytes, autoNo = '0B') => {
   bytes = Number(bytes)
   if (Number.isNaN(bytes)) {
@@ -105,7 +105,6 @@ export const bytesToSize = (bytes, autoNo = '0B') => {
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return Number(bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i]
-  //toPrecision(3) 后面保留一位小数，如1.0GB
 }
 
 export function getRandomInt(min, max) {

@@ -28,6 +28,10 @@ export const useOpener = (basePath, isLoading) => {
       systemStore.createTaskById('os.music_player', {item, list, basePath: basePath.value})
       return
     }
+    if (Number(item.size) > 50 * 1024 * 1024) {
+      window.$message.error('文件大于50MB，不支持预览，请下载！')
+      return
+    }
 
     console.log('不支持的格式', item)
     await openFileNewTab(item)

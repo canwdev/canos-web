@@ -190,7 +190,7 @@ const filteredFiles = computed(() => {
       </div>
     </div>
     <div class="explorer-content-wrap _scrollbar_mini">
-      <FileSidebar @openDrive="(i) => handleOpenPath(i.path)" />
+      <FileSidebar @openDrive="(i) => handleOpenPath(i.path)" :current-path="basePath" />
       <FileList
         v-model:is-loading="isLoading"
         :files="filteredFiles"

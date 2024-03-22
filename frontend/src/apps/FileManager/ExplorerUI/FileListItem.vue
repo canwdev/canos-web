@@ -13,10 +13,11 @@ const props = withDefaults(defineProps<Props>(), {})
 </script>
 
 <template>
-  <div
-    class="file-list-item file-list-row"
+  <button
+    class="btn-no-style file-list-item file-list-row"
     :class="{active, hidden: item.hidden}"
     @click.stop="$emit('select', {item, event: $event})"
+    @keyup.enter="$emit('open', item)"
     @dblclick.stop="$emit('open', item)"
   >
     <div class="list-col c-filename">
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<Props>(), {})
       <span
         class="text-overflow filename-text"
         @click.stop="$emit('open', item)"
+        @dblclick.stop
         :title="item.name"
       >
         {{ item.name }}
@@ -34,15 +36,19 @@ const props = withDefaults(defineProps<Props>(), {})
     </div>
     <div class="list-col c-size">{{ bytesToSize(item.size) }}</div>
     <div class="list-col c-time">{{ formatDate(item.lastModified) }}</div>
-  </div>
+  </button>
 </template>
 
 <style lang="scss" scoped>
 .file-list-item {
+  display: flex;
+  text-align: unset;
+  width: 100%;
   border-bottom: 1px solid $color_border;
   transition: all 0.3s;
   padding-top: 4px;
   padding-bottom: 4px;
+  cursor: default;
   &:hover {
     transition: background-color 0s;
     background-color: $primary_opacity;
@@ -54,8 +60,14 @@ const props = withDefaults(defineProps<Props>(), {})
   }
 
   &.active {
-    background-color: $primary;
+    background-color: $primary_opacity;
+    outline: 1px solid $primary;
+    outline-offset: -1px;
     color: white;
+  }
+  &:focus {
+    outline: 1px solid $primary;
+    outline-offset: -1px;
   }
 
   .list-col {

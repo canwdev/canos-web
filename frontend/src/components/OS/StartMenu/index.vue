@@ -4,8 +4,8 @@ import StartMenuItem from '@/components/OS/StartMenu/StartMenuItem.vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
-import {onClickOutside} from '@vueuse/core'
-import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
+import {onClickOutside, useFullscreen} from '@vueuse/core'
+import globalEventBus, {GlobalEvents} from '@/utils/bus'
 
 export default defineComponent({
   name: 'StartMenu',
@@ -54,8 +54,10 @@ export default defineComponent({
     }
 
     const doLogout = () => {
-      musicBus.emit(MusicEvents.GLOBAL_EVENT_LOGOUT)
+      globalEventBus.emit(GlobalEvents.GLOBAL_EVENT_LOGOUT)
     }
+
+    const {toggle: toggleFullscreen} = useFullscreen(document.documentElement)
 
     return {
       rootRef,
@@ -67,6 +69,7 @@ export default defineComponent({
       doShutdown,
       doRefresh,
       doLogout,
+      toggleFullscreen,
     }
   },
 })
@@ -97,6 +100,7 @@ export default defineComponent({
           <!--          />-->
           <button class="vp-button" @click="doRefresh">Refresh</button>
           <button class="vp-button" @click="doShutdown">Shutdown</button>
+          <button class="vp-button" @click="toggleFullscreen">Fullscreen</button>
         </div>
       </div>
     </div>
@@ -105,7 +109,9 @@ export default defineComponent({
         <input v-model="filterText" placeholder="Search apps" class="input-search vp-input" />
       </div>
       <div class="start-menu-right">
-        <button class="vp-button" @click="doLogout">Logout</button>
+        <button v-if="systemStore.isBackendAvailable" class="vp-button" @click="doLogout">
+          Logout
+        </button>
       </div>
     </div>
   </div>

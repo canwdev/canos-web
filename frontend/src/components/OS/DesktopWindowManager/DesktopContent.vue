@@ -36,10 +36,13 @@ useSelectionArea({
       :class="{active: selected.has(index)}"
       @dblclick.stop="handleItemClick(item)"
       @click.stop
+      @keyup.enter="handleItemClick(item)"
       class="desktop-icon btn-no-style"
     >
       <img class="desktop-icon-image" :src="item.icon" :alt="item.title" />
-      <span class="desktop-icon-name">{{ item.title }}</span>
+      <span @dbclick.stop @click.stop="handleItemClick(item)" class="desktop-icon-name">{{
+        item.title
+      }}</span>
     </button>
   </div>
 </template>
@@ -90,6 +93,11 @@ useSelectionArea({
       padding-bottom: 2px;
       line-height: 1.4;
       text-shadow: 1px 1px 2px #000;
+
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

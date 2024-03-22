@@ -4,6 +4,7 @@ import {serverApi} from '@/api/server'
 import {useRouter} from 'vue-router'
 import {LsKeys} from '@/enum'
 import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
+import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
 
 interface ModelType {
   username: string | null
@@ -47,7 +48,7 @@ const handleLogin = async () => {
       window.$message.error('Invalid token!')
       return
     }
-    console.log(access_token)
+    // console.log(access_token)
     localStorage.setItem(LsKeys.LS_KEY_AUTHORIZATION, access_token)
     await router.push({path: '/'})
   } catch (e) {
@@ -80,31 +81,33 @@ const handleValidateButtonClick = (e: MouseEvent) => {
 
 <template>
   <div class="login-view">
-    <ViewPortWindow :show-close="false">
-      <template #titleBarLeft>Login</template>
-      <n-form class="card-wrap" ref="formRef" :model="formModel" :rules="formRules">
-        <n-form-item path="username" label="Username">
-          <n-input
-            ref="inputUsernameRef"
-            v-model:value="formModel.username"
-            @keyup.enter="handleValidateButtonClick"
-          />
-        </n-form-item>
+    <DesktopWallpaper>
+      <ViewPortWindow :show-close="false">
+        <template #titleBarLeft>Login</template>
+        <n-form class="card-wrap" ref="formRef" :model="formModel" :rules="formRules">
+          <n-form-item path="username" label="Username">
+            <n-input
+              ref="inputUsernameRef"
+              v-model:value="formModel.username"
+              @keyup.enter="handleValidateButtonClick"
+            />
+          </n-form-item>
 
-        <n-form-item path="password" label="Password">
-          <n-input
-            v-model:value="formModel.password"
-            type="password"
-            show-password-on="click"
-            @keyup.enter="handleValidateButtonClick"
-            class="font-code"
-          />
-        </n-form-item>
-        <n-space size="small" justify="end">
-          <n-button @click="handleValidateButtonClick"> Login </n-button>
-        </n-space>
-      </n-form>
-    </ViewPortWindow>
+          <n-form-item path="password" label="Password">
+            <n-input
+              v-model:value="formModel.password"
+              type="password"
+              show-password-on="click"
+              @keyup.enter="handleValidateButtonClick"
+              class="font-code"
+            />
+          </n-form-item>
+          <n-space size="small" justify="end">
+            <n-button @click="handleValidateButtonClick"> Login </n-button>
+          </n-space>
+        </n-form>
+      </ViewPortWindow>
+    </DesktopWallpaper>
   </div>
 </template>
 

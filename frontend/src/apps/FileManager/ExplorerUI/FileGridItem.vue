@@ -26,16 +26,19 @@ Last Modified: ${formatDate(item.value.lastModified)}
 </script>
 
 <template>
-  <div
-    class="file-grid-item"
+  <button
+    class="file-grid-item btn-no-style"
     :class="{active, hidden: item.hidden}"
     @click.stop="$emit('select', {item, event: $event})"
+    @keyup.enter="$emit('open', item)"
     @dblclick.stop="$emit('open', item)"
     :title="titleDesc"
   >
     <img class="desktop-icon-image" :src="iconSrc" />
-    <span class="desktop-icon-name">{{ item.name }}</span>
-  </div>
+    <span class="desktop-icon-name" @click.stop="$emit('open', item)" @dblclick.stop>{{
+      item.name
+    }}</span>
+  </button>
 </template>
 
 <style lang="scss" scoped>
@@ -47,8 +50,10 @@ Last Modified: ${formatDate(item.value.lastModified)}
   cursor: default;
   width: 90px;
   padding: 8px 2px;
-  &:active {
-    outline: 1px dashed white;
+  &:active,
+  &:focus {
+    outline: 1px dashed currentColor;
+    outline-offset: -1px;
   }
   &:hover {
     background-color: rgba(224, 224, 224, 0.3);
@@ -80,6 +85,11 @@ Last Modified: ${formatDate(item.value.lastModified)}
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>

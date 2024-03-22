@@ -5,9 +5,11 @@ import {handleAssetsUrl} from '@/utils/vite-utils'
 import {useStorage} from '@vueuse/core'
 import {LsKeys} from '@/enum'
 import {ChevronLeft20Filled} from '@vicons/fluent'
+import {normalizePath} from '@/apps/FileManager/utils'
 
 interface Props {
   width?: string
+  currentPath?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,12 +21,25 @@ const emit = defineEmits(['openDrive'])
 const isLoading = ref(false)
 const dataList = ref<IDrive[]>([])
 
+const getPathNormalized = (path) => {
+  path = normalizePath(path)
+  if (!/\/$/gi.test(path)) {
+    path += '/'
+  }
+  return path
+}
+
 const handleRefresh = async () => {
   try {
     isLoading.value = true
 
-    const drives = await fsWebApi.getDrives({})
-    dataList.value = drives as unknown as IDrive[]
+    const drives = (await fsWebApi.getDrives({})) as unknown as IDrive[]
+    dataList.value = drives.map((i) => {
+      return {
+        ...i,
+        path: getPathNormalized(i.path),
+      }
+    })
 
     if (drives[0]) {
       emit('openDrive', drives[0])
@@ -63,11 +78,12 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
       <ChevronLeft20Filled />
     </button>
     <div class="file-sidebar-content">
-      <div
-        class="drive-item"
+      <button
+        class="drive-item btn-no-style"
         v-for="(item, index) in dataList"
         :key="index"
         :title="item.path"
+        :class="{active: item.path === currentPath}"
         @click="$emit('openDrive', item)"
       >
         <div class="drive-icon">
@@ -79,7 +95,7 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
             <div :style="{width: (item!.free / item.total) * 100 + '%'}" class="volume-value"></div>
           </div>
         </div>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -118,16 +134,28 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
   }
 
   .drive-item {
-    cursor: pointer;
-    padding: 8px;
-    box-sizing: border-box;
     display: flex;
-    gap: 8px;
+    width: 100%;
+    text-align: unset;
+    cursor: pointer;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    gap: 6px;
     align-items: center;
 
+    &.active {
+      background-color: $primary_opacity !important;
+      color: white;
+    }
+
+    &:focus {
+      outline: 1px solid $primary;
+      outline-offset: -1px;
+    }
+
     .drive-icon {
-      width: 26px;
-      height: 26px;
+      width: 20px;
+      height: 20px;
       display: flex;
       img {
         width: 100%;

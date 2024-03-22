@@ -46,6 +46,11 @@ html, body, #app {
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  //&:focus {
+  //  outline: 1px dashed currentColor;
+  //  outline-offset: -1px;
+  //}
 }
 
 ._scrollbar_mini {
