@@ -17,6 +17,7 @@ export interface StOptionItem {
   children?: StOptionItem[] | any
   // 图标
   icon?: string
+  iconRender?: any
   // 小标题
   subtitle?: string
   placeholder?: string

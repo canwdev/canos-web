@@ -1,11 +1,12 @@
 <script lang="ts">
+import VueRender from '@/components/CommonUI/OptionUI/Tools/VueRender.vue'
 import {defineComponent, PropType} from 'vue'
 import ItemAction from './ItemAction.vue'
 import {StOptionItem, StOptionType} from './enum'
 
 export default defineComponent({
   name: 'OptionItem',
-  components: {ItemAction},
+  components: {ItemAction, VueRender},
   props: {
     item: {
       type: Object as PropType<StOptionItem>,
@@ -80,7 +81,10 @@ export default defineComponent({
         @click="handleItemClick($event, sItem.clickFn)"
       >
         <div class="o-left">
-          <div v-if="sItem.icon" class="item-icon">
+          <div v-if="sItem.iconRender" class="item-icon">
+            <VueRender :render-fn="sItem.iconRender" />
+          </div>
+          <div v-else-if="sItem.icon" class="item-icon">
             <img :src="sItem.icon" alt="icon" />
           </div>
           <div class="item-title-wrap">

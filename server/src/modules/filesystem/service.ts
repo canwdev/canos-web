@@ -146,30 +146,19 @@ export class FsService {
         path: serverInfo.homeDir,
       },
     ]
-    if (serverInfo.platform === 'win32') {
-      const driveList = nodeDiskInfo.getDiskInfoSync()
-
-      dirs = [
-        ...dirs,
-        ...driveList.map((drive) => {
-          return {
-            label: drive.mounted,
-            path: drive.mounted,
-            free: drive.available,
-            total: drive.blocks,
-          }
-        }),
-      ]
-    } else {
-      dirs = [
-        ...dirs,
-        {
-          label: '/',
-          path: '/',
-        },
-      ]
-      console.warn(`platform ${serverInfo.platform} needs to be implemented`)
-    }
+    const driveList = nodeDiskInfo.getDiskInfoSync()
+    console.log('driveList', driveList)
+    dirs = [
+      ...dirs,
+      ...driveList.map((drive) => {
+        return {
+          label: drive.mounted,
+          path: drive.mounted,
+          free: drive.available,
+          total: drive.blocks,
+        }
+      }),
+    ]
     return dirs
   }
 

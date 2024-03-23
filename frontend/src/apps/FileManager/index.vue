@@ -84,15 +84,25 @@ const goForward = () => {
 }
 /* 历史记录功能 END */
 
-const goUp = () => {
+const allowUp = computed(() => {
   const arr = basePath.value.split('/').filter((i) => !!i)
-  // console.log(arr)
+  return arr.length > 0
+})
+const goUp = () => {
+  // 检测以/开头的路径为unix路径
+  const isUnix = /^\//g.test(basePath.value)
+  const arr = basePath.value.split('/').filter((i) => !!i)
+  console.log(arr)
   arr.pop()
-  if (!arr.length) {
+  if (!arr.length && !isUnix) {
     handleRefresh()
     return
   }
-  handleOpenPath(arr.join('/') + '/')
+  let path = arr.join('/') + '/'
+  if (isUnix) {
+    path = '/' + path
+  }
+  handleOpenPath(path)
 }
 const handleOpenPath = (path, updateHistory = true) => {
   basePath.value = path
@@ -154,7 +164,7 @@ const filteredFiles = computed(() => {
               <ArrowRight20Regular />
             </n-icon>
           </button>
-          <button class="btn-action vp-button" @click="goUp" title="Up">
+          <button class="btn-action vp-button" :disabled="!allowUp" @click="goUp" title="Up">
             <n-icon size="16">
               <ArrowUp20Regular />
             </n-icon>

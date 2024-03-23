@@ -6,6 +6,7 @@ import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {StOptionItem} from '@/components/CommonUI/OptionUI/enum'
 import {NSpace, NSwitch} from 'naive-ui'
 import {useSystemStore} from '@/store/system'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 export default defineComponent({
   name: 'SettingsPrograms',
@@ -26,7 +27,7 @@ export default defineComponent({
           key: 'app_management',
           children: systemStore.allApps.map((item) => {
             return {
-              icon: item.icon,
+              iconRender: h(ThemedIcon, {name: item.icon}),
               label: item.title,
               key: item.appid,
               actionRender: h(NSpace, {size: 'small', align: 'center'}, () => [

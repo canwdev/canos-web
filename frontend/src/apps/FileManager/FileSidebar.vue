@@ -16,6 +16,8 @@ const props = withDefaults(defineProps<Props>(), {
   width: '180px',
 })
 
+const {currentPath} = toRefs(props)
+
 const emit = defineEmits(['openDrive'])
 
 const isLoading = ref(false)
@@ -66,6 +68,12 @@ const getIcon = (item: IDrive) => {
 }
 
 const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
+
+const handleOpen = (item) => {
+  if (item.path !== currentPath.value) {
+    emit('openDrive', item)
+  }
+}
 </script>
 
 <template>
@@ -84,7 +92,7 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
         :key="index"
         :title="item.path"
         :class="{active: item.path === currentPath}"
-        @click="$emit('openDrive', item)"
+        @click="handleOpen(item)"
       >
         <div class="drive-icon">
           <ThemedIcon :name="getIcon(item)" />
@@ -156,6 +164,7 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
       width: 20px;
       height: 20px;
       display: flex;
+      flex-shrink: 0;
       img {
         width: 100%;
         height: 100%;
@@ -163,6 +172,7 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
     }
     .drive-content {
       flex: 1;
+      overflow: hidden;
     }
 
     &:hover {
@@ -175,6 +185,9 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
     .drive-title {
       font-size: 12px;
       line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .volume-bar {
