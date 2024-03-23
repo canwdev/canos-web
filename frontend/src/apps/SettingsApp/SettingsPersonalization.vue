@@ -6,7 +6,7 @@ import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {ldThemeOptions, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
 import {useThemeOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
-import {useIconTheme} from '@/hooks/use-global-theme'
+import {useIconThemes} from '@/components/OS/ThemedIcon/use-icon-themes'
 
 const getWallpaperText = () => {
   const list = [
@@ -31,7 +31,7 @@ export default defineComponent({
     const {t: $t} = useI18n()
     const settingsStore = useSettingsStore()
     const {themeOptions} = useThemeOptions()
-    const {themeOptions: iconThemeOptions} = useIconTheme()
+    const {iconOptions} = useIconThemes()
 
     const optionList = computed((): StOptionItem[] => {
       return [
@@ -78,7 +78,7 @@ export default defineComponent({
               key: 'iconTheme',
               store: settingsStore,
               type: StOptionType.SELECT,
-              selectOptions: iconThemeOptions.value,
+              selectOptions: iconOptions.value,
             },
             {
               label: 'Disable Animation',

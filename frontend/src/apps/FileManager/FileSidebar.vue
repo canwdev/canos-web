@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {fsWebApi} from '@/api/filesystem'
 import {IDrive} from '@server/types/server'
-import {getIcon} from '@/utils/vite-utils'
 import {useStorage} from '@vueuse/core'
 import {LsKeys} from '@/enum'
 import {ChevronLeft20Filled} from '@vicons/fluent'
 import {normalizePath} from '@/apps/FileManager/utils'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 interface Props {
   width?: string
@@ -55,14 +55,14 @@ onMounted(() => {
   handleRefresh()
 })
 
-const getIconUrl = (item: IDrive) => {
+const getIcon = (item: IDrive) => {
   if (item.label.toLowerCase() === 'home') {
-    return getIcon('user-home')
+    return 'user-home'
   }
   if (!item.total) {
-    return getIcon('drive-harddisk')
+    return 'dialog-warning'
   }
-  return getIcon('dialog-warning')
+  return 'drive-harddisk'
 }
 
 const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
@@ -87,7 +87,7 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
         @click="$emit('openDrive', item)"
       >
         <div class="drive-icon">
-          <img :src="getIconUrl(item)" />
+          <ThemedIcon :name="getIcon(item)" />
         </div>
         <div class="drive-content">
           <div class="drive-title text-overflow">{{ item.label }}</div>

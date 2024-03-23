@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {IEntry} from '@server/types/server'
-import {getIcon} from '@/utils/vite-utils'
 import {bytesToSize, formatDate} from '@/utils'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 const emit = defineEmits(['open', 'select'])
 
@@ -11,11 +11,11 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {})
 const {item} = toRefs(props)
-const iconSrc = computed(() => {
+const iconName = computed(() => {
   if (item.value.isDirectory) {
-    return getIcon('folder')
+    return 'folder'
   }
-  return getIcon('text-x-preview')
+  return 'text-x-preview'
 })
 const titleDesc = computed(() => {
   return `Name: ${item.value.name}
@@ -34,7 +34,7 @@ Last Modified: ${formatDate(item.value.lastModified)}
     @dblclick.stop="$emit('open', item)"
     :title="titleDesc"
   >
-    <img class="desktop-icon-image" :src="iconSrc" />
+    <ThemedIcon class="desktop-icon-image" :name="iconName" />
     <span class="desktop-icon-name" @click.stop="$emit('open', item)" @dblclick.stop>{{
       item.name
     }}</span>

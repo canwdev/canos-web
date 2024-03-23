@@ -4,13 +4,12 @@ import {LdThemeType} from '@/enum/settings'
 import {useMainStore} from '@/store/main'
 import {getSystemIsDarkMode, hexToRgb} from '@/utils/color'
 import {GlobalThemeOverrides} from 'naive-ui'
-import {IOptions, useThemeOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
+import {IOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
 import {createGlobalState} from '@vueuse/core'
 
 export const useGlobalTheme = () => {
   const mainStore = useMainStore()
   const settingsStore = useSettingsStore()
-  useThemeOptions()
 
   const handleThemeChange = (val: LdThemeType) => {
     if (val === LdThemeType.SYSTEM) {
@@ -105,43 +104,5 @@ export const useGlobalTheme = () => {
   return {
     isAppDarkMode,
     themeOverrides,
-  }
-}
-
-const useIconThemeState = createGlobalState(() => {
-  const isInitialized = ref(false)
-  const themeOptions = ref<IOptions[]>([])
-  return {
-    isInitialized,
-    themeOptions,
-  }
-})
-export const useIconTheme = () => {
-  const {themeOptions, isInitialized} = useIconThemeState()
-  const baseUrl = './resources/icons'
-
-  const loadIconThemes = async () => {
-    const res = await fetch(`${baseUrl}/index.json`)
-    const {iconThemes} = await res.json()
-
-    themeOptions.value = iconThemes.map((i) => {
-      return {
-        label: i.label,
-        value: i.name,
-      }
-    })
-  }
-
-  onMounted(async () => {
-    if (isInitialized.value) {
-      return
-    }
-    await loadIconThemes()
-    isInitialized.value = true
-  })
-
-  return {
-    themeOptions,
-    loadIconThemes,
   }
 }

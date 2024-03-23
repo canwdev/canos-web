@@ -1,55 +1,54 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
 import {formatSiteTitle} from '@/router'
-import {getServerInfo, serverApi} from '@/api/server'
 import {sleep} from '@/utils'
 import {useSystemStore} from '@/store/system'
+import {useThemeOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
+import {useIconThemes} from '@/components/OS/ThemedIcon/use-icon-themes'
 
-export default defineComponent({
-  name: 'StartupLogs',
-  setup() {
-    const systemStore = useSystemStore()
+const systemStore = useSystemStore()
+const {loadThemes} = useThemeOptions()
+const {loadIconThemes} = useIconThemes()
 
-    const logRef = ref('')
-    const systemLog = ref('')
-    const showStartLog = ref(true)
+const logRef = ref('')
+const systemLog = ref('')
 
-    async function appendLog(log: string, isError: boolean = false) {
-      systemLog.value += `<span class="log ${isError ? 'error' : ''}">${log}</span><br>`
-      await nextTick(() => {
-        const container: HTMLElement = logRef.value as unknown as HTMLElement
-        // 将滚动容器滚动到底部
-        container.scrollTop = container.scrollHeight
-      })
-      await sleep(10)
-    }
-    async function startup() {
-      await appendLog(formatSiteTitle())
-      await appendLog('System is starting...')
-      await appendLog('Welcome to use!')
-      await sleep(100)
+async function appendLog(log: string, isError: boolean = false) {
+  systemLog.value += `<span class="log ${isError ? 'error' : ''}">${log}</span><br>`
+  await nextTick(() => {
+    const container: HTMLElement = logRef.value as unknown as HTMLElement
+    // 将滚动容器滚动到底部
+    container.scrollTop = container.scrollHeight
+  })
+}
 
-      showStartLog.value = false
-    }
-    onMounted(() => {
-      startup()
-    })
-    return {
-      logRef,
-      systemLog,
-      showStartLog,
-    }
-  },
+const tryFn = async (fn, message) => {
+  try {
+    message && (await appendLog(message))
+    await fn()
+  } catch (error: any) {
+    message && (await appendLog(error.message, true))
+  }
+}
+
+async function startup() {
+  await appendLog(formatSiteTitle())
+  await appendLog('System is starting...')
+
+  await tryFn(loadThemes, 'Loading themes...')
+
+  await tryFn(loadIconThemes, 'Loading icon themes...')
+
+  await appendLog('Welcome to use!')
+
+  systemStore.isStarting = false
+}
+onMounted(() => {
+  startup()
 })
 </script>
 
 <template>
-  <div
-    ref="logRef"
-    v-if="showStartLog"
-    class="system-startup-log font-code"
-    v-html="systemLog"
-  ></div>
+  <div ref="logRef" class="system-startup-log font-code" v-html="systemLog"></div>
 </template>
 
 <style lang="scss">

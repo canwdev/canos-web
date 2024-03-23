@@ -54,7 +54,7 @@ export default defineConfig(({mode}) => {
     plugins: [
       vue(),
       vueJsx(),
-      VueDevTools(),
+      // VueDevTools(),
       AutoImport({
         dts: './src/auto-import.d.ts',
         imports: [

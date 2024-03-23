@@ -60,6 +60,7 @@ declare module '@vue/runtime-core' {
     StartMenuItem: typeof import('./src/components/OS/StartMenu/StartMenuItem.vue')['default']
     StartupLogs: typeof import('./src/components/OS/StartupLogs.vue')['default']
     TaskBar: typeof import('./src/components/OS/TaskBar/index.vue')['default']
+    ThemedIcon: typeof import('./src/components/OS/ThemedIcon/ThemedIcon.vue')['default']
     TkSeekBar: typeof import('./src/components/CommonUI/TkSeekBar.vue')['default']
     TrayBattery: typeof import('./src/components/OS/TaskBar/TrayBattery.vue')['default']
     TrayClock: typeof import('./src/components/OS/TaskBar/TrayClock.vue')['default']

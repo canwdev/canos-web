@@ -1,10 +1,9 @@
 import {ShortcutItem} from '@/enum/os'
-import {getIcon} from '@/utils/vite-utils'
 
 export const SystemAppSettings: ShortcutItem = {
   appid: 'os.settings',
   title: 'Settings',
-  icon: getIcon('preferences-system'),
+  icon: 'preferences-system',
   winOptions: {
     top: '100px',
     left: '100px',
@@ -18,7 +17,7 @@ export const SystemAppSettings: ShortcutItem = {
 export const SystemAppExplorer: ShortcutItem = {
   appid: 'os.explorer',
   title: 'Explorer',
-  icon: getIcon('system-file-manager'),
+  icon: 'system-file-manager',
   winOptions: {
     top: '100px',
     left: '100px',
@@ -32,7 +31,7 @@ export const SystemAppExplorer: ShortcutItem = {
 export const SystemAppMusicPlayer: ShortcutItem = {
   appid: 'os.music_player',
   title: 'Music Player',
-  icon: getIcon('multimedia-audio-player'),
+  icon: 'multimedia-audio-player',
   winOptions: {
     width: '500px',
     height: '500px',
@@ -45,7 +44,7 @@ export const SystemAppMusicPlayer: ShortcutItem = {
 export const SystemAppWebBrowser: ShortcutItem = {
   appid: 'os.web_browser',
   title: 'Iframe Browser',
-  icon: getIcon('web-browser'),
+  icon: 'web-browser',
   winOptions: {
     top: '150px',
     left: '150px',
@@ -58,14 +57,14 @@ export const SystemAppWebBrowser: ShortcutItem = {
 export const AppPianoJs: ShortcutItem = {
   appid: 'com.pianojs',
   title: 'Garageband Piano Js',
-  icon: getIcon('icon-piano'),
+  icon: 'icon-piano',
   component: defineAsyncComponent(() => import('@/apps/PianoJs/index.vue')),
 }
 
 export const AppMediadevicesPlayer: ShortcutItem = {
   appid: 'com.mediadevices-player',
   title: 'Webcam',
-  icon: getIcon('camera-web'),
+  icon: 'camera-web',
   winOptions: {
     top: '150px',
     left: '150px',
@@ -78,7 +77,7 @@ export const AppMediadevicesPlayer: ShortcutItem = {
 export const AppQuickLaunch: ShortcutItem = {
   appid: 'os.quick-launch',
   title: 'Quick Launch',
-  icon: getIcon('org.xfce.appfinder'),
+  icon: 'org.xfce.appfinder',
   winOptions: {
     top: '150px',
     left: '150px',
@@ -93,7 +92,7 @@ const defineDemoApp = (title = 'App', component): ShortcutItem => {
   return {
     appid: title,
     title,
-    icon: getIcon('application-default-icon'),
+    icon: 'application-default-icon',
     winOptions: {
       top: '0px',
       left: '0px',
@@ -108,7 +107,7 @@ const defineWebApp = (title = 'WebApp', url): ShortcutItem => {
   return {
     appid: title,
     title,
-    icon: getIcon('applications-internet'),
+    icon: 'applications-internet',
     winOptions: {
       top: '150px',
       left: '150px',

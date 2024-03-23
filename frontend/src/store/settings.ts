@@ -1,6 +1,7 @@
-import {LdThemeType, IconTheme} from '@/enum/settings'
+import {LdThemeType} from '@/enum/settings'
 import {DEFAULT_THEME} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
 import {LsKeys} from '@/enum'
+import {DEFAULT_ICON_THEME} from '@/components/OS/ThemedIcon/use-icon-themes'
 
 type IStore = {
   // 明暗主题
@@ -36,7 +37,7 @@ export const useSettingsStore = defineStore('settingsStore', {
     return {
       ldTheme: LdThemeType.SYSTEM,
       customTheme: DEFAULT_THEME,
-      iconTheme: IconTheme.ELEMENTARY,
+      iconTheme: DEFAULT_ICON_THEME,
       themeColor: '#258292',
       desktopBgColor: '#17515b',
       disableAnimation: false,

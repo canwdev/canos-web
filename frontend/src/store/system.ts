@@ -1,6 +1,7 @@
 import {ShortcutItem, TaskItem} from '@/enum/os'
 
 type IStore = {
+  isStarting: boolean
   isBackendAvailable: boolean
   serverInfo: any
   tasks: TaskItem[]
@@ -10,6 +11,7 @@ type IStore = {
 export const useSystemStore = defineStore('system', {
   state: (): IStore => {
     return {
+      isStarting: true,
       isBackendAvailable: false,
       serverInfo: null,
       tasks: [],

@@ -2,6 +2,7 @@
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useSelectionArea} from '@/hooks/use-selection-area'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 const systemStore = useSystemStore()
 
@@ -39,7 +40,7 @@ useSelectionArea({
       @keyup.enter="handleItemClick(item)"
       class="desktop-icon btn-no-style"
     >
-      <img class="desktop-icon-image" :src="item.icon" :alt="item.title" />
+      <ThemedIcon class="desktop-icon-image" :name="item.icon" />
       <span @dbclick.stop @click.stop="handleItemClick(item)" class="desktop-icon-name">{{
         item.title
       }}</span>
