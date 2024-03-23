@@ -2,6 +2,8 @@
 import {bytesToSize, formatDate} from '@/utils'
 import {Folder20Regular, Document20Regular} from '@vicons/fluent'
 import {IEntry} from '@server/types/server'
+import {useFileItem} from '@/apps/FileManager/ExplorerUI/use-file-item'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 const emit = defineEmits(['open', 'select'])
 
@@ -10,6 +12,8 @@ interface Props {
   active: boolean
 }
 const props = withDefaults(defineProps<Props>(), {})
+
+const {iconName, titleDesc} = useFileItem(props)
 </script>
 
 <template>
@@ -19,18 +23,11 @@ const props = withDefaults(defineProps<Props>(), {})
     @click.stop="$emit('select', {item, event: $event})"
     @keyup.enter="$emit('open', item)"
     @dblclick.stop="$emit('open', item)"
+    :title="titleDesc"
   >
     <div class="list-col c-filename">
-      <n-icon size="20">
-        <Folder20Regular v-if="item.isDirectory" />
-        <Document20Regular v-else />
-      </n-icon>
-      <span
-        class="text-overflow filename-text"
-        @click.stop="$emit('open', item)"
-        @dblclick.stop
-        :title="item.name"
-      >
+      <ThemedIcon :name="iconName" />
+      <span class="text-overflow filename-text" @click.stop="$emit('open', item)" @dblclick.stop>
         {{ item.name }}
       </span>
     </div>
@@ -63,7 +60,6 @@ const props = withDefaults(defineProps<Props>(), {})
     background-color: $primary_opacity;
     outline: 1px solid $primary;
     outline-offset: -1px;
-    color: white;
   }
   &:focus {
     outline: 1px solid $primary;
@@ -72,6 +68,10 @@ const props = withDefaults(defineProps<Props>(), {})
 
   .list-col {
     &.c-filename {
+      .themed-icon {
+        width: 18px;
+        height: 18px;
+      }
       .filename-text {
         font-size: 12px;
         cursor: pointer;

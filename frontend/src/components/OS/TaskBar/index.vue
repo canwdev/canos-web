@@ -8,10 +8,11 @@ import TrayBattery from '@/components/OS/TaskBar/TrayBattery.vue'
 import TrayFps from '@/components/OS/TaskBar/TrayFps.vue'
 import TrayNetwork from '@/components/OS/TaskBar/TrayNetwork.vue'
 import TrayMemory from '@/components/OS/TaskBar/TrayMemory.vue'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 export default defineComponent({
   name: 'TaskBar',
-  components: {TrayMemory, TrayNetwork, TrayFps, TrayBattery, StartMenu, TrayClock},
+  components: {ThemedIcon, TrayMemory, TrayNetwork, TrayFps, TrayBattery, StartMenu, TrayClock},
   setup() {
     const systemStore = useSystemStore()
     const settingsStore = useSettingsStore()
@@ -47,7 +48,7 @@ export default defineComponent({
           :class="{active: item.guid === systemStore.activeId}"
           @click="handleItemClick(item)"
         >
-          <img v-if="item.icon" :src="item.icon" :alt="item.title" class="task-icon" />
+          <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
           <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
             {{ item.title }}
           </span>

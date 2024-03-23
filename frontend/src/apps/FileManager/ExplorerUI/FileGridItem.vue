@@ -2,6 +2,7 @@
 import {IEntry} from '@server/types/server'
 import {bytesToSize, formatDate} from '@/utils'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+import {useFileItem} from '@/apps/FileManager/ExplorerUI/use-file-item'
 
 const emit = defineEmits(['open', 'select'])
 
@@ -10,19 +11,8 @@ interface Props {
   active: boolean
 }
 const props = withDefaults(defineProps<Props>(), {})
-const {item} = toRefs(props)
-const iconName = computed(() => {
-  if (item.value.isDirectory) {
-    return 'folder'
-  }
-  return 'text-x-preview'
-})
-const titleDesc = computed(() => {
-  return `Name: ${item.value.name}
-Size: ${bytesToSize(item.value.size)}
-Last Modified: ${formatDate(item.value.lastModified)}
-`
-})
+
+const {iconName, titleDesc} = useFileItem(props)
 </script>
 
 <template>
@@ -67,7 +57,6 @@ Last Modified: ${formatDate(item.value.lastModified)}
   &.active {
     background-color: $primary_opacity;
     outline: 1px solid $primary;
-    color: white;
   }
 
   .desktop-icon-image {

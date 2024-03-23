@@ -6,6 +6,7 @@ import {Subtract20Filled} from '@vicons/fluent'
 import DesktopContent from '@/components/OS/DesktopWindowManager/DesktopContent.vue'
 import {useSettingsStore} from '@/store/settings'
 import {TaskItem} from '@/enum/os'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
@@ -54,7 +55,7 @@ const getIsMaximum = (task: TaskItem) => {
         v-model:minimized="task.minimized"
       >
         <template #titleBarLeft>
-          <img class="window-icon" :src="task.icon" :alt="task.title" />
+          <ThemedIcon class="window-icon" :name="task.icon" />
           <span>{{ task.title }}</span>
         </template>
 

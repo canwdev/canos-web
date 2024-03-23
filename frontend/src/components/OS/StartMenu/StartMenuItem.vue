@@ -1,9 +1,11 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {ShortcutItem} from '@/enum/os'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 export default defineComponent({
   name: 'StartMenuItem',
+  components: {ThemedIcon},
   props: {
     item: {
       type: Object as PropType<ShortcutItem>,
@@ -16,7 +18,7 @@ export default defineComponent({
 <template>
   <div class="shortcut-item">
     <div v-if="item.icon" class="shortcut-icon">
-      <img :src="item.icon" :alt="item.title" />
+      <ThemedIcon :name="item.icon" />
     </div>
     <div class="shortcut-title">{{ item.title }}</div>
   </div>

@@ -145,7 +145,6 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
 
     &.active {
       background-color: $primary_opacity !important;
-      color: white;
     }
 
     &:focus {

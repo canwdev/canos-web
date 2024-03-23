@@ -57,7 +57,7 @@ export const SystemAppWebBrowser: ShortcutItem = {
 export const AppPianoJs: ShortcutItem = {
   appid: 'com.pianojs',
   title: 'Garageband Piano Js',
-  icon: 'icon-piano',
+  icon: 'piano',
   component: defineAsyncComponent(() => import('@/apps/PianoJs/index.vue')),
 }
 
