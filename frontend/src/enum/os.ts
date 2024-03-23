@@ -9,8 +9,6 @@ export interface ShortcutItem {
   // 动态引入组件
   component?: any
   url?: string
-  // 窗口id，设置用于保存窗口的位置和大小
-  winId?: string | null
   // 窗口初始化大小和位置，可传入部分 WinOptions 参数
   winOptions?: any
   // 是否为单实例
@@ -24,7 +22,6 @@ export interface TaskItem {
   guid: string
   title: string
   icon: string
-  winId?: string
   // 窗口初始化大小和位置
   winOptions?: any
   // ViewPortWindow $ref
@@ -46,7 +43,6 @@ export class TaskItem {
     this.guid = guid()
     this.title = options.title
     this.icon = options.icon
-    this.winId = options.winId
     this.winOptions = options.winOptions
     this.component = shallowRef(options.component)
     this.url = options.url

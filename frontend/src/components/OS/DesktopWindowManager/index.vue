@@ -45,7 +45,7 @@ const getIsMaximum = (task: TaskItem) => {
         @onActive="systemStore.setTaskActive(task)"
         @onClose="systemStore.closeTask(task.guid)"
         :visible="!task.minimized"
-        :wid="task.winId"
+        :wid="task.appid"
         :init-win-options="task.winOptions"
         :allow-move="!getIsMaximum(task)"
         :allow-maximum="settingsStore.isWindowed"

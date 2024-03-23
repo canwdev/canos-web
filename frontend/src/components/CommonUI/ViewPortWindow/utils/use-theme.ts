@@ -52,12 +52,13 @@ export const useThemeOptions = () => {
   const {themeOptions, isInitialized} = useThemeState()
 
   const themes = ref<IOptions[]>([])
+  const baseUrl = './resources/themes-dist'
   const addThemes = async () => {
-    const res = await fetch('./themes-dist/index.json')
+    const res = await fetch(`${baseUrl}/index.json`)
     themes.value = await res.json()
 
     themes.value.forEach((item) => {
-      addCssFile(`./themes-dist/${item.value}.css`)
+      addCssFile(`${baseUrl}/${item.value}.css`)
     })
 
     themeOptions.value = [...defaultThemeOptions, ...themes.value]

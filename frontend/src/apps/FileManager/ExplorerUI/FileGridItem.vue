@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {IEntry} from '@server/types/server'
-import {handleAssetsUrl} from '@/utils/vite-utils'
+import {getIcon} from '@/utils/vite-utils'
 import {bytesToSize, formatDate} from '@/utils'
 
 const emit = defineEmits(['open', 'select'])
@@ -13,9 +13,9 @@ const props = withDefaults(defineProps<Props>(), {})
 const {item} = toRefs(props)
 const iconSrc = computed(() => {
   if (item.value.isDirectory) {
-    return handleAssetsUrl('@/assets/icons/shell32.dll(4).png')
+    return getIcon('folder')
   }
-  return handleAssetsUrl('@/assets/icons/shell32.dll(1).png')
+  return getIcon('text-x-preview')
 })
 const titleDesc = computed(() => {
   return `Name: ${item.value.name}

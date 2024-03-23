@@ -1,12 +1,10 @@
 import {ShortcutItem} from '@/enum/os'
-import {handleAssetsUrl} from '@/utils/vite-utils'
-import {guid} from '@/utils'
+import {getIcon} from '@/utils/vite-utils'
 
 export const SystemAppSettings: ShortcutItem = {
   appid: 'os.settings',
   title: 'Settings',
-  icon: handleAssetsUrl('@/assets/icons/shell32.dll(16826).png'),
-  winId: 'settings',
+  icon: getIcon('preferences-system'),
   winOptions: {
     top: '100px',
     left: '100px',
@@ -20,8 +18,7 @@ export const SystemAppSettings: ShortcutItem = {
 export const SystemAppExplorer: ShortcutItem = {
   appid: 'os.explorer',
   title: 'Explorer',
-  icon: handleAssetsUrl('@/assets/icons/shell32.dll(16).png'),
-  winId: 'explorer',
+  icon: getIcon('system-file-manager'),
   winOptions: {
     top: '100px',
     left: '100px',
@@ -35,8 +32,7 @@ export const SystemAppExplorer: ShortcutItem = {
 export const SystemAppMusicPlayer: ShortcutItem = {
   appid: 'os.music_player',
   title: 'Music Player',
-  icon: handleAssetsUrl('@/assets/icons/shell32.dll(237).png'),
-  winId: 'music_player',
+  icon: getIcon('multimedia-audio-player'),
   winOptions: {
     width: '500px',
     height: '500px',
@@ -49,8 +45,7 @@ export const SystemAppMusicPlayer: ShortcutItem = {
 export const SystemAppWebBrowser: ShortcutItem = {
   appid: 'os.web_browser',
   title: 'Iframe Browser',
-  icon: handleAssetsUrl('@/assets/icons/iexplore.exe(7).png'),
-  winId: 'browser',
+  icon: getIcon('web-browser'),
   winOptions: {
     top: '150px',
     left: '150px',
@@ -63,16 +58,14 @@ export const SystemAppWebBrowser: ShortcutItem = {
 export const AppPianoJs: ShortcutItem = {
   appid: 'com.pianojs',
   title: 'Garageband Piano Js',
-  icon: handleAssetsUrl('@/assets/icons/icon-piano.png'),
-  winId: 'piano',
+  icon: getIcon('icon-piano'),
   component: defineAsyncComponent(() => import('@/apps/PianoJs/index.vue')),
 }
 
 export const AppMediadevicesPlayer: ShortcutItem = {
   appid: 'com.mediadevices-player',
   title: 'Webcam',
-  icon: handleAssetsUrl('@/assets/icons/icon-camera.png'),
-  winId: 'mediadevices-player',
+  icon: getIcon('camera-web'),
   winOptions: {
     top: '150px',
     left: '150px',
@@ -85,8 +78,7 @@ export const AppMediadevicesPlayer: ShortcutItem = {
 export const AppQuickLaunch: ShortcutItem = {
   appid: 'os.quick-launch',
   title: 'Quick Launch',
-  icon: handleAssetsUrl('@/assets/icons/everything.png'),
-  winId: 'quick-launch',
+  icon: getIcon('org.xfce.appfinder'),
   winOptions: {
     top: '150px',
     left: '150px',
@@ -101,8 +93,7 @@ const defineDemoApp = (title = 'App', component): ShortcutItem => {
   return {
     appid: title,
     title,
-    icon: handleAssetsUrl('@/assets/icons/shell32.dll(3).png'),
-    // winId: '',
+    icon: getIcon('application-default-icon'),
     winOptions: {
       top: '0px',
       left: '0px',
@@ -117,8 +108,7 @@ const defineWebApp = (title = 'WebApp', url): ShortcutItem => {
   return {
     appid: title,
     title,
-    icon: handleAssetsUrl('@/assets/icons/chrome.png'),
-    // winId: '',
+    icon: getIcon('applications-internet'),
     winOptions: {
       top: '150px',
       left: '150px',
