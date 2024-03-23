@@ -25,3 +25,8 @@ export enum SettingsTabType {
   SYSTEM,
   HARDWARE,
 }
+
+export enum IconTheme {
+  ELEMENTARY = 'elementary-xfce',
+  WIN11 = 'win11',
+}

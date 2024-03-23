@@ -4,6 +4,7 @@ export const API_PROXY_BASE = import.meta.env.VITE_PROXY_BASE || ''
 export const HOST_URL = API_PROXY_BASE + HOST_URL_DEFAULT
 
 export const LsKeys = {
+  SETTINGS_STORAGE: 'ls_key_canos_settings',
   LS_KEY_AUTHORIZATION: 'canos_web_authorization',
   STARED_PATH: 'canos_web_explorer_stared_path',
   WALLPAPER_STORAGE: 'canos_web_wallpaper_storage',

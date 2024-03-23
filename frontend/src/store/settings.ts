@@ -1,11 +1,14 @@
-import {LdThemeType} from '@/enum/settings'
+import {LdThemeType, IconTheme} from '@/enum/settings'
 import {DEFAULT_THEME} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
+import {LsKeys} from '@/enum'
 
 type IStore = {
   // 明暗主题
   ldTheme: LdThemeType
   // 自定义主题类型
   customTheme: string
+  // 图标主题
+  iconTheme: string
   // 主题色
   themeColor: string
   // 桌面壁纸url
@@ -33,6 +36,7 @@ export const useSettingsStore = defineStore('settingsStore', {
     return {
       ldTheme: LdThemeType.SYSTEM,
       customTheme: DEFAULT_THEME,
+      iconTheme: IconTheme.ELEMENTARY,
       themeColor: '#258292',
       desktopBgColor: '#17515b',
       disableAnimation: false,
@@ -50,6 +54,6 @@ export const useSettingsStore = defineStore('settingsStore', {
     }
   },
   persist: {
-    key: 'ls_key_canos_settings',
+    key: LsKeys.SETTINGS_STORAGE,
   },
 })

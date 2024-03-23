@@ -6,8 +6,8 @@ import {useMainStore} from '@/store/main'
 import {serverApi} from '@/api/server'
 import {useSystemStore} from '@/store/system'
 
-let history = createWebHashHistory()
-let routes = [
+const history = createWebHashHistory()
+const routes = [
   {
     path: '/',
     name: 'HomeView',
