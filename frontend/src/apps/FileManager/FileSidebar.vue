@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {fsWebApi} from '@/api/filesystem'
 import {IDrive} from '@server/types/server'
-import {handleAssetsUrl} from '@/utils/vite-utils'
+import {getIcon} from '@/utils/vite-utils'
 import {useStorage} from '@vueuse/core'
 import {LsKeys} from '@/enum'
 import {ChevronLeft20Filled} from '@vicons/fluent'
@@ -40,14 +40,14 @@ onMounted(() => {
   handleRefresh()
 })
 
-const getIcon = (item: IDrive) => {
+const getIconUrl = (item: IDrive) => {
   if (item.label.toLowerCase() === 'home') {
-    return handleAssetsUrl('@/assets/icons/shell32.dll(51380).png')
+    return getIcon('user-home')
   }
   if (!item.total) {
-    return handleAssetsUrl('@/assets/icons/shell32.dll(54).png')
+    return getIcon('drive-harddisk')
   }
-  return handleAssetsUrl('@/assets/icons/shell32.dll(8).png')
+  return getIcon('dialog-warning')
 }
 
 const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
@@ -71,7 +71,7 @@ const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
         @click="$emit('openDrive', item)"
       >
         <div class="drive-icon">
-          <img :src="getIcon(item)" />
+          <img :src="getIconUrl(item)" />
         </div>
         <div class="drive-content">
           <div class="drive-title text-overflow">{{ item.label }}</div>

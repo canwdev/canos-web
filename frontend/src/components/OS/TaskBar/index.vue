@@ -93,6 +93,7 @@ export default defineComponent({
     overflow: hidden;
     border-radius: 0;
     border: none;
+    box-sizing: border-box;
     //background-color: rgba(255, 255, 255, 0.8);
     //backdrop-filter: blur(10px);
     //box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
