@@ -51,9 +51,10 @@ const taskHandler = (task: TaskItem) => {
       )
       data.success = true
       resolve(data)
-    } catch (e) {
-      console.log(e)
+    } catch (e: any) {
+      console.error(e.message)
       data.failed = true
+      data.reason = e.message
       reject(e)
     }
   })
@@ -84,6 +85,7 @@ const addTask = (data) => {
     bytes: 0,
     success: false,
     failed: false,
+    reason: '',
   }
   if (!abortController.value) {
     abortController.value = new AbortController()
@@ -109,7 +111,7 @@ defineExpose({
         :key="index"
         class="upload-item"
       >
-        <n-icon size="20">
+        <n-icon size="20" :title="item.reason">
           <CheckmarkCircle20Regular v-if="item.success" />
           <DismissCircle20Regular v-else-if="item.failed" />
           <ArrowUpload20Regular v-else-if="item.progress > 0" />

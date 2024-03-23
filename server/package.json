@@ -27,6 +27,7 @@
     "@types/mime-types": "^2.1.4",
     "archiver": "^7.0.1",
     "bcryptjs": "^2.4.3",
+    "commander": "^12.0.0",
     "crypto-js": "^4.2.0",
     "fs-extra": "^11.2.0",
     "mime-types": "^2.1.35",

@@ -4,7 +4,7 @@ import FileListItem from '@/apps/FileManager/ExplorerUI/FileListItem.vue'
 import {generateTextFile, normalizePath, toggleArrayElement} from '@/apps/FileManager/utils'
 import {showInputPrompt} from '@/components/CommonUI/input-prompt'
 import {fsWebApi} from '@/api/filesystem'
-import {useStorage, useVModel} from '@vueuse/core'
+import {useDropZone, useStorage, useVModel} from '@vueuse/core'
 import {LsKeys} from '@/enum'
 import {useFileDialog} from '@vueuse/core'
 import FileGridItem from '@/apps/FileManager/ExplorerUI/FileGridItem.vue'
@@ -29,7 +29,6 @@ import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
 import {sortMethodMap} from '@/apps/FileManager/utils/sort'
 import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
 import UploadQueue from '@/apps/FileManager/UploadQueue.vue'
-import {useDropUpload} from '@/apps/FileManager/ExplorerUI/use-drop-upload'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -180,7 +179,7 @@ const toggleSelectAll = () => {
   } else {
     selectedItems.value = [...allFiles]
   }
-  console.log(selectedItems.value)
+  // console.log(selectedItems.value)
 }
 /* SELECT END*/
 
@@ -204,12 +203,12 @@ const handleRename = async () => {
 const doDeleteSelected = async () => {
   try {
     isLoading.value = true
-    for (const itemsKey in selectedItems.value) {
-      const item = selectedItems.value[itemsKey]
-      await fsWebApi.deleteEntry({
-        path: normalizePath(basePath.value + '/' + item.name),
-      })
-    }
+
+    await fsWebApi.deleteEntry({
+      path: selectedItems.value.map((item) => {
+        return normalizePath(basePath.value + '/' + item.name)
+      }),
+    })
   } finally {
     isLoading.value = false
     emit('refresh')
@@ -232,13 +231,8 @@ const uploadFiles = async (files: File[] | FileList | null) => {
   if (!files) {
     return
   }
-  isLoading.value = true
   // @ts-ignore
   for (const file of files) {
-    // await fsWebApi.createFile({
-    //   path: normalizePath(basePath.value + '/' + file.name),
-    //   file,
-    // })
     uploadQueueRef.value.addTask({
       name: file.name,
       path: normalizePath(basePath.value + '/' + file.name),
@@ -260,12 +254,46 @@ onSelectFiles(async (files) => {
     if (!files) {
       return
     }
-
     await uploadFiles(files)
     resetSelectFiles()
     // emit('refresh')
   } catch (e) {
     resetSelectFiles()
+  }
+})
+
+// TODO
+const {
+  open: openSelectFolder,
+  reset: resetSelectFolder,
+  onChange: onSelectFolder,
+} = useFileDialog({
+  directory: true,
+})
+onSelectFolder(async (filesList) => {
+  function traverseFiles(filesList) {
+    for (let i = 0; i < filesList.length; i++) {
+      const file = filesList[i]
+      console.log(file)
+      if (file.isDirectory) {
+        traverseFiles(file.createReader())
+      } else {
+        // TODO
+      }
+    }
+  }
+  try {
+    if (!filesList) {
+      return
+    }
+    console.log(filesList)
+
+    traverseFiles(filesList)
+
+    // await uploadFiles(files)
+    resetSelectFolder()
+  } catch (e) {
+    resetSelectFolder()
   }
 })
 
@@ -287,11 +315,12 @@ const handleDownload = async () => {
   }
 }
 
-const ctxMenuOptions = computed(() => {
+const ctxMenuOptions = computed((): QuickOptionItem[] => {
   if (!selectedItems.value.length) {
     return [{label: 'Refresh', props: {onClick: () => emit('refresh')}}]
   }
   const isSingle = selectedItems.value.length === 1
+  // @ts-ignore
   return [
     isSingle && {
       label: 'Open',
@@ -322,8 +351,48 @@ const handleShowCtxMenu = (item: IEntry | null, event: MouseEvent) => {
   })
 }
 
-const {isOverDropZone, dropZoneRef} = useDropUpload((files: File[] | null) => {
-  uploadFiles(files)
+const dropZoneRef = ref<HTMLDivElement>()
+const {isOverDropZone} = useDropZone(dropZoneRef, {
+  onDrop: (files, event) => {
+    // 支持递归上传文件夹
+    function traverseFileTree(item, path = '') {
+      if (item.isFile) {
+        // Get file
+        item.file((file) => {
+          // console.log('File:', {path, file})
+
+          uploadQueueRef.value.addTask({
+            name: file.name,
+            path: normalizePath(basePath.value + '/' + path + file.name),
+            file,
+          })
+        })
+      } else if (item.isDirectory) {
+        // console.log('Dir', item)
+        // Get folder contents
+        const dirReader = item.createReader()
+        dirReader.readEntries(function (entries) {
+          for (let i = 0; i < entries.length; i++) {
+            traverseFileTree(entries[i], path + item.name + '/')
+          }
+        })
+
+        fsWebApi.createDir({
+          path: normalizePath(basePath.value + item.fullPath),
+          ignoreExisted: true,
+        })
+      }
+    }
+
+    const items = event.dataTransfer?.items || []
+    for (let i = 0; i < items.length; i++) {
+      // webkitGetAsEntry is where the magic happens
+      const item = items[i].webkitGetAsEntry()
+      if (item) {
+        traverseFileTree(item)
+      }
+    }
+  },
 })
 </script>
 
@@ -348,7 +417,12 @@ const {isOverDropZone, dropZoneRef} = useDropUpload((files: File[] | null) => {
           </n-icon>
         </button>
         |
-        <button class="vp-button" @click="() => openSelectFiles()" title="Upload">
+        <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files">
+          <n-icon size="16">
+            <ArrowUpload16Regular />
+          </n-icon>
+        </button>
+        <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder">
           <n-icon size="16">
             <ArrowUpload16Regular />
           </n-icon>

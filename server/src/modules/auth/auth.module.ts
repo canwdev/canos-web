@@ -34,5 +34,3 @@ const envFilePath = isDev
   controllers: [AuthController],
 })
 export class AuthModule {}
-
-console.log(process.env.JWT_SECRET)

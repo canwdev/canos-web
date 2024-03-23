@@ -62,8 +62,16 @@ export class FsController {
   }
 
   @Post('create-dir')
-  createDirectory(@Body('path') path: string) {
+  createDirectory(
+    @Body('path') path: string,
+    @Body('ignoreExisted') ignoreExisted: boolean = false,
+  ) {
     try {
+      if (ignoreExisted) {
+        if (fs.existsSync(path)) {
+          return {path}
+        }
+      }
       fs.mkdirSync(path)
       return {path}
     } catch (e) {
@@ -99,9 +107,16 @@ export class FsController {
   }
 
   @Post('delete')
-  async deleteEntry(@Body('path') path: string) {
+  async deleteEntry(@Body('path') path: string | string[]) {
     try {
-      await fs.promises.rm(path, {recursive: true})
+      if (Array.isArray(path)) {
+        for (let i = 0; i < path.length; i++) {
+          const p = path[i]
+          await fs.promises.rm(p, {recursive: true})
+        }
+      } else {
+        await fs.promises.rm(path, {recursive: true})
+      }
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }

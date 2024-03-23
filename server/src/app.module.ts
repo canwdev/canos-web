@@ -12,8 +12,6 @@ import {AuthModule} from '@/modules/auth/auth.module'
 import {isDev} from '@/enum'
 import {join} from 'path'
 
-console.log('isDev', isDev)
-
 @Module({
   imports: [
     AuthModule,

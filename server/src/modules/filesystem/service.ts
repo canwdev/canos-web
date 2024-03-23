@@ -197,6 +197,7 @@ export class FsService {
 
   uploadFile(path: string, buffer: Buffer) {
     return new Promise((resolve, reject) => {
+      fs.ensureDirSync(Path.dirname(path))
       const stream = fs.createWriteStream(path)
 
       stream.on('open', () => {
