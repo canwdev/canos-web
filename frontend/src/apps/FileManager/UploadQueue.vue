@@ -8,6 +8,7 @@ import {
   Pause20Regular,
   ArrowUpload20Regular,
 } from '@vicons/fluent'
+import {bytesToSize} from '@/utils'
 
 const emit = defineEmits(['complete'])
 
@@ -27,7 +28,7 @@ watch(isVisible, (val) => {
 
 const taskHandler = (task: TaskItem) => {
   const {data} = task
-  console.log('--- taskHandler', task, data)
+  // console.log('--- taskHandler', task, data)
   return new Promise(async (resolve, reject) => {
     try {
       const {path, file} = data
@@ -38,8 +39,12 @@ const taskHandler = (task: TaskItem) => {
         },
         {
           onUploadProgress(event) {
-            console.log(event)
+            // console.log(event)
             data.progress = event.progress
+            data.loaded = event.loaded
+            data.total = event.total
+            data.rate = event.rate
+            data.bytes = event.bytes
           },
           signal: abortController.value.signal,
         },
@@ -73,6 +78,10 @@ const addTask = (data) => {
   data = {
     ...data,
     progress: 0,
+    loaded: 0,
+    total: 0,
+    rate: 0,
+    bytes: 0,
     success: false,
     failed: false,
   }
@@ -108,6 +117,12 @@ defineExpose({
         </n-icon>
         <div class="upload-content">
           <div class="upload-title text-overflow" :title="item.path">{{ item.name }}</div>
+          <div v-if="item.progress > 0" class="upload-status font-code">
+            Progress: <span>{{ item.progress.toFixed(2) }}%</span> |
+            {{ bytesToSize(item.loaded) }}/{{ bytesToSize(item.total) }}
+            <br />
+            Speed: {{ bytesToSize(item.rate) }}/s <br />
+          </div>
 
           <div class="volume-bar">
             <div :style="{width: item.progress * 100 + '%'}" class="volume-value"></div>
@@ -136,7 +151,12 @@ defineExpose({
     }
     .upload-title {
       font-size: 12px;
-      line-height: 1;
+    }
+    .upload-status {
+      font-size: 12px;
+      span {
+        color: $primary;
+      }
     }
 
     .volume-bar {

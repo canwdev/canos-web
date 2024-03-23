@@ -288,6 +288,9 @@ const handleDownload = async () => {
 }
 
 const ctxMenuOptions = computed(() => {
+  if (!selectedItems.value.length) {
+    return [{label: 'Refresh', props: {onClick: () => emit('refresh')}}]
+  }
   const isSingle = selectedItems.value.length === 1
   return [
     isSingle && {
@@ -305,11 +308,18 @@ const ctxMenuOptions = computed(() => {
 })
 
 const ctxMenuRef = ref()
-const handleShowCtxMenu = (item: IEntry, event: MouseEvent) => {
-  if (!selectedItemsSet.value.has(item)) {
-    selectedItems.value = [item]
+const handleShowCtxMenu = (item: IEntry | null, event: MouseEvent) => {
+  if (!item) {
+    selectedItems.value = []
+  } else {
+    if (!selectedItemsSet.value.has(item)) {
+      selectedItems.value = [item]
+    }
   }
-  ctxMenuRef.value.showMenu(event)
+  ctxMenuRef.value.isShow = false
+  setTimeout(() => {
+    ctxMenuRef.value.showMenu(event)
+  })
 }
 
 const {isOverDropZone, dropZoneRef} = useDropUpload((files: File[] | null) => {
@@ -403,7 +413,12 @@ const {isOverDropZone, dropZoneRef} = useDropUpload((files: File[] | null) => {
         </div>
       </div>
     </div>
-    <div ref="explorerContentRef" class="explorer-content" @click="selectedItems = []">
+    <div
+      ref="explorerContentRef"
+      class="explorer-content"
+      @click="selectedItems = []"
+      @contextmenu.prevent.stop="handleShowCtxMenu(null, $event)"
+    >
       <div v-if="!isGridView" class="explorer-list-view">
         <div class="vp-bg file-list-header file-list-row">
           <div class="list-col c-filename">Name</div>
@@ -420,7 +435,7 @@ const {isOverDropZone, dropZoneRef} = useDropUpload((files: File[] | null) => {
           :active="selectedItemsSet.has(item)"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
-          @contextmenu.prevent="handleShowCtxMenu(item, $event)"
+          @contextmenu.prevent.stop="handleShowCtxMenu(item, $event)"
         />
       </div>
       <div v-else class="explorer-grid-view">
@@ -433,7 +448,7 @@ const {isOverDropZone, dropZoneRef} = useDropUpload((files: File[] | null) => {
           :active="selectedItemsSet.has(item)"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
-          @contextmenu.prevent="handleShowCtxMenu(item, $event)"
+          @contextmenu.prevent.stop="handleShowCtxMenu(item, $event)"
         />
       </div>
 

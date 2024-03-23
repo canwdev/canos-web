@@ -61,7 +61,7 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
     <slot></slot>
 
     <span class="watermark-tip font-code">{{
-      `${!systemStore.isBackendAvailable ? '服务器离线模式' : '开发模式'}`
+      `${!systemStore.isBackendAvailable ? '服务器离线模式' : ''}`
     }}</span>
   </div>
 </template>

@@ -127,10 +127,17 @@ export const AllAppList: ShortcutItem[] = [
   AppPianoJs,
   AppMediadevicesPlayer,
   AppQuickLaunch,
-  defineDemoApp(
-    '简易计算器',
-    defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCalculator.vue')),
-  ),
+  {
+    appid: 'os.calc',
+    title: '简易计算器',
+    icon: 'accessories-calculator',
+    winOptions: {
+      width: '348px',
+      height: '530px',
+    },
+    component: defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCalculator.vue')),
+    singleInstance: false,
+  },
   defineDemoApp(
     '计数器',
     defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCounter.vue')),
@@ -147,14 +154,28 @@ export const AllAppList: ShortcutItem[] = [
     'BouncyBall',
     defineAsyncComponent(() => import('@/apps/AppUtils/Games/BouncyBall/index.vue')),
   ),
-  defineDemoApp(
-    '多彩屏幕 (屏幕坏点测试)',
-    defineAsyncComponent(() => import('@/apps/AppUtils/ColorfulScreen.vue')),
-  ),
-  defineDemoApp(
-    '唤醒锁定',
-    defineAsyncComponent(() => import('@/apps/AppUtils/WakeLock.vue')),
-  ),
+  {
+    appid: 'os.colorful-screen',
+    title: '多彩屏幕 (屏幕坏点测试)',
+    icon: 'video-display',
+    winOptions: {
+      width: '300px',
+      height: '300px',
+    },
+    component: defineAsyncComponent(() => import('@/apps/AppUtils/ColorfulScreen.vue')),
+    singleInstance: true,
+  },
+  {
+    appid: 'os.wakelock',
+    title: '唤醒锁定',
+    icon: 'preferences-system-power',
+    winOptions: {
+      width: '428px',
+      height: '200px',
+    },
+    component: defineAsyncComponent(() => import('@/apps/AppUtils/WakeLock.vue')),
+    singleInstance: true,
+  },
   defineDemoApp(
     '屏幕时钟',
     defineAsyncComponent(() => import('@/apps/AppUtils/ScreenClock/index.vue')),

@@ -49,7 +49,7 @@ export const useSystemStore = defineStore('system', {
         }
       }
       const newTask = new TaskItem({...shortcut, params})
-      console.log(newTask)
+      // console.log(newTask)
       this.tasks = [...this.tasks, newTask]
       this.activeId = newTask.guid
     },

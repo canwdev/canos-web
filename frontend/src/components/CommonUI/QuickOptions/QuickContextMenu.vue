@@ -21,7 +21,7 @@ const updateCardHw = () => {
     menuWidth.value = menuRef.value.quickRootRef.offsetWidth
     menuHeight.value = menuRef.value.quickRootRef.offsetHeight
 
-    console.log(menuWidth.value, menuHeight.value)
+    // console.log(menuWidth.value, menuHeight.value)
   }, 0)
 }
 watch(isShow, (val) => {

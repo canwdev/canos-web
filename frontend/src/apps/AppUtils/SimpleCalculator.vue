@@ -15,8 +15,8 @@ export default {
       this.flag = null
       this.num0 = null
     },
-    handleFlagClick(e) {
-      this.flag = e.target.innerText
+    handleFlagClick(flag) {
+      this.flag = flag
       this.flagSwitch = true
     },
     handleNumClick(e) {
@@ -64,25 +64,27 @@ export default {
 </script>
 
 <template>
-  <div class="simple-calculator">
+  <div class="simple-calculator font-code">
     <div class="screen">
       {{ current }}
       <div class="flag">{{ num0 }}{{ flag }}</div>
     </div>
-    <div class="actions">
-      <button @click="handleClear" class="actions-key vp-button">C</button>
-      <button @click="handleFlagClick" class="actions-key vp-button">+</button>
-      <button @click="handleFlagClick" class="actions-key vp-button">-</button>
-      <button @click="handleFlagClick" class="actions-key vp-button">*</button>
-      <button @click="handleFlagClick" class="actions-key vp-button">/</button>
-    </div>
-    <div class="buttons">
-      <button @click="handleNumClick" class="buttons-key vp-button" v-for="i in 9" :key="i">
-        {{ i }}
-      </button>
-      <button @click="handleNumClick" class="buttons-key vp-button">0</button>
-      <button @click="handleNumClick" class="buttons-key vp-button">.</button>
-      <button @click="handleCalc" class="buttons-key vp-button flex2">=</button>
+    <div class="actions-wrap">
+      <div class="actions">
+        <button @click="handleClear" class="actions-key vp-button">C</button>
+        <button @click="handleFlagClick('+')" class="actions-key vp-button">+</button>
+        <button @click="handleFlagClick('-')" class="actions-key vp-button">−</button>
+        <button @click="handleFlagClick('*')" class="actions-key vp-button">×</button>
+        <button @click="handleFlagClick('/')" class="actions-key vp-button">÷</button>
+      </div>
+      <div class="buttons" style="flex: 1">
+        <button @click="handleNumClick" class="buttons-key vp-button" v-for="i in 9" :key="i">
+          {{ i }}
+        </button>
+        <button @click="handleNumClick" class="buttons-key vp-button">0</button>
+        <button @click="handleNumClick" class="buttons-key vp-button">.</button>
+        <button @click="handleCalc" class="buttons-key vp-button flex2">=</button>
+      </div>
     </div>
   </div>
 </template>
@@ -92,25 +94,33 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
-  font-family: monospace;
   scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+
   .screen {
     height: 100px;
-    background: #fcfcfc;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-    padding: 5px;
+    padding: 8px 10px;
     box-sizing: border-box;
     font-size: 28px;
     position: relative;
+    line-height: 1;
 
     .flag {
       position: absolute;
-      color: red;
+      color: $primary;
       right: 5px;
       top: 5px;
     }
+  }
+
+  .actions-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .actions {
@@ -120,8 +130,15 @@ export default {
   .actions-key {
     width: 25%;
     height: 80px;
-    font-size: 20px;
-    font-family: monospace;
+    font-size: 32px;
+
+    &:hover {
+      background-color: $primary_opacity;
+    }
+    &:active {
+      background-color: $primary;
+      color: white;
+    }
   }
 
   .buttons {
@@ -133,21 +150,20 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    height: auto;
     text-align: center;
     width: 33.33%;
-    font-size: 30px;
-    font-family: monospace;
-
-    // border 1px solid #f00
-    // border-top: none
-    // border-left none
+    font-size: 32px;
     &.flex2 {
       flex: 1;
     }
 
     &:hover {
-      // background #ccc
+      background-color: $primary_opacity;
+    }
+    &:active {
+      background-color: $primary;
+      color: white;
     }
   }
 }

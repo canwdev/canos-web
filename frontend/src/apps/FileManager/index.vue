@@ -84,22 +84,29 @@ const goForward = () => {
 }
 /* 历史记录功能 END */
 
+// 是否允许返回上一级
 const allowUp = computed(() => {
   const arr = basePath.value.split('/').filter((i) => !!i)
-  return arr.length > 0
+  if (isUnix.value) {
+    return arr.length > 0
+  } else {
+    return arr.length > 1
+  }
+})
+// 检测以/开头的路径为unix路径
+const isUnix = computed(() => {
+  return /^\//g.test(basePath.value)
 })
 const goUp = () => {
-  // 检测以/开头的路径为unix路径
-  const isUnix = /^\//g.test(basePath.value)
   const arr = basePath.value.split('/').filter((i) => !!i)
   console.log(arr)
   arr.pop()
-  if (!arr.length && !isUnix) {
+  if (!arr.length && !isUnix.value) {
     handleRefresh()
     return
   }
   let path = arr.join('/') + '/'
-  if (isUnix) {
+  if (isUnix.value) {
     path = '/' + path
   }
   handleOpenPath(path)

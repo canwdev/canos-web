@@ -113,6 +113,7 @@ export default {
     margin-bottom: 10px;
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
   }
   .tip {
     margin-bottom: 10px;

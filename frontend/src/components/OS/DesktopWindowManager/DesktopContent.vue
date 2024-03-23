@@ -21,7 +21,7 @@ useSelectionArea({
   onStop: (stored) => {
     stored.forEach((el) => {
       const index = el.getAttribute('data-index')
-      console.log(index)
+      // console.log(index)
       selected.add(Number(index))
     })
   },
@@ -67,6 +67,7 @@ useSelectionArea({
     flex-direction: column;
     cursor: default;
     border-radius: 2px;
+    position: relative;
 
     &:focus {
       outline: 1px dashed white;

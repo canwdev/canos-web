@@ -487,7 +487,7 @@ export class WindowController {
     const {dragTargetEl} = this.options
 
     // 获取当前元素的 z-index
-    const currentZIndex = getComputedStyle(dragTargetEl)['z-index']
+    // const currentZIndex = getComputedStyle(dragTargetEl)['z-index']
 
     // 获取同类型窗口最大的 z-index
     let maxZIndex = -1

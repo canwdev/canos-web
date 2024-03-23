@@ -30,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <div class="simple-counter">
+  <div class="simple-counter font-code">
     <div class="counter-number">{{ count }}</div>
     <p class="actions">
       <button class="vp-button" @click="reset">重置</button>
@@ -53,7 +53,6 @@ export default {
 <style lang="scss" scoped>
 .simple-counter {
   height: 100%;
-  font-family: monospace;
   padding: 10px;
   box-sizing: border-box;
   overflow: auto;
@@ -80,7 +79,7 @@ export default {
       box-sizing: border-box;
 
       &:focus {
-        outline: 2px solid red;
+        outline: 2px solid $primary;
       }
     }
   }
@@ -100,7 +99,7 @@ export default {
 
       .no {
         width: 50px;
-        color: darkred;
+        color: $primary;
       }
 
       .count {
@@ -110,7 +109,7 @@ export default {
       }
 
       & + li {
-        border-top: 1px solid #ccc;
+        border-top: 1px solid $color_border;
       }
     }
   }

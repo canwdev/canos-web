@@ -40,6 +40,7 @@ const {iconName, titleDesc} = useFileItem(props)
   cursor: default;
   width: 90px;
   padding: 8px 2px;
+  box-sizing: border-box;
   &:active,
   &:focus {
     outline: 1px dashed currentColor;

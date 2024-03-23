@@ -147,7 +147,7 @@ export class FsService {
       },
     ]
     const driveList = nodeDiskInfo.getDiskInfoSync()
-    console.log('driveList', driveList)
+    // console.log('driveList', driveList)
     dirs = [
       ...dirs,
       ...driveList.map((drive) => {
