@@ -39,6 +39,9 @@ export const fsWebApi = {
   renameEntry(params) {
     return service.post('/rename', params)
   },
+  copyPaste(params) {
+    return service.post('/copy-paste', params)
+  },
   deleteEntry(params) {
     return service.post('/delete', params)
   },

@@ -1,5 +1,7 @@
 export type QuickOptionItem = {
-  label: string
+  label?: string
+  // 是否为分割线
+  split?: boolean
   // 搜索过滤用
   search?: string
   // 渲染内容为HTML

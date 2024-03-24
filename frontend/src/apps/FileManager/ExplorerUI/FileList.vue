@@ -12,8 +12,9 @@ import moment from 'moment'
 import {
   DocumentAdd16Regular,
   FolderAdd16Regular,
-  ArrowUpload16Regular,
-  ArrowDownload16Regular,
+  DocumentArrowUp16Regular,
+  FolderArrowUp16Regular,
+  DocumentArrowDown16Regular,
   Rename16Regular,
   Delete16Regular,
   SelectAllOn24Regular,
@@ -22,6 +23,9 @@ import {
   Grid16Regular,
   AppsList20Regular,
   ArrowSortDownLines16Regular,
+  Cut20Regular,
+  Copy20Regular,
+  ClipboardPaste20Regular,
 } from '@vicons/fluent'
 import {useSelectionArea} from '@/hooks/use-selection-area'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
@@ -29,6 +33,9 @@ import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
 import {sortMethodMap} from '@/apps/FileManager/utils/sort'
 import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
 import UploadQueue from '@/apps/FileManager/UploadQueue.vue'
+import {useExplorerStore} from '@/apps/FileManager/utils/explorer-store'
+import {useCopyPaste} from '@/apps/FileManager/ExplorerUI/use-file-item'
+import {ExplorerEvents, useExplorerBusOn} from '@/apps/FileManager/utils/bus'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -41,6 +48,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {})
 const {basePath, files} = toRefs(props)
 const isLoading = useVModel(props, 'isLoading', emit)
+const explorerStore = useExplorerStore()
 
 const isGridView = useStorage(LsKeys.EXPLORER_IS_GRID_VIEW, false)
 const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, SortType.default)
@@ -56,6 +64,8 @@ const sortOptions = computed((): QuickOptionItem[] => {
     {label: 'Extension ▼', value: SortType.extensionDesc},
     {label: 'Last Modified ▲', value: SortType.lastModified},
     {label: 'Last Modified ▼', value: SortType.lastModifiedDesc},
+    {label: 'Created Time ▲', value: SortType.birthTime},
+    {label: 'Created Time ▼', value: SortType.birthTimeDesc},
   ].map((i) => {
     return {
       label: i.label,
@@ -151,8 +161,8 @@ useSelectionArea({
     selectedItems.value = list
   },
 })
-const toggleSelect = ({item, event}) => {
-  if (event.ctrlKey || event.metaKey) {
+const toggleSelect = ({item, event, toggle = false}) => {
+  if (event.ctrlKey || event.metaKey || toggle) {
     // 使用ctrl键多选
     selectedItems.value = toggleArrayElement([...selectedItems.value], item)
   } else if (event.shiftKey) {
@@ -200,14 +210,17 @@ const handleRename = async () => {
     isLoading.value = false
   }
 }
+const getSelectedPaths = () => {
+  return selectedItems.value.map((item) => {
+    return normalizePath(basePath.value + '/' + item.name)
+  })
+}
 const doDeleteSelected = async () => {
   try {
     isLoading.value = true
 
     await fsWebApi.deleteEntry({
-      path: selectedItems.value.map((item) => {
-        return normalizePath(basePath.value + '/' + item.name)
-      }),
+      path: getSelectedPaths(),
     })
   } finally {
     isLoading.value = false
@@ -241,59 +254,78 @@ const uploadFiles = async (files: File[] | FileList | null) => {
   }
 }
 
-const {
-  open: openSelectFiles,
-  reset: resetSelectFiles,
-  onChange: onSelectFiles,
-} = useFileDialog({
+const {open: openSelectFiles, onChange: onSelectFiles} = useFileDialog({
   multiple: true,
+  reset: true,
 })
 const uploadQueueRef = ref()
 onSelectFiles(async (files) => {
-  try {
-    if (!files) {
-      return
-    }
-    await uploadFiles(files)
-    resetSelectFiles()
-    // emit('refresh')
-  } catch (e) {
-    resetSelectFiles()
+  if (!files) {
+    return
   }
+  await uploadFiles(files)
+  // emit('refresh')
 })
 
-// TODO
+// 支持递归上传文件夹
+function traverseFileTree(item, path = '') {
+  if (item.isFile) {
+    // Get file
+    item.file((file) => {
+      // console.log('File:', {path, file})
+
+      uploadQueueRef.value.addTask({
+        name: file.name,
+        path: normalizePath(basePath.value + '/' + path + file.name),
+        file,
+      })
+    })
+  } else if (item.isDirectory) {
+    // console.log('Dir', item)
+    // Get folder contents
+    const dirReader = item.createReader()
+    dirReader.readEntries(function (entries) {
+      for (let i = 0; i < entries.length; i++) {
+        traverseFileTree(entries[i], path + item.name + '/')
+      }
+    })
+
+    fsWebApi.createDir({
+      path: normalizePath(basePath.value + item.fullPath),
+      ignoreExisted: true,
+    })
+  } else {
+    // 前两种只有拖拽上传才会触发，这种方式是选择文件夹后触发
+    // 选择上传文件夹的弊端是无法上传空文件夹
+    // console.warn('normal file', item)
+
+    uploadQueueRef.value.addTask({
+      name: item.name,
+      path: normalizePath(basePath.value + '/' + item.webkitRelativePath),
+      file: item,
+    })
+  }
+}
+
 const {
   open: openSelectFolder,
   reset: resetSelectFolder,
   onChange: onSelectFolder,
 } = useFileDialog({
   directory: true,
+  reset: true,
 })
 onSelectFolder(async (filesList) => {
-  function traverseFiles(filesList) {
-    for (let i = 0; i < filesList.length; i++) {
-      const file = filesList[i]
-      console.log(file)
-      if (file.isDirectory) {
-        traverseFiles(file.createReader())
-      } else {
-        // TODO
-      }
-    }
+  if (!filesList) {
+    return
   }
-  try {
-    if (!filesList) {
-      return
+  // console.log('[onSelectFolder]', filesList)
+
+  for (let i = 0; i < filesList.length; i++) {
+    const item = filesList[i]
+    if (item) {
+      traverseFileTree(item)
     }
-    console.log(filesList)
-
-    traverseFiles(filesList)
-
-    // await uploadFiles(files)
-    resetSelectFolder()
-  } catch (e) {
-    resetSelectFolder()
   }
 })
 
@@ -315,9 +347,20 @@ const handleDownload = async () => {
   }
 }
 
+const {enablePaste, handleCut, handleCopy, handlePaste} = useCopyPaste(
+  getSelectedPaths,
+  basePath,
+  isLoading,
+  emit,
+)
+useExplorerBusOn(ExplorerEvents.REFRESH, () => emit('refresh'))
+
 const ctxMenuOptions = computed((): QuickOptionItem[] => {
   if (!selectedItems.value.length) {
-    return [{label: 'Refresh', props: {onClick: () => emit('refresh')}}]
+    return [
+      {label: 'Refresh', props: {onClick: () => emit('refresh')}},
+      {label: 'Paste', props: {onClick: handlePaste}, disabled: !enablePaste.value},
+    ]
   }
   const isSingle = selectedItems.value.length === 1
   // @ts-ignore
@@ -330,8 +373,12 @@ const ctxMenuOptions = computed((): QuickOptionItem[] => {
         },
       },
     },
-    isSingle && {label: 'Rename', props: {onClick: handleRename}},
     {label: 'Download', props: {onClick: handleDownload}},
+    {split: true},
+    {label: 'Cut', props: {onClick: handleCut}},
+    {label: 'Copy', props: {onClick: handleCopy}},
+    {split: true},
+    isSingle && {label: 'Rename', props: {onClick: handleRename}},
     {label: 'Delete', props: {onClick: confirmDelete}},
   ].filter(Boolean)
 })
@@ -354,37 +401,9 @@ const handleShowCtxMenu = (item: IEntry | null, event: MouseEvent) => {
 const dropZoneRef = ref<HTMLDivElement>()
 const {isOverDropZone} = useDropZone(dropZoneRef, {
   onDrop: (files, event) => {
-    // 支持递归上传文件夹
-    function traverseFileTree(item, path = '') {
-      if (item.isFile) {
-        // Get file
-        item.file((file) => {
-          // console.log('File:', {path, file})
-
-          uploadQueueRef.value.addTask({
-            name: file.name,
-            path: normalizePath(basePath.value + '/' + path + file.name),
-            file,
-          })
-        })
-      } else if (item.isDirectory) {
-        // console.log('Dir', item)
-        // Get folder contents
-        const dirReader = item.createReader()
-        dirReader.readEntries(function (entries) {
-          for (let i = 0; i < entries.length; i++) {
-            traverseFileTree(entries[i], path + item.name + '/')
-          }
-        })
-
-        fsWebApi.createDir({
-          path: normalizePath(basePath.value + item.fullPath),
-          ignoreExisted: true,
-        })
-      }
-    }
-
     const items = event.dataTransfer?.items || []
+    // console.log(items)
+
     for (let i = 0; i < items.length; i++) {
       // webkitGetAsEntry is where the magic happens
       const item = items[i].webkitGetAsEntry()
@@ -416,15 +435,17 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
             <FolderAdd16Regular />
           </n-icon>
         </button>
-        |
+
+        <div class="split-line"></div>
+
         <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files">
           <n-icon size="16">
-            <ArrowUpload16Regular />
+            <DocumentArrowUp16Regular />
           </n-icon>
         </button>
         <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder">
           <n-icon size="16">
-            <ArrowUpload16Regular />
+            <FolderArrowUp16Regular />
           </n-icon>
         </button>
         <button
@@ -434,10 +455,28 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
           title="Download"
         >
           <n-icon size="16">
-            <ArrowDownload16Regular />
+            <DocumentArrowDown16Regular />
           </n-icon>
         </button>
-        |
+
+        <div class="split-line"></div>
+
+        <button class="vp-button" :disabled="!enableAction" @click="handleCut" title="Cut">
+          <n-icon size="16">
+            <Cut20Regular />
+          </n-icon>
+        </button>
+        <button class="vp-button" :disabled="!enableAction" @click="handleCopy" title="Copy">
+          <n-icon size="16">
+            <Copy20Regular />
+          </n-icon>
+        </button>
+        <button class="vp-button" :disabled="!enablePaste" @click="handlePaste" title="Paste">
+          <n-icon size="16">
+            <ClipboardPaste20Regular />
+          </n-icon>
+        </button>
+
         <button
           class="vp-button"
           :disabled="selectedItems.length !== 1"
@@ -453,12 +492,8 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
             <Delete16Regular />
           </n-icon>
         </button>
-        |
-        <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">
-          <n-icon size="16">
-            <SelectAllOn24Regular />
-          </n-icon>
-        </button>
+
+        <div class="split-line"></div>
       </div>
       <div class="action-group">
         <button
@@ -485,6 +520,12 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
           </button>
           <QuickOptions v-model:visible="showSortMenu" :options="sortOptions" />
         </div>
+
+        <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">
+          <n-icon size="16">
+            <SelectAllOn24Regular />
+          </n-icon>
+        </button>
       </div>
     </div>
     <div
@@ -495,9 +536,10 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
     >
       <div v-if="!isGridView" class="explorer-list-view">
         <div class="vp-bg file-list-header file-list-row">
-          <div class="list-col c-filename">Name</div>
+          <div class="list-col c-filename" style="padding-left: 24px">Name</div>
           <div class="list-col c-size">Size</div>
           <div class="list-col c-time">Last Modified</div>
+          <div class="list-col c-time">Created</div>
         </div>
 
         <FileListItem
@@ -559,6 +601,12 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
       display: flex;
       gap: 4px;
       flex-wrap: wrap;
+
+      .split-line {
+        border-right: 1px solid $color_border;
+        margin-left: 2px;
+        margin-right: 2px;
+      }
       .vp-button {
         display: inline-flex;
         padding: 4px 6px;
@@ -604,6 +652,8 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
 
       .list-col {
         padding: 0 5px;
+        flex-shrink: 0;
+        box-sizing: border-box;
         &.c-icon {
           padding-left: 10px;
           width: 50px;
@@ -637,6 +687,18 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
           width: 100px;
         }
       }
+    }
+  }
+
+  :deep(.file-checkbox) {
+    &::before {
+      // 扩大点击范围
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      right: -6px;
+      bottom: -6px;
+      content: '';
     }
   }
 

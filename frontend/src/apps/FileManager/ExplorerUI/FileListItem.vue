@@ -26,6 +26,14 @@ const {iconName, titleDesc} = useFileItem(props)
     :title="titleDesc"
   >
     <div class="list-col c-filename">
+      <input
+        class="file-checkbox"
+        type="checkbox"
+        :checked="active"
+        @click.stop="$emit('select', {item, event: $event, toggle: true})"
+        @dblclick.stop
+      />
+
       <ThemedIcon :name="iconName" />
       <span class="text-overflow filename-text" @click.stop="$emit('open', item)" @dblclick.stop>
         {{ item.name }}
@@ -33,6 +41,7 @@ const {iconName, titleDesc} = useFileItem(props)
     </div>
     <div class="list-col c-size">{{ bytesToSize(item.size) }}</div>
     <div class="list-col c-time">{{ formatDate(item.lastModified) }}</div>
+    <div class="list-col c-time">{{ formatDate(item.birthtime) }}</div>
   </button>
 </template>
 
@@ -49,9 +58,12 @@ const {iconName, titleDesc} = useFileItem(props)
   &:hover {
     transition: background-color 0s;
     background-color: $primary_opacity;
+    .file-checkbox {
+      visibility: visible;
+    }
   }
   &.hidden {
-    & > * {
+    .filename-text {
       opacity: 0.6;
     }
   }
@@ -60,10 +72,18 @@ const {iconName, titleDesc} = useFileItem(props)
     background-color: $primary_opacity;
     outline: 1px solid $primary;
     outline-offset: -1px;
+    .file-checkbox {
+      visibility: visible;
+    }
   }
   &:focus {
     outline: 1px solid $primary;
     outline-offset: -1px;
+  }
+
+  .file-checkbox {
+    visibility: hidden;
+    position: relative;
   }
 
   .list-col {
@@ -74,6 +94,7 @@ const {iconName, titleDesc} = useFileItem(props)
       }
       .filename-text {
         font-size: 12px;
+        line-height: 1.2;
         cursor: pointer;
 
         &:hover {

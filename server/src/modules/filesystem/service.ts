@@ -10,6 +10,7 @@ import * as nodeDiskInfo from 'node-disk-info'
 import {Response} from 'express'
 import * as moment from 'moment/moment'
 import * as Archiver from 'archiver'
+import * as mime from 'mime-types'
 
 interface ZipResponseFile {
   name: string
@@ -181,13 +182,18 @@ export class FsService {
         }
 
         const isDirectory = stat && stat.isDirectory()
+        const ext = Path.extname(entryName) || ''
         return {
           name: entryName,
           isDirectory,
           hidden: entryName.startsWith('.'),
           lastModified: stat?.ctimeMs || 0,
+          birthtime: stat?.birthtimeMs || 0,
           size: isDirectory ? undefined : stat?.size,
+          mimeType: isDirectory ? undefined : mime.contentType(ext),
+          ext: ext,
           error,
+          stat,
         }
       })
     } catch (e) {
@@ -264,7 +270,36 @@ export class FsService {
       archive.pipe(response)
       archive.finalize()
     } catch (e) {
-      console.log(e)
+      console.error(e.message)
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async copyEntry(fromPath: string, toPath: string, isMove = false) {
+    try {
+      if (!fs.existsSync(fromPath)) {
+        throw new Error(`fromPath: ${fromPath} is not exist!`)
+      }
+      // 目标路径也需要加上文件名
+      toPath = Path.join(toPath, Path.basename(fromPath))
+
+      // TODO: 用户确认，目前不允许覆盖目标文件
+      if (fs.existsSync(toPath)) {
+        throw new Error(`toPath: ${toPath} is exist!`)
+      }
+      console.log({
+        fromPath,
+        toPath,
+        isMove,
+      })
+      await fs.promises.cp(fromPath, toPath, {
+        recursive: true,
+      })
+      if (isMove) {
+        await fs.promises.rm(fromPath, {recursive: true})
+      }
+    } catch (e) {
+      console.error(e.message)
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }
   }

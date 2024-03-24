@@ -65,11 +65,11 @@ export function pad2Num(num: number, len = 2) {
   return num.toString().padStart(len, '0')
 }
 
-export function formatDate(d: Date) {
+export function formatDate(d: Date | number, format = 'YYYY-MM-DD HH:mm') {
   if (!d) {
     return ''
   }
-  return moment(d).format('YYYY-MM-DD HH:mm:ss')
+  return moment(d).format(format)
 }
 
 export const formatTimeHMS = (ms) => {
@@ -95,7 +95,7 @@ export const formatSelectOptions = (list: string[]) => {
 }
 
 // 字节转换为可读的单位
-export const bytesToSize = (bytes, autoNo = '0B') => {
+export const bytesToSize = (bytes, autoNo = '0 B') => {
   bytes = Number(bytes)
   if (Number.isNaN(bytes)) {
     return '-'

@@ -106,6 +106,19 @@ export class FsController {
     }
   }
 
+  @Post('copy-paste')
+  async copyPaste(
+    @Body('fromPaths') fromPaths: string,
+    @Body('toPath') toPath: string,
+    @Body('isMove') isMove: boolean = false,
+  ) {
+    for (let i = 0; i < fromPaths.length; i++) {
+      const path = fromPaths[i]
+      await this.fsService.copyEntry(path, toPath, isMove)
+    }
+    return {toPath}
+  }
+
   @Post('delete')
   async deleteEntry(@Body('path') path: string | string[]) {
     try {

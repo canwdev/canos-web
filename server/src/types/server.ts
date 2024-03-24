@@ -8,11 +8,14 @@ export type ServerInfo = {
 
 export interface IEntry {
   name: string
+  ext: string
   isDirectory: boolean
   hidden: boolean
   lastModified: number
+  birthtime: number
   size?: number
   error?: string
+  mimeType?: string
 }
 
 export interface IDrive {
@@ -32,4 +35,6 @@ export enum SortType {
   extensionDesc = 'extensionDesc',
   lastModified = 'lastModified',
   lastModifiedDesc = 'lastModifiedDesc',
+  birthTime = 'birthTime',
+  birthTimeDesc = 'birthTimeDesc',
 }

@@ -120,7 +120,7 @@ defineExpose({
         <div class="upload-content">
           <div class="upload-title text-overflow" :title="item.path">{{ item.name }}</div>
           <div v-if="item.progress > 0" class="upload-status font-code">
-            Progress: <span>{{ item.progress.toFixed(2) }}%</span> |
+            Progress: <span>{{ (item.progress * 100).toFixed(0) }}%</span> |
             {{ bytesToSize(item.loaded) }}/{{ bytesToSize(item.total) }}
             <br />
             Speed: {{ bytesToSize(item.rate) }}/s <br />

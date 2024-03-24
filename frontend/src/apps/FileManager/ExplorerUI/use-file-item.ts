@@ -1,4 +1,8 @@
 import {bytesToSize, formatDate} from '@/utils'
+import {useExplorerStore} from '@/apps/FileManager/utils/explorer-store'
+import {normalizePath} from '@/apps/FileManager/utils'
+import {fsWebApi} from '@/api/filesystem'
+import explorerBus, {ExplorerEvents} from '@/apps/FileManager/utils/bus'
 
 export const useFileItem = (props) => {
   const {item} = toRefs(props)
@@ -11,12 +15,69 @@ export const useFileItem = (props) => {
   const titleDesc = computed(() => {
     return `Name: ${item.value.name}
 Size: ${bytesToSize(item.value.size)}
-Last Modified: ${formatDate(item.value.lastModified)}
+Type: ${item.value.mimeType || '-'}
+Last Modified: ${formatDate(item.value.lastModified, 'YYYY-MM-DD HH:mm:ss')}
+Created: ${formatDate(item.value.birthtime, 'YYYY-MM-DD HH:mm:ss')}
 `
   })
 
   return {
     iconName,
     titleDesc,
+  }
+}
+
+export const useCopyPaste = (getSelectedPaths, basePath, isLoading, emit) => {
+  const explorerStore = useExplorerStore()
+
+  const enablePaste = computed(() => {
+    return explorerStore.cutPaths.length > 0 || explorerStore.copyPaths.length > 0
+  })
+
+  const handleCut = () => {
+    explorerStore.copyPaths = []
+    explorerStore.cutPaths = getSelectedPaths()
+  }
+
+  const handleCopy = () => {
+    explorerStore.cutPaths = []
+    explorerStore.copyPaths = getSelectedPaths()
+  }
+
+  const handlePaste = async () => {
+    let paths: string[] = []
+    let isMove = false
+    if (explorerStore.cutPaths.length) {
+      paths = explorerStore.cutPaths
+      isMove = true
+    } else if (explorerStore.copyPaths.length) {
+      paths = explorerStore.copyPaths
+    } else {
+      return
+    }
+    // console.log(paths)
+
+    try {
+      isLoading.value = true
+      await fsWebApi.copyPaste({
+        fromPaths: paths,
+        toPath: basePath.value,
+        isMove,
+      })
+      if (isMove) {
+        explorerBus.emit(ExplorerEvents.REFRESH)
+      } else {
+        emit('refresh')
+      }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  return {
+    enablePaste,
+    handleCut,
+    handleCopy,
+    handlePaste,
   }
 }

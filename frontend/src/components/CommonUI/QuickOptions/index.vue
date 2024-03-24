@@ -34,6 +34,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    showIndex: {
+      type: Boolean,
+      default: true,
+    },
     itemCls: {
       type: String,
       default: '',
@@ -48,7 +52,9 @@ export default defineComponent({
     // 点击外部隐藏
     onClickOutside(quickRootRef, (event) => {
       if (!isStatic.value) {
-        mVisible.value = false
+        setTimeout(() => {
+          mVisible.value = false
+        })
       }
     })
 
@@ -60,15 +66,22 @@ export default defineComponent({
     }
 
     const curIndex = ref(0)
+    const getNextStep = (index) => {
+      // 如果下一个选项为spilt，就跳过
+      if (mOptions.value[index] && mOptions.value[index].split) {
+        return 2
+      }
+      return 1
+    }
     const selectPrev = () => {
-      curIndex.value--
+      curIndex.value -= getNextStep(curIndex.value - 1)
       if (curIndex.value < 0) {
         curIndex.value = mOptions.value.length - 1
       }
       scrollToIndex()
     }
     const selectNext = () => {
-      curIndex.value++
+      curIndex.value += getNextStep(curIndex.value + 1)
       if (curIndex.value > mOptions.value.length - 1) {
         curIndex.value = 0
       }
@@ -173,7 +186,7 @@ export default defineComponent({
           return
         }
 
-        console.log(number)
+        // console.log(number)
         const item = mOptions.value[number - 1]
         if (item) {
           handleOptionClick(item)
@@ -266,12 +279,14 @@ export default defineComponent({
     </div>
 
     <template v-for="(item, index) in mOptions" :key="index">
-      <n-dropdown v-if="item.dropdown" :options="item.dropdown" size="small">
+      <div v-if="item.split" class="option-split"></div>
+      <n-dropdown v-else-if="item.dropdown" :options="item.dropdown" size="small">
         <QOptionItem
           :item="item"
           :index="index"
           :cur-index="curIndex"
           :item-cls="itemCls"
+          :show-index="showIndex"
           @click="handleOptionClick(item, $event)"
           @contextmenu="handleOptionContextmenu(item, $event)"
         />
@@ -283,6 +298,7 @@ export default defineComponent({
         :index="index"
         :cur-index="curIndex"
         :item-cls="itemCls"
+        :show-index="showIndex"
         @click="handleOptionClick(item, $event)"
         @contextmenu="handleOptionContextmenu(item, $event)"
       />
@@ -333,6 +349,12 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .option-split {
+    border-bottom: 1px solid $color_border;
+    margin-top: 1px;
+    margin-bottom: 1px;
   }
 
   .option-item {

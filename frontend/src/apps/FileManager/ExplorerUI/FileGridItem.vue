@@ -24,6 +24,13 @@ const {iconName, titleDesc} = useFileItem(props)
     @dblclick.stop="$emit('open', item)"
     :title="titleDesc"
   >
+    <input
+      class="file-checkbox"
+      type="checkbox"
+      :checked="active"
+      @click.stop="$emit('select', {item, event: $event, toggle: true})"
+      @dblclick.stop
+    />
     <ThemedIcon class="desktop-icon-image" :name="iconName" />
     <span class="desktop-icon-name" @click.stop="$emit('open', item)" @dblclick.stop>{{
       item.name
@@ -41,6 +48,8 @@ const {iconName, titleDesc} = useFileItem(props)
   width: 90px;
   padding: 8px 2px;
   box-sizing: border-box;
+  position: relative;
+
   &:active,
   &:focus {
     outline: 1px dashed currentColor;
@@ -48,6 +57,9 @@ const {iconName, titleDesc} = useFileItem(props)
   }
   &:hover {
     background-color: rgba(224, 224, 224, 0.3);
+    .file-checkbox {
+      visibility: visible;
+    }
   }
   &.hidden {
     & > * {
@@ -58,6 +70,16 @@ const {iconName, titleDesc} = useFileItem(props)
   &.active {
     background-color: $primary_opacity;
     outline: 1px solid $primary;
+    .file-checkbox {
+      visibility: visible;
+    }
+  }
+
+  .file-checkbox {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    visibility: hidden;
   }
 
   .desktop-icon-image {

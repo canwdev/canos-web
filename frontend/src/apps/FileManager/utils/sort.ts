@@ -3,7 +3,6 @@
  * gagu-front-end/src/utils/sorter.util.ts
  */
 import {SortType, IEntry} from '@server/types/server'
-import {getExtension} from '@/apps/FileManager/utils/index'
 
 export const defaultSorter = (a: IEntry, b: IEntry) => {
   const aVal = a.isDirectory ? 1 : 2
@@ -30,11 +29,11 @@ export const sizeDescSorter = (a: IEntry, b: IEntry) => {
 }
 
 export const extensionSorter = (a: IEntry, b: IEntry) => {
-  return getExtension(a.name).toLowerCase().localeCompare(getExtension(b.name).toLowerCase())
+  return a.ext.toLowerCase().localeCompare(b.ext.toLowerCase())
 }
 
 export const extensionDescSorter = (a: IEntry, b: IEntry) => {
-  return -getExtension(a.name).toLowerCase().localeCompare(getExtension(b.name).toLowerCase())
+  return -a.ext.toLowerCase().localeCompare(b.ext.toLowerCase())
 }
 
 export const lastModifiedSorter = (a: IEntry, b: IEntry) => {
@@ -43,6 +42,14 @@ export const lastModifiedSorter = (a: IEntry, b: IEntry) => {
 
 export const lastModifiedDescSorter = (a: IEntry, b: IEntry) => {
   return -(a.lastModified - b.lastModified)
+}
+
+export const birthTimeSorter = (a: IEntry, b: IEntry) => {
+  return a.birthtime - b.birthtime
+}
+
+export const birthTimeDescSorter = (a: IEntry, b: IEntry) => {
+  return -(a.birthtime - b.birthtime)
 }
 
 export const sortMethodMap = {
@@ -55,4 +62,6 @@ export const sortMethodMap = {
   [SortType.extensionDesc]: extensionDescSorter,
   [SortType.lastModified]: lastModifiedSorter,
   [SortType.lastModifiedDesc]: lastModifiedDescSorter,
+  [SortType.birthTime]: birthTimeSorter,
+  [SortType.birthTimeDesc]: birthTimeDescSorter,
 }

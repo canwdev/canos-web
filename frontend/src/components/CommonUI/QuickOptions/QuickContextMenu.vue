@@ -81,5 +81,6 @@ defineExpose({
     @click.stop
     :style="ctxMenuStyle"
     v-bind="$attrs"
+    :show-index="false"
   />
 </template>

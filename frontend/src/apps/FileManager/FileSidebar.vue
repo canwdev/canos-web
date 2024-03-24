@@ -6,6 +6,7 @@ import {LsKeys} from '@/enum'
 import {ChevronLeft20Filled} from '@vicons/fluent'
 import {normalizePath} from '@/apps/FileManager/utils'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+import {bytesToSize} from '@/utils'
 
 interface Props {
   width?: string
@@ -74,6 +75,18 @@ const handleOpen = (item) => {
     emit('openDrive', item)
   }
 }
+
+const getTitle = (item) => {
+  let txt = `Path: ${item.path}`
+
+  if (item.total) {
+    txt += `
+Used: ${((item!.free / item.total) * 100).toFixed(0) + '%'}
+Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
+`
+  }
+  return txt
+}
 </script>
 
 <template>
@@ -90,7 +103,7 @@ const handleOpen = (item) => {
         class="drive-item btn-no-style"
         v-for="(item, index) in dataList"
         :key="index"
-        :title="item.path"
+        :title="getTitle(item)"
         :class="{active: item.path === currentPath}"
         @click="handleOpen(item)"
       >
