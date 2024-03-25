@@ -1,8 +1,7 @@
 import {bytesToSize, formatDate} from '@/utils'
-import {useExplorerStore} from '@/apps/FileManager/utils/explorer-store'
-import {normalizePath} from '@/apps/FileManager/utils'
+import {useExplorerStore} from '../utils/explorer-store'
 import {fsWebApi} from '@/api/filesystem'
-import explorerBus, {ExplorerEvents} from '@/apps/FileManager/utils/bus'
+import explorerBus, {ExplorerEvents} from '../utils/bus'
 
 export const useFileItem = (props) => {
   const {item} = toRefs(props)

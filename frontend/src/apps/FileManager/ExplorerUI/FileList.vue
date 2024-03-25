@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import {IEntry, SortType} from '@server/types/server'
-import FileListItem from '@/apps/FileManager/ExplorerUI/FileListItem.vue'
-import {generateTextFile, normalizePath, toggleArrayElement} from '@/apps/FileManager/utils'
+import FileListItem from './FileListItem.vue'
+import {generateTextFile, normalizePath, toggleArrayElement} from '../utils'
 import {showInputPrompt} from '@/components/CommonUI/input-prompt'
 import {fsWebApi} from '@/api/filesystem'
 import {useDropZone, useStorage, useVModel} from '@vueuse/core'
 import {LsKeys} from '@/enum'
 import {useFileDialog} from '@vueuse/core'
-import FileGridItem from '@/apps/FileManager/ExplorerUI/FileGridItem.vue'
+import FileGridItem from './FileGridItem.vue'
 import moment from 'moment'
 import {
   DocumentAdd16Regular,
@@ -30,12 +30,12 @@ import {
 import {useSelectionArea} from '@/hooks/use-selection-area'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
-import {sortMethodMap} from '@/apps/FileManager/utils/sort'
+import {sortMethodMap} from '../utils/sort'
 import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
-import UploadQueue from '@/apps/FileManager/UploadQueue.vue'
-import {useExplorerStore} from '@/apps/FileManager/utils/explorer-store'
-import {useCopyPaste} from '@/apps/FileManager/ExplorerUI/use-file-item'
-import {ExplorerEvents, useExplorerBusOn} from '@/apps/FileManager/utils/bus'
+import UploadQueue from '../UploadQueue.vue'
+import {useExplorerStore} from '../utils/explorer-store'
+import {useCopyPaste} from './use-file-item'
+import {ExplorerEvents, useExplorerBusOn} from '../utils/bus'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 

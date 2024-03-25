@@ -1,6 +1,6 @@
 import {IEntry} from '@server/types/server'
 import {fsWebApi} from '@/api/filesystem'
-import {normalizePath} from '@/apps/FileManager/utils/index'
+import {normalizePath} from './index'
 import {useSystemStore} from '@/store/system'
 import {isSupportedMusicFormat} from '@/utils/is'
 

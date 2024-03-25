@@ -2,7 +2,7 @@
 import {bytesToSize, formatDate} from '@/utils'
 import {Folder20Regular, Document20Regular} from '@vicons/fluent'
 import {IEntry} from '@server/types/server'
-import {useFileItem} from '@/apps/FileManager/ExplorerUI/use-file-item'
+import {useFileItem} from './use-file-item'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 const emit = defineEmits(['open', 'select'])
