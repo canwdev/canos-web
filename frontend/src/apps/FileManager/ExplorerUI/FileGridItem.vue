@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {IEntry} from '@server/types/server'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
-import {useFileItem} from './use-file-item'
+import {useFileItem} from './hooks/use-file-item'
 
 const emit = defineEmits(['open', 'select'])
 

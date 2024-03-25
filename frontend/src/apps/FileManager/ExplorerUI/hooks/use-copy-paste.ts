@@ -1,32 +1,8 @@
-import {bytesToSize, formatDate} from '@/utils'
-import {useExplorerStore} from '../utils/explorer-store'
+import {useExplorerStore} from '../../utils/explorer-store'
 import {fsWebApi} from '@/api/filesystem'
-import explorerBus, {ExplorerEvents} from '../utils/bus'
+import explorerBus, {ExplorerEvents} from '../../utils/bus'
 
-export const useFileItem = (props) => {
-  const {item} = toRefs(props)
-  const iconName = computed(() => {
-    if (item.value.isDirectory) {
-      return 'folder'
-    }
-    return 'text-x-preview'
-  })
-  const titleDesc = computed(() => {
-    return `Name: ${item.value.name}
-Size: ${bytesToSize(item.value.size)}
-Type: ${item.value.mimeType || '-'}
-Last Modified: ${formatDate(item.value.lastModified, 'YYYY-MM-DD HH:mm:ss')}
-Created: ${formatDate(item.value.birthtime, 'YYYY-MM-DD HH:mm:ss')}
-`
-  })
-
-  return {
-    iconName,
-    titleDesc,
-  }
-}
-
-export const useCopyPaste = (getSelectedPaths, basePath, isLoading, emit) => {
+export const useCopyPaste = ({selectedPaths, basePath, isLoading, emit}) => {
   const explorerStore = useExplorerStore()
 
   const enablePaste = computed(() => {
@@ -35,12 +11,12 @@ export const useCopyPaste = (getSelectedPaths, basePath, isLoading, emit) => {
 
   const handleCut = () => {
     explorerStore.copyPaths = []
-    explorerStore.cutPaths = getSelectedPaths()
+    explorerStore.cutPaths = selectedPaths.value
   }
 
   const handleCopy = () => {
     explorerStore.cutPaths = []
-    explorerStore.copyPaths = getSelectedPaths()
+    explorerStore.copyPaths = selectedPaths.value
   }
 
   const handlePaste = async () => {

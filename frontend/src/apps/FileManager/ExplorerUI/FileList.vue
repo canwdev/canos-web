@@ -27,15 +27,15 @@ import {
   Copy20Regular,
   ClipboardPaste20Regular,
 } from '@vicons/fluent'
-import {useSelectionArea} from '@/hooks/use-selection-area'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
-import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
-import {sortMethodMap} from '../utils/sort'
 import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
 import UploadQueue from '../UploadQueue.vue'
-import {useExplorerStore} from '../utils/explorer-store'
-import {useCopyPaste} from './use-file-item'
+import {useCopyPaste} from './hooks/use-copy-paste'
 import {ExplorerEvents, useExplorerBusOn} from '../utils/bus'
+import {useLayoutSort} from './hooks/use-layout-sort'
+import {useSelection} from './hooks/use-selection'
+import {useFileActions} from './hooks/use-file-actions'
+import {useTransfer} from './hooks/use-transfer'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -48,370 +48,61 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {})
 const {basePath, files} = toRefs(props)
 const isLoading = useVModel(props, 'isLoading', emit)
-const explorerStore = useExplorerStore()
+useExplorerBusOn(ExplorerEvents.REFRESH, () => emit('refresh'))
 
-const isGridView = useStorage(LsKeys.EXPLORER_IS_GRID_VIEW, false)
-const sortMode = useStorage(LsKeys.EXPLORER_SORT_MODE, SortType.default)
-const showSortMenu = ref(false)
-const sortOptions = computed((): QuickOptionItem[] => {
-  return [
-    {label: 'Default', value: SortType.default},
-    {label: 'Name ▲', value: SortType.name},
-    {label: 'Name ▼', value: SortType.nameDesc},
-    {label: 'Size ▲', value: SortType.size},
-    {label: 'Size ▼', value: SortType.sizeDesc},
-    {label: 'Extension ▲', value: SortType.extension},
-    {label: 'Extension ▼', value: SortType.extensionDesc},
-    {label: 'Last Modified ▲', value: SortType.lastModified},
-    {label: 'Last Modified ▼', value: SortType.lastModifiedDesc},
-    {label: 'Created Time ▲', value: SortType.birthTime},
-    {label: 'Created Time ▼', value: SortType.birthTimeDesc},
-  ].map((i) => {
-    return {
-      label: i.label,
-      props: {
-        class: sortMode.value === i.value ? 'active' : '',
-        onClick: () => {
-          sortMode.value = i.value
-        },
-      },
-    }
-  })
-})
+// 布局和排序方式
+const {isGridView, showSortMenu, sortOptions, filteredFiles, showHidden} = useLayoutSort(files)
 
-const showHidden = useStorage(LsKeys.SHOW_HIDDEN_FILES, false)
-const filteredFiles = computed(() => {
-  return files.value
-    .filter((item) => {
-      if (showHidden.value) {
-        return true
-      }
-      return !item.hidden
-    })
-    .sort(sortMethodMap[sortMode.value])
-})
-
-const selectedItems = ref<IEntry[]>([])
-const selectedItemsSet = computed(() => {
-  return new Set(selectedItems.value)
-})
-watch(files, () => {
-  selectedItems.value = []
-})
-watch(filteredFiles, () => {
-  selectedItems.value = []
-})
-const enableAction = computed(() => {
-  return selectedItems.value.length > 0
-})
-
-const handleCreateFile = async () => {
-  try {
-    const name = await showInputPrompt({
-      title: 'Create File',
-      value: `file_${moment(new Date()).format('YYYYMMDD_HHmmss')}.txt`,
-    })
-    isLoading.value = true
-    await fsWebApi.createFile({
-      path: normalizePath(basePath.value + '/' + name),
-      file: generateTextFile('', name),
-    })
-    emit('refresh')
-  } finally {
-    isLoading.value = false
-  }
-}
-const handleCreateFolder = async () => {
-  try {
-    const name = await showInputPrompt({
-      title: 'Create Folder',
-      value: `folder_${moment(new Date()).format('YYYYMMDD_HHmmss')}`,
-    })
-    isLoading.value = true
-    await fsWebApi.createDir({path: normalizePath(basePath.value + '/' + name)})
-    emit('refresh')
-  } finally {
-    isLoading.value = false
-  }
-}
-
-/* SELECT START*/
-const explorerContentRef = ref()
-useSelectionArea({
-  containerRef: explorerContentRef,
-  onStart: () => {
-    selectedItems.value = []
-  },
-  onStop: (stored) => {
-    const map = {}
-    filteredFiles.value.forEach((i) => {
-      map[i.name] = i
-    })
-    const list: IEntry[] = []
-    stored.forEach((el) => {
-      const name = el.getAttribute('data-name')
-      if (!name) {
-        return
-      }
-      if (map[name]) {
-        list.push(map[name])
-      }
-    })
-
-    selectedItems.value = list
-  },
-})
-const toggleSelect = ({item, event, toggle = false}) => {
-  if (event.ctrlKey || event.metaKey || toggle) {
-    // 使用ctrl键多选
-    selectedItems.value = toggleArrayElement([...selectedItems.value], item)
-  } else if (event.shiftKey) {
-    // 使用shift键选择范围
-    let idx = 0
-    const first = selectedItems.value[0]
-    if (first) {
-      idx = filteredFiles.value.findIndex((i) => i.name === first.name)
-    }
-    let itemIdx = filteredFiles.value.findIndex((i) => i.name === item.name)
-    if (idx > itemIdx) {
-      // 使最小的index在最前
-      ;[itemIdx, idx] = [idx, itemIdx]
-    }
-    selectedItems.value = filteredFiles.value.slice(idx, itemIdx + 1)
-  } else {
-    selectedItems.value = [item]
-  }
-}
-const toggleSelectAll = () => {
-  const allFiles = filteredFiles.value
-  if (selectedItems.value.length === allFiles.length) {
-    selectedItems.value = []
-  } else {
-    selectedItems.value = [...allFiles]
-  }
-  // console.log(selectedItems.value)
-}
-/* SELECT END*/
-
-const handleRename = async () => {
-  try {
-    const item: IEntry = selectedItems.value[0]
-    const name = await showInputPrompt({
-      title: 'Rename',
-      value: item.name,
-    })
-    isLoading.value = true
-    await fsWebApi.renameEntry({
-      fromPath: normalizePath(basePath.value + '/' + item.name),
-      toPath: normalizePath(basePath.value + '/' + name),
-    })
-    emit('refresh')
-  } finally {
-    isLoading.value = false
-  }
-}
-const getSelectedPaths = () => {
-  return selectedItems.value.map((item) => {
-    return normalizePath(basePath.value + '/' + item.name)
-  })
-}
-const doDeleteSelected = async () => {
-  try {
-    isLoading.value = true
-
-    await fsWebApi.deleteEntry({
-      path: getSelectedPaths(),
-    })
-  } finally {
-    isLoading.value = false
-    emit('refresh')
-  }
-}
-const confirmDelete = () => {
-  window.$dialog.warning({
-    title: 'Confirm Delete',
-    content: `确认删除？此操作不可撤销`,
-    positiveText: 'OK',
-    negativeText: 'Cancel',
-    onPositiveClick: () => {
-      doDeleteSelected()
-    },
-    onNegativeClick: () => {},
-  })
-}
-
-const uploadFiles = async (files: File[] | FileList | null) => {
-  if (!files) {
-    return
-  }
-  // @ts-ignore
-  for (const file of files) {
-    uploadQueueRef.value.addTask({
-      name: file.name,
-      path: normalizePath(basePath.value + '/' + file.name),
-      file,
-    })
-  }
-}
-
-const {open: openSelectFiles, onChange: onSelectFiles} = useFileDialog({
-  multiple: true,
-  reset: true,
-})
-const uploadQueueRef = ref()
-onSelectFiles(async (files) => {
-  if (!files) {
-    return
-  }
-  await uploadFiles(files)
-  // emit('refresh')
-})
-
-// 支持递归上传文件夹
-function traverseFileTree(item, path = '') {
-  if (item.isFile) {
-    // Get file
-    item.file((file) => {
-      // console.log('File:', {path, file})
-
-      uploadQueueRef.value.addTask({
-        name: file.name,
-        path: normalizePath(basePath.value + '/' + path + file.name),
-        file,
-      })
-    })
-  } else if (item.isDirectory) {
-    // console.log('Dir', item)
-    // Get folder contents
-    const dirReader = item.createReader()
-    dirReader.readEntries(function (entries) {
-      for (let i = 0; i < entries.length; i++) {
-        traverseFileTree(entries[i], path + item.name + '/')
-      }
-    })
-
-    fsWebApi.createDir({
-      path: normalizePath(basePath.value + item.fullPath),
-      ignoreExisted: true,
-    })
-  } else {
-    // 前两种只有拖拽上传才会触发，这种方式是选择文件夹后触发
-    // 选择上传文件夹的弊端是无法上传空文件夹
-    // console.warn('normal file', item)
-
-    uploadQueueRef.value.addTask({
-      name: item.name,
-      path: normalizePath(basePath.value + '/' + item.webkitRelativePath),
-      file: item,
-    })
-  }
-}
-
+// 文件选择功能
 const {
-  open: openSelectFolder,
-  reset: resetSelectFolder,
-  onChange: onSelectFolder,
-} = useFileDialog({
-  directory: true,
-  reset: true,
-})
-onSelectFolder(async (filesList) => {
-  if (!filesList) {
-    return
-  }
-  // console.log('[onSelectFolder]', filesList)
+  selectedItems,
+  selectedItemsSet,
+  explorerContentRef,
+  toggleSelect,
+  toggleSelectAll,
+  selectedPaths,
+} = useSelection({filteredFiles, basePath})
 
-  for (let i = 0; i < filesList.length; i++) {
-    const item = filesList[i]
-    if (item) {
-      traverseFileTree(item)
-    }
-  }
-})
-
-const handleDownload = async () => {
-  try {
-    isLoading.value = true
-    let paths: string[] = []
-    for (const itemsKey in selectedItems.value) {
-      const item = selectedItems.value[itemsKey]
-      paths.push(normalizePath(basePath.value + '/' + item.name))
-    }
-
-    const {key} = (await fsWebApi.createShareLink({
-      paths,
-    })) as unknown as any
-    window.open(fsWebApi.getDownloadShareLink(key))
-  } finally {
-    isLoading.value = false
-  }
-}
-
-const {enablePaste, handleCut, handleCopy, handlePaste} = useCopyPaste(
-  getSelectedPaths,
+// 复制粘贴功能
+const {enablePaste, handleCut, handleCopy, handlePaste} = useCopyPaste({
+  selectedPaths,
   basePath,
   isLoading,
   emit,
-)
-useExplorerBusOn(ExplorerEvents.REFRESH, () => emit('refresh'))
-
-const ctxMenuOptions = computed((): QuickOptionItem[] => {
-  if (!selectedItems.value.length) {
-    return [
-      {label: 'Refresh', props: {onClick: () => emit('refresh')}},
-      {label: 'Paste', props: {onClick: handlePaste}, disabled: !enablePaste.value},
-    ]
-  }
-  const isSingle = selectedItems.value.length === 1
-  // @ts-ignore
-  return [
-    isSingle && {
-      label: 'Open',
-      props: {
-        onClick: () => {
-          return emit('open', selectedItems.value[0])
-        },
-      },
-    },
-    {label: 'Download', props: {onClick: handleDownload}},
-    {split: true},
-    {label: 'Cut', props: {onClick: handleCut}},
-    {label: 'Copy', props: {onClick: handleCopy}},
-    {split: true},
-    isSingle && {label: 'Rename', props: {onClick: handleRename}},
-    {label: 'Delete', props: {onClick: confirmDelete}},
-  ].filter(Boolean)
 })
 
-const ctxMenuRef = ref()
-const handleShowCtxMenu = (item: IEntry | null, event: MouseEvent) => {
-  if (!item) {
-    selectedItems.value = []
-  } else {
-    if (!selectedItemsSet.value.has(item)) {
-      selectedItems.value = [item]
-    }
-  }
-  ctxMenuRef.value.isShow = false
-  setTimeout(() => {
-    ctxMenuRef.value.showMenu(event)
-  })
-}
+// 上传下载功能
+const {
+  uploadQueueRef,
+  dropZoneRef,
+  isOverDropZone,
+  openSelectFiles,
+  openSelectFolder,
+  handleDownload,
+} = useTransfer({basePath, isLoading, selectedItems})
 
-const dropZoneRef = ref<HTMLDivElement>()
-const {isOverDropZone} = useDropZone(dropZoneRef, {
-  onDrop: (files, event) => {
-    const items = event.dataTransfer?.items || []
-    // console.log(items)
-
-    for (let i = 0; i < items.length; i++) {
-      // webkitGetAsEntry is where the magic happens
-      const item = items[i].webkitGetAsEntry()
-      if (item) {
-        traverseFileTree(item)
-      }
-    }
-  },
+// 文件操作功能
+const {
+  handleCreateFile,
+  handleCreateFolder,
+  handleRename,
+  confirmDelete,
+  ctxMenuOptions,
+  ctxMenuRef,
+  handleShowCtxMenu,
+  enableAction,
+} = useFileActions({
+  isLoading,
+  selectedPaths,
+  basePath,
+  selectedItems,
+  enablePaste,
+  handlePaste,
+  handleCut,
+  handleCopy,
+  selectedItemsSet,
+  handleDownload,
+  emit,
 })
 </script>
 

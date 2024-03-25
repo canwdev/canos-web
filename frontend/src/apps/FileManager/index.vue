@@ -36,7 +36,7 @@ const {
     const res = await fsWebApi.getList({
       path: basePath.value,
     })
-    console.log(res)
+    // console.log(res)
 
     return res
   },
