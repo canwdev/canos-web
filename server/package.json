@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build",
     "build1": "nest build --webpack",
-    "build2": "ncc build src/main.ts",
+    "build-exe": "pkg .",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "nest:start": "nest start",
     "nest:dev": "cross-env NODE_ENV=development nest start --watch",
@@ -68,5 +68,12 @@
   },
   "resolutions": {
     "string-width": "4.2.3"
+  },
+  "bin": "dist/main.js",
+  "pkg": {
+    "scripts": "dist/**/*.js",
+    "assets": "dist-frontend/**/*",
+    "targets": [ "latest-win-x64" ],
+    "outputPath": "dist-exe"
   }
 }

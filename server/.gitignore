@@ -3,6 +3,7 @@
 /node_modules
 /data/*
 /dist-frontend/
+/dist-exe/
 /*.exe
 /*.blob
 

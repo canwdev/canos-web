@@ -11,18 +11,10 @@ import FileSidebar from '@/apps/FileManager/FileSidebar.vue'
 import {IEntry} from '@server/types/server'
 import {fsWebApi} from '@/api/filesystem'
 import FileList from '@/apps/FileManager/ExplorerUI/FileList.vue'
-import {showInputPrompt} from '@/components/CommonUI/input-prompt'
-import moment from 'moment/moment'
 import {useStorage} from '@vueuse/core'
 import {LsKeys} from '@/enum'
-import {
-  generateTextFile,
-  getLastDirName,
-  normalizePath,
-  toggleArrayElement,
-} from '@/apps/FileManager/utils'
+import {getLastDirName, normalizePath, toggleArrayElement} from '@/apps/FileManager/utils'
 import {useOpener} from '@/apps/FileManager/utils/use-opener'
-import {isSupportedMusicFormat} from '@/utils/is'
 
 const files = ref<IEntry[]>([])
 const basePath = ref('/')
@@ -46,6 +38,7 @@ const handleRefresh = async () => {
     const res = await fsWebApi.getList({
       path: basePath.value,
     })
+    // console.log(res)
 
     files.value = res as unknown as IEntry[]
   } catch (e) {
@@ -258,9 +251,11 @@ const filteredFiles = computed(() => {
 
         .input-addr {
           flex: 1;
+          line-height: 1;
         }
         .input-filter {
           width: 100px;
+          line-height: 1;
         }
       }
     }

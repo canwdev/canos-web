@@ -65,8 +65,10 @@ export const useCopyPaste = (getSelectedPaths, basePath, isLoading, emit) => {
         isMove,
       })
       if (isMove) {
+        explorerStore.cutPaths = []
         explorerBus.emit(ExplorerEvents.REFRESH)
       } else {
+        explorerStore.copyPaths = []
         emit('refresh')
       }
     } finally {
