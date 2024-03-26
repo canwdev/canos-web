@@ -43,7 +43,7 @@ export default defineComponent({
 
 <template>
   <div class="c-panel-item" :class="[item.cls]">
-    <div class="panel-header">
+    <div class="panel-header vp-bg">
       <div class="p-left">
         <div class="item-label">{{ item.label }}</div>
       </div>
@@ -121,14 +121,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-._dark {
-  .c-panel-item {
-    .panel-header {
-      background-color: black;
-      color: white;
-    }
-  }
-}
 .c-panel-item {
   .panel-header {
     min-height: 40px;
@@ -140,8 +132,6 @@ export default defineComponent({
     border-bottom: 1px dashed $color_border;
     position: sticky;
     top: 0;
-    background-color: white;
-    color: black;
     z-index: 2;
 
     .p-left,

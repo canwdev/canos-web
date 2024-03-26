@@ -24,12 +24,6 @@ export default defineComponent({
 
 <template>
   <n-config-provider
-    :class="[
-      {
-        _dark: isAppDarkMode,
-      },
-      settingsStore.customTheme,
-    ]"
     :theme="isAppDarkMode ? darkTheme : null"
     :theme-overrides="themeOverrides"
     class="page-root _line-grid"

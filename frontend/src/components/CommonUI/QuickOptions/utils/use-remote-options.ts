@@ -1,4 +1,4 @@
-import {QuickOptionItem} from './enum'
+import {QuickOptionItem} from '../enum'
 
 export const useRemoteOptions = ({fetchFn, mapFn}) => {
   const options = ref<QuickOptionItem[]>([])

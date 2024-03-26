@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import VueRender from '@/components/CommonUI/OptionUI/Tools/VueRender.vue'
-import {QuickOptionItem} from './enum'
+import {QuickOptionItem} from '../enum'
 import DynamicValueDisplay from './DynamicValueDisplay.vue'
 
 interface Props {

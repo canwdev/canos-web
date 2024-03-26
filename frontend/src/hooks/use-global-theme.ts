@@ -34,6 +34,33 @@ export const useGlobalTheme = () => {
 
   const isAppDarkMode = computed(() => mainStore.isAppDarkMode)
 
+  watch(
+    isAppDarkMode,
+    (val) => {
+      if (val) {
+        document.body.classList.add('_dark')
+      } else {
+        document.body.classList.remove('_dark')
+      }
+    },
+    {immediate: true},
+  )
+
+  const lastTheme = ref('')
+  watch(
+    () => settingsStore.customTheme,
+    (val) => {
+      if (lastTheme.value) {
+        document.body.classList.remove(lastTheme.value)
+      }
+      document.body.classList.add(val)
+      lastTheme.value = val
+    },
+    {
+      immediate: true,
+    },
+  )
+
   const updateThemeColor = () => {
     const themeColor = settingsStore.themeColor
     // console.log({themeColor})

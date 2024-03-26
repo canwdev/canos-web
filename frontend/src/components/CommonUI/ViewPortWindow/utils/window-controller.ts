@@ -183,24 +183,20 @@ export class WindowController {
     this.handleDragMove = this.handleDragMove.bind(this)
     this.handleDragStop = this.handleDragStop.bind(this)
     this.currentResizeDirection = null
-    this.handleResizeDebounced = useThrottleFn(
-      () => {
-        if (this.isHidden()) {
-          return
-        }
-        const {left, top} = this.setInScreenPosition({
-          x: dragTargetEl.offsetLeft,
-          y: dragTargetEl.offsetTop,
-        })
-        this.debugLog('handleResizeDebounced', {left, top})
+    this.handleResizeDebounced = useThrottleFn(() => {
+      if (this.isHidden()) {
+        return
+      }
+      const {left, top} = this.setInScreenPosition({
+        x: dragTargetEl.offsetLeft,
+        y: dragTargetEl.offsetTop,
+      })
+      this.debugLog('handleResizeDebounced', {left, top})
 
-        if (typeof onMove === 'function') {
-          onMove({top, left})
-        }
-      },
-      500,
-      true
-    )
+      if (typeof onMove === 'function') {
+        onMove({top, left})
+      }
+    }, 500)
 
     if (autoPosOnResize) {
       window.addEventListener('resize', this.handleResizeDebounced)

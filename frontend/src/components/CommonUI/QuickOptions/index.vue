@@ -2,7 +2,7 @@
 import {ComputedRef, defineComponent, PropType, Ref} from 'vue'
 import {QuickOptionItem} from './enum'
 import {onClickOutside, useVModel} from '@vueuse/core'
-import QOptionItem from './QOptionItem.vue'
+import QOptionItem from './utils/QOptionItem.vue'
 
 export default defineComponent({
   name: 'QuickOptions',
@@ -11,6 +11,10 @@ export default defineComponent({
     visible: {
       type: Boolean,
       default: false,
+    },
+    closeOnClick: {
+      type: Boolean,
+      default: true,
     },
     horizontal: {
       type: Boolean,
@@ -45,7 +49,7 @@ export default defineComponent({
   },
   emits: ['onClose', 'update:visible', 'onBack', 'onEnter'],
   setup(props, {emit}) {
-    const {options, horizontal, isStatic, autoFocus} = toRefs(props)
+    const {options, horizontal, isStatic, autoFocus, closeOnClick} = toRefs(props)
     const mVisible = useVModel(props, 'visible', emit)
     const quickRootRef = ref()
 
@@ -90,7 +94,7 @@ export default defineComponent({
     const focus = () => {
       setTimeout(() => {
         quickRootRef.value.focus()
-      }, 100)
+      }, 10)
     }
 
     onMounted(() => {
@@ -104,7 +108,9 @@ export default defineComponent({
     watch(mVisible, (val) => {
       if (val) {
         curIndex.value = 0
-        focus()
+        if (autoFocus.value) {
+          focus()
+        }
       } else {
         menuStack.value = []
       }
@@ -205,7 +211,9 @@ export default defineComponent({
       }
       if (item?.props?.onClick) {
         item.props.onClick(item, event)
-        mVisible.value = false
+        if (closeOnClick.value) {
+          mVisible.value = false
+        }
       } else if (item.children) {
         let subList: QuickOptionItem[] | any = []
         if (typeof item.children === 'function') {
@@ -234,7 +242,7 @@ export default defineComponent({
         item.props.onContextmenu(item, event)
       }
     }
-
+    const isFocused = () => document.activeElement !== quickRootRef.value
     return {
       mVisible,
       quickRootRef,
@@ -246,6 +254,8 @@ export default defineComponent({
       mOptions,
       handleOptionClick,
       handleOptionContextmenu,
+      focus,
+      isFocused,
     }
   },
 })
@@ -280,7 +290,13 @@ export default defineComponent({
 
     <template v-for="(item, index) in mOptions" :key="index">
       <div v-if="item.split" class="option-split"></div>
-      <n-dropdown v-else-if="item.dropdown" :options="item.dropdown" size="small">
+      <n-dropdown
+        v-else-if="item.dropdown"
+        :options="item.dropdown"
+        label-field="label"
+        key-field="key"
+        size="small"
+      >
         <QOptionItem
           :item="item"
           :index="index"

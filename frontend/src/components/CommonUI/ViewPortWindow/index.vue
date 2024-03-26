@@ -141,7 +141,7 @@ export default defineComponent({
               JSON.stringify({
                 ...s,
                 maximized: isMaximized.value,
-              }),
+              })
             )
           }
           return
@@ -151,7 +151,7 @@ export default defineComponent({
           localStorage.setItem(storageKey, JSON.stringify({...winOptions}))
         }
       },
-      {deep: Boolean(props.wid)},
+      {deep: Boolean(props.wid)}
     )
 
     watch(allowMove, (val) => {
@@ -251,7 +251,7 @@ export default defineComponent({
         winOptions.left = left
       },
       500,
-      true,
+      true
     )
 
     const handleResizeDebounced = useThrottleFn(
@@ -265,7 +265,7 @@ export default defineComponent({
         winOptions.height = getComputedStyle(rootRef.value).height
       },
       50,
-      true,
+      true
     )
 
     onBeforeUnmount(() => {

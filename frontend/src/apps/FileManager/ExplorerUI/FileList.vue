@@ -28,7 +28,7 @@ import {
   ClipboardPaste20Regular,
 } from '@vicons/fluent'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
-import QuickContextMenu from '@/components/CommonUI/QuickOptions/QuickContextMenu.vue'
+import QuickContextMenu from '@/components/CommonUI/QuickOptions/utils/QuickContextMenu.vue'
 import UploadQueue from '../UploadQueue.vue'
 import {useCopyPaste} from './hooks/use-copy-paste'
 import {ExplorerEvents, useExplorerBusOn} from '../utils/bus'
