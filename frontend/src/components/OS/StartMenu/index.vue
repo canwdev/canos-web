@@ -39,7 +39,9 @@ export default defineComponent({
 
     onClickOutside(rootRef, (event) => {
       if (mVisible.value) {
-        mVisible.value = false
+        setTimeout(() => {
+          mVisible.value = false
+        })
       }
     })
 

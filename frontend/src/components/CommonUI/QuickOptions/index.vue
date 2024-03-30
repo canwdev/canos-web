@@ -155,6 +155,8 @@ export default defineComponent({
       event.preventDefault()
       if (event.key === 'Escape' || event.key === 'q') {
         handleBack()
+      } else if (event.key === 'Tab') {
+        selectNext()
       } else if (event.key === 'ArrowUp') {
         if (horizontal.value) {
           handleBack()

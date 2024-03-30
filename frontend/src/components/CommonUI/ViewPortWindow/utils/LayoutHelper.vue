@@ -1,14 +1,9 @@
 <script lang="ts" setup>
 import {useVModel} from '@vueuse/core'
+import {ILayout, layoutList} from '../enum'
+import LayoutPreview from './LayoutPreview.vue'
 
-export interface ILayout {
-  xRatio: number
-  yRatio: number
-  widthRatio: number
-  heightRatio: number
-}
-
-const emit = defineEmits(['setWindowLayout'])
+const emit = defineEmits(['update:visible', 'setWindowLayout'])
 interface Props {
   visible: boolean
 }
@@ -19,57 +14,22 @@ const props = withDefaults(defineProps<Props>(), {
 
 const mVisible = useVModel(props, 'visible', emit)
 
-watch(mVisible, (val) => {
-  if (!val) {
-    setTimeout(() => {
-      layoutPreview.value = null
-    }, 200)
-  }
-})
-
-const layoutList: ILayout[] = [
-  // 3个一组
-  {xRatio: 0, yRatio: 0, widthRatio: 0.5, heightRatio: 0.5},
-  {xRatio: 0, yRatio: 0, widthRatio: 1, heightRatio: 0.5},
-  {xRatio: 0.5, yRatio: 0, widthRatio: 0.5, heightRatio: 0.5},
-  //
-  {xRatio: 0, yRatio: 0, widthRatio: 0.5, heightRatio: 1},
-  {xRatio: 0.1, yRatio: 0.1, widthRatio: 0.8, heightRatio: 0.8},
-  {xRatio: 0.5, yRatio: 0, widthRatio: 0.5, heightRatio: 1},
-  //
-  {xRatio: 0, yRatio: 0.5, widthRatio: 0.5, heightRatio: 0.5},
-  {xRatio: 0, yRatio: 0.5, widthRatio: 1, heightRatio: 0.5},
-  {xRatio: 0.5, yRatio: 0.5, widthRatio: 0.5, heightRatio: 0.5},
-  //
-  {xRatio: 0, yRatio: 0, widthRatio: 0.3333, heightRatio: 1},
-  {xRatio: 0.3333, yRatio: 0, widthRatio: 0.3333, heightRatio: 1},
-  {xRatio: 0.6666, yRatio: 0, widthRatio: 0.3333, heightRatio: 1},
-  //
-  {xRatio: 0, yRatio: 0, widthRatio: 0.6666, heightRatio: 1},
-  {xRatio: 0, yRatio: 0, widthRatio: 1, heightRatio: 1},
-  {xRatio: 0.3333, yRatio: 0, widthRatio: 0.6666, heightRatio: 1},
-]
-
-const layoutPreview = ref<null | ILayout>(null)
+const previewData = ref<ILayout>()
 
 const setWindowLayout = (layout: ILayout) => {
-  const {xRatio, yRatio, widthRatio, heightRatio} = layout
-  const {innerWidth: maxWidth, innerHeight: maxHeight} = window
-  const left = Math.ceil(maxWidth * xRatio)
-  const top = Math.ceil(maxHeight * yRatio)
-  const width = Math.ceil(maxWidth * widthRatio)
-  const height = Math.ceil(maxHeight * heightRatio)
-
-  emit('setWindowLayout', {
-    left,
-    top,
-    width,
-    height,
-  })
+  emit('setWindowLayout', layout)
   mVisible.value = false
   setTimeout(() => {
-    layoutPreview.value = null
+    previewData.value = undefined
   })
+}
+
+const setLayout = (layout: ILayout) => {
+  if (mVisible.value) {
+    previewData.value = layout
+  } else {
+    previewData.value = undefined
+  }
 }
 </script>
 
@@ -80,8 +40,8 @@ const setWindowLayout = (layout: ILayout) => {
         v-for="(layout, index) in layoutList"
         :key="index"
         class="layout-item"
-        @mouseover="layoutPreview = layout"
-        @mouseleave="layoutPreview = null"
+        @mouseover="setLayout(layout)"
+        @mouseleave="previewData = undefined"
         @click="setWindowLayout(layout)"
       >
         <div
@@ -96,18 +56,7 @@ const setWindowLayout = (layout: ILayout) => {
       </div>
     </div>
   </transition>
-  <transition name="fade-scale">
-    <div
-      v-if="layoutPreview"
-      class="vp-demo-layout"
-      :style="{
-        top: `${layoutPreview.yRatio * 100}%`,
-        left: `${layoutPreview.xRatio * 100}%`,
-        width: `${layoutPreview.widthRatio * 100}%`,
-        height: `${layoutPreview.heightRatio * 100}%`,
-      }"
-    ></div>
-  </transition>
+  <LayoutPreview :preview-data="previewData" />
 </template>
 
 <style lang="scss" scoped>
@@ -142,14 +91,5 @@ const setWindowLayout = (layout: ILayout) => {
       pointer-events: none;
     }
   }
-}
-.vp-demo-layout {
-  position: fixed;
-  z-index: 1000;
-  background-color: $primary_opacity;
-  border: 2px solid $primary;
-  pointer-events: none;
-  box-sizing: border-box;
-  transition: all 0.3s;
 }
 </style>

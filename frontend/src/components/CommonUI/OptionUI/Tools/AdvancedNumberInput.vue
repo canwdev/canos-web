@@ -1,12 +1,12 @@
 <script lang="ts">
-// 使用BigInt对象实现add方法
+// TODO: Big.js 解决精度问题
 function add(a, b) {
-  return Number(BigInt(a) + BigInt(b))
+  return a + b
 }
 
 // 使用BigInt对象实现minus方法
 function minus(a, b) {
-  return Number(BigInt(a) - BigInt(b))
+  return a - b
 }
 
 /**
@@ -198,7 +198,7 @@ export default defineComponent({
       (val) => {
         inputValue.value = getValue(val)
       },
-      {immediate: true},
+      {immediate: true}
     )
     const handleEnter = () => {
       if (readonly.value || disabled.value) {

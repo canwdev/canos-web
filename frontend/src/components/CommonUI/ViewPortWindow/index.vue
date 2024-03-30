@@ -1,24 +1,24 @@
 <script lang="ts">
 import {defineComponent, PropType, shallowRef} from 'vue'
-import {WindowController, WinOptions} from './utils/window-controller'
+import {WindowController} from './utils/window-controller'
 import {
   ArrowMaximize20Regular,
   ArrowMinimize20Regular,
   Dismiss20Regular,
   Subtract20Filled,
 } from '@vicons/fluent'
-import LayoutHelper from '@/components/CommonUI/ViewPortWindow/utils/LayoutHelper.vue'
-import {
-  useDynamicClassName,
-  useMouseOver,
-} from '@/components/CommonUI/ViewPortWindow/utils/use-utils'
-import {useThrottleFn, useVModel} from '@vueuse/core'
+import LayoutHelper from './utils/LayoutHelper.vue'
+import {useDynamicClassName, useMouseOver} from './utils/use-utils'
+import {useThrottleFn, useVModel, watchDebounced} from '@vueuse/core'
+import {checkWindowAttach, ILayout, WinOptions} from './enum'
+import LayoutPreview from './utils/LayoutPreview.vue'
 
 const LS_KEY_VP_WINDOW_OPTION = 'vp_window'
 
 export default defineComponent({
   name: 'ViewPortWindow',
   components: {
+    LayoutPreview,
     LayoutHelper,
     Subtract20Filled,
     ArrowMinimize20Regular,
@@ -113,6 +113,7 @@ export default defineComponent({
     }
 
     // 请勿使用vue :class="{}" 进行类的绑定，因为vue会覆盖DOM动态添加的class
+    useDynamicClassName(rootRef, '_visible', mVisible)
     useDynamicClassName(rootRef, '_maximized', isMaximized)
     useDynamicClassName(rootRef, '_transition', isTransition)
     const isAllowMove = computed(() => {
@@ -129,7 +130,7 @@ export default defineComponent({
     }
 
     const winOptions = reactive<WinOptions>({...defaultWinOptions})
-    watch(
+    watchDebounced(
       winOptions,
       () => {
         if (isMaximized.value) {
@@ -151,7 +152,7 @@ export default defineComponent({
           localStorage.setItem(storageKey, JSON.stringify({...winOptions}))
         }
       },
-      {deep: Boolean(props.wid)}
+      {deep: Boolean(props.wid), debounce: 500}
     )
 
     watch(allowMove, (val) => {
@@ -169,6 +170,9 @@ export default defineComponent({
 
     watch(mVisible, (val) => {
       if (val) {
+        if (!isInit.value) {
+          initWindowStyle()
+        }
         dWindow.value.updateZIndex()
       }
     })
@@ -180,10 +184,8 @@ export default defineComponent({
         allowOut: true,
         // opacify: 0.8,
         preventNode: titleBarButtonsRef.value,
-        onMove(data) {
-          handleMoveDebounced(data)
-        },
-        onActive(data) {
+        onMove: handleMove,
+        onActive() {
           emit('onActive')
         },
         autoPosOnResize: true,
@@ -201,14 +203,22 @@ export default defineComponent({
       initWindowStyle()
     })
 
+    const setPos = (dir: string, value: string) => {
+      rootRef.value.style[dir] = winOptions[dir] = value
+    }
+
     const isInit = ref(false)
     const initWindowStyle = () => {
-      let defaultValue = {
+      if (!mVisible.value) {
+        // 防止初始化不可见时的位置错误
+        return
+      }
+      let defaultOptions = {
         ...defaultWinOptions,
       }
       if (props.initWinOptions) {
-        defaultValue = {
-          ...defaultValue,
+        defaultOptions = {
+          ...defaultOptions,
           ...props.initWinOptions,
         }
       }
@@ -216,17 +226,16 @@ export default defineComponent({
       let lsState
       let lsVal
       if (!props.wid) {
-        lsState = defaultValue
+        lsState = defaultOptions
       } else {
         lsVal = JSON.parse(localStorage.getItem(storageKey) || 'null')
         // console.log(`load ${storageKey}`, lsVal)
-        lsState = lsVal || defaultValue
+        lsState = lsVal || defaultOptions
       }
-
-      rootRef.value.style.left = winOptions.left = lsState.left
-      rootRef.value.style.top = winOptions.top = lsState.top
-      rootRef.value.style.width = winOptions.width = lsState.width
-      rootRef.value.style.height = winOptions.height = lsState.height
+      setPos('left', lsState.left)
+      setPos('top', lsState.top)
+      setPos('width', lsState.width)
+      setPos('height', lsState.height)
       isInit.value = true
 
       setTimeout(() => {
@@ -245,14 +254,61 @@ export default defineComponent({
       })
     }
 
-    const handleMoveDebounced = useThrottleFn(
-      ({top, left}) => {
-        winOptions.top = top
-        winOptions.left = left
+    const fixWindowInScreen = (delayMs = 400): Promise<void> => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const rect = rootRef.value.getBoundingClientRect()
+          // console.log(rect)
+          let flagFixed = false
+          if (rect.y < 0) {
+            setPos('top', 0 + 'px')
+            flagFixed = true
+          }
+          if (rect.x <= -rect.width) {
+            setPos('left', 0 + 'px')
+            flagFixed = true
+          }
+          if (!flagFixed) {
+            if (rect.y > window.innerHeight) {
+              setPos('top', window.innerHeight - rect.height + 'px')
+            }
+            if (rect.x > window.innerWidth) {
+              setPos('left', window.innerWidth - rect.width + 'px')
+            }
+          }
+
+          resolve()
+        }, delayMs)
+      })
+    }
+
+    const checkAttach = useThrottleFn(
+      (params) => {
+        layoutPreviewData.value = checkWindowAttach(params)
       },
-      500,
+      150,
       true
     )
+
+    const handleMove = async (data) => {
+      // console.log('[onMove]', data)
+      if (data.moveStop) {
+        setTimeout(() => {
+          layoutPreviewData.value = undefined
+        }, 151)
+        await fixWindowInScreen(0)
+        if (data.attachLayout) {
+          setWindowLayout(data.attachLayout)
+        }
+        return
+      }
+      const {top, left, pointerX, pointerY} = data
+
+      checkAttach({x: pointerX, y: pointerY})
+
+      winOptions.top = top
+      winOptions.left = left
+    }
 
     const handleResizeDebounced = useThrottleFn(
       () => {
@@ -261,8 +317,10 @@ export default defineComponent({
         }
         emit('resize')
 
-        winOptions.width = getComputedStyle(rootRef.value).width
-        winOptions.height = getComputedStyle(rootRef.value).height
+        const size = getComputedStyle(rootRef.value)
+
+        winOptions.width = size.width
+        winOptions.height = size.height
       },
       50,
       true
@@ -293,17 +351,29 @@ export default defineComponent({
 
     const isShowLayoutHelper = ref(false)
 
-    const setWindowLayout = (size) => {
+    const setWindowLayout = (layout: ILayout) => {
+      const {xRatio, yRatio, widthRatio, heightRatio, maximize} = layout
+      if (maximize) {
+        toggleMaximized()
+        return
+      }
+
+      const {innerWidth: maxWidth, innerHeight: maxHeight} = window
+      const left = Math.ceil(maxWidth * xRatio)
+      const top = Math.ceil(maxHeight * yRatio)
+      const width = Math.ceil(maxWidth * widthRatio)
+      const height = Math.ceil(maxHeight * heightRatio)
+
       if (isMaximized.value) {
         isMaximized.value = false
       }
       setIsTransition(true)
 
       setTimeout(() => {
-        rootRef.value.style.left = winOptions.left = size.left + 'px'
-        rootRef.value.style.top = winOptions.top = size.top + 'px'
-        rootRef.value.style.width = winOptions.width = size.width + 'px'
-        rootRef.value.style.height = winOptions.height = size.height + 'px'
+        setPos('left', left + 'px')
+        setPos('top', top + 'px')
+        setPos('width', width + 'px')
+        setPos('height', height + 'px')
         setIsTransition(false)
       })
     }
@@ -316,6 +386,8 @@ export default defineComponent({
         isShowLayoutHelper.value = true
       },
     })
+
+    const layoutPreviewData = ref<ILayout | undefined>(undefined)
 
     return {
       isInit,
@@ -332,6 +404,7 @@ export default defineComponent({
       isShowLayoutHelper,
       setWindowLayout,
       mButtonRef,
+      layoutPreviewData,
     }
   },
 })
@@ -340,6 +413,7 @@ export default defineComponent({
 <template>
   <transition :name="transitionName">
     <div v-show="isInit && mVisible" class="vp-window" ref="rootRef">
+      <LayoutPreview :preview-data="layoutPreviewData" />
       <LayoutHelper v-model:visible="isShowLayoutHelper" @setWindowLayout="setWindowLayout" />
       <div class="vp-window-content">
         <div ref="titleBarRef" class="vp-window-title-bar" @dblclick="toggleMaximized">
@@ -476,7 +550,7 @@ export default defineComponent({
       color: inherit;
 
       &.active {
-        background-color: rgba(255, 105, 180, 0.8) !important;
+        background-color: $primary !important;
       }
     }
   }
