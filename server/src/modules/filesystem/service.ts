@@ -1,5 +1,4 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common'
-import {getExactPath, getMediaPath} from './utils/filesystem-utils'
 import * as fs from 'fs-extra'
 import * as Path from 'path'
 import {mfpTool} from './utils/mfp-tool'
@@ -23,7 +22,7 @@ export interface ZipResponse extends Response {
 
 @Injectable()
 export class FsService {
-  async getMediaList(params) {
+  /*  async getMediaList(params) {
     const {path: musicPath = '', showHiddenFiles = false} = params
 
     const dir = getMediaPath(musicPath)
@@ -132,7 +131,7 @@ export class FsService {
       sendData.cover = `/images/${coverFileName}`
     }
     return sendData
-  }
+  }*/
 
   async fsApi(params) {
     const {method = '', args = []} = params

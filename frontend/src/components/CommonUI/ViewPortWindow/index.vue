@@ -142,7 +142,7 @@ export default defineComponent({
               JSON.stringify({
                 ...s,
                 maximized: isMaximized.value,
-              })
+              }),
             )
           }
           return
@@ -152,7 +152,7 @@ export default defineComponent({
           localStorage.setItem(storageKey, JSON.stringify({...winOptions}))
         }
       },
-      {deep: Boolean(props.wid), debounce: 500}
+      {deep: Boolean(props.wid), debounce: 500},
     )
 
     watch(allowMove, (val) => {
@@ -287,7 +287,7 @@ export default defineComponent({
         layoutPreviewData.value = checkWindowAttach(params)
       },
       150,
-      true
+      true,
     )
 
     const handleMove = async (data) => {
@@ -315,15 +315,15 @@ export default defineComponent({
         if (!mVisible.value || !rootRef.value) {
           return
         }
-        emit('resize')
 
         const size = getComputedStyle(rootRef.value)
 
         winOptions.width = size.width
         winOptions.height = size.height
+        emit('resize', winOptions)
       },
       50,
-      true
+      true,
     )
 
     onBeforeUnmount(() => {
@@ -498,6 +498,13 @@ export default defineComponent({
 
   &._transition {
     transition: all 0.2s !important;
+  }
+
+  &._dragging {
+    .vp-window-body {
+      // 拖拽时禁用内部鼠标事件，防止鼠标陷入
+      pointer-events: none;
+    }
   }
 
   .vp-window-content {

@@ -1,5 +1,5 @@
 import mm, {IAudioMetadata} from 'music-metadata'
-import {getLyricsPath, getSafePath, calcBufferHash, getImagePath} from './filesystem-utils'
+import {calcBufferHash} from './filesystem-utils'
 import * as mime from 'mime-types'
 import path from 'path'
 import * as fs from 'fs'
@@ -23,10 +23,10 @@ export const getMetadata = async (
     const coverBuffer = picture.data
     const coverHash = await calcBufferHash(coverBuffer)
     coverFileName = `${coverHash}.${mime.extension(picture.format)}`
-    const coverSavePath = getImagePath(coverFileName)
-    if (!fs.existsSync(coverSavePath)) {
-      fs.writeFileSync(coverSavePath, coverBuffer, 'binary')
-    }
+    // const coverSavePath = getImagePath(coverFileName)
+    // if (!fs.existsSync(coverSavePath)) {
+    //   fs.writeFileSync(coverSavePath, coverBuffer, 'binary')
+    // }
 
     delete common.picture
     delete common.comment
@@ -78,18 +78,18 @@ export const traverseLyrics = (lyricFileList: string[], filename: string): strin
   console.log('<<< [traverseLyrics] not found')
 }
 
-export const saveLyricFile = async (
-  filename: string,
-  lyric: string,
-  options: {isExact?: boolean} = {},
-): Promise<{savePath: string; filename: string}> => {
-  filename = filterLyricFilename(filename, options) + '.lrc'
-
-  const savePath = getLyricsPath(filename)
-  fs.writeFileSync(savePath, lyric, {encoding: 'utf8'})
-  // TODO: nodeBus.emit(BUS_UPDATE_LYRIC_CACHE, savePath)
-  return {
-    savePath,
-    filename,
-  }
-}
+// export const saveLyricFile = async (
+//   filename: string,
+//   lyric: string,
+//   options: {isExact?: boolean} = {},
+// ): Promise<{savePath: string; filename: string}> => {
+//   filename = filterLyricFilename(filename, options) + '.lrc'
+//
+//   const savePath = getLyricsPath(filename)
+//   fs.writeFileSync(savePath, lyric, {encoding: 'utf8'})
+//   // TODO: nodeBus.emit(BUS_UPDATE_LYRIC_CACHE, savePath)
+//   return {
+//     savePath,
+//     filename,
+//   }
+// }

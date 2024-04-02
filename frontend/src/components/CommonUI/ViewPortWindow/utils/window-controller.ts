@@ -277,6 +277,7 @@ export class WindowController {
     ;['mouseup', 'touchend'].forEach((eventName) => {
       docEl.addEventListener(eventName, this.handleDragStop)
     })
+    dragTargetEl.classList.add('_dragging')
 
     // 防止拖动图片
     return false
@@ -342,6 +343,7 @@ export class WindowController {
     if (opacify) {
       dragTargetEl.style.opacity = '1'
     }
+    dragTargetEl.classList.remove('_dragging')
   }
 
   handleResizeStart(event) {
@@ -355,7 +357,8 @@ export class WindowController {
 
     this.prevRect = dragTargetEl.getBoundingClientRect()
 
-    this.debugLog('handleDragStart', event)
+    // this.debugLog('handleDragStart', event)
+
     if (event.target) {
       this.currentResizeDirection =
         (event.target as HTMLElement).getAttribute('data-direction') || null
@@ -366,6 +369,7 @@ export class WindowController {
     ;['mouseup', 'touchend'].forEach((eventName) => {
       docEl.addEventListener(eventName, this.handleResizeStop)
     })
+    dragTargetEl.classList.add('_dragging')
   }
 
   handleResizeMove(event) {
@@ -436,6 +440,8 @@ export class WindowController {
     ;['mouseup', 'touchend'].forEach((eventName) => {
       docEl.removeEventListener(eventName, this.handleResizeStop)
     })
+    const {dragTargetEl} = this.options
+    dragTargetEl.classList.remove('_dragging')
   }
 
   handleMouseDown(event) {

@@ -150,10 +150,10 @@ export const AllAppList: ShortcutItem[] = [
     'Live2D',
     defineAsyncComponent(() => import('@/apps/AppUtils/Live2DWrap/index.vue')),
   ),
-  defineDemoApp(
-    'BouncyBall',
-    defineAsyncComponent(() => import('@/apps/AppUtils/Games/BouncyBall/index.vue')),
-  ),
+  // defineDemoApp(
+  //   'BouncyBall',
+  //   defineAsyncComponent(() => import('@/apps/AppUtils/Games/BouncyBall/index.vue')),
+  // ),
   {
     appid: 'os.colorful-screen',
     title: '多彩屏幕 (屏幕坏点测试)',
@@ -181,7 +181,7 @@ export const AllAppList: ShortcutItem[] = [
     defineAsyncComponent(() => import('@/apps/AppUtils/ScreenClock/index.vue')),
   ),
   defineWebApp('Bing', 'https://bing.com'),
-  defineWebApp('CanOS', location.href),
+  // defineWebApp('CanOS', location.href),
 ]
 
 window.$appList = AllAppList

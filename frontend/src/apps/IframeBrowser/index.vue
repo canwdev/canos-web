@@ -2,7 +2,7 @@
 import {defineComponent} from 'vue'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {useStorage} from '@vueuse/core'
-import {useRemoteOptions} from '@/components/CommonUI/QuickOptions/use-remote-options'
+import {useRemoteOptions} from '@/components/CommonUI/QuickOptions/utils/use-remote-options'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 
 export default defineComponent({

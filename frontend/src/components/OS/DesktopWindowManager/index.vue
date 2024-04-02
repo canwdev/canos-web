@@ -27,9 +27,6 @@ watch(
 )
 
 const getIsMaximum = (task: TaskItem) => {
-  if (!settingsStore.isWindowed) {
-    return true
-  }
   return task.maximized
 }
 </script>
@@ -42,6 +39,7 @@ const getIsMaximum = (task: TaskItem) => {
 
     <template v-for="task in systemStore.tasks" :key="task.guid">
       <ViewPortWindow
+        v-if="settingsStore.isWindowed"
         ref="vpWindowRefs"
         @onActive="systemStore.setTaskActive(task)"
         @onClose="systemStore.closeTask(task.guid)"
@@ -49,7 +47,7 @@ const getIsMaximum = (task: TaskItem) => {
         :wid="task.appid"
         :init-win-options="task.winOptions"
         :allow-move="!getIsMaximum(task)"
-        :allow-maximum="settingsStore.isWindowed"
+        :allow-maximum="true"
         v-model:maximized="task.maximized"
         :allow-minimum="true"
         v-model:minimized="task.minimized"
@@ -67,6 +65,15 @@ const getIsMaximum = (task: TaskItem) => {
           style="width: 100%; height: 100%"
         ></iframe>
       </ViewPortWindow>
+      <div v-else class="static-window vp-bg" v-show="task.guid === systemStore.activeId">
+        <component v-if="task.component" :is="task.component" :appParams="task.params"></component>
+        <iframe
+          v-else-if="task.url"
+          :src="task.url"
+          frameborder="0"
+          style="width: 100%; height: 100%"
+        ></iframe>
+      </div>
     </template>
 
     <slot></slot>
@@ -86,6 +93,14 @@ const getIsMaximum = (task: TaskItem) => {
   .vp-window {
     min-width: 350px;
     min-height: 200px;
+  }
+  .static-window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    z-index: 10;
   }
 }
 </style>

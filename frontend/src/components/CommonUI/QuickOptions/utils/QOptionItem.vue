@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
     :class="[
       {
         focus: curIndex === index,
-        clickable: item?.props?.onClick || (item.children && item.children),
+        clickable: item?.props?.onClick || item?.props?.isBack || (item.children && item.children),
         disabled: item.disabled,
       },
       itemCls,

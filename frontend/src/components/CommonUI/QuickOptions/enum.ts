@@ -22,8 +22,8 @@ export type QuickOptionItem = {
   subSearchable?: any
   disabled?: boolean
   props?: {
-    // 点击的同时返回
-    isBack?: boolean
+    // 点击的同时返回，传入数字表示要返回的层数
+    isBack?: boolean | number
     onClick?: any
     onContextmenu?: any
     style?: any

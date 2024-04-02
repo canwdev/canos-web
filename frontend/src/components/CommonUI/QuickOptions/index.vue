@@ -116,28 +116,23 @@ export default defineComponent({
       }
     })
 
+    // 打开的菜单堆栈，支持内容为计算属性
     const menuStack = ref<QuickOptionItem[][]>([])
-    // 计算属性列表
-    const computedSubList = ref<any | null>(null)
 
     const mOptions = computed((): QuickOptionItem[] => {
-      if (computedSubList.value) {
-        // console.log(computedSubList.value)
-        // 获取计算属性
-        return computedSubList.value.value
-      }
       if (menuStack.value.length) {
-        return menuStack.value[menuStack.value.length - 1]
+        const last: any = menuStack.value[menuStack.value.length - 1]
+        // 检测列表是否为计算属性
+        if (last.__v_isRef) {
+          // 获取计算属性的值
+          return last.value
+        }
+        return last
       }
       return options.value
     })
 
     const handleBack = () => {
-      if (computedSubList.value) {
-        computedSubList.value = null
-        emit('onBack')
-        return
-      }
       if (menuStack.value.length) {
         menuStack.value.pop()
         emit('onBack')
@@ -224,17 +219,18 @@ export default defineComponent({
           subList = item.children
         }
 
-        // 得到的列表为计算属性
-        if (subList.__v_isRef) {
-          computedSubList.value = subList
-        } else {
-          menuStack.value.push(subList)
-        }
+        menuStack.value.push(subList)
         curIndex.value = 0
         emit('onEnter')
       }
       if (item?.props?.isBack) {
-        handleBack()
+        if (typeof item.props.isBack === 'number') {
+          for (let i = 0; i < item.props.isBack; i++) {
+            handleBack()
+          }
+        } else {
+          handleBack()
+        }
       }
     }
 
@@ -249,7 +245,6 @@ export default defineComponent({
       mVisible,
       quickRootRef,
       menuStack,
-      computedSubList,
       curIndex,
       handleKeyPress,
       handleBack,
@@ -277,11 +272,7 @@ export default defineComponent({
       <button class="btn-no-style" @click="mVisible = false">×</button>
     </div>
 
-    <div
-      v-if="menuStack.length || computedSubList"
-      class="option-item vp-bg _back clickable"
-      @click="handleBack"
-    >
+    <div v-if="menuStack.length" class="option-item vp-bg _back clickable" @click="handleBack">
       <div class="index-wrap">
         <div style="transform: scale(0.7)">
           <div class="css-arrow left"></div>

@@ -41,10 +41,10 @@ export class FsController {
     return this.fsService.getList(params)
   }
 
-  @Post('media-details')
-  getDetails(@Body() params: any) {
-    return this.fsService.getMediaDetails(params)
-  }
+  // @Post('media-details')
+  // getDetails(@Body() params: any) {
+  //   return this.fsService.getMediaDetails(params)
+  // }
 
   // @Post('fs-api')
   // fsApi(@Body() params: any) {

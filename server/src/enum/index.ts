@@ -13,14 +13,11 @@ export const serverInfo: ServerInfo = {
   hostname: os.hostname(),
 }
 
-export const JWT_TOKEN_EXPIRE = '3 days'
-export const CODE_CLIENT_FORBIDDEN = 403
+export const JWT_TOKEN_EXPIRE = process.env.JWT_EXPIRES_IN || '30 days'
 
-// TODO: env
-export const configBasePath = Path.join(serverInfo.homeDir, '/.config/canos-web')
+export const configBasePath = Path.join(serverInfo.homeDir, '/.config/can-os')
 fs.ensureDirSync(configBasePath)
 console.log('[configBasePath]', configBasePath)
-export const dataBaseDir = 'D:\\Downloads'
 
 // If JWT_SECRET is not set, fallback to this
-export const APP_JWT_SECRET_FALLBACK = 'h6jMfsCe6CzowcjdEGxPJKKdnZ0XudUw'
+export const APP_JWT_SECRET = process.env.JWT_SECRET || 'h6jMfsCe6CzowcjdEGxPJKKdnZ0XudUw'

@@ -64,5 +64,13 @@
         "value": "https://cli.im/"
       }
     ]
+  },
+  {
+    "label": "My Blog",
+    "value": "https://canwdev.github.io/"
+  },
+  {
+    "label": "Page Craft",
+    "value": "https://canwdev.github.io/page-craft-vite/index.html#/"
   }
 ]
