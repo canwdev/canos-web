@@ -68,6 +68,8 @@ useSelectionArea({
     cursor: default;
     border-radius: 2px;
     position: relative;
+    color: white;
+    text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.7);
 
     &:focus {
       outline: 1px dashed white;

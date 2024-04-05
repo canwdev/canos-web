@@ -42,22 +42,22 @@ export const useNavigation = ({getListFn}) => {
       list.push(path)
     }
   }
-  const goBack = () => {
+  const goBack = async () => {
     const path = backHistory.value[backHistory.value.length - 2]
     if (!path) {
       return
     }
     backHistory.value.pop()
     addHistory(forwardHistory.value)
-    handleOpenPath(path, false)
+    await handleOpenPath(path, false)
   }
-  const goForward = () => {
+  const goForward = async () => {
     const path = forwardHistory.value.pop()
     if (!path) {
       return
     }
     addHistory(backHistory.value, path)
-    handleOpenPath(path, false)
+    await handleOpenPath(path, false)
   }
   /* 历史记录功能 END */
 
@@ -74,32 +74,35 @@ export const useNavigation = ({getListFn}) => {
   const isUnix = computed(() => {
     return /^\//g.test(basePath.value)
   })
-  const goUp = () => {
+  const goUp = async () => {
     const arr = basePath.value.split('/').filter((i) => !!i)
     arr.pop()
     if (!arr.length && !isUnix.value) {
-      handleRefresh()
+      await handleRefresh()
       return
     }
     let path = arr.join('/') + '/'
     if (isUnix.value) {
       path = '/' + path
     }
-    handleOpenPath(path)
+    await handleOpenPath(path)
   }
-  const handleOpenPath = (path, updateHistory = true) => {
+
+  const handleOpenPath = async (path, updateHistory = true) => {
     basePath.value = path
     filterText.value = ''
-    handleRefresh()
+    await handleRefresh()
     if (updateHistory) {
       addHistory(backHistory.value)
     }
   }
   const {openFile} = useOpener(basePath, isLoading)
 
-  const handleOpen = (item: IEntry) => {
+  // 打开文件或文件夹
+  const handleOpen = async (item: IEntry) => {
+    const path = normalizePath(basePath.value + '/' + item.name)
     if (item.isDirectory) {
-      handleOpenPath((basePath.value += '/' + item.name))
+      await handleOpenPath(path)
       return
     } else {
       openFile(item, filteredFiles.value)

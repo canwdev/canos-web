@@ -15,14 +15,16 @@ const vpWindowRefs = ref()
 watch(
   () => systemStore.tasks,
   (list) => {
-    setTimeout(() => {
-      // 给每一个任务设置窗口ref
-      list.forEach((i: TaskItem, index) => {
-        if (!i.windowRef) {
-          i.windowRef = vpWindowRefs.value[index]
-        }
+    if (settingsStore.isWindowed) {
+      setTimeout(() => {
+        // 给每一个任务设置窗口ref
+        list.forEach((i: TaskItem, index) => {
+          if (!i.windowRef) {
+            i.windowRef = vpWindowRefs.value[index]
+          }
+        })
       })
-    })
+    }
   },
 )
 
@@ -99,7 +101,7 @@ const getIsMaximum = (task: TaskItem) => {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 30px;
+    bottom: $taskbar_height;
     z-index: 10;
   }
 }

@@ -22,7 +22,7 @@ html, body, #app {
 }
 
 .font-code {
-  font-family: 'Victor Mono Regular', 'Cascadia Code','等距更纱黑体 SC', 'Monaco', 'Fira Code Medium', Consolas, 'Courier New', monospace;
+  font-family: 'Victor Mono Regular', 'Cascadia Code', '等距更纱黑体 SC', 'Monaco', 'Fira Code Medium', Consolas, 'Courier New', monospace;
 }
 
 .font-emoji {
@@ -104,12 +104,14 @@ html, body, #app {
   align-items: center;
   justify-content: center;
   z-index: 20;
+
   &._absolute {
     position: absolute;
     top: 0;
     left: 0;
     background-color: rgba(134, 134, 134, 0.1);
   }
+
   &._fixed {
     position: fixed;
     z-index: 200;
@@ -124,6 +126,7 @@ html, body, #app {
 
 
 * {
+  box-sizing: border-box;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -146,6 +149,8 @@ html, body, #app {
     border-radius: 4px;
     background: transparent;
   }
-  ::-webkit-scrollbar-corner { background: transparent; }
-}
 
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}

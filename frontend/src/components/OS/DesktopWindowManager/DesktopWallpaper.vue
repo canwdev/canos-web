@@ -79,8 +79,6 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
   left: 0;
   right: 0;
   bottom: 0;
-  color: white;
-  text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.7);
 
   &.isOverDropZone {
     outline: 2px dashed $primary;

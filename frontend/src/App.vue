@@ -43,6 +43,10 @@ export default defineComponent({
 
 <style lang="scss">
 #app {
+  .vp-window._maximized {
+    bottom: $taskbar_height !important;
+    height: calc(100% - $taskbar_height) !important;
+  }
 }
 .page-root {
   position: relative;

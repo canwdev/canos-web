@@ -16,6 +16,8 @@ import * as fs from 'fs-extra'
 import {FileInterceptor} from '@nestjs/platform-express'
 import {SkipAuth} from '@/modules/auth/skip-auth'
 import {guid} from '@/utils'
+import {diskStorage} from 'multer'
+import * as Path from 'path'
 
 type ShareLinkMap = {
   // 由随机id到paths的影射
@@ -80,18 +82,25 @@ export class FsController {
   }
 
   @Post('upload-file')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Query('path') path: string,
-    // @Query('existingStrategy') existingStrategy?: ExistingStrategyType,
-  ) {
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const dest = Path.dirname(req.query.path as string)
+          console.log(dest)
+          cb(null, dest || './uploads/')
+        },
+        filename: (req, file, cb) => {
+          file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
+          console.log('file', file)
+          cb(null, file.originalname)
+        },
+      }),
+    }),
+  )
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Query('path') path: string) {
     try {
-      if (fs.existsSync(path)) {
-        throw new Error(`file ${path} already exist!`)
-      }
-      await this.fsService.uploadFile(path, file.buffer)
-      return {path}
+      return {path: path}
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }

@@ -42,7 +42,7 @@ export default defineComponent({
       </div>
       <div class="task-list _fc">
         <button
-          class="task-item vp-button"
+          class="task-item"
           v-for="item in systemStore.tasks"
           :key="item.guid"
           :class="{active: item.guid === systemStore.activeId}"
@@ -52,7 +52,7 @@ export default defineComponent({
           <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
             {{ item.title }}
           </span>
-          <!--          <span class="btn-close" @click="systemStore.closeTask(item.guid)">✕</span>-->
+          <span class="btn-close" @click="systemStore.closeTask(item.guid)">✕</span>
         </button>
       </div>
       <div class="task-tray _fc">
@@ -137,6 +137,8 @@ export default defineComponent({
         overflow: hidden;
         transition: all 0.3s;
         gap: 4px;
+        border: none;
+        line-height: 1.2;
 
         &:hover {
           background-color: white;

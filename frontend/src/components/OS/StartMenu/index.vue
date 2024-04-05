@@ -6,6 +6,7 @@ import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {onClickOutside, useFullscreen} from '@vueuse/core'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
+import {useSettingsStore} from '@/store/settings'
 
 export default defineComponent({
   name: 'StartMenu',
@@ -19,6 +20,7 @@ export default defineComponent({
   setup(props, {emit}) {
     const mVisible = useModelWrapper(props, emit, 'visible')
     const systemStore = useSystemStore()
+    const settingsStore = useSettingsStore()
 
     const filterText = ref('')
 
@@ -72,13 +74,19 @@ export default defineComponent({
       doRefresh,
       doLogout,
       toggleFullscreen,
+      settingsStore,
     }
   },
 })
 </script>
 
 <template>
-  <div ref="rootRef" v-if="mVisible" class="start-menu vp-panel vp-window-panel _panel-bg">
+  <div
+    ref="rootRef"
+    v-if="mVisible"
+    class="start-menu vp-panel vp-window-panel _panel-bg"
+    :class="{_full: !settingsStore.isWindowed}"
+  >
     <div class="start-menu-row">
       <div class="start-menu-left">
         <div class="program-list">
@@ -90,30 +98,16 @@ export default defineComponent({
               @click="handleItemClick(item)"
             />
           </div>
+          <input v-model="filterText" placeholder="Search apps" class="input-search vp-input" />
         </div>
       </div>
       <div class="start-menu-right">
-        <div class="shortcut-list">
-          <!--          <StartMenuItem-->
-          <!--            :item="item"-->
-          <!--            v-for="(item, index) in SystemAppList"-->
-          <!--            :key="index"-->
-          <!--            @click="handleItemClick(item)"-->
-          <!--          />-->
-          <button class="vp-button" @click="doRefresh">Refresh</button>
-          <button class="vp-button" @click="doShutdown">Shutdown</button>
-          <button class="vp-button" @click="toggleFullscreen">Fullscreen</button>
-        </div>
-      </div>
-    </div>
-    <div class="start-menu-row start-menu-bottom">
-      <div class="start-menu-left">
-        <input v-model="filterText" placeholder="Search apps" class="input-search vp-input" />
-      </div>
-      <div class="start-menu-right">
+        <button class="vp-button" @click="doRefresh">Refresh</button>
+        <button class="vp-button" @click="toggleFullscreen">Fullscreen</button>
         <button v-if="systemStore.isBackendAvailable" class="vp-button" @click="doLogout">
           Logout
         </button>
+        <button class="vp-button" @click="doShutdown">Exit</button>
       </div>
     </div>
   </div>
@@ -125,12 +119,35 @@ export default defineComponent({
   //background-color: rgba(255, 255, 255, 0.8);
   //backdrop-filter: blur(10px);
   //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
-  position: absolute;
-  bottom: 100%;
+  position: fixed;
+  bottom: $taskbar_height;
   user-select: none;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+
+  &._full {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    top: 0;
+    box-shadow: none !important;
+    .start-menu-row,
+    .start-menu-left,
+    .program-list {
+      height: 100%;
+    }
+
+    .program-list {
+      display: flex;
+      flex-direction: column;
+
+      .shortcut-list {
+        flex: 1;
+        max-height: 100%;
+      }
+    }
+  }
 
   .start-menu-row {
     display: flex;
@@ -144,22 +161,29 @@ export default defineComponent({
 
     .start-menu-right {
       width: 150px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 4px;
       button {
+        width: 100%;
         padding: 4px 10px;
         font-size: 14px;
+        text-align: inherit;
       }
     }
   }
 
   .program-list {
-    border: 1px solid;
+    border: 1px solid $color_border;
     background-color: rgba(255, 255, 255, 0.7);
     color: black;
     min-height: 300px;
   }
 
   .shortcut-list {
-    max-height: 400px;
+    max-height: 300px;
     overflow: auto;
   }
 
@@ -171,6 +195,7 @@ export default defineComponent({
 
   .start-menu-bottom {
     border-top: 1px solid $color_border;
+    height: $taskbar_height;
   }
 
   .input-search {

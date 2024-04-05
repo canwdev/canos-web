@@ -200,26 +200,6 @@ export class FsService {
     }
   }
 
-  uploadFile(path: string, buffer: Buffer) {
-    return new Promise((resolve, reject) => {
-      fs.ensureDirSync(Path.dirname(path))
-      const stream = fs.createWriteStream(path)
-
-      stream.on('open', () => {
-        const chunkSize = 128
-        const bufferLength = buffer.length
-        const count = Math.ceil(bufferLength / chunkSize)
-        for (let i = 0; i < count; i++) {
-          const chunk = buffer.slice(chunkSize * i, Math.min(chunkSize * (i + 1), bufferLength))
-          stream.write(chunk)
-        }
-        stream.end()
-      })
-      stream.on('error', (error) => reject(error))
-      stream.on('finish', () => resolve(true))
-    })
-  }
-
   downloadFiles(paths: string[], response: Response) {
     try {
       if (!paths.length) {
