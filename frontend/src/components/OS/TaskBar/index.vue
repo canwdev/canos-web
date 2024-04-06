@@ -139,9 +139,12 @@ export default defineComponent({
         gap: 4px;
         border: none;
         line-height: 1.2;
+        cursor: pointer;
+        background-color: transparent;
+        color: inherit;
 
         &:hover {
-          background-color: white;
+          background-color: $color_hover;
         }
 
         &::after {
@@ -157,7 +160,7 @@ export default defineComponent({
         }
 
         &.active {
-          background-color: rgba(255, 255, 255, 0.5);
+          background-color: rgba(255, 255, 255, 0.4);
           &::after {
             opacity: 1;
             height: 3px;
@@ -172,6 +175,7 @@ export default defineComponent({
 
         .btn-close {
           display: inline-block;
+          cursor: pointer;
 
           &:hover {
             color: red;

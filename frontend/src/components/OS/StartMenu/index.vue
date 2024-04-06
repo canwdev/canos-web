@@ -31,10 +31,7 @@ export default defineComponent({
     }
 
     const appListFiltered = computed(() => {
-      return systemStore.allApps.filter((item) => {
-        const reg = new RegExp(filterText.value, 'ig')
-        return reg.test(item.title)
-      })
+      return systemStore.allApps
     })
 
     const rootRef = ref()
@@ -67,7 +64,6 @@ export default defineComponent({
       rootRef,
       mVisible,
       systemStore,
-      filterText,
       appListFiltered,
       handleItemClick,
       doShutdown,
@@ -98,7 +94,6 @@ export default defineComponent({
               @click="handleItemClick(item)"
             />
           </div>
-          <input v-model="filterText" placeholder="Search apps" class="input-search vp-input" />
         </div>
       </div>
       <div class="start-menu-right">
@@ -196,13 +191,6 @@ export default defineComponent({
   .start-menu-bottom {
     border-top: 1px solid $color_border;
     height: $taskbar_height;
-  }
-
-  .input-search {
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 12px;
-    padding: 3px 5px;
   }
 }
 </style>

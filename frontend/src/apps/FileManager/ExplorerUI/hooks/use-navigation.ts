@@ -1,4 +1,4 @@
-import {normalizePath, toggleArrayElement} from './index'
+import {normalizePath, toggleArrayElement} from '../../utils'
 import {useStorage} from '@vueuse/core'
 import {LsKeys} from '@/enum'
 import {useOpener} from './use-opener'
