@@ -97,12 +97,13 @@ export default defineComponent({
         </div>
       </div>
       <div class="start-menu-right">
-        <button class="vp-button" @click="doRefresh">Refresh</button>
-        <button class="vp-button" @click="toggleFullscreen">Fullscreen</button>
+        <button class="vp-button" @click="doRefresh">🔃 Refresh</button>
+        <button class="vp-button" @click="toggleFullscreen">📺 Fullscreen</button>
+        <button class="vp-button" @click="$router.push({name: 'IpChooserView'})">🌐 IP</button>
         <button v-if="systemStore.isBackendAvailable" class="vp-button" @click="doLogout">
-          Logout
+          🚪 Logout
         </button>
-        <button class="vp-button" @click="doShutdown">Exit</button>
+        <button class="vp-button" @click="doShutdown">✖️ Exit</button>
       </div>
     </div>
   </div>

@@ -54,18 +54,12 @@ export default defineComponent({
   width: 100%;
   overflow: hidden;
   background-color: #f8f8f8;
-  &._dark {
-    background-color: #181818;
-    background-image: linear-gradient(#434343, #282828);
-    //background-color: #5480d3;
-    //background-image: linear-gradient(#5480d3, #3256a7);
-    //&::before {
-    //  background-image: url('@/assets/bg/grid.png');
-    //}
-    &::after {
-      color: white;
-      text-shadow: 0 0 2px #000;
-    }
+}
+._dark {
+  .page-root {
+    background-color: #303030;
+    //background-image: linear-gradient(#434343, #282828);
+    color: white;
   }
 }
 </style>

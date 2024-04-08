@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --debug hmr",
-    "build": "vite build",
+    "build:frontend": "vite build",
     "build:strict": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "type-check": "vue-tsc --build --force",

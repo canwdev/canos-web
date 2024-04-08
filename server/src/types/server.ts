@@ -4,6 +4,7 @@ export type ServerInfo = {
   homeDir: string
   platform: NodeJS.Platform
   hostname: string
+  hostUrls: string[]
 }
 
 export interface IEntry {

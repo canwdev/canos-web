@@ -103,6 +103,7 @@ const handleValidateButtonClick = (e: MouseEvent) => {
             />
           </n-form-item>
           <n-space size="small" justify="end">
+            <n-button quaternary @click="$router.push({name: 'IpChooserView'})"> IP </n-button>
             <n-button @click="handleValidateButtonClick"> Login </n-button>
           </n-space>
         </n-form>

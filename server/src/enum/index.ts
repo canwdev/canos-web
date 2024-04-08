@@ -11,6 +11,7 @@ export const serverInfo: ServerInfo = {
   homeDir: os.homedir(),
   platform: os.platform(),
   hostname: os.hostname(),
+  hostUrls: [],
 }
 
 export const JWT_TOKEN_EXPIRE = process.env.JWT_EXPIRES_IN || '30 days'

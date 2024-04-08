@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "build1": "nest build --webpack",
+    "build:server": "nest build --webpack",
     "build-exe": "pkg .",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "nest:start": "nest start",

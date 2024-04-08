@@ -1,9 +1,10 @@
 import {ShortcutItem, TaskItem} from '@/enum/os'
+import {ServerInfo} from '@server/types/server'
 
 type IStore = {
   isStarting: boolean
   isBackendAvailable: boolean
-  serverInfo: any
+  serverInfo: ServerInfo | null
   tasks: TaskItem[]
   activeId: string
 }

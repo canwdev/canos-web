@@ -29,7 +29,7 @@ import AutoRatioBox from '@/components/CommonUI/AutoRatioBox.vue'
 import '@/apps/app-list'
 const app = createApp(App)
 
-app.component(AutoRatioBox.name, AutoRatioBox)
+app.component('AutoRatioBox', AutoRatioBox)
 
 app.use(i18n)
 app.use(naive)

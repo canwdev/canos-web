@@ -17,9 +17,20 @@ const routes = [
     },
   },
   {
+    path: '/ip',
+    name: 'IpChooserView',
+    component: () => import('@/views/IpChooser.vue'),
+    meta: {
+      skipLogin: true,
+    },
+  },
+  {
     path: '/login',
     name: 'LoginPage',
     component: () => import('@/views/Login.vue'),
+    meta: {
+      skipLogin: true,
+    },
   },
   {path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/PageNotFound.vue')},
 ]
@@ -39,7 +50,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   const token = localStorage.getItem(LsKeys.LS_KEY_AUTHORIZATION)
-  if (to.name !== 'LoginPage' && !token) {
+  if (!to.meta?.skipLogin && !token) {
     return next({
       name: 'LoginPage',
     })

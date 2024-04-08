@@ -4,12 +4,14 @@ import * as process from 'process'
 import * as opener from 'opener'
 import * as os from 'os'
 import {program} from 'commander'
+import {serverInfo} from '@/enum'
 
 program
   .name('canos-web-server')
   .description('A Nest.js server')
   .option('-p, --port <port>', 'Specify the port number, default 12021')
   .option('-h, --host <host>', 'Specify the host address, default 0.0.0.0')
+  .option('--no-open', 'Prevent open WebUI at start')
   .option('-H, --help', 'Show all available options')
   .parse(process.argv)
 const options = program.opts()
@@ -36,7 +38,9 @@ async function bootstrap() {
   Object.keys(ifaces).forEach(function (dev) {
     ifaces[dev].forEach(function (details) {
       if (details.family === 'IPv4') {
-        urls.push(protocol + details.address + ':' + port)
+        const url = protocol + details.address + ':' + port
+        urls.push(url)
+        serverInfo.hostUrls.push(url)
       }
     })
   })
@@ -44,8 +48,9 @@ async function bootstrap() {
   console.log(`Available on:`)
   console.log(urls.join('\n'))
 
-  if (process.env.NODE_ENV !== 'development') {
-    await opener(localhostUrl)
+  console.log(options)
+  if (process.env.NODE_ENV !== 'development' && options.open) {
+    await opener(localhostUrl + '/#/ip')
   }
 }
 bootstrap()
