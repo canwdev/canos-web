@@ -1,4 +1,4 @@
-import {Controller, Get} from '@nestjs/common'
+import {Controller, Get, Post} from '@nestjs/common'
 import {AppService} from './app.service'
 import {SkipAuth} from '@/modules/auth/skip-auth'
 
@@ -10,5 +10,13 @@ export class AppController {
   @Get()
   getHello() {
     return this.appService.getHello()
+  }
+
+  @Post('shutdown')
+  shutdown() {
+    setTimeout(() => {
+      process.exit(0)
+    }, 100)
+    return 'ok'
   }
 }

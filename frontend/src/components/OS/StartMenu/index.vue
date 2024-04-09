@@ -7,6 +7,7 @@ import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {onClickOutside, useFullscreen} from '@vueuse/core'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
 import {useSettingsStore} from '@/store/settings'
+import {serverApi} from '@/api/server'
 
 export default defineComponent({
   name: 'StartMenu',
@@ -44,10 +45,24 @@ export default defineComponent({
       }
     })
 
-    const doShutdown = () => {
+    const doShutdown = async () => {
       mVisible.value = false
       systemStore.shutdown()
-      window.close()
+      await serverApi.shutdown()
+      location.reload()
+    }
+
+    const confirmShutdown = () => {
+      window.$dialog.warning({
+        title: 'Confirm Shutdown',
+        content: `确认停止服务？停止后需要在服务端手动启动。`,
+        positiveText: 'OK',
+        negativeText: 'Cancel',
+        onPositiveClick: () => {
+          doShutdown()
+        },
+        onNegativeClick: () => {},
+      })
     }
 
     const doRefresh = () => {
@@ -66,7 +81,7 @@ export default defineComponent({
       systemStore,
       appListFiltered,
       handleItemClick,
-      doShutdown,
+      confirmShutdown,
       doRefresh,
       doLogout,
       toggleFullscreen,
@@ -85,7 +100,7 @@ export default defineComponent({
   >
     <div class="start-menu-row">
       <div class="start-menu-left">
-        <div class="program-list">
+        <div class="program-list vp-bg">
           <div class="shortcut-list">
             <StartMenuItem
               :item="item"
@@ -99,11 +114,12 @@ export default defineComponent({
       <div class="start-menu-right">
         <button class="vp-button" @click="doRefresh">🔃 Refresh</button>
         <button class="vp-button" @click="toggleFullscreen">📺 Fullscreen</button>
-        <button class="vp-button" @click="$router.push({name: 'IpChooserView'})">🌐 IP</button>
-        <button v-if="systemStore.isBackendAvailable" class="vp-button" @click="doLogout">
-          🚪 Logout
-        </button>
-        <button class="vp-button" @click="doShutdown">✖️ Exit</button>
+        <template v-if="systemStore.isBackendAvailable">
+          <button class="vp-button" @click="$router.push({name: 'IpChooserView'})">🌐 IP</button>
+
+          <button class="vp-button" @click="doLogout">🚪 Logout</button>
+          <button class="vp-button" @click="confirmShutdown">✖️ Shutdown</button>
+        </template>
       </div>
     </div>
   </div>
@@ -172,9 +188,6 @@ export default defineComponent({
   }
 
   .program-list {
-    border: 1px solid $color_border;
-    background-color: rgba(255, 255, 255, 0.7);
-    color: black;
     min-height: 300px;
   }
 

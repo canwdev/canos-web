@@ -41,19 +41,22 @@ export default defineComponent({
         <button class="start-button vp-button" @click="isShowStart = !isShowStart">Start</button>
       </div>
       <div class="task-list _fc">
-        <button
+        <div
+          tabindex="0"
           class="task-item"
           v-for="item in systemStore.tasks"
           :key="item.guid"
           :class="{active: item.guid === systemStore.activeId}"
           @click="handleItemClick(item)"
         >
-          <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
-          <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
-            {{ item.title }}
-          </span>
-          <span class="btn-close" @click="systemStore.closeTask(item.guid)">✕</span>
-        </button>
+          <div class="task-item-main">
+            <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
+            <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
+              {{ item.title }}
+            </span>
+          </div>
+          <div class="btn-close" @click="systemStore.closeTask(item.guid)">✕</div>
+        </div>
       </div>
       <div class="task-tray _fc">
         <div class="tray-list _fc">
@@ -97,7 +100,7 @@ export default defineComponent({
     box-sizing: border-box;
     //background-color: rgba(255, 255, 255, 0.8);
     //backdrop-filter: blur(10px);
-    //box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    box-shadow: none;
 
     ._fc {
       height: 100%;
@@ -127,8 +130,9 @@ export default defineComponent({
       box-sizing: border-box;
 
       .task-item {
+        min-width: 140px;
         height: 100%;
-        padding: 0 10px;
+        padding: 0 8px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -156,21 +160,27 @@ export default defineComponent({
           height: 0;
           background-color: $primary;
           opacity: 0;
-          transition: all 0.1s;
+          transition: all 0.3s;
         }
 
         &.active {
-          background-color: rgba(255, 255, 255, 0.4);
+          background-color: $primary_opacity;
           &::after {
             opacity: 1;
-            height: 3px;
+            height: 2px;
           }
         }
 
-        .task-icon {
-          width: 16px;
-          height: 16px;
-          pointer-events: none;
+        .task-item-main {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          .task-icon {
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+          }
         }
 
         .btn-close {
@@ -178,7 +188,7 @@ export default defineComponent({
           cursor: pointer;
 
           &:hover {
-            color: red;
+            color: #f44336;
           }
         }
       }

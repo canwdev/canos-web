@@ -13,8 +13,10 @@ export class AuthService {
 
   async validateUser(username: string, pass: string) {
     if (!this.usersService.hasUsers()) {
+      console.log(1)
       return this.usersService.autoDirectLogin()
     }
+    console.log(2)
 
     const user = await this.usersService.findUser(username)
 
@@ -32,7 +34,7 @@ export class AuthService {
 
   // 生成access_token
   async login(user: IUser) {
-    console.log('[login]', user)
+    console.log('[AuthService login]', user)
     const payload = {username: user.username, sub: user.id}
     return {
       access_token: this.jwtService.sign(payload),

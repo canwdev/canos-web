@@ -1,13 +1,15 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import pkg from '../../package.json'
-import {LsKeys} from '@/enum'
+import {LsKeys, PROXY_BASE_URL} from '@/enum'
 import {useMainStore} from '@/store/main'
 import {serverApi} from '@/api/server'
 import {useSystemStore} from '@/store/system'
 import {usersApi} from '@/api/users'
 
-const history = createWebHashHistory()
+// const history = createWebHashHistory()
+const history = createWebHistory(PROXY_BASE_URL)
+
 const routes = [
   {
     path: '/',

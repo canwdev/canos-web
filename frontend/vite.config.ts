@@ -1,4 +1,4 @@
-import {defineConfig} from 'vite'
+import {defineConfig, loadEnv} from 'vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import {NaiveUiResolver} from 'unplugin-vue-components/resolvers'
@@ -10,12 +10,13 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, process.cwd())
   console.log('vite config mode', mode)
   return {
     define: {
       BUILD_TIMESTAMP: Date.now(),
     },
-    base: './',
+    base: env.VITE_PROXY_BASE || './',
     build: {
       outDir: '../server/dist-frontend',
       minify: 'terser',

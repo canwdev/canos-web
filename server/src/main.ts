@@ -50,7 +50,7 @@ async function bootstrap() {
 
   // console.log(options)
   if (process.env.NODE_ENV !== 'development' && options.open) {
-    await opener(localhostUrl + '/#/ip')
+    await opener(localhostUrl + '/ip')
   }
 }
 bootstrap()

@@ -15,8 +15,8 @@ interface ModelType {
 const router = useRouter()
 const formRef = ref<FormInst | null>(null)
 const formModel = ref<ModelType>({
-  username: import.meta.env.VITE_USER_NAME || '',
-  password: import.meta.env.VITE_USER_PASSWORD || '',
+  username: '',
+  password: '',
 })
 
 const formRules: FormRules = {
@@ -65,10 +65,19 @@ const handleLogin = async () => {
   try {
     isLoading.value = true
     const {username, password} = formModel.value
-    const res = await usersApi.userLogin({
+
+    let params = {
       username: (username || '').trim(),
       password: password,
-    })
+    }
+    if (!hasUsers.value) {
+      params = {
+        username: 'x',
+        password: 'x',
+      }
+    }
+
+    const res = await usersApi.userLogin(params)
     const {access_token} = res as unknown as any
     if (!access_token) {
       window.$message.error('Invalid token!')
