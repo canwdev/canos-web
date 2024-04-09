@@ -48,7 +48,7 @@ async function bootstrap() {
   console.log(`Available on:`)
   console.log(urls.join('\n'))
 
-  console.log(options)
+  // console.log(options)
   if (process.env.NODE_ENV !== 'development' && options.open) {
     await opener(localhostUrl + '/#/ip')
   }

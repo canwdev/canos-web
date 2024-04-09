@@ -54,7 +54,6 @@ function Service(config: any) {
     },
     (error) => {
       const message = error.message
-      let backendMessage: any
       const {response} = error || {}
 
       if (response.status == 401) {
@@ -63,7 +62,8 @@ function Service(config: any) {
       }
 
       // extract backend message
-      backendMessage = response?.data?.message
+      const backendMessage = response?.data?.message
+      console.log(backendMessage)
       if (isToast) {
         if (backendMessage) {
           window.$message.error(backendMessage)

@@ -10,10 +10,4 @@ export const serverApi = {
   getServerInfo() {
     return service.get('/server')
   },
-  userLogin(data: any) {
-    return service.post('/auth/login', data)
-  },
-  userGetInfo() {
-    return service.get('/auth/profile')
-  },
 }

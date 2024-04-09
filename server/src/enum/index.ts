@@ -16,7 +16,7 @@ export const serverInfo: ServerInfo = {
 
 export const JWT_TOKEN_EXPIRE = process.env.JWT_EXPIRES_IN || '30 days'
 
-export const configBasePath = Path.join(serverInfo.homeDir, '/.config/can-os')
+export const configBasePath = Path.join(serverInfo.homeDir, '/.config/can-os-web')
 fs.ensureDirSync(configBasePath)
 console.log('[configBasePath]', configBasePath)
 

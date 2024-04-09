@@ -5,6 +5,7 @@ import {LsKeys} from '@/enum'
 import {useMainStore} from '@/store/main'
 import {serverApi} from '@/api/server'
 import {useSystemStore} from '@/store/system'
+import {usersApi} from '@/api/users'
 
 const history = createWebHashHistory()
 const routes = [
@@ -58,7 +59,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (systemStore.isBackendAvailable && token) {
     try {
-      mainStore.userInfo = await serverApi.userGetInfo()
+      mainStore.userInfo = await usersApi.userGetInfo()
     } catch (e) {
       return next({
         name: 'LoginPage',

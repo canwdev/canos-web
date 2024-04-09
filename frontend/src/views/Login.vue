@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {FormInst, FormValidationError, useMessage, FormRules} from 'naive-ui'
+import {FormInst, FormValidationError, FormRules} from 'naive-ui'
 import {serverApi} from '@/api/server'
 import {useRouter} from 'vue-router'
 import {LsKeys} from '@/enum'
 import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
+import {usersApi} from '@/api/users'
 
 interface ModelType {
   username: string | null
@@ -13,7 +14,6 @@ interface ModelType {
 
 const router = useRouter()
 const formRef = ref<FormInst | null>(null)
-const message = useMessage()
 const formModel = ref<ModelType>({
   username: import.meta.env.VITE_USER_NAME || '',
   password: import.meta.env.VITE_USER_PASSWORD || '',
@@ -36,10 +36,36 @@ const formRules: FormRules = {
   ],
 }
 
+const hasUsers = ref(false)
+const checkHasUsers = async () => {
+  try {
+    isLoading.value = true
+    const r = await usersApi.hasUsers()
+    hasUsers.value = (r as unknown as boolean) || false
+  } catch (e) {
+    console.error(e)
+  } finally {
+    isLoading.value = false
+  }
+}
+watch(
+  hasUsers,
+  (val) => {
+    if (val) {
+      nextTick(() => {
+        autoFocusInput()
+      })
+    }
+  },
+  {immediate: true},
+)
+
+const isLoading = ref(false)
 const handleLogin = async () => {
   try {
+    isLoading.value = true
     const {username, password} = formModel.value
-    const res = await serverApi.userLogin({
+    const res = await usersApi.userLogin({
       username: (username || '').trim(),
       password: password,
     })
@@ -54,6 +80,7 @@ const handleLogin = async () => {
   } catch (e) {
     console.error(e)
   } finally {
+    isLoading.value = false
   }
 }
 
@@ -64,14 +91,14 @@ const autoFocusInput = () => {
 }
 
 onMounted(async () => {
-  autoFocusInput()
+  await checkHasUsers()
 })
 
 const handleValidateButtonClick = (e: MouseEvent) => {
   e.preventDefault()
   formRef.value?.validate((errors: Array<FormValidationError> | undefined) => {
     if (errors) {
-      message.error('Invalid Form!')
+      window.$message.error('Invalid Form!')
       return
     }
     handleLogin()
@@ -84,27 +111,40 @@ const handleValidateButtonClick = (e: MouseEvent) => {
     <DesktopWallpaper>
       <ViewPortWindow :show-close="false">
         <template #titleBarLeft>Login</template>
-        <n-form class="card-wrap" ref="formRef" :model="formModel" :rules="formRules">
-          <n-form-item path="username" label="Username">
-            <n-input
-              ref="inputUsernameRef"
-              v-model:value="formModel.username"
-              @keyup.enter="handleValidateButtonClick"
-            />
-          </n-form-item>
-
-          <n-form-item path="password" label="Password">
-            <n-input
-              v-model:value="formModel.password"
-              type="password"
-              show-password-on="click"
-              @keyup.enter="handleValidateButtonClick"
-              class="font-code"
-            />
-          </n-form-item>
+        <n-form
+          :disabled="isLoading"
+          class="card-wrap"
+          ref="formRef"
+          :model="formModel"
+          :rules="formRules"
+        >
+          <template v-if="hasUsers">
+            <n-form-item path="username" label="Username">
+              <n-input
+                ref="inputUsernameRef"
+                v-model:value="formModel.username"
+                @keyup.enter="handleValidateButtonClick"
+              />
+            </n-form-item>
+            <n-form-item path="password" label="Password">
+              <n-input
+                v-model:value="formModel.password"
+                type="password"
+                show-password-on="click"
+                @keyup.enter="handleValidateButtonClick"
+                class="font-code"
+              />
+            </n-form-item>
+          </template>
+          <template v-else>
+            <n-form-item label="ℹ️ Tips">
+              There is no registered user, please log in and register in the settings. You can log
+              in directly when you log in for the first time.
+            </n-form-item>
+          </template>
           <n-space size="small" justify="end">
-            <n-button quaternary @click="$router.push({name: 'IpChooserView'})"> IP </n-button>
-            <n-button @click="handleValidateButtonClick"> Login </n-button>
+            <button class="vp-button" @click="$router.push({name: 'IpChooserView'})">IP</button>
+            <button class="vp-button btn-login" @click="handleValidateButtonClick">Login</button>
           </n-space>
         </n-form>
       </ViewPortWindow>
@@ -126,6 +166,11 @@ const handleValidateButtonClick = (e: MouseEvent) => {
   }
   .card-wrap {
     padding: 20px;
+  }
+
+  .btn-login {
+    background-color: $primary;
+    color: white;
   }
 }
 </style>

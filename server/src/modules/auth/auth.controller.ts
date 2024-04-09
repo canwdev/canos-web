@@ -4,7 +4,7 @@ import {LocalAuthGuard} from '@/modules/auth/local-auth.guard'
 import {JwtAuthGuard} from '@/modules/auth/jwt-auth.guard'
 import {SkipAuth} from '@/modules/auth/skip-auth'
 
-@Controller('auth')
+@Controller('users/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
