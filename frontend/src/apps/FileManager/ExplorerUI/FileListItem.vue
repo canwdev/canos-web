@@ -13,12 +13,12 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {})
 
-const {iconName, titleDesc} = useFileItem(props)
+const {iconName, titleDesc, extDisplay} = useFileItem(props)
 </script>
 
 <template>
   <button
-    class="btn-no-style file-list-item file-list-row"
+    class="btn-no-style file-list-item file-list-row font-code"
     :class="{active, hidden: item.hidden}"
     @click.stop="$emit('select', {item, event: $event})"
     @keyup.enter="$emit('open', item)"
@@ -39,6 +39,7 @@ const {iconName, titleDesc} = useFileItem(props)
         {{ item.name }}
       </span>
     </div>
+    <div class="list-col c-ext">{{ extDisplay }}</div>
     <div class="list-col c-size">{{ bytesToSize(item.size) }}</div>
     <div class="list-col c-time">{{ formatDate(item.lastModified) }}</div>
     <div class="list-col c-time">{{ formatDate(item.birthtime) }}</div>
@@ -101,6 +102,10 @@ const {iconName, titleDesc} = useFileItem(props)
           text-decoration: underline;
         }
       }
+    }
+
+    &.c-ext {
+      font-size: 12px;
     }
 
     &.c-size {

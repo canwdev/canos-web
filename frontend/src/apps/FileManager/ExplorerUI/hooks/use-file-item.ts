@@ -16,9 +16,13 @@ Last Modified: ${formatDate(item.value.lastModified, 'YYYY-MM-DD HH:mm:ss')}
 Created: ${formatDate(item.value.birthtime, 'YYYY-MM-DD HH:mm:ss')}
 `
   })
+  const extDisplay = computed(() => {
+    return (item.value.ext || '').replace(/^\./, '')
+  })
 
   return {
     iconName,
     titleDesc,
+    extDisplay,
   }
 }

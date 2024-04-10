@@ -22,7 +22,9 @@ async function bootstrap() {
     return
   }
 
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, {
+    logger: ['log', 'error', 'warn', 'verbose'],
+  })
   // 设置全局接口前缀
   app.setGlobalPrefix('api')
 

@@ -228,6 +228,7 @@ const {
       <div v-if="!isGridView" class="explorer-list-view">
         <div class="vp-bg file-list-header file-list-row">
           <div class="list-col c-filename" style="padding-left: 24px">Name</div>
+          <div class="list-col c-ext">Ext</div>
           <div class="list-col c-size">Size</div>
           <div class="list-col c-time">Last Modified</div>
           <div class="list-col c-time">Created</div>
@@ -362,6 +363,9 @@ const {
           width: 100px;
         }
 
+        &.c-ext {
+          width: 50px;
+        }
         &.c-size {
           width: 80px;
         }
