@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --debug hmr",
+    "build:github": "vite build --mode github",
     "build:frontend": "vite build",
     "build:strict": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
