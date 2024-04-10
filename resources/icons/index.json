@@ -1,0 +1,14 @@
+{
+  "iconThemes": [
+    {
+      "label": "Elementary Xfce",
+      "value": "elementary-xfce",
+      "fileExt": ".svg"
+    },
+    {
+      "label": "Windows 11",
+      "value": "win11",
+      "fileExt": ".png"
+    }
+  ]
+}
