@@ -202,11 +202,11 @@ export default defineComponent({
       handleOptionClick(item)
     }
 
-    const handleOptionClick = async (item: QuickOptionItem, event?) => {
+    const handleOptionClick = async (item: QuickOptionItem, event?, openChildrenOnly = false) => {
       if (item.disabled) {
         return
       }
-      if (item?.props?.onClick) {
+      if (item?.props?.onClick && !openChildrenOnly) {
         item.props.onClick(item, event)
         if (closeOnClick.value) {
           mVisible.value = false
@@ -298,6 +298,7 @@ export default defineComponent({
           :show-index="showIndex"
           @click="handleOptionClick(item, $event)"
           @contextmenu="handleOptionContextmenu(item, $event)"
+          @onArrowClick="handleOptionClick(item, $event, true)"
         />
       </n-dropdown>
 
@@ -310,6 +311,7 @@ export default defineComponent({
         :show-index="showIndex"
         @click="handleOptionClick(item, $event)"
         @contextmenu="handleOptionContextmenu(item, $event)"
+        @onArrowClick="handleOptionClick(item, $event, true)"
       />
     </template>
   </div>
@@ -419,6 +421,9 @@ export default defineComponent({
       right: 8px;
       top: 50%;
       transform: translateY(-50%);
+      &:hover {
+        color: $primary;
+      }
     }
 
     &:focus {

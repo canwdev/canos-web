@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import {useElementSize} from '@vueuse/core'
+import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+import {useThemedIcon} from '@/components/OS/ThemedIcon/use-icon-themes'
 
 const ballRef = ref()
 const rootRef = ref()
@@ -57,12 +59,13 @@ onMounted(() => {
 onBeforeUnmount(() => {
   clearInterval(itv.value)
 })
+
+const {getIconPath} = useThemedIcon()
 </script>
 
 <template>
   <div ref="rootRef" class="bouncy-ball-wrap">
-    <img ref="ballRef" src="@/assets/icons/iexplore.exe(7).png" />
-    <!--    <img ref="ballRef" src="@/assets/icons/shell32.dll(16826).png" />-->
+    <img ref="ballRef" :src="getIconPath('applications-internet')" />
   </div>
 </template>
 

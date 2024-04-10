@@ -1,65 +1,55 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
 import {useCommonTools} from './use-common-tools'
 import {useRoute, useRouter} from 'vue-router'
 import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
 import {useQLogics} from './q-logics'
 import {useTextareaAutosize} from '@vueuse/core'
 import {useQuickLaunchPlugins} from './q-logics/plugins'
+import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
+import VueMonaco from '@/components/CommonUI/VueMonaco/index.vue'
 
-export default defineComponent({
-  name: 'QuickLaunch',
-  components: {QuickOptions},
-  setup(props, {emit}) {
-    const route = useRoute()
-    const qRef = ref()
-    // 是否进入了子页面
-    const isEnterSub = ref(false)
+const route = useRoute()
+const qRef = ref()
+// 是否进入了子页面
+const isEnterSub = ref(false)
 
-    const focus = () => {
-      textareaRef.value.focus()
-    }
+const focus = () => {
+  textareaRef.value.focus()
+}
 
-    onMounted(() => {
-      focus()
-      update()
-    })
-    const {textarea: textareaRef, input: anyText} = useTextareaAutosize()
+onMounted(() => {
+  focus()
+  update()
+})
+const {textarea: textareaRef, input: anyText} = useTextareaAutosize()
 
-    const {qlOptions} = useCommonTools()
-    const {filteredOptions, handleSearch} = useQLogics(qlOptions)
-    const update = () => {
-      handleSearch(anyText)
-    }
-    useQuickLaunchPlugins(update)
+const {qlOptions} = useCommonTools()
+const update = () => {
+  handleSearch(anyText)
+}
+const {filteredOptions, handleSearch, editingCustomPlugin, saveCustomPlugin, runCustomPlugin} =
+  useQLogics(qlOptions, update)
+useQuickLaunchPlugins(update)
 
-    watch(route, () => {
-      update()
-    })
-    const handleInput = () => {
-      if (isEnterSub.value) {
-        // 进入子页面后不刷新查询
-        return
-      }
-      update()
-    }
-    const cleanText = () => {
-      anyText.value = ''
-      update()
-    }
+watch(route, () => {
+  update()
+})
+const handleInput = () => {
+  if (isEnterSub.value) {
+    // 进入子页面后不刷新查询
+    return
+  }
+  update()
+}
+const cleanText = () => {
+  anyText.value = ''
+  update()
+}
 
-    return {
-      textareaRef,
-      qRef,
-      anyText,
-      qlOptions,
-      handleInput,
-      filteredOptions,
-      focus,
-      cleanText,
-      isEnterSub,
-    }
-  },
+const vueMonacoRef = ref()
+
+defineExpose({
+  focus,
 })
 </script>
 
@@ -86,6 +76,29 @@ export default defineComponent({
       @onBack="isEnterSub = false"
     />
   </div>
+  <Teleport to="body">
+    <ViewPortWindow
+      :visible="!!editingCustomPlugin"
+      :init-win-options="{width: '500px', height: '500px'}"
+      @resize="vueMonacoRef?.resize()"
+      allow-maximum
+      @onClose="editingCustomPlugin = null"
+    >
+      <template #titleBarLeft> Editing Plugin: {{ editingCustomPlugin?.name }} </template>
+      <template #titleBarRightControls>
+        <button @click="runCustomPlugin" title="Run Script">▶️</button>
+        <button @click="saveCustomPlugin" title="Save">💾</button>
+      </template>
+
+      <VueMonaco
+        ref="vueMonacoRef"
+        v-if="editingCustomPlugin"
+        v-model="editingCustomPlugin.code"
+        language="javascript"
+        show-line-numbers
+      />
+    </ViewPortWindow>
+  </Teleport>
 </template>
 
 <style lang="scss">
@@ -99,6 +112,7 @@ export default defineComponent({
     border-radius: 0 !important;
     max-height: 150px !important;
     scrollbar-width: none;
+    line-height: 1;
   }
   .quick-options {
     flex: 1;

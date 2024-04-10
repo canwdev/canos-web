@@ -14,6 +14,9 @@ declare global {
     $loadingBar: LoadingBarApiInjection
     electronAPI: any
     $appList: ShortcutItem[]
+
+    $mcUtils: any
+    $qlUtils: any
   }
 }
 

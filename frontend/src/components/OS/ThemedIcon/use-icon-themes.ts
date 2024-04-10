@@ -1,4 +1,6 @@
 import {createGlobalState} from '@vueuse/core'
+import {isSrcHttpUrl} from '@/utils/is'
+import {useSettingsStore} from '@/store/settings'
 
 export interface IconOptions {
   label: string
@@ -43,5 +45,26 @@ export const useIconThemes = () => {
     iconOptions,
     iconMap,
     loadIconThemes,
+  }
+}
+
+export const useThemedIcon = () => {
+  const settingsStore = useSettingsStore()
+  const {iconMap} = useIconThemes()
+  const getIconPath = (filename: string, ext?: string) => {
+    if (isSrcHttpUrl(filename)) {
+      return filename
+    }
+
+    if (ext !== undefined) {
+      filename = filename + ext
+    } else {
+      filename = filename + iconMap.value[settingsStore.iconTheme].fileExt
+    }
+
+    return `${ICON_BASE_URL}/${settingsStore.iconTheme}/${filename}`
+  }
+  return {
+    getIconPath,
   }
 }

@@ -143,6 +143,7 @@ const {
       gap: 4px;
       .btn-action {
         padding: 4px;
+        display: flex;
       }
 
       .nav-wrap {
@@ -161,10 +162,12 @@ const {
         .input-addr {
           flex: 1;
           line-height: 1;
+          padding: 4px 6px;
         }
         .input-filter {
           width: 100px;
           line-height: 1;
+          padding: 4px 6px;
         }
       }
     }

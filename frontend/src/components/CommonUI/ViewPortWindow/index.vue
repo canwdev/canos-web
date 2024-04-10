@@ -403,6 +403,7 @@ export default defineComponent({
       isTransition,
       isShowLayoutHelper,
       setWindowLayout,
+      setPos,
       mButtonRef,
       layoutPreviewData,
     }

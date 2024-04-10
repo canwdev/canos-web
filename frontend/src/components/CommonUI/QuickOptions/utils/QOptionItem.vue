@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   itemCls: '',
   showIndex: true,
 })
+const emit = defineEmits(['onArrowClick'])
 </script>
 
 <template>
@@ -54,7 +55,11 @@ const props = withDefaults(defineProps<Props>(), {
     <div class="item-content" v-else>
       {{ item.label }}
     </div>
-    <div v-if="item.children && item.children" class="arrow-wrap">
+    <div
+      v-if="item.children && item.children"
+      class="arrow-wrap"
+      @click.stop="$emit('onArrowClick')"
+    >
       <div class="css-arrow right"></div>
     </div>
   </div>
