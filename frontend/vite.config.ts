@@ -8,6 +8,12 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
+// 不扫描这些文件夹
+const filesNeedToExclude = ['src-tauri']
+const filesPathToExclude = filesNeedToExclude.map((src) => {
+  return fileURLToPath(new URL(src, import.meta.url))
+})
+
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd())
@@ -21,6 +27,9 @@ export default defineConfig(({mode}) => {
       outDir: '../server/dist-frontend',
       minify: 'terser',
       emptyOutDir: true,
+      rollupOptions: {
+        external: [...filesPathToExclude],
+      },
     },
     resolve: {
       alias: {
@@ -67,6 +76,7 @@ export default defineConfig(({mode}) => {
         ],
       }),
       Components({
+        dirs: [],
         resolvers: [NaiveUiResolver()],
       }),
     ],
