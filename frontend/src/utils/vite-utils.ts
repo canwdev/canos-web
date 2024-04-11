@@ -1,12 +1,10 @@
-import {LsKeys} from '@/enum'
-import {IconTheme} from '@/enum/settings'
-
 // /src/utils/file.ts
-export const handleAssetsUrl = (url: string) => {
-  return new URL(`../${resolvePath(url)}`, import.meta.url).href
+import {PROXY_BASE_URL} from '@/enum'
+
+export const normalizePath = (path) => {
+  return path.replace(/\\/gi, '/').replace(/\/+/gi, '/')
 }
-const resolvePath = (path: string) => {
-  if (path.startsWith('@/')) return path.replace('@/', '')
-  if (path.startsWith('/')) return path.replace('/', '')
-  else return path
+
+export const getStaticUrl = (url: string) => {
+  return normalizePath(`${PROXY_BASE_URL}/static/${url}`)
 }

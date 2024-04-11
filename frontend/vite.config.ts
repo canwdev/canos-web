@@ -3,7 +3,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import {NaiveUiResolver} from 'unplugin-vue-components/resolvers'
 import {fileURLToPath, URL} from 'node:url'
-import fs from 'node:fs'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import VueDevTools from 'vite-plugin-vue-devtools'
@@ -52,12 +51,7 @@ export default defineConfig(({mode}) => {
     css: {
       preprocessorOptions: {
         scss: {
-          // additionalData: `@import "@/styles/_variables.scss";`,
-          // 临时修复：error during build: Error: This file is already being loaded.
-          additionalData:
-            mode === 'development'
-              ? `@import "@/styles/_variables.scss";`
-              : fs.readFileSync('./src/styles/_variables.scss', {encoding: 'utf-8'}),
+          additionalData: `@import "@/styles/_variables.scss";`,
         },
       },
     },
