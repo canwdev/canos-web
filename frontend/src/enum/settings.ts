@@ -24,4 +24,5 @@ export enum SettingsTabType {
   PROGRAMS,
   SYSTEM,
   HARDWARE,
+  USERS,
 }

@@ -10,7 +10,7 @@ export const SystemAppSettings: ShortcutItem = {
     width: '800px',
     height: '600px',
   },
-  component: defineAsyncComponent(() => import('@/apps/SettingsApp/index.vue')),
+  component: defineAsyncComponent(() => import('@/components/OS/SettingsApp/index.vue')),
   singleInstance: true,
 }
 

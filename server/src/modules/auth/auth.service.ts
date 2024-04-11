@@ -13,10 +13,8 @@ export class AuthService {
 
   async validateUser(username: string, pass: string) {
     if (!this.usersService.hasUsers()) {
-      console.log(1)
       return this.usersService.autoDirectLogin()
     }
-    console.log(2)
 
     const user = await this.usersService.findUser(username)
 

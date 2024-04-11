@@ -5,7 +5,7 @@ import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {ldThemeOptions, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
-import pkg from '../../../package.json'
+import pkg from '../../../../package.json'
 import {useSystemStore} from '@/store/system'
 import {loopModeMap} from '@/apps/MusicPlayer/utils/music-state'
 

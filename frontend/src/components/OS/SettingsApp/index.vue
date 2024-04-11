@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {SettingsTabType} from '@/enum/settings'
 import {useI18n} from 'vue-i18n'
-import SettingsPersonalization from '@/apps/SettingsApp/SettingsPersonalization.vue'
-import SettingsSystem from '@/apps/SettingsApp/SettingsSystem.vue'
-import SettingsUsers from '@/apps/SettingsApp/SettingsUsers.vue'
-import SettingsPrograms from '@/apps/SettingsApp/SettingsPrograms.vue'
-import SettingsHardware from '@/apps/SettingsApp/SettingsHardware.vue'
+import SettingsPersonalization from '@/components/OS/SettingsApp/SettingsPersonalization.vue'
+import SettingsSystem from '@/components/OS/SettingsApp/SettingsSystem.vue'
+import SettingsUsers from '@/components/OS/SettingsApp/SettingsUsers.vue'
+import SettingsPrograms from '@/components/OS/SettingsApp/SettingsPrograms.vue'
+import SettingsHardware from '@/components/OS/SettingsApp/SettingsHardware.vue'
 
 const {t: $t} = useI18n()
 
