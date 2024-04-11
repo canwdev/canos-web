@@ -1,41 +1,23 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
 import {SettingsTabType} from '@/enum/settings'
-import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
 import {useI18n} from 'vue-i18n'
 import SettingsPersonalization from '@/apps/SettingsApp/SettingsPersonalization.vue'
 import SettingsSystem from '@/apps/SettingsApp/SettingsSystem.vue'
+import SettingsUsers from '@/apps/SettingsApp/SettingsUsers.vue'
 import SettingsPrograms from '@/apps/SettingsApp/SettingsPrograms.vue'
 import SettingsHardware from '@/apps/SettingsApp/SettingsHardware.vue'
 
-export default defineComponent({
-  name: 'SettingsApp',
-  components: {
-    SettingsHardware,
-    SettingsPrograms,
-    SettingsSystem,
-    SettingsPersonalization,
-    OptionUI,
-  },
-  setup(props, {emit}) {
-    const {t: $t} = useI18n()
+const {t: $t} = useI18n()
 
-    const settingsTabs = ref([
-      {label: '个性化', value: SettingsTabType.PERSONALIZATION},
-      {label: '应用程序', value: SettingsTabType.PROGRAMS},
-      {label: '硬件', value: SettingsTabType.HARDWARE},
-      {label: '系统', value: SettingsTabType.SYSTEM},
-    ])
+const settingsTabs = ref([
+  {label: '个性化', value: SettingsTabType.PERSONALIZATION},
+  {label: '应用程序', value: SettingsTabType.PROGRAMS},
+  {label: '硬件', value: SettingsTabType.HARDWARE},
+  {label: '系统', value: SettingsTabType.SYSTEM},
+  {label: 'Users', value: SettingsTabType.USERS},
+])
 
-    const curTab = ref(SettingsTabType.PERSONALIZATION)
-
-    return {
-      SettingsTabType,
-      settingsTabs,
-      curTab,
-    }
-  },
-})
+const curTab = ref(SettingsTabType.PERSONALIZATION)
 </script>
 
 <template>
@@ -66,6 +48,7 @@ export default defineComponent({
         <SettingsPrograms v-else-if="curTab === SettingsTabType.PROGRAMS" />
         <SettingsHardware v-else-if="curTab === SettingsTabType.HARDWARE" />
         <SettingsSystem v-else-if="curTab === SettingsTabType.SYSTEM" />
+        <SettingsUsers v-else-if="curTab === SettingsTabType.USERS" />
       </n-layout-content>
     </n-layout>
   </div>
