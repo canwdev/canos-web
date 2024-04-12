@@ -37,11 +37,6 @@ const handleLogin = async (data) => {
   try {
     isLoading.value = true
     let {username, password} = data
-    if (!hasUsers.value) {
-      // TODO: remove placeholder x
-      username = 'x'
-      password = 'x'
-    }
 
     const res = await usersApi.userLogin(username, password)
     const {access_token} = res as unknown as any
@@ -57,6 +52,14 @@ const handleLogin = async (data) => {
   } finally {
     isLoading.value = false
   }
+}
+
+const beforeLogin = () => {
+  if (!hasUsers.value) {
+    handleLogin({username: 'x', password: 'x'})
+    return
+  }
+  loginFormRef.value.handleValidate()
 }
 
 // 自动聚焦输入框
@@ -100,7 +103,7 @@ onMounted(async () => {
             <button
               class="vp-button btn-login"
               type="button"
-              @click="loginFormRef.handleValidate"
+              @click="beforeLogin"
               :disabled="isLoading"
             >
               Login
