@@ -37,7 +37,7 @@ const formRules: FormRules = {
 }
 
 const handleValidate = (e: MouseEvent) => {
-  e.preventDefault()
+  e?.preventDefault()
   formRef.value?.validate((errors: Array<FormValidationError> | undefined) => {
     if (errors) {
       window.$message.error('Invalid Form!')

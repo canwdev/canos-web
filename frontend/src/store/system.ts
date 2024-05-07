@@ -21,10 +21,10 @@ export const useSystemStore = defineStore('system', {
   },
   getters: {
     allApps(): ShortcutItem[] {
-      if (this.isBackendAvailable) {
-        return window.$appList
-      }
-      return window.$appList.filter((item) => !item.requireBackend)
+      return window.$appList
+      // if (this.isBackendAvailable) {
+      // }
+      // return window.$appList.filter((item) => !item.requireBackend)
     },
   },
   actions: {

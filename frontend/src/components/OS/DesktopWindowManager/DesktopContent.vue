@@ -39,6 +39,7 @@ useSelectionArea({
       @click.stop
       @keyup.enter="handleItemClick(item)"
       class="desktop-icon btn-no-style"
+      :disabled="item.requireBackend && !systemStore.isBackendAvailable"
     >
       <ThemedIcon class="desktop-icon-image" :name="item.icon" />
       <span @dbclick.stop @click.stop="handleItemClick(item)" class="desktop-icon-name">{{

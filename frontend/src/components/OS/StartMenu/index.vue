@@ -107,6 +107,7 @@ export default defineComponent({
               v-for="(item, index) in appListFiltered"
               :key="index"
               @click="handleItemClick(item)"
+              :disabled="item.requireBackend && !systemStore.isBackendAvailable"
             />
           </div>
         </div>

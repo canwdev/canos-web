@@ -16,20 +16,22 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="shortcut-item">
+  <button class="shortcut-item btn-no-style">
     <div v-if="item.icon" class="shortcut-icon">
       <ThemedIcon :name="item.icon" />
     </div>
     <div class="shortcut-title">{{ item.title }}</div>
-  </div>
+  </button>
 </template>
 
 <style lang="scss" scoped>
 .shortcut-item {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 4px;
+  text-align: initial;
 
   &:hover {
     background-color: $primary_opacity;

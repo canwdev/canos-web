@@ -74,20 +74,6 @@ export const AppMediadevicesPlayer: ShortcutItem = {
   component: defineAsyncComponent(() => import('@/apps/MediadevicesPlayer/App.vue')),
 }
 
-export const AppQuickLaunch: ShortcutItem = {
-  appid: 'os.quick-launch',
-  title: 'Quick Launch',
-  icon: 'org.xfce.appfinder',
-  winOptions: {
-    top: '150px',
-    left: '150px',
-    width: '400px',
-    height: '400px',
-  },
-  component: defineAsyncComponent(() => import('@/apps/QuickLaunch/index.vue')),
-  singleInstance: true,
-}
-
 const defineDemoApp = (title = 'App', component): ShortcutItem => {
   return {
     appid: title,
@@ -126,7 +112,6 @@ export const AllAppList: ShortcutItem[] = [
   SystemAppSettings,
   AppPianoJs,
   AppMediadevicesPlayer,
-  AppQuickLaunch,
   {
     appid: 'os.calc',
     title: '简易计算器',

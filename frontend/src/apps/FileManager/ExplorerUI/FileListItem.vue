@@ -39,7 +39,7 @@ const {iconName, titleDesc, extDisplay} = useFileItem(props)
         {{ item.name }}
       </span>
     </div>
-    <div class="list-col c-ext">{{ extDisplay }}</div>
+    <div class="list-col c-ext text-overflow">{{ extDisplay }}</div>
     <div class="list-col c-size">{{ bytesToSize(item.size) }}</div>
     <div class="list-col c-time">{{ formatDate(item.lastModified) }}</div>
     <div class="list-col c-time">{{ formatDate(item.birthtime) }}</div>
