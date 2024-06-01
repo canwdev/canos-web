@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import {defineComponent} from 'vue'
 import TrayClock from '@/components/OS/TaskBar/TrayClock.vue'
 import StartMenu from '@/components/OS/StartMenu/index.vue'
@@ -10,25 +10,13 @@ import TrayNetwork from '@/components/OS/TaskBar/TrayNetwork.vue'
 import TrayMemory from '@/components/OS/TaskBar/TrayMemory.vue'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
-export default defineComponent({
-  name: 'TaskBar',
-  components: {ThemedIcon, TrayMemory, TrayNetwork, TrayFps, TrayBattery, StartMenu, TrayClock},
-  setup() {
-    const systemStore = useSystemStore()
-    const settingsStore = useSettingsStore()
-    const isShowStart = ref(false)
-    const taskList = ref([])
-    return {
-      isShowStart,
-      taskList,
-      systemStore,
-      settingsStore,
-      handleItemClick(item) {
-        const result = systemStore.setTaskActive(item, true)
-      },
-    }
-  },
-})
+const systemStore = useSystemStore()
+const settingsStore = useSettingsStore()
+const isShowStart = ref(true)
+const taskList = ref([])
+const handleItemClick = (item) => {
+  const result = systemStore.setTaskActive(item, true)
+}
 </script>
 
 <template>

@@ -1,46 +1,82 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
 import {ShortcutItem} from '@/enum/os'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+import AutoRatioBox from '@/components/CommonUI/AutoRatioBox.vue'
+import {StartLayoutItem} from '@/components/OS/StartMenu/types'
 
-export default defineComponent({
-  name: 'StartMenuItem',
-  components: {ThemedIcon},
-  props: {
-    item: {
-      type: Object as PropType<ShortcutItem>,
-      required: true,
-    },
-  },
-})
+interface Props {
+  menuItem: StartLayoutItem
+  shortcutItem: ShortcutItem
+}
+const props = withDefaults(defineProps<Props>(), {})
 </script>
 
 <template>
-  <button class="shortcut-item btn-no-style">
-    <div v-if="item.icon" class="shortcut-icon">
-      <ThemedIcon :name="item.icon" />
+  <AutoRatioBox
+    class="shortcut-item"
+    :ratio="menuItem.size === 'lg' ? 0.5 : 1"
+    :title="shortcutItem.title"
+  >
+    <div class="shortcut-inner">
+      <div v-if="shortcutItem.icon" class="shortcut-icon">
+        <ThemedIcon :name="shortcutItem.icon" />
+      </div>
+      <div class="shortcut-title">{{ shortcutItem.title }}</div>
     </div>
-    <div class="shortcut-title">{{ item.title }}</div>
-  </button>
+  </AutoRatioBox>
 </template>
 
 <style lang="scss" scoped>
 .shortcut-item {
+  cursor: pointer;
+  &.sm {
+    .shortcut-title {
+      font-size: 12px;
+      transform: scale(0.8);
+      transform-origin: left bottom;
+      left: 4px;
+      bottom: 4px;
+    }
+  }
+
+  &.md {
+    .shortcut-icon {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  &.lg {
+    .shortcut-icon {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  &.xl {
+    .shortcut-icon {
+      width: 140px;
+      height: 140px;
+    }
+  }
+}
+.shortcut-inner {
+  height: 100%;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 4px;
   text-align: initial;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  pointer-events: none;
 
   &:hover {
     background-color: $primary_opacity;
   }
 
   .shortcut-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+    transition: all 0.5s;
     img {
       width: 100%;
       height: 100%;
@@ -50,6 +86,10 @@ export default defineComponent({
   .shortcut-title {
     flex: 1;
     font-size: 13px;
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    line-height: 1.1;
   }
 }
 </style>
