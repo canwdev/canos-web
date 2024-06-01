@@ -1,4 +1,4 @@
-export interface StartLayoutItem {
+export interface IStartMenuItem {
   id: string
   size: 'sm' | 'md' | 'lg' | 'xl'
   background?: string
@@ -12,6 +12,6 @@ export const StartItemSizeOptions = [
 
 export interface StartLayoutGroup {
   title: string
-  children: StartLayoutItem[]
+  children: IStartMenuItem[]
 }
 export type StartLayoutColumn = StartLayoutGroup[][]

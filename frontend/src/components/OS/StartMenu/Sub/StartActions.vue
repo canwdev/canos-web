@@ -35,7 +35,7 @@ const confirmShutdown = () => {
 
 <template>
   <div class="start-actions">
-    <button class="vp-button" @click="$emit('startApp', 'os.settings')" title="Setting">
+    <button class="action-button" @click="$emit('startApp', 'os.settings')" title="Setting">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -49,7 +49,7 @@ const confirmShutdown = () => {
         ></path>
       </svg>
     </button>
-    <button class="vp-button" @click="$emit('resetStart')" title="Refresh">
+    <button class="action-button" @click="$emit('resetStart')" title="Refresh">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -63,7 +63,7 @@ const confirmShutdown = () => {
         ></path>
       </svg>
     </button>
-    <button class="vp-button" @click="toggleFullscreen" title="Fullscreen">
+    <button class="action-button" @click="toggleFullscreen" title="Fullscreen">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -78,7 +78,11 @@ const confirmShutdown = () => {
       </svg>
     </button>
     <template v-if="systemStore.isBackendAvailable">
-      <button class="vp-button" @click="$router.push({name: 'IpChooserView'})" title="IP Address">
+      <button
+        class="action-button"
+        @click="$router.push({name: 'IpChooserView'})"
+        title="IP Address"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -93,7 +97,7 @@ const confirmShutdown = () => {
         </svg>
       </button>
 
-      <button class="vp-button" @click="doLogout" title="Logout">
+      <button class="action-button" @click="doLogout" title="Logout">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -113,7 +117,7 @@ const confirmShutdown = () => {
           ></path>
         </svg>
       </button>
-      <button class="vp-button" @click="confirmShutdown" title="Shutdown">
+      <button class="action-button" @click="confirmShutdown" title="Shutdown">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -138,7 +142,7 @@ const confirmShutdown = () => {
   justify-content: space-between;
   gap: 8px;
 
-  .vp-button {
+  .action-button {
     width: 45px;
     height: 45px;
     background: transparent;
@@ -157,7 +161,8 @@ const confirmShutdown = () => {
     }
 
     &:hover,
-    &:active {
+    &:active,
+    &:focus {
       background-color: $primary;
     }
 

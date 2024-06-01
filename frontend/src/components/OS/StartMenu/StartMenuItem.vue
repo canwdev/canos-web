@@ -2,10 +2,10 @@
 import {ShortcutItem} from '@/enum/os'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import AutoRatioBox from '@/components/CommonUI/AutoRatioBox.vue'
-import {StartLayoutItem} from '@/components/OS/StartMenu/types'
+import {IStartMenuItem} from '@/components/OS/StartMenu/types'
 
 interface Props {
-  menuItem: StartLayoutItem
+  menuItem: IStartMenuItem
   shortcutItem: ShortcutItem
 }
 const props = withDefaults(defineProps<Props>(), {})
@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<Props>(), {})
 
 <template>
   <AutoRatioBox
+    tabindex="0"
     class="shortcut-item"
     :ratio="menuItem.size === 'lg' ? 0.5 : 1"
     :title="shortcutItem.title"
@@ -43,18 +44,21 @@ const props = withDefaults(defineProps<Props>(), {})
     .shortcut-icon {
       width: 50px;
       height: 50px;
+      transition: all 0.5s;
     }
   }
   &.lg {
     .shortcut-icon {
       width: 80px;
       height: 80px;
+      transition: all 0.5s;
     }
   }
   &.xl {
     .shortcut-icon {
       width: 140px;
       height: 140px;
+      transition: all 0.5s;
     }
   }
 }
@@ -76,7 +80,6 @@ const props = withDefaults(defineProps<Props>(), {})
   .shortcut-icon {
     width: 40px;
     height: 40px;
-    transition: all 0.5s;
     img {
       width: 100%;
       height: 100%;
