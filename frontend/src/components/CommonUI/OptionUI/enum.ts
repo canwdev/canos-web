@@ -9,8 +9,11 @@ export interface StOptionItem {
   // 选项实际值
   value?: boolean | string | number
   type?: StOptionType
+  // 传递给组件的自定义属性
+  props?: any
+  itemProps?: any
   // 当type为 SELECT | MULTIPLE_SWITCH 时，选项的下拉数据
-  selectOptions?: any[]
+  options?: any[]
   // 是否已禁用
   disabled?: boolean
   hidden?: boolean
@@ -20,6 +23,8 @@ export interface StOptionItem {
   iconRender?: any
   // 小标题
   subtitle?: string
+  // 提示
+  tips?: string
   placeholder?: string
   // 自定义类名
   cls?: string
@@ -27,15 +32,8 @@ export interface StOptionItem {
   actionRender?: any
   // 点击item执行函数
   clickFn?: any
-
-  // 当类型为 StOptionType.INPUT_NUMBER 时，可以设置最小值和最大值
-  min?: number
-  max?: number
-  step?: number
-  marks?: {[markValue: number]: string}
-  precision?: number
-  parseFn?: Function
-  formatFn?: Function
+  // 隐藏展开按钮图标
+  hideExpandIcon?: boolean
 }
 
 // 选项的类型
@@ -54,3 +52,24 @@ export type SwitchOption = {
   label: string
   value: string
 }
+
+export const swatches = [
+  '#258292',
+  '#3A6EA5',
+  '#F0C869',
+  '#E81123',
+  '#e91e63',
+  '#FFFFFF',
+  '#000000',
+  '#007aff',
+  '#a2845e',
+  '#8e8e93',
+  '#28cd41',
+  '#5856d6',
+  '#ff9500',
+  '#ff2d55',
+  '#af52de',
+  '#ff3b30',
+  '#5ac8fa',
+  '#ffcc00',
+]

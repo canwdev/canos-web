@@ -42,7 +42,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="c-panel-item" :class="[item.cls]">
+  <div class="c-panel-item" :data-key="item.key" :class="[item.cls]">
     <div class="panel-header vp-bg">
       <div class="p-left">
         <div class="item-label">{{ item.label }}</div>
@@ -51,7 +51,7 @@ export default defineComponent({
         <div
           class="btn-no-style btn-toggle-expand"
           :class="{expanded: isExpanded}"
-          v-if="item.children && item.children.length"
+          v-if="!item.hideExpandIcon && item.children && item.children.length"
           @click="$emit('onToggleExpand', item)"
         >
           <svg
@@ -68,7 +68,7 @@ export default defineComponent({
             </g>
           </svg>
         </div>
-        <ItemAction v-else :item="item" />
+        <ItemAction :item="item" />
       </div>
     </div>
 
@@ -77,8 +77,10 @@ export default defineComponent({
         v-for="sItem in item.children"
         :key="sItem.key"
         class="sub-item"
-        :class="{clickable: sItem.clickFn}"
+        :class="[{clickable: sItem.clickFn}, sItem.cls]"
+        :data-key="sItem.key"
         @click="handleItemClick($event, sItem.clickFn)"
+        v-bind="sItem.itemProps"
       >
         <div class="o-left">
           <div v-if="sItem.iconRender" class="item-icon">
@@ -138,7 +140,7 @@ export default defineComponent({
     .p-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
 
     .btn-reset,
@@ -165,6 +167,12 @@ export default defineComponent({
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: relative;
+      transition: all 0.3s;
+
+      &._drag-over {
+        background-color: $primary_opacity;
+      }
 
       &.clickable {
         cursor: pointer;
@@ -176,11 +184,12 @@ export default defineComponent({
       .o-left {
         display: flex;
         align-items: center;
+        gap: 8px;
         .item-icon {
-          width: 48px;
-          height: 48px;
+          flex-shrink: 0;
+          width: 32px;
+          height: 32px;
           border-radius: 4px;
-          margin-right: 16px;
           display: inline-flex;
           img {
             width: 100%;

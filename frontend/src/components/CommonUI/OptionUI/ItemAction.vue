@@ -1,30 +1,9 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
 import RectSwitch from './Tools/RectSwitch.vue'
-import {StOptionItem, StOptionType} from './enum'
+import {StOptionItem, StOptionType, swatches} from './enum'
 import VueRender from './Tools/VueRender.vue'
 import AdvancedNumberInput from './Tools/AdvancedNumberInput.vue'
-
-const swatches = [
-  '#258292',
-  '#3A6EA5',
-  '#F0C869',
-  '#E81123',
-  '#e91e63',
-  '#FFFFFF',
-  '#000000',
-  '#007aff',
-  '#a2845e',
-  '#8e8e93',
-  '#28cd41',
-  '#5856d6',
-  '#ff9500',
-  '#ff2d55',
-  '#af52de',
-  '#ff3b30',
-  '#5ac8fa',
-  '#ffcc00',
-]
 
 export default defineComponent({
   name: 'ItemAction',
@@ -63,26 +42,32 @@ export default defineComponent({
 
 <template>
   <n-space class="option-item-action" size="small" align="center">
-    <n-switch v-if="item.type === StOptionType.SWITCH" v-model:value="dynamicValue" />
+    <n-switch
+      v-if="item.type === StOptionType.SWITCH"
+      v-model:value="dynamicValue"
+      v-bind="item.props"
+    />
 
     <RectSwitch
       v-else-if="item.type === StOptionType.MULTIPLE_SWITCH"
-      :options="item.selectOptions"
+      :options="item.options"
       v-model="dynamicValue"
+      v-bind="item.props"
     />
 
     <div class="option-slider-wrap" v-else-if="item.type === StOptionType.SLIDER">
-      <n-slider class="option-slider" v-model:value="dynamicValue" />
+      <n-slider class="option-slider" v-model:value="dynamicValue" v-bind="item.props" />
     </div>
 
     <n-select
       class="option-select"
       v-else-if="item.type === StOptionType.SELECT"
       v-model:value="dynamicValue"
-      :options="item.selectOptions"
+      :options="item.options"
       value-field="value"
       label-field="label"
       size="small"
+      v-bind="item.props"
     />
 
     <n-input
@@ -93,6 +78,7 @@ export default defineComponent({
       type="text"
       clearable
       :placeholder="item.placeholder || ''"
+      v-bind="item.props"
     />
 
     <n-color-picker
@@ -104,6 +90,7 @@ export default defineComponent({
       :show-alpha="false"
       :actions="['clear']"
       :modes="['hex']"
+      v-bind="item.props"
     />
 
     <n-dynamic-tags
@@ -111,19 +98,15 @@ export default defineComponent({
       v-else-if="item.type === StOptionType.DYNAMIC_TAGS"
       v-model:value="dynamicValue"
       size="small"
+      v-bind="item.props"
     />
 
-    <!--      高级的数字输入框-->
+    <!-- 高级的数字输入框-->
     <AdvancedNumberInput
       v-else-if="item.type === StOptionType.INPUT_NUMBER"
       v-model="dynamicValue"
-      :max="item.max"
-      :min="item.min"
-      :step="item.step"
-      :format="item.formatFn"
-      :parse="item.parseFn"
-      :marks="item.marks"
       :disabled="item.disabled"
+      v-bind="item.props"
     />
 
     <VueRender v-if="item.actionRender" :render-fn="item.actionRender" />

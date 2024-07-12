@@ -142,7 +142,7 @@ export default defineComponent({
               JSON.stringify({
                 ...s,
                 maximized: isMaximized.value,
-              }),
+              })
             )
           }
           return
@@ -152,7 +152,7 @@ export default defineComponent({
           localStorage.setItem(storageKey, JSON.stringify({...winOptions}))
         }
       },
-      {deep: Boolean(props.wid), debounce: 500},
+      {deep: Boolean(props.wid), debounce: 500}
     )
 
     watch(allowMove, (val) => {
@@ -287,7 +287,7 @@ export default defineComponent({
         layoutPreviewData.value = checkWindowAttach(params)
       },
       150,
-      true,
+      true
     )
 
     const handleMove = async (data) => {
@@ -323,7 +323,7 @@ export default defineComponent({
         emit('resize', winOptions)
       },
       50,
-      true,
+      true
     )
 
     onBeforeUnmount(() => {

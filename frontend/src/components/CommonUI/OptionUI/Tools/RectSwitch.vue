@@ -17,6 +17,10 @@ export default defineComponent({
         return []
       },
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, {emit}) {
     const mValue = useModelWrapper(props, emit)
@@ -28,7 +32,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="rect-switch">
+  <div class="rect-switch" :class="{disabled}">
     <div
       v-for="item in options"
       :key="item.value"
@@ -49,6 +53,14 @@ export default defineComponent({
   border-radius: 4px;
   padding: 2px;
   border: 1px solid $color_border;
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+    .r-item {
+      pointer-events: none;
+    }
+  }
 
   .r-item {
     border-radius: 4px;

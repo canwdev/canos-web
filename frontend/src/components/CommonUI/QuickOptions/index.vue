@@ -113,11 +113,21 @@ export default defineComponent({
         }
       } else {
         menuStack.value = []
+        menuItemStack.value = []
       }
     })
 
     // 打开的菜单堆栈，支持内容为计算属性
     const menuStack = ref<QuickOptionItem[][]>([])
+    // 打开的当前元素堆栈，主要用于显示标题
+    const menuItemStack = ref<QuickOptionItem[]>([])
+    const backTitle = computed(() => {
+      if (!menuItemStack.value.length) {
+        return ' '
+      }
+      const lastItem = menuItemStack.value[menuItemStack.value.length - 1]
+      return lastItem.html || lastItem.label
+    })
 
     const mOptions = computed((): QuickOptionItem[] => {
       if (menuStack.value.length) {
@@ -135,6 +145,7 @@ export default defineComponent({
     const handleBack = () => {
       if (menuStack.value.length) {
         menuStack.value.pop()
+        menuItemStack.value.pop()
         emit('onBack')
       } else {
         mVisible.value = false
@@ -220,6 +231,7 @@ export default defineComponent({
         }
 
         menuStack.value.push(subList)
+        menuItemStack.value.push(item)
         curIndex.value = 0
         emit('onEnter')
       }
@@ -247,6 +259,7 @@ export default defineComponent({
       menuStack,
       curIndex,
       handleKeyPress,
+      backTitle,
       handleBack,
       mOptions,
       handleOptionClick,
@@ -272,13 +285,18 @@ export default defineComponent({
       <button class="btn-no-style" @click="mVisible = false">×</button>
     </div>
 
-    <div v-if="menuStack.length" class="option-item vp-bg _back clickable" @click="handleBack">
+    <div
+      v-if="menuStack.length"
+      class="option-item vp-bg _back clickable"
+      @click="handleBack"
+      title="Back (q)"
+    >
       <div class="index-wrap">
         <div style="transform: scale(0.7)">
           <div class="css-arrow left"></div>
         </div>
       </div>
-      Back (q)
+      <span v-html="backTitle"></span>
     </div>
 
     <template v-for="(item, index) in mOptions" :key="index">
@@ -421,6 +439,7 @@ export default defineComponent({
       right: 8px;
       top: 50%;
       transform: translateY(-50%);
+      display: flex;
       &:hover {
         color: $primary;
       }

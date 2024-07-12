@@ -47,6 +47,7 @@
   padding: 6px 8px;
   border: 1px solid $color_border;
   scrollbar-width: thin;
+  font-family: inherit;
 
   &:not(&:disabled) {
     &:focus {
