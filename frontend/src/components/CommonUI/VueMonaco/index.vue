@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent, shallowRef} from 'vue'
-import {useDebounceFn} from '@vueuse/core'
+import {useDebounceFn, useEventListener, useThrottleFn} from '@vueuse/core'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {useMainStore} from '@/store/main'
 import monaco from './monaco-helper'
@@ -110,6 +110,17 @@ export default defineComponent({
     const getInstance = () => {
       return editorInstance.value
     }
+
+    const handleResizeDebounced = useThrottleFn(
+      () => {
+        nextTick(() => {
+          resize()
+        })
+      },
+      500,
+      true
+    )
+    useEventListener('resize', handleResizeDebounced)
 
     return {
       editorContainerRef,

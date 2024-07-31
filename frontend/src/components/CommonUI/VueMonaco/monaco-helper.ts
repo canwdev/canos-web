@@ -26,7 +26,7 @@ self.MonacoEnvironment = {
 
 import * as monaco from 'monaco-editor'
 
-/*import {emmetCSS, registerCustomSnippets} from 'emmet-monaco-es'
+import {emmetCSS, registerCustomSnippets} from 'emmet-monaco-es'
 emmetCSS(monaco, ['css', 'scss'])
 
 registerCustomSnippets('css', {
@@ -37,6 +37,6 @@ registerCustomSnippets('css', {
   rtl: `&:dir(rtl) {
   \${1:}
 }`,
-})*/
+})
 
 export default monaco

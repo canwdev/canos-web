@@ -463,6 +463,7 @@ export default defineComponent({
 
     &:not(.disabled) {
       &.clickable {
+        user-select: none;
         cursor: pointer;
         &:active {
           color: white;
