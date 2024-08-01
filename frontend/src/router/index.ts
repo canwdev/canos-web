@@ -6,6 +6,7 @@ import {useMainStore} from '@/store/main'
 import {serverApi} from '@/api/server'
 import {useSystemStore} from '@/store/system'
 import {usersApi} from '@/api/users'
+import {adminRoutes} from '@/router/admin'
 
 // const history = createWebHashHistory()
 const history = createWebHistory(PROXY_BASE_URL)
@@ -26,6 +27,15 @@ const routes = [
     meta: {
       skipLogin: true,
     },
+  },
+  {
+    path: '/system32',
+    name: 'AdminView',
+    component: () => import('@/views/Admin/AdminLayout.vue'),
+    meta: {
+      title: `System Admin`,
+    },
+    children: adminRoutes,
   },
   {
     path: '/login',
