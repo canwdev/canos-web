@@ -8,30 +8,6 @@ import LoginForm from '@/components/OS/SettingsApp/Users/LoginForm.vue'
 
 const router = useRouter()
 
-const hasUsers = ref(false)
-const checkHasUsers = async () => {
-  try {
-    isLoading.value = true
-    const r = await usersApi.hasUsers()
-    hasUsers.value = (r as unknown as boolean) || false
-  } catch (e) {
-    console.error(e)
-  } finally {
-    isLoading.value = false
-  }
-}
-watch(
-  hasUsers,
-  (val) => {
-    if (val) {
-      nextTick(() => {
-        autoFocusInput()
-      })
-    }
-  },
-  {immediate: true},
-)
-
 const isLoading = ref(false)
 const handleLogin = async (data) => {
   try {
@@ -55,10 +31,6 @@ const handleLogin = async (data) => {
 }
 
 const beforeLogin = () => {
-  if (!hasUsers.value) {
-    handleLogin({username: 'x', password: 'x'})
-    return
-  }
   loginFormRef.value.handleValidate()
 }
 
@@ -69,8 +41,10 @@ const autoFocusInput = () => {
 }
 
 const loginFormRef = ref()
-onMounted(async () => {
-  await checkHasUsers()
+onMounted(() => {
+  nextTick(() => {
+    autoFocusInput()
+  })
 })
 </script>
 
@@ -81,20 +55,7 @@ onMounted(async () => {
         <template #titleBarLeft>Login</template>
 
         <div class="card-wrap">
-          <LoginForm
-            ref="loginFormRef"
-            v-show="hasUsers"
-            @submit="handleLogin"
-            :disabled="isLoading"
-          />
-
-          <n-thing v-show="!hasUsers">
-            <template #header> ℹ️ Tips </template>
-            <template #description>
-              There is no registered user, please log in and register in the settings. You can log
-              in directly when you log in for the first time.
-            </template>
-          </n-thing>
+          <LoginForm ref="loginFormRef" @submit="handleLogin" :disabled="isLoading" />
 
           <n-space size="small" justify="end">
             <button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">

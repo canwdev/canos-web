@@ -4,7 +4,7 @@ import AdminSidebar from '@/views/Admin/AdminSidebar.vue'
 </script>
 
 <template>
-  <div class="manage-layout">
+  <div class="manage-layout vp-bg">
     <AdminSidebar />
     <div class="manage-content">
       <AutoRouterView />

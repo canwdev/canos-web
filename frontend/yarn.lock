@@ -2562,10 +2562,10 @@ muggle-string@^0.4.0:
   resolved "https://registry.npmmirror.com/muggle-string/-/muggle-string-0.4.1.tgz#3b366bd43b32f809dc20659534dd30e7c8a0d328"
   integrity sha512-VNTrAak/KhO2i8dqqnqnAHOa3cYBwXEZe9h+D5h/1ZqFSTEFHdM65lR7RoIqq3tBBYavsOXV84NoHXZ0AkPyqQ==
 
-naive-ui@^2.37.3:
-  version "2.38.1"
-  resolved "https://registry.npmmirror.com/naive-ui/-/naive-ui-2.38.1.tgz#d64e2af0b161215a61b5b31038a538102da3e05f"
-  integrity sha512-AnU1FQ7K/CbhguAX++V4kCFjk7h7RvWt4nvZPRjORMpq+fUIlzD+EcQ5Cv1VqDloNF8+eMv4Akc2Ogacc9S+5A==
+naive-ui@^2.39.0:
+  version "2.39.0"
+  resolved "https://registry.npmmirror.com/naive-ui/-/naive-ui-2.39.0.tgz#f0d47d30ce86b178242ad5de9de4066eb8a3f0c9"
+  integrity sha512-5oUJzRG+rtLSH8eRU+fJvVYiQids2BxF9jp+fwGoAqHOptEINrBlgBu9uy+95RHE5FLJ7Q/z41o+qkoGnUrKxQ==
   dependencies:
     "@css-render/plugin-bem" "^0.15.12"
     "@css-render/vue3-ssr" "^0.15.12"

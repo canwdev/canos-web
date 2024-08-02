@@ -68,7 +68,7 @@ function handleLogoClick() {
   width: 250px;
   height: 100%;
   overflow-y: auto;
-  border-right: 1px solid #000;
+  border-right: 1px solid $color_border;
   .logo-wrap {
     padding: 10px;
     display: flex;

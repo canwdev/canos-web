@@ -1,102 +1,80 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common'
-import {serverSettingsStore} from '@/instances'
-import {guid} from '@/utils'
+import {Injectable} from '@nestjs/common'
+import {InjectRepository} from '@nestjs/typeorm'
+import {User} from '@/modules/users/user.entity'
+import {Repository} from 'typeorm'
+import {CreateEditUserDto} from '@/modules/users/user.dto'
 import * as bcrypt from 'bcryptjs'
-
-// 在没有设置账号密码的情况下，允许首次直接登录
-let directLoginCount = 0
-const maxAllowedDirectLoginCount = 1
+import {UserRole} from '@/types/user'
 
 @Injectable()
 export class UsersService {
-  async findUser(username: string) {
-    const users = serverSettingsStore.getItem('users')
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
 
-    return users.find((user) => user.username === username)
+  findUser(username: string) {
+    return this.usersRepository.findOneBy({username})
   }
 
-  // 检查是否有用户
-  hasUsers() {
-    const users = serverSettingsStore.getItem('users')
-    return !!users.length
-  }
-
-  getUsers() {
-    const users = serverSettingsStore.getItem('users')
-
-    return users.map((user) => ({id: user.id, username: user.username}))
-  }
-
-  // 自动根据情况，直接登录
-  autoDirectLogin() {
-    // 首次直接登录
-    if (directLoginCount < maxAllowedDirectLoginCount) {
-      directLoginCount++
+  async findUsers() {
+    return (await this.usersRepository.find()).map((user) => {
       return {
-        username: 'SingleLogin',
-        id: `single_id_${directLoginCount}_${maxAllowedDirectLoginCount}`,
+        id: user.id,
+        username: user.username,
+        roles: user.roles.split(','),
       }
-    }
-    throw new HttpException(
-      'The first direct login quota has been exhausted. Please set an account password or restart the server.',
-      HttpStatus.BAD_REQUEST,
-    )
+    })
   }
 
-  async createUser({username, password}) {
-    const users = serverSettingsStore.getItem('users')
-
-    const user = users.find((user) => user.username === username)
-    if (user) {
-      throw new HttpException('Username already exists', HttpStatus.BAD_REQUEST)
+  async createUser(createUserDto: CreateEditUserDto) {
+    // 检查用户名是否存在
+    const find = await this.findUser(createUserDto.username)
+    if (find) {
+      throw new Error('Username already exists')
     }
 
     // 密码加盐
-    const passwordSalt = bcrypt.hashSync(password, 10)
-
-    users.push({id: guid(), username, password: passwordSalt})
-    serverSettingsStore.setItem('users', users)
-    return {
-      username,
-    }
+    const passwordSalt = bcrypt.hashSync(createUserDto.password, 10)
+    const user = this.usersRepository.create({
+      username: createUserDto.username,
+      password_salt: passwordSalt,
+      roles: createUserDto.roles.join(','),
+      disabled: false,
+    })
+    return this.usersRepository.save(user)
   }
 
-  async deleteUser(id: string) {
-    const users = serverSettingsStore.getItem('users')
-    const index = users.findIndex((user) => user.id === id)
-    if (index !== -1) {
-      users.splice(index, 1)
-      serverSettingsStore.setItem('users', users)
-    } else {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
-    }
+  deleteUser(id: number) {
+    return this.usersRepository.delete(id)
   }
 
-  async updateUser(id: string, username: string) {
-    const users = serverSettingsStore.getItem('users')
-    const index = users.findIndex((user) => user.id === id)
-    if (index !== -1) {
-      users[index].username = username
-      serverSettingsStore.setItem('users', users)
-    } else {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+  updateUser(editUserDto: CreateEditUserDto) {
+    const {id, ...user} = editUserDto as any
+    user.roles = user.roles.join(',')
+
+    // 不更新密码的情况
+    if (!user.password) {
+      delete user.password
     }
+    return this.usersRepository.update(id, user)
   }
 
-  async updatePassword(username: string, oldPassword: string, password: string) {
-    const users = serverSettingsStore.getItem('users')
-    const index = users.findIndex((user) => user.username === username)
-    if (index !== -1) {
-      const user = users[index]
-      const isPasswordValid = bcrypt.compareSync(oldPassword, user.password)
-      if (isPasswordValid) {
-        user.password = bcrypt.hashSync(password, 10)
-        serverSettingsStore.setItem('users', users)
-      } else {
-        throw new HttpException('Wrong old password', HttpStatus.BAD_REQUEST)
+  // 生命周期钩子，在模块初始化时执行逻辑
+  async onModuleInit() {
+    // 检查用户表是否为空
+    const userCount = await this.usersRepository.count()
+    if (userCount === 0) {
+      // 创建默认用户
+      const dto: CreateEditUserDto = {
+        username: 'root',
+        password: 'root',
+        roles: [UserRole.admin],
       }
+      await this.createUser(dto)
+      console.log(`Default user created, please change password!`, dto)
     } else {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      console.log('User table already has records.')
     }
   }
 }

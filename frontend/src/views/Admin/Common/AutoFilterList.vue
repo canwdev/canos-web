@@ -4,6 +4,7 @@ import AutoFormElPlus from '@/components/CommonUI/AutoFormNaive/index.vue'
 import {AutoFormItem, AutoFormSchema} from '@/components/CommonUI/AutoFormNaive/enum'
 import {DataTableColumn} from 'naive-ui'
 import {useRoute} from 'vue-router'
+import {ArrowSync16Regular} from '@vicons/fluent'
 
 const props = withDefaults(
   defineProps<{
@@ -93,6 +94,11 @@ async function loadData({isResetPage = false} = {}) {
 onMounted(() => {
   loadData()
 })
+
+defineExpose({
+  loadData,
+  isLoading,
+})
 </script>
 
 <template>
@@ -102,14 +108,19 @@ onMounted(() => {
         {{ title || pageTitle }}
       </div>
       <div class="common-actions">
-        <slot></slot>
+        <slot name="actions">
+          <n-button @click="loadData">
+            <n-icon size="16"> <ArrowSync16Regular /> </n-icon> Refresh
+          </n-button>
+        </slot>
+        <slot name="actionsMore"> </slot>
       </div>
     </div>
 
     <n-card size="small" class="filter-card" v-if="filterFormSchema">
       <AutoFormElPlus :form-schema="filterFormSchema" @onSubmit="loadData({isResetPage: true})" />
     </n-card>
-    <n-data-table :data="tableData" :columns="tableColumns" :loading="isLoading" />
+    <n-data-table size="small" :data="tableData" :columns="tableColumns" :loading="isLoading" />
 
     <n-pagination
       v-if="enablePagination"
@@ -152,6 +163,7 @@ onMounted(() => {
       display: flex;
       justify-content: flex-end;
       align-items: flex-start;
+      gap: 8px;
     }
   }
 

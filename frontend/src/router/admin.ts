@@ -1,9 +1,9 @@
 export const adminRoutes = [
   {
-    path: 'system-admin',
-    name: 'SystemAdminGroup',
+    path: 'manage',
+    name: 'AdminManageGroup',
     meta: {
-      title: `System`,
+      title: `Manage`,
     },
     children: [
       {

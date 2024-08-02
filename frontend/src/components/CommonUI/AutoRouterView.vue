@@ -8,15 +8,10 @@ const isKeepAlive = (route: any) => {
 }
 </script>
 <template>
-  <router-view class="auto-router-view" v-slot="{Component, route}">
+  <router-view v-slot="{Component, route}">
     <keep-alive>
       <component :is="Component" :key="route.name" v-if="isKeepAlive(route)" />
     </keep-alive>
     <component :is="Component" :key="route.name" v-if="!isKeepAlive(route)" />
   </router-view>
 </template>
-<style lang="scss">
-.auto-router-view {
-  height: 100%;
-}
-</style>
