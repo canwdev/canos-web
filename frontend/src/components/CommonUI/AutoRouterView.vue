@@ -1,18 +1,11 @@
-<script lang="ts">
-export default defineComponent({
-  setup() {
-    const isKeepAlive = (route: any) => {
-      // return route.meta && route.meta.keepAlive
-      if (!route.meta) {
-        return true
-      }
-      return route.meta && route.meta.keepAlive !== false
-    }
-    return {
-      isKeepAlive,
-    }
-  },
-})
+<script lang="ts" setup>
+const isKeepAlive = (route: any) => {
+  // return route.meta && route.meta.keepAlive
+  if (!route.meta) {
+    return true
+  }
+  return route.meta && route.meta.keepAlive !== false
+}
 </script>
 <template>
   <router-view class="auto-router-view" v-slot="{Component, route}">

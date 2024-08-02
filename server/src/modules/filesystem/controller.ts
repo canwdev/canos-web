@@ -18,6 +18,7 @@ import {SkipAuth} from '@/modules/auth/skip-auth'
 import {guid} from '@/utils'
 import {diskStorage} from 'multer'
 import * as Path from 'path'
+import {ApiTags} from '@nestjs/swagger'
 
 type ShareLinkMap = {
   // 由随机id到paths的影射
@@ -29,6 +30,7 @@ const shareLinkMap: ShareLinkMap = {}
 // 缓存文件数组列表到guid
 const pathCacheMap = new Map<string, string>()
 
+@ApiTags('文件系统')
 @Controller('filesystem')
 export class FsController {
   constructor(private readonly fsService: FsService) {}

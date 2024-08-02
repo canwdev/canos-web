@@ -181,6 +181,9 @@ export default defineComponent({
         }
       }
 
+      &.active {
+        background-color: $primary_opacity;
+      }
       .o-left {
         display: flex;
         align-items: center;

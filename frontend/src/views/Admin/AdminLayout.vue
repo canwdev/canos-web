@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import AutoRouterView from '@/components/CommonUI/AutoRouterView.vue'
-import ManageSidebar from '@/views/Admin/ManageSidebar.vue'
+import AdminSidebar from '@/views/Admin/AdminSidebar.vue'
 </script>
 
 <template>
   <div class="manage-layout">
-    <ManageSidebar />
+    <AdminSidebar />
     <div class="manage-content">
       <AutoRouterView />
     </div>
@@ -19,6 +19,7 @@ import ManageSidebar from '@/views/Admin/ManageSidebar.vue'
   overflow: hidden;
   .manage-content {
     flex: 1;
+    padding: 20px;
   }
 
   .manage-page {

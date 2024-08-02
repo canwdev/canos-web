@@ -10,7 +10,7 @@ export class JsonStorage {
     this.filePath = filePath
     this.defaultData = JSON.parse(JSON.stringify(defaultData))
     this.data = this.readData()
-    console.log(this.data)
+    // console.log(this.data)
   }
 
   readData() {

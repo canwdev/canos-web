@@ -30,10 +30,10 @@ const routes = [
   },
   {
     path: '/system32',
-    name: 'AdminView',
+    name: 'AdminRootView',
     component: () => import('@/views/Admin/AdminLayout.vue'),
     meta: {
-      title: `System Admin`,
+      title: `Admin System`,
     },
     children: adminRoutes,
   },

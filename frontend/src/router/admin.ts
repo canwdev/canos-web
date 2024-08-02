@@ -1,9 +1,19 @@
 export const adminRoutes = [
   {
-    path: '/admin-users',
-    name: 'AdminUsers',
+    path: 'system-admin',
+    name: 'SystemAdminGroup',
     meta: {
-      title: `Admin Users`,
+      title: `System`,
     },
+    children: [
+      {
+        path: 'admin-users',
+        name: 'AdminUsers',
+        component: () => import('@/views/Admin/Users/UserList.vue'),
+        meta: {
+          title: `Admin Users`,
+        },
+      },
+    ],
   },
 ]

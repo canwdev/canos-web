@@ -117,6 +117,7 @@ export default defineComponent({
         <button class="vp-button" @click="toggleFullscreen">📺 Fullscreen</button>
         <template v-if="systemStore.isBackendAvailable">
           <button class="vp-button" @click="$router.push({name: 'IpChooserView'})">🌐 IP</button>
+          <button class="vp-button" @click="$router.push({name: 'AdminRootView'})">🔧 Admin</button>
 
           <button class="vp-button" @click="doLogout">🚪 Logout</button>
           <button class="vp-button" @click="confirmShutdown">✖️ Shutdown</button>

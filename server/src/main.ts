@@ -5,6 +5,7 @@ import * as opener from 'opener'
 import * as os from 'os'
 import {program} from 'commander'
 import {serverInfo} from '@/enum'
+import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
 
 program
   .name('canos-web-server')
@@ -30,12 +31,24 @@ async function bootstrap() {
 
   const protocol = 'http://'
 
+  // Swagger 步骤
+  const config = new DocumentBuilder()
+    .setTitle('Web API')
+    .setDescription('API Documentation')
+    .setVersion('1.0')
+    .build()
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('swagger', app, document)
+
   const port = options.port || process.env.PORT || 12021
   const host = options.host || process.env.HOST || '0.0.0.0'
   await app.listen(port, host)
 
   const ifaces = os.networkInterfaces()
   const localhostUrl = protocol + '127.0.0.1' + ':' + port
+
+  console.log(`API Documents on: ${localhostUrl}/swagger`)
+
   const urls = []
   Object.keys(ifaces).forEach(function (dev) {
     ifaces[dev].forEach(function (details) {
