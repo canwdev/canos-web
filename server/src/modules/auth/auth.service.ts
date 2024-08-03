@@ -2,6 +2,7 @@ import {Injectable} from '@nestjs/common'
 import {UsersService} from '../users/users.service'
 import {JwtService} from '@nestjs/jwt'
 import * as bcrypt from 'bcryptjs'
+import {IUserInfo, UserRole} from '@/types/user'
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
 
   async validateUser(username: string, pass: string) {
     console.log('[validateUser]', username)
-    const user = await this.usersService.findUser(username)
+    const user = await this.usersService.findUser({username})
 
     if (!user) {
       return null
@@ -35,6 +36,7 @@ export class AuthService {
     console.log('[AuthService login]', user)
     const payload = {username: user.username, sub: user.id}
     return {
+      // 生成token，返回给客户端
       access_token: this.jwtService.sign(payload),
     }
   }

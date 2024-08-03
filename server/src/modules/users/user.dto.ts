@@ -20,8 +20,3 @@ export class CreateEditUserDto {
   @ApiProperty({example: ['admin', 'user'], description: 'The roles of user'})
   roles: UserRole[]
 }
-
-export class UserIdDto {
-  @ApiProperty({description: 'The ID of the user to be operated'})
-  id: number // 用户 ID
-}

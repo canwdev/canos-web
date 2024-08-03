@@ -1,7 +1,21 @@
-import {Body, Controller, Get, Post, Request} from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+  Put,
+  Query,
+  Request,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common'
 import {UsersService} from '@/modules/users/users.service'
 import {ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags} from '@nestjs/swagger'
-import {CreateEditUserDto, UserIdDto} from '@/modules/users/user.dto'
+import {CreateEditUserDto} from '@/modules/users/user.dto'
+import {RemoveEmptyQueryInterceptor} from '@/utils/params-handle'
 
 @ApiTags('用户管理')
 @Controller('users')
@@ -10,8 +24,19 @@ export class UsersController {
 
   @Get('get-users')
   @ApiOperation({summary: '获取用户列表'})
-  async getUsers() {
-    return this.usersService.findUsers()
+  @UseInterceptors(RemoveEmptyQueryInterceptor) // 只在此接口生效
+  async getUsers(
+    @Query('id') id: number,
+    @Query('username') username: string,
+    @Query('roles') roles: string,
+    @Query('disabled') disabled: boolean,
+  ) {
+    return this.usersService.findUsers({
+      id,
+      username,
+      roles,
+      disabled,
+    })
   }
 
   @Post('create-user')
@@ -21,17 +46,26 @@ export class UsersController {
     return this.usersService.createUser(createUserDto)
   }
 
-  @Post('delete-user')
+  @Delete('delete-user')
   @ApiOperation({summary: '删除用户'})
-  @ApiBody({type: UserIdDto})
-  async deleteUser(@Body() dto: UserIdDto) {
-    return this.usersService.deleteUser(dto.id)
+  async deleteUser(@Query('id') id: number) {
+    try {
+      return await this.usersService.deleteUser(id)
+    } catch (e) {
+      console.error(e)
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
   }
 
-  @Post('update-user')
+  @Put('update-user')
   @ApiOperation({summary: '更新用户'})
   @ApiBody({type: CreateEditUserDto})
   async updateUser(@Body() editUserDto: CreateEditUserDto) {
-    return this.usersService.updateUser(editUserDto)
+    try {
+      await this.usersService.updateUser(editUserDto)
+    } catch (e) {
+      console.error(e)
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
   }
 }

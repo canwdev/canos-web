@@ -14,16 +14,16 @@ export const usersApi = {
   userGetInfo() {
     return service.get('/auth/profile')
   },
-  getUsers() {
-    return service.get('/get-users')
+  getUsers(params: any) {
+    return service.get('/get-users', {params})
   },
   createUser(dto: CreateEditUserDto) {
     return service.post('/create-user', dto)
   },
   deleteUser(id: string) {
-    return service.post('/delete-user', {id})
+    return service.delete('/delete-user', {params: {id}})
   },
   updateUser(dto: CreateEditUserDto) {
-    return service.post('/update-user', dto)
+    return service.put('/update-user', dto)
   },
 }

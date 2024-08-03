@@ -1,7 +1,7 @@
 import {FormRules} from 'naive-ui'
 
 export type OptionItem = {
-  value: string | number
+  value: any
   label: string
 }
 

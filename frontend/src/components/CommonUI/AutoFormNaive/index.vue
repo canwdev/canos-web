@@ -1,5 +1,5 @@
-<script lang="ts">
-import {defineComponent, onBeforeMount, PropType, ref, toRefs} from 'vue'
+<script setup lang="ts">
+import {ref, toRefs} from 'vue'
 import {AutoFormSchema, AutoFormItemType} from './enum'
 import AutoFormItem from './AutoFormItem.vue'
 import {FormInst} from 'naive-ui'
@@ -7,50 +7,47 @@ import {FormInst} from 'naive-ui'
 /**
  * Naive UI 表单生成组件
  */
-export default defineComponent({
-  name: 'AutoFormNaive',
-  components: {AutoFormItem},
-  props: {
-    formSchema: {
-      type: Object as PropType<AutoFormSchema>,
-      required: true,
-    },
-    hideActions: {
-      type: Boolean,
-      default: false,
-    },
+const props = withDefaults(
+  defineProps<{
+    formSchema: AutoFormSchema
+    hideActions?: boolean
+    isLoading?: boolean
+  }>(),
+  {
+    hideActions: false,
+    isLoading: false,
   },
-  emits: ['onInvalidForm', 'onSubmit', 'onMounted', 'onBeforeUnmount'],
-  setup(props, {emit}) {
-    const {formSchema} = toRefs<any>(props)
+)
 
-    const formRef = ref<FormInst>()
-    const submitForm = () => {
-      formRef.value?.validate((errors) => {
-        if (errors) {
-          console.log('Invalid form')
-          emit('onInvalidForm')
-          return
-        }
-        console.log('onSubmit', formSchema.value.model)
-        emit('onSubmit', formSchema.value.model)
-      })
+const emit = defineEmits(['onInvalidForm', 'onSubmit', 'onMounted', 'onBeforeUnmount'])
+
+const {formSchema} = toRefs<any>(props)
+
+const formRef = ref<FormInst>()
+const submitForm = () => {
+  formRef.value?.validate((errors) => {
+    if (errors) {
+      console.log('Invalid form')
+      emit('onInvalidForm')
+      return
     }
+    // console.log('onSubmit', formSchema.value.model)
+    emit('onSubmit', formSchema.value.model)
+  })
+}
 
-    onMounted(() => {
-      emit('onMounted', formRef.value)
-    })
+onMounted(() => {
+  emit('onMounted', formRef.value)
+})
 
-    onBeforeUnmount(() => {
-      emit('onBeforeUnmount', formRef.value)
-    })
+onBeforeUnmount(() => {
+  emit('onBeforeUnmount', formRef.value)
+})
 
-    return {
-      formRef,
-      AutoFormItemType,
-      submitForm,
-    }
-  },
+defineExpose({
+  formRef,
+  AutoFormItemType,
+  submitForm,
 })
 </script>
 
@@ -65,7 +62,14 @@ export default defineComponent({
     @submit.prevent="submitForm"
     size="small"
     v-bind="formSchema.props"
+    :disabled="isLoading"
   >
+    <transition name="fade">
+      <div class="auto-form-loading-container" v-show="isLoading">
+        <div class="loading-text vp-panel">Loading...</div>
+      </div>
+    </transition>
+
     <template v-for="(item, index) in formSchema.formItems">
       <!-- 自动grid数组-->
       <div
@@ -101,7 +105,9 @@ export default defineComponent({
     <!-- 操作按钮-->
     <div v-if="!hideActions" class="auto-form-actions">
       <slot name="actions" :submit-form="submitForm">
-        <n-button type="primary" size="small" @click="submitForm()">Submit</n-button>
+        <n-button :disabled="isLoading" type="primary" size="small" @click="submitForm()"
+          >Submit</n-button
+        >
       </slot>
     </div>
 
@@ -111,6 +117,29 @@ export default defineComponent({
 
 <style lang="scss">
 .auto-form-naive {
+  position: relative;
+
+  .auto-form-loading-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    cursor: wait;
+    &.position-fixed {
+      position: fixed;
+      z-index: 200;
+    }
+
+    .loading-text {
+      padding: 10px;
+    }
+  }
+
   .auto-form-grid {
     display: grid;
     grid-template-rows: auto;

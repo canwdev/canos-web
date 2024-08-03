@@ -1,16 +1,22 @@
 <script setup lang="ts">
-import {computed, defineComponent, type PropType} from 'vue'
+import {computed} from 'vue'
 import AutoFormElPlus from '@/components/CommonUI/AutoFormNaive/index.vue'
-import {AutoFormItem, AutoFormSchema} from '@/components/CommonUI/AutoFormNaive/enum'
+import {
+  AutoFormItem,
+  AutoFormItemType,
+  AutoFormSchema,
+  MixedFormItems,
+} from '@/components/CommonUI/AutoFormNaive/enum'
 import {DataTableColumn} from 'naive-ui'
 import {useRoute} from 'vue-router'
 import {ArrowSync16Regular} from '@vicons/fluent'
+import {getFlatFormItems} from '@/components/CommonUI/AutoFormNaive/utils'
 
 const props = withDefaults(
   defineProps<{
     title?: string
     titleDesc?: string
-    filterFormItems?: AutoFormItem[]
+    filterFormItems?: MixedFormItems[]
     tableColumns: DataTableColumn[]
     requestDataFn: (any) => Promise<any>
     enablePagination?: boolean
@@ -48,8 +54,8 @@ const filterFormSchema = computed((): AutoFormSchema | null => {
 onBeforeMount(() => {
   if (filterFormItems.value) {
     // 初始化 filterFormData
-    filterFormItems.value.forEach((item) => {
-      filterFormData.value[item.key] = ''
+    getFlatFormItems(filterFormItems.value).forEach((item: AutoFormItem) => {
+      filterFormData.value[item.key] = undefined
     })
   }
 })
@@ -72,6 +78,7 @@ async function loadData({isResetPage = false} = {}) {
       ...params,
       ...filterFormData.value,
     }
+    console.log(params)
 
     const res = await requestDataFn.value(params)
     if (!res) {
@@ -147,6 +154,8 @@ defineExpose({
     align-items: center;
     justify-content: space-between;
     margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 8px;
 
     @media screen and (max-width: $mq_pc_min_width) {
       margin-bottom: 15px;
@@ -155,8 +164,8 @@ defineExpose({
     .common-title {
       font-size: 24px;
       font-weight: bold;
-      max-width: 50%;
       overflow: hidden;
+      flex: 1;
     }
 
     .common-actions {
@@ -169,8 +178,11 @@ defineExpose({
 
   .filter-card {
     margin-bottom: 10px;
-    .n-form-item-feedback-wrapper {
+    :deep(.n-form-item-feedback-wrapper) {
       display: none;
+    }
+    :deep(.auto-form-actions) {
+      margin-top: 8px;
     }
   }
   .table-pagination {

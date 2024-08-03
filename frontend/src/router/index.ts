@@ -66,6 +66,9 @@ router.beforeEach(async (to, from, next) => {
   if (!to.meta?.skipLogin && !token) {
     return next({
       name: 'LoginPage',
+      query: {
+        redirect: to.fullPath,
+      },
     })
   }
 
@@ -75,6 +78,9 @@ router.beforeEach(async (to, from, next) => {
     } catch (e) {
       return next({
         name: 'LoginPage',
+        query: {
+          redirect: to.fullPath,
+        },
       })
     }
   }

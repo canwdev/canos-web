@@ -67,6 +67,8 @@ const userDropdownOptions = computed(() => {
   align-items: center;
   justify-content: space-between;
   padding: 4px 10px;
+  flex-wrap: wrap;
+  gap: 8px;
   .header-side {
     display: flex;
     gap: 8px;

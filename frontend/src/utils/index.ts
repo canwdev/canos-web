@@ -65,7 +65,7 @@ export function pad2Num(num: number, len = 2) {
   return num.toString().padStart(len, '0')
 }
 
-export function formatDate(d: Date | number, format = 'YYYY-MM-DD HH:mm') {
+export function formatDate(d: any | number, format = 'YYYY-MM-DD HH:mm') {
   if (!d) {
     return ''
   }

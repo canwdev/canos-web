@@ -1,1 +1,3 @@
-此文件夹中的内容，是根据[教程](https://docs.nestjs.com/recipes/passport)创建的
+- 此文件夹中的内容，是根据[教程](https://docs.nestjs.com/recipes/passport)创建的
+- JWT原理：https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html
+- JWT是无状态的，因此不能直接吊销用户登录状态

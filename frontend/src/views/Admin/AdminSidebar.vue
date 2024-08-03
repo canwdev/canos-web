@@ -64,9 +64,10 @@ function handleLogoClick() {
 </script>
 
 <template>
-  <div class="admin-sidebar" :class="{folded: props.isFolded}">
+  <div class="admin-sidebar" :class="{folded: isFolded}">
     <div @click="handleLogoClick" class="logo-wrap">
-      <img src="@/assets/vue.svg" alt="logo" />
+      <img src="@/assets/images/wilford.png" alt="logo" />
+      <span v-if="!isFolded">Admin System</span>
     </div>
     <OptionUI class="nav-list" :option-list="navOptions" />
   </div>
@@ -74,6 +75,7 @@ function handleLogoClick() {
 
 <style lang="scss" scoped>
 .admin-sidebar {
+  flex-shrink: 0;
   width: 250px;
   height: 100%;
   overflow-y: auto;
@@ -85,11 +87,17 @@ function handleLogoClick() {
     width: 50px;
   }
   .logo-wrap {
+    background-color: $primary;
+    color: white;
     height: 50px;
     display: flex;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
     padding: 4px 10px;
+    gap: 4px;
+    font-weight: 600;
+    font-size: 16px;
     img {
       height: 32px;
       width: auto;
