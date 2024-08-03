@@ -9,3 +9,10 @@ export const UserRoleOptions = Object.entries(UserRole).map(([key, value]) => {
     value: value,
   }
 })
+
+export interface IUserInfo {
+  id: number
+  username: string
+  roles: UserRole[]
+  disabled: boolean
+}

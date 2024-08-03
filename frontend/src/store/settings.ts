@@ -38,8 +38,8 @@ export const useSettingsStore = defineStore('settingsStore', {
       ldTheme: LdThemeType.SYSTEM,
       customTheme: DEFAULT_THEME,
       iconTheme: DEFAULT_ICON_THEME,
-      themeColor: '#258292',
-      desktopBgColor: '#17515b',
+      themeColor: '#0078d4',
+      desktopBgColor: '#515c6b',
       disableAnimation: false,
       isWindowed: window.innerHeight > 500,
 

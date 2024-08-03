@@ -118,8 +118,8 @@ export const useGlobalTheme = () => {
 
     return {
       common: {
-        // borderRadiusSmall: isRect.value ? 0 : '2px',
-        // borderRadius: isRect.value ? 0 : '4px',
+        borderRadiusSmall: '0',
+        borderRadius: '2px',
         primaryColor,
         primaryColorHover: primaryColor,
         primaryColorPressed: primaryColor,

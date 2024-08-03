@@ -68,7 +68,7 @@ export default defineComponent({
             </g>
           </svg>
         </div>
-        <ItemAction :item="item" />
+        <ItemAction v-if="item.type" :item="item" />
       </div>
     </div>
 

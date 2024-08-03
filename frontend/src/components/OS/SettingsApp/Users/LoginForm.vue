@@ -1,5 +1,8 @@
 <script lang="ts" setup="">
 import {FormInst, FormRules, FormValidationError} from 'naive-ui'
+import AutoFormNaive from '@/components/CommonUI/AutoFormNaive/index.vue'
+import {computed} from 'vue'
+import {AutoFormItemType, MixedFormItems} from '@/components/CommonUI/AutoFormNaive/enum'
 
 interface Props {
   showSubmit?: boolean
@@ -13,7 +16,7 @@ interface ModelType {
   username: string | null
   password: string | null
 }
-const formRef = ref<FormInst | null>(null)
+const formRef = ref()
 const formModel = ref<ModelType>({
   username: '',
   password: '',
@@ -36,43 +39,59 @@ const formRules: FormRules = {
   ],
 }
 
-const handleValidate = (e: MouseEvent) => {
-  e?.preventDefault()
-  formRef.value?.validate((errors: Array<FormValidationError> | undefined) => {
-    if (errors) {
-      window.$message.error('Invalid Form!')
-      return
-    }
-    emit('submit', formModel.value)
-  })
+const submitForm = () => {
+  formRef.value.submitForm()
 }
+const formItems = computed((): MixedFormItems[] => {
+  return [
+    {
+      type: AutoFormItemType.INPUT,
+      key: 'username',
+      label: 'Username',
+      placeholder: ' ',
+      props: {
+        onKeyup: (e: KeyboardEvent) => {
+          if (e.key === 'Enter') {
+            submitForm()
+          }
+        },
+      },
+    },
+    {
+      type: AutoFormItemType.INPUT,
+      key: 'password',
+      label: 'Password',
+      placeholder: ' ',
+      props: {
+        type: 'password',
+        showPasswordOn: 'click',
+        onKeyup: (e: KeyboardEvent) => {
+          if (e.key === 'Enter') {
+            submitForm()
+          }
+        },
+      },
+    },
+  ]
+})
 
 defineExpose({
-  handleValidate,
+  submitForm,
 })
 </script>
 
 <template>
-  <n-form :disabled="disabled" ref="formRef" :model="formModel" :rules="formRules">
-    <n-form-item path="username" label="Username">
-      <n-input
-        ref="inputUsernameRef"
-        v-model:value="formModel.username"
-        @keyup.enter="handleValidate"
-      />
-    </n-form-item>
-    <n-form-item path="password" label="Password">
-      <n-input
-        v-model:value="formModel.password"
-        type="password"
-        show-password-on="click"
-        @keyup.enter="handleValidate"
-        class="font-code"
-      />
-    </n-form-item>
-
-    <n-space v-if="showSubmit" size="small" justify="end">
-      <n-button type="primary" @click="handleValidate" :disabled="disabled"> Submit </n-button>
-    </n-space>
-  </n-form>
+  <AutoFormNaive
+    ref="formRef"
+    :form-schema="{
+      model: formModel,
+      rules: formRules,
+      props: {
+        labelPosition: 'top',
+      },
+      formItems,
+    }"
+    hide-actions
+    @onSubmit="$emit('submit', formModel)"
+  />
 </template>

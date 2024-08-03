@@ -4,6 +4,15 @@ import type {StOptionItem} from '@/components/CommonUI/OptionUI/enum'
 import {RouterLink, useRoute, useRouter} from 'vue-router'
 import {adminRoutes} from '@/router/admin'
 
+const props = withDefaults(
+  defineProps<{
+    isFolded?: boolean
+  }>(),
+  {
+    isFolded: false,
+  },
+)
+
 const route = useRoute()
 const router = useRouter()
 
@@ -55,11 +64,11 @@ function handleLogoClick() {
 </script>
 
 <template>
-  <div class="admin-sidebar">
+  <div class="admin-sidebar" :class="{folded: props.isFolded}">
     <div @click="handleLogoClick" class="logo-wrap">
       <img src="@/assets/vue.svg" alt="logo" />
     </div>
-    <OptionUI :option-list="navOptions" />
+    <OptionUI class="nav-list" :option-list="navOptions" />
   </div>
 </template>
 
@@ -69,10 +78,18 @@ function handleLogoClick() {
   height: 100%;
   overflow-y: auto;
   border-right: 1px solid $color_border;
+  transition: all 0.2s;
+  overflow-x: hidden;
+
+  &.folded {
+    width: 50px;
+  }
   .logo-wrap {
-    padding: 10px;
+    height: 50px;
     display: flex;
+    align-items: center;
     cursor: pointer;
+    padding: 4px 10px;
     img {
       height: 32px;
       width: auto;
@@ -80,6 +97,10 @@ function handleLogoClick() {
   }
   :deep(.c-panel-item .panel-body) {
     padding: 0;
+  }
+
+  .nav-list {
+    min-width: 250px;
   }
 }
 </style>

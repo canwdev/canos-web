@@ -4,7 +4,7 @@ import {User} from '@/modules/users/user.entity'
 import {Repository} from 'typeorm'
 import {CreateEditUserDto} from '@/modules/users/user.dto'
 import * as bcrypt from 'bcryptjs'
-import {UserRole} from '@/types/user'
+import {IUserInfo, UserRole} from '@/types/user'
 
 @Injectable()
 export class UsersService {
@@ -18,11 +18,12 @@ export class UsersService {
   }
 
   async findUsers() {
-    return (await this.usersRepository.find()).map((user) => {
+    return (await this.usersRepository.find()).map((user): IUserInfo => {
       return {
         id: user.id,
         username: user.username,
-        roles: user.roles.split(','),
+        roles: user.roles.split(',') as UserRole[],
+        disabled: user.disabled,
       }
     })
   }

@@ -19,6 +19,9 @@ export default defineComponent({
 
       router.replace({
         name: 'LoginPage',
+        query: {
+          redirect: router.currentRoute.value.fullPath,
+        },
       })
     })
 

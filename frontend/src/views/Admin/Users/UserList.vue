@@ -4,7 +4,7 @@ import {usersApi} from '@/api/users'
 import {CreateEditUserDto} from '@server/modules/users/user.dto'
 import {renderNDropdownMenu} from '@/components/CommonUI/OptionUI/Tools/renders'
 import AutoFormNaive from '@/components/CommonUI/AutoFormNaive/index.vue'
-import {FormRules} from 'naive-ui'
+import {FormRules, NTag} from 'naive-ui'
 import {AutoFormItemType, MixedFormItems} from '@/components/CommonUI/AutoFormNaive/enum'
 import {UserRoleOptions} from '@server/types/user'
 
@@ -22,6 +22,32 @@ const tableColumns = ref([
   {
     key: 'roles',
     title: 'Roles',
+    render(row) {
+      const tags = row.roles.map((tagKey) => {
+        return h(
+          NTag,
+          {
+            style: {
+              marginRight: '4px',
+            },
+            type: 'info',
+            bordered: false,
+          },
+          {
+            default: () => tagKey,
+          },
+        )
+      })
+      return tags
+    },
+  },
+  {
+    key: 'disabled',
+    title: 'Disabled',
+    width: '150px',
+    render(row) {
+      return row.disabled ? 'Yes' : 'No'
+    },
   },
   {
     title: 'Action',

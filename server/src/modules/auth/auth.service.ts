@@ -14,6 +14,10 @@ export class AuthService {
     console.log('[validateUser]', username)
     const user = await this.usersService.findUser(username)
 
+    if (!user) {
+      return null
+    }
+
     // bcrypt.compareSync 解密匹配
     const isPasswordValid = bcrypt.compareSync(pass, user.password_salt)
 

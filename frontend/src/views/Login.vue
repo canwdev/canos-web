@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import {useRouter} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
 import {LsKeys} from '@/enum'
 import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
 import {usersApi} from '@/api/users'
 import LoginForm from '@/components/OS/SettingsApp/Users/LoginForm.vue'
 
+const route = useRoute()
 const router = useRouter()
 
 const isLoading = ref(false)
 const handleLogin = async (data) => {
+  if (isLoading.value) {
+    return
+  }
   try {
     isLoading.value = true
     let {username, password} = data
@@ -22,7 +26,12 @@ const handleLogin = async (data) => {
     }
     // console.log(access_token)
     localStorage.setItem(LsKeys.LS_KEY_AUTHORIZATION, access_token)
-    await router.push({path: '/'})
+
+    if (route.query.redirect) {
+      await router.push({path: route.query.redirect as string})
+    } else {
+      await router.push({path: '/'})
+    }
   } catch (e) {
     console.error(e)
   } finally {
@@ -31,7 +40,7 @@ const handleLogin = async (data) => {
 }
 
 const beforeLogin = () => {
-  loginFormRef.value.handleValidate()
+  loginFormRef.value.submitForm()
 }
 
 // 自动聚焦输入框
@@ -67,7 +76,7 @@ onMounted(() => {
               @click="beforeLogin"
               :disabled="isLoading"
             >
-              Login
+              Login{{ isLoading ? 'ing...' : '' }}
             </button>
           </n-space>
         </div>
