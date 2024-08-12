@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {computed, defineComponent, ref} from 'vue'
 import {AutoFormSchema, AutoFormItemType, MixedFormItems} from './enum'
-import AutoFormNaive from './index.vue'
-import {FormRules} from 'naive-ui'
+import {FormRules} from 'element-plus'
+import AutoFormElPlus from './index.vue'
 
 const dataForm = ref<any>({
   test_input: '',
@@ -85,16 +85,17 @@ const formItems = computed((): MixedFormItems[] => {
 </script>
 
 <template>
-  <AutoFormNaive
+  <AutoFormElPlus
     :form-schema="{
       model: dataForm,
       rules: dataFormRules,
       props: {
         labelPosition: 'top',
       },
+      actionButtons: true,
       formItems,
     }"
   >
-    <div>{{ dataForm }}</div>
-  </AutoFormNaive>
+    <pre>{{ dataForm }}</pre>
+  </AutoFormElPlus>
 </template>

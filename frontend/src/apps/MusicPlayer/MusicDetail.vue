@@ -175,7 +175,7 @@ export default defineComponent({
       :title="$t('playback-speed')"
     >
       <n-space align="center">
-        <n-button @click="handlePlaybackRateChange(1)">重置</n-button>
+        <el-button @click="handlePlaybackRateChange(1)">重置</el-button>
 
         <n-slider
           style="width: 200px"

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {ref, toRefs} from 'vue'
+import {defineComponent, onBeforeMount, PropType, ref, toRefs} from 'vue'
 import {AutoFormSchema, AutoFormItemType} from './enum'
 import AutoFormItem from './AutoFormItem.vue'
-import {FormInst} from 'naive-ui'
+import {ElMessage, FormInstance} from 'element-plus'
 
 /**
- * Naive UI 表单生成组件
+ * Element Plus 表单生成组件
  */
 const props = withDefaults(
   defineProps<{
@@ -20,18 +20,17 @@ const props = withDefaults(
 )
 
 const emit = defineEmits(['onInvalidForm', 'onSubmit', 'onMounted', 'onBeforeUnmount'])
-
 const {formSchema} = toRefs<any>(props)
 
-const formRef = ref<FormInst>()
+const formRef = ref<FormInstance>()
 const submitForm = () => {
-  formRef.value?.validate((errors) => {
-    if (errors) {
+  ;(formRef.value as any).validate(async (valid: boolean) => {
+    if (!valid) {
       console.log('Invalid form')
       emit('onInvalidForm')
       return
     }
-    // console.log('onSubmit', formSchema.value.model)
+    console.log('onSubmit', formSchema.value.model)
     emit('onSubmit', formSchema.value.model)
   })
 }
@@ -52,15 +51,14 @@ defineExpose({
 </script>
 
 <template>
-  <n-form
+  <el-form
     ref="formRef"
     :label-width="formSchema.labelWidth"
     :model="formSchema.model"
     :rules="formSchema.rules"
     :label-position="formSchema.labelPosition"
-    class="auto-form-naive"
+    class="auto-form-el-plus"
     @submit.prevent="submitForm"
-    size="small"
     v-bind="formSchema.props"
     :disabled="isLoading"
   >
@@ -71,7 +69,7 @@ defineExpose({
     </transition>
 
     <template v-for="(item, index) in formSchema.formItems">
-      <!-- 自动grid数组-->
+      <!--      自动grid数组-->
       <div
         :key="'g_' + index"
         class="auto-form-grid"
@@ -83,7 +81,7 @@ defineExpose({
           <AutoFormItem v-if="'key' in vi" :key="vi.key" :item="vi" :model="formSchema.model" />
         </template>
       </div>
-      <!-- 手动grid数组(AutoFormRow)-->
+      <!--      手动grid数组(AutoFormRow)-->
       <div
         :key="'ag_' + index"
         class="auto-form-grid"
@@ -98,25 +96,23 @@ defineExpose({
           :model="formSchema.model"
         />
       </div>
-      <!-- 单个内容-->
+      <!--      单个内容-->
       <AutoFormItem v-else-if="'key' in item" :key="index" :item="item" :model="formSchema.model" />
     </template>
 
-    <!-- 操作按钮-->
+    <!--    操作按钮-->
     <div v-if="!hideActions" class="auto-form-actions">
       <slot name="actions" :submit-form="submitForm">
-        <n-button :disabled="isLoading" type="primary" size="small" @click="submitForm()"
-          >Submit</n-button
-        >
+        <el-button type="primary" @click="submitForm()">Submit</el-button>
       </slot>
     </div>
 
     <slot></slot>
-  </n-form>
+  </el-form>
 </template>
 
 <style lang="scss">
-.auto-form-naive {
+.auto-form-el-plus {
   position: relative;
 
   .auto-form-loading-container {
@@ -139,7 +135,6 @@ defineExpose({
       padding: 10px;
     }
   }
-
   .auto-form-grid {
     display: grid;
     grid-template-rows: auto;
@@ -150,6 +145,14 @@ defineExpose({
     justify-content: flex-end;
   }
   .af-render-gap {
+    .el-form-item__content {
+      display: flex;
+      gap: 16px;
+      .el-input,
+      .el-input-number {
+        flex: 1;
+      }
+    }
   }
 }
 </style>

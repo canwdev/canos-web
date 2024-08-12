@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import {computed} from 'vue'
-import AutoFormElPlus from '@/components/CanUI/packages/AutoFormNaive/index.vue'
+import AutoFormElPlus from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
 import {
   AutoFormItem,
   AutoFormItemType,
   AutoFormSchema,
   MixedFormItems,
-} from '@/components/CanUI/packages/AutoFormNaive/enum'
+} from '@/components/CanUI/packages/AutoFormElPlus/enum'
 import {DataTableColumn} from 'naive-ui'
 import {useRoute} from 'vue-router'
-import {ArrowSync16Regular} from '@vicons/fluent'
-import {getFlatFormItems} from '@/components/CanUI/packages/AutoFormNaive/utils'
+import {getFlatFormItems} from '@/components/CanUI/packages/AutoFormElPlus/utils'
 
 const props = withDefaults(
   defineProps<{
@@ -116,9 +115,7 @@ defineExpose({
       </div>
       <div class="common-actions">
         <slot name="actions">
-          <n-button @click="loadData">
-            <n-icon size="16"> <ArrowSync16Regular /> </n-icon> Refresh
-          </n-button>
+          <el-button @click="loadData"> Refresh </el-button>
         </slot>
         <slot name="actionsMore"> </slot>
       </div>

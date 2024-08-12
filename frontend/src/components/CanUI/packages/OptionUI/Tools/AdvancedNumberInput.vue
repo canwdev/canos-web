@@ -198,7 +198,7 @@ export default defineComponent({
       (val) => {
         inputValue.value = getValue(val)
       },
-      {immediate: true}
+      {immediate: true},
     )
     const handleEnter = () => {
       if (readonly.value || disabled.value) {

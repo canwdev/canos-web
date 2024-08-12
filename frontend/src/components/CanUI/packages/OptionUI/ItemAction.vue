@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
 import RectSwitch from './Tools/RectSwitch.vue'
-import {StOptionItem, StOptionType, swatches} from './enum'
+import {StOptionItem, StOptionType} from './enum'
 import VueRender from './Tools/VueRender.vue'
 import AdvancedNumberInput from './Tools/AdvancedNumberInput.vue'
 
@@ -34,17 +34,16 @@ export default defineComponent({
     return {
       StOptionType,
       dynamicValue,
-      swatches,
     }
   },
 })
 </script>
 
 <template>
-  <n-space class="option-item-action" size="small" align="center">
-    <n-switch
+  <el-space class="option-item-action" size="small" align="center">
+    <el-switch
       v-if="item.type === StOptionType.SWITCH"
-      v-model:value="dynamicValue"
+      v-model="dynamicValue"
       v-bind="item.props"
     />
 
@@ -55,49 +54,28 @@ export default defineComponent({
       v-bind="item.props"
     />
 
-    <div class="option-slider-wrap" v-else-if="item.type === StOptionType.SLIDER">
-      <n-slider class="option-slider" v-model:value="dynamicValue" v-bind="item.props" />
-    </div>
-
-    <n-select
-      class="option-select"
-      v-else-if="item.type === StOptionType.SELECT"
-      v-model:value="dynamicValue"
-      :options="item.options"
-      value-field="value"
-      label-field="label"
-      size="small"
-      v-bind="item.props"
-    />
-
-    <n-input
+    <el-input
       class="option-select option-input"
       v-else-if="item.type === StOptionType.INPUT"
-      v-model:value="dynamicValue"
-      size="small"
-      type="text"
-      clearable
-      :placeholder="item.placeholder || ''"
+      v-model="dynamicValue"
       v-bind="item.props"
     />
 
-    <n-color-picker
+    <el-select
+      v-else-if="item.type === StOptionType.SELECT"
+      v-model="dynamicValue"
+      :placeholder="item.placeholder"
+      class="option-select"
+      :teleported="false"
+      v-bind="item.props"
+    >
+      <el-option v-for="vi in item.options" :key="vi.value" :label="vi.label" :value="vi.value" />
+    </el-select>
+
+    <el-color-picker
       class="option-select"
       v-else-if="item.type === StOptionType.COLOR_PICKER"
-      v-model:value="dynamicValue"
-      size="small"
-      :swatches="swatches"
-      :show-alpha="false"
-      :actions="['clear']"
-      :modes="['hex']"
-      v-bind="item.props"
-    />
-
-    <n-dynamic-tags
-      class="dynamic-tags"
-      v-else-if="item.type === StOptionType.DYNAMIC_TAGS"
-      v-model:value="dynamicValue"
-      size="small"
+      v-model="dynamicValue"
       v-bind="item.props"
     />
 
@@ -110,7 +88,7 @@ export default defineComponent({
     />
 
     <VueRender v-if="item.actionRender" :render-fn="item.actionRender" />
-  </n-space>
+  </el-space>
 </template>
 
 <style lang="scss">
@@ -127,13 +105,16 @@ export default defineComponent({
     }
   }
   .option-select {
-    width: 180px;
+    width: 150px;
   }
   .dynamic-tags {
     width: 250px;
   }
   .option-input {
     font-size: 12px;
+  }
+  .el-select-dropdown__list {
+    text-align: left;
   }
 }
 </style>

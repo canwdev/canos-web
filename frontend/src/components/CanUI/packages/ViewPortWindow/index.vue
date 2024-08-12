@@ -1,12 +1,7 @@
 <script lang="ts">
 import {defineComponent, PropType, shallowRef} from 'vue'
 import {WindowController} from './utils/window-controller'
-import {
-  ArrowMaximize20Regular,
-  ArrowMinimize20Regular,
-  Dismiss20Regular,
-  Subtract20Filled,
-} from '@vicons/fluent'
+
 import LayoutHelper from './utils/LayoutHelper.vue'
 import {useDynamicClassName, useMouseOver} from './utils/use-utils'
 import {useThrottleFn, useVModel, watchDebounced} from '@vueuse/core'
@@ -20,10 +15,6 @@ export default defineComponent({
   components: {
     LayoutPreview,
     LayoutHelper,
-    Subtract20Filled,
-    ArrowMinimize20Regular,
-    ArrowMaximize20Regular,
-    Dismiss20Regular,
   },
   props: {
     // 是否显示窗口

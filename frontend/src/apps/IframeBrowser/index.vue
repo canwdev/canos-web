@@ -90,7 +90,7 @@ export default defineComponent({
   <div class="iframe-browser-inner-wrap">
     <div class="iframe-browser-address-bar-wrap">
       <div class="button-wrap">
-        <n-button size="tiny" @click="showShortcuts = true">@</n-button>
+        <el-button size="tiny" @click="showShortcuts = true">@</el-button>
         <QuickOptions :options="shortcutList" v-model:visible="showShortcuts" title="Shortcuts" />
       </div>
 
@@ -102,7 +102,7 @@ export default defineComponent({
         type="text"
         @keyup.enter="handleGo()"
       />
-      <n-button size="tiny" @click="handleGo()">Go</n-button>
+      <el-button size="tiny" @click="handleGo()">Go</el-button>
     </div>
     <iframe
       ref="iframeRef"

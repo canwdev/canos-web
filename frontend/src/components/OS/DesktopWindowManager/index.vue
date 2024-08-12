@@ -2,7 +2,6 @@
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
 import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
 import {useSystemStore} from '@/store/system'
-import {Subtract20Filled} from '@vicons/fluent'
 import DesktopContent from '@/components/OS/DesktopWindowManager/DesktopContent.vue'
 import {useSettingsStore} from '@/store/settings'
 import {TaskItem} from '@/enum/os'

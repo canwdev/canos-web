@@ -1,4 +1,5 @@
-import {NButton, NInput, NSpace} from 'naive-ui'
+import {ElButton, ElInput, ElDialog} from 'element-plus'
+import {ref, h} from 'vue'
 
 export const showInputPrompt = (options: any = {}): Promise<string> => {
   const {
@@ -32,44 +33,50 @@ export const showInputPrompt = (options: any = {}): Promise<string> => {
         }
       }
       resolve(editingValue.value)
-      d.destroy()
+      d.visible = false
     }
 
-    const d = window.$dialog.info({
-      title: title,
-      showIcon: false,
-      autoFocus: false,
-      onAfterEnter: () => {
-        inputRef.value?.focus()
+    const d = {
+      visible: true,
+      title,
+      close: () => {
+        reject()
+        d.visible = false
       },
-      content: () =>
-        h(
-          NSpace,
-          {size: 'small', vertical: true},
+    }
 
-          () => [
-            h(NInput, {
-              ref: inputRef,
-              value: editingValue.value,
-              placeholder,
-              type,
-              clearable: true,
-              'onUpdate:value': (v) => {
-                editingValue.value = v
-              },
-              onKeydown: (event) => {
-                if (event.key === 'Enter') {
-                  event.preventDefault()
-                  handlePositiveClick()
-                }
-              },
-            }),
-          ],
-        ),
-      action: () =>
-        h(NSpace, {size: 'small'}, () => [
+    const dialog = h(
+      ElDialog,
+      {
+        modelValue: d.visible,
+        title,
+        onClose: d.close,
+        onOpen: () => {
+          inputRef.value?.focus()
+        },
+      },
+      {
+        default: () => [
+          h(ElInput, {
+            ref: inputRef,
+            modelValue: editingValue.value,
+            placeholder,
+            type,
+            clearable: true,
+            'onUpdate:modelValue': (v) => {
+              editingValue.value = v
+            },
+            onKeydown: (event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                handlePositiveClick()
+              }
+            },
+          }),
+        ],
+        footer: () => [
           h(
-            NButton,
+            ElButton,
             {
               type: 'primary',
               disabled: !allowEmpty && !editingValue.value,
@@ -78,16 +85,17 @@ export const showInputPrompt = (options: any = {}): Promise<string> => {
             () => 'OK',
           ),
           h(
-            NButton,
+            ElButton,
             {
-              onClick: () => {
-                reject()
-                d.destroy()
-              },
+              onClick: d.close,
             },
             () => 'Cancel',
           ),
-        ]),
-    })
+        ],
+      },
+    )
+
+    // Assuming you have a method to mount the dialog, e.g., a function in your Vue app
+    window.$dialog.show(dialog)
   })
 }

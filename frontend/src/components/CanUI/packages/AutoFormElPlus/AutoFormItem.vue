@@ -3,14 +3,12 @@ import {defineComponent, PropType} from 'vue'
 import {AutoFormItem, AutoFormItemType, AutoFormSchema} from './enum'
 import _get from 'lodash/get'
 import _set from 'lodash/set'
-import AdvancedNumberInput from '@/components/CanUI/packages/OptionUI/Tools/AdvancedNumberInput.vue'
-import VueRender from '@/components/CanUI/packages/OptionUI/Tools/VueRender.vue'
-import AdvancedInput from '@/components/CanUI/packages/OptionUI/Tools/AdvancedInput.vue'
 import VueMonaco from '@/components/CanUI/packages/VueMonaco/index.vue'
+import VueRender from '@/components/CanUI/packages/OptionUI/Tools/VueRender.vue'
 
 export default defineComponent({
   name: 'AutoFormItem',
-  components: {VueMonaco, AdvancedInput, AdvancedNumberInput, VueRender},
+  components: {VueMonaco, VueRender},
   props: {
     item: {
       type: Object as PropType<AutoFormItem>,
@@ -62,121 +60,131 @@ export default defineComponent({
 </script>
 
 <template>
-  <n-form-item
+  <el-form-item
     :label="item.label"
-    :path="item.key"
+    :prop="item.key"
     class="auto-form-item"
     :class="[item.cls]"
-    :style="{width: item.width}"
+    :style="item.style || {width: item.width}"
   >
-    <n-input
+    <el-input
       v-if="item.type === AutoFormItemType.INPUT"
-      v-model:value="dynamicValue"
-      :placeholder="item.placeholder"
-      :disabled="item.disabled"
-      size="small"
-      v-bind="item.props"
-    />
-    <AdvancedInput
-      v-if="item.type === AutoFormItemType.ADVANCED_INPUT"
       v-model="dynamicValue"
       :placeholder="item.placeholder"
       :disabled="item.disabled"
-      size="small"
-      type="textarea"
+      v-bind="item.props"
+    />
+    <el-input-number
+      v-else-if="item.type === AutoFormItemType.INPUT_NUMBER"
+      v-model="dynamicValue"
+      :placeholder="item.placeholder"
+      :disabled="item.disabled"
+      :controls="false"
       v-bind="item.props"
     />
     <VueMonaco
-      v-if="item.type === AutoFormItemType.MONACO_EDITOR"
+      v-else-if="item.type === AutoFormItemType.MONACO_EDITOR"
       v-model="dynamicValue"
       :placeholder="item.placeholder"
       :disabled="item.disabled"
       show-line-numbers
       v-bind="item.props"
     />
-    <AdvancedNumberInput
-      v-else-if="item.type === AutoFormItemType.INPUT_NUMBER"
-      v-model="dynamicValue"
-      :placeholder="item.placeholder"
-      :disabled="item.disabled"
-      v-bind="item.props"
-    />
 
-    <n-select
+    <el-select
       v-else-if="item.type === AutoFormItemType.SELECT"
-      v-model:value="dynamicValue"
+      v-model="dynamicValue"
       :placeholder="item.placeholder"
       class="full-width"
       :disabled="item.disabled"
-      :options="item.options"
-      size="small"
       v-bind="item.props"
-    />
+    >
+      <VueRender
+        v-if="item.selectOptionRender"
+        :render-fn="item.selectOptionRender"
+        :params="item"
+      />
+      <template v-else>
+        <el-option
+          v-for="vi in item.options"
+          :key="vi.value"
+          :label="vi.label"
+          :value="vi.value"
+          :disabled="vi.disabled"
+        />
+      </template>
+    </el-select>
 
-    <n-color-picker
+    <el-color-picker
       v-else-if="item.type === AutoFormItemType.COLOR_PICKER"
-      v-model:value="dynamicValue"
+      v-model="dynamicValue"
       :disabled="item.disabled"
-      size="small"
       v-bind="item.props"
     />
 
-    <n-button
+    <el-button
       v-else-if="item.type === AutoFormItemType.BUTTON"
       @click="item.clickHandler"
       :disabled="item.disabled"
-      size="small"
       v-bind="item.props"
-      >{{ item.placeholder }}</n-button
+      >{{ item.placeholder }}</el-button
     >
-    <n-date-picker
+    <el-date-picker
       v-else-if="item.type === AutoFormItemType.DATE_PICKER"
-      v-model:value="dynamicValue"
+      v-model="dynamicValue"
       :disabled="item.disabled"
-      size="small"
       v-bind="item.props"
     />
 
-    <n-checkbox-group
+    <el-checkbox-group
       v-else-if="item.type === AutoFormItemType.CHECKBOX_GROUP"
-      v-model:value="dynamicValue"
+      v-model="dynamicValue"
       :disabled="item.disabled"
-      size="small"
       v-bind="item.props"
     >
-      <n-space>
-        <n-checkbox v-for="(option, index) in item.options" :key="index" :value="option.value">{{
-          option.label
-        }}</n-checkbox>
-      </n-space>
-    </n-checkbox-group>
+      <el-checkbox
+        v-for="(option, index) in item.options || item.props.options"
+        :key="index"
+        :value="option.value"
+        >{{ option.label }}</el-checkbox
+      >
+    </el-checkbox-group>
 
-    <n-switch
+    <el-switch
       v-else-if="item.type === AutoFormItemType.SWITCH"
-      v-model:value="dynamicValue"
+      v-model="dynamicValue"
       :disabled="item.disabled"
       v-bind="item.props"
     />
 
-    <n-radio-group
+    <el-radio-group
       v-else-if="item.type === AutoFormItemType.RADIO_GROUP"
-      v-model:value="dynamicValue"
       :disabled="item.disabled"
-      size="small"
-      v-bind="item.props"
+      v-model="dynamicValue"
     >
-      <n-space>
-        <n-radio v-for="(option, index) in item.options" :key="index" :value="option.value">{{
-          option.label
-        }}</n-radio>
-      </n-space>
-    </n-radio-group>
+      <el-radio
+        v-for="(option, index) in item.options || item.props.options"
+        :key="index"
+        :value="option.value"
+        >{{ option.label }}</el-radio
+      >
+    </el-radio-group>
 
     <VueRender v-if="item.render" :render-fn="item.render" />
-  </n-form-item>
+
+    <template v-if="item.renderLabel" #label="{label}">
+      <VueRender :render-fn="item.renderLabel" :label="label"
+    /></template>
+  </el-form-item>
 </template>
 
 <style lang="scss">
 .auto-form-item {
+  .el-input-number {
+    width: 100%;
+  }
+  & > .el-form-item__label {
+    padding-right: 0;
+  }
 }
 </style>

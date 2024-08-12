@@ -3,13 +3,13 @@ import AutoFilterList from '@/views/Admin/Common/AutoFilterList.vue'
 import {usersApi} from '@/api/users'
 import {CreateEditUserDto} from '@server/modules/users/user.dto'
 import {renderNDropdownMenu} from '@/components/CanUI/packages/OptionUI/Tools/renders'
-import AutoFormNaive from '@/components/CanUI/packages/AutoFormNaive/index.vue'
+import AutoFormNaive from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
 import {FormRules, NTag} from 'naive-ui'
 import {
   AutoFormItem,
   AutoFormItemType,
   MixedFormItems,
-} from '@/components/CanUI/packages/AutoFormNaive/enum'
+} from '@/components/CanUI/packages/AutoFormElPlus/enum'
 import {DisabledOptions, IUserInfo, UserRoleOptions} from '@server/types/user'
 import {formatDate} from '@/utils'
 import {TableColumn} from 'naive-ui/es/data-table/src/interface'
@@ -33,7 +33,7 @@ const tableColumns = ref<TableColumn<IUserInfo>[]>([
     render: (row) => {
       return row.roles.map((tagKey) => {
         return h(
-          NTag,
+          'span',
           {
             size: 'small',
             style: {
@@ -285,18 +285,10 @@ const handleCreateEdit = async () => {
     :request-data-fn="usersApi.getUsers"
   >
     <template #actionsMore>
-      <n-button type="primary" @click="beforeCreate">Create</n-button>
+      <el-button type="primary" @click="beforeCreate">Create</el-button>
     </template>
   </AutoFilterList>
-  <n-modal
-    preset="dialog"
-    :show-icon="false"
-    :title="isCreate ? 'Create User' : 'Edit User'"
-    @positive-click="handleCreateEdit"
-    @negative-click="isShowEditDialog = false"
-    @close="isShowEditDialog = false"
-    :show="isShowEditDialog"
-  >
+  <el-dialog :title="isCreate ? 'Create User' : 'Edit User'" v-model="isShowEditDialog">
     <AutoFormNaive
       :is-loading="isUpdating"
       :form-schema="{
@@ -309,5 +301,5 @@ const handleCreateEdit = async () => {
       }"
       @onSubmit="handleCreateEdit"
     />
-  </n-modal>
+  </el-dialog>
 </template>

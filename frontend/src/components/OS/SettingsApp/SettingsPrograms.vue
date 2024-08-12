@@ -4,9 +4,9 @@ import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
 import {StOptionItem} from '@/components/CanUI/packages/OptionUI/enum'
-import {NSpace, NSwitch} from 'naive-ui'
 import {useSystemStore} from '@/store/system'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+import {ElSwitch} from 'element-plus'
 
 export default defineComponent({
   name: 'SettingsPrograms',
@@ -30,10 +30,10 @@ export default defineComponent({
               iconRender: h(ThemedIcon, {name: item.icon}),
               label: item.title,
               key: item.appid,
-              actionRender: h(NSpace, {size: 'small', align: 'center'}, () => [
+              actionRender: h('div', {style: 'display:flex; align-items: center; gap:8px;'}, () => [
                 h('div', {}, '开机自启'),
-                h(NSwitch, {
-                  value: aIdsMap[item.appid],
+                h(ElSwitch, {
+                  modelValue: aIdsMap[item.appid],
                   onClick: () => {
                     // 切换开机自动启动
                     if (aIdsMap[item.appid]) {

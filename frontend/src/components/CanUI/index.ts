@@ -1,6 +1,7 @@
 import {App} from 'vue'
 import AutoRatioBox from './packages/AutoRatioBox.vue'
-import AutoRouterView from '@/components/CanUI/packages/AutoRouterView.vue'
+import AutoRouterView from './packages/AutoRouterView.vue'
+import VueRender from './packages/OptionUI/Tools/VueRender.vue'
 
 const CanUI = {
   install(app: App) {
@@ -11,6 +12,7 @@ const CanUI = {
 
     app.component('AutoRatioBox', AutoRatioBox)
     app.component('AutoRouterView', AutoRouterView)
+    app.component('VueRender', VueRender)
   },
 }
 

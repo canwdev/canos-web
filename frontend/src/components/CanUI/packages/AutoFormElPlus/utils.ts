@@ -1,4 +1,4 @@
-import {AutoFormItem, MixedFormItems} from '@/components/CanUI/packages/AutoFormNaive/enum'
+import {AutoFormItem, MixedFormItems} from './enum'
 
 /**
  * 获取平铺的表单items

@@ -1,4 +1,4 @@
-import {FormRules} from 'naive-ui'
+import {FormRules} from 'element-plus'
 
 export type OptionItem = {
   value: any
@@ -7,7 +7,6 @@ export type OptionItem = {
 
 export enum AutoFormItemType {
   INPUT = 'input',
-  ADVANCED_INPUT = 'advanced_input',
   MONACO_EDITOR = 'monaco_editor',
   INPUT_NUMBER = 'input_number',
   SELECT = 'select',
@@ -37,10 +36,14 @@ export type AutoFormItem = {
   options?: OptionItem[]
   // 渲染函数 h('div', {}, null)
   render?: any
+  renderLabel?: any
+  selectOptionRender?: any
   // 按钮的点击执行函数
   clickHandler?: any
   // 类名
   cls?: any
+  // form-item 样式覆盖
+  style?: any
   disabled?: boolean
   width?: string
 }

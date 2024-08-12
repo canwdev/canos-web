@@ -2,7 +2,7 @@
 import {defineComponent, PropType} from 'vue'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 
-import {SwitchOption} from '@/components/CanUI/packages/OptionUI/enum'
+import {SwitchOption} from '../enum'
 
 export default defineComponent({
   name: 'RectSwitch',
