@@ -3,10 +3,10 @@ import {defineComponent, PropType} from 'vue'
 import {AutoFormItem, AutoFormItemType, AutoFormSchema} from './enum'
 import _get from 'lodash/get'
 import _set from 'lodash/set'
-import AdvancedNumberInput from '@/components/CommonUI/OptionUI/Tools/AdvancedNumberInput.vue'
-import VueRender from '@/components/CommonUI/OptionUI/Tools/VueRender.vue'
-import AdvancedInput from '@/components/CommonUI/OptionUI/Tools/AdvancedInput.vue'
-import VueMonaco from '@/components/CommonUI/VueMonaco/index.vue'
+import AdvancedNumberInput from '@/components/CanUI/packages/OptionUI/Tools/AdvancedNumberInput.vue'
+import VueRender from '@/components/CanUI/packages/OptionUI/Tools/VueRender.vue'
+import AdvancedInput from '@/components/CanUI/packages/OptionUI/Tools/AdvancedInput.vue'
+import VueMonaco from '@/components/CanUI/packages/VueMonaco/index.vue'
 
 export default defineComponent({
   name: 'AutoFormItem',

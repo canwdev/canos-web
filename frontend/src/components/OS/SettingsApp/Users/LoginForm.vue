@@ -1,8 +1,8 @@
 <script lang="ts" setup="">
 import {FormInst, FormRules, FormValidationError} from 'naive-ui'
-import AutoFormNaive from '@/components/CommonUI/AutoFormNaive/index.vue'
+import AutoFormNaive from '@/components/CanUI/packages/AutoFormNaive/index.vue'
 import {computed} from 'vue'
-import {AutoFormItemType, MixedFormItems} from '@/components/CommonUI/AutoFormNaive/enum'
+import {AutoFormItemType, MixedFormItems} from '@/components/CanUI/packages/AutoFormNaive/enum'
 
 interface Props {
   showSubmit?: boolean

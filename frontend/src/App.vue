@@ -1,45 +1,17 @@
-<script lang="ts">
-import {darkTheme, GlobalThemeOverrides} from 'naive-ui'
+<script lang="ts" setup>
 import {useGlobalTheme} from '@/hooks/use-global-theme'
 import AppSub from '@/AppSub.vue'
 import {useSettingsStore} from '@/store/settings'
 
-export default defineComponent({
-  components: {
-    AppSub,
-  },
-  setup() {
-    const {isAppDarkMode, themeOverrides} = useGlobalTheme()
-    const settingsStore = useSettingsStore()
-
-    return {
-      settingsStore,
-      isAppDarkMode,
-      darkTheme,
-      themeOverrides,
-    }
-  },
-})
+const {isAppDarkMode} = useGlobalTheme()
+const settingsStore = useSettingsStore()
 </script>
 
 <template>
-  <n-config-provider
-    :theme="isAppDarkMode ? darkTheme : null"
-    :theme-overrides="themeOverrides"
-    class="page-root _line-grid"
-    inline-theme-disabled
-  >
-    <n-loading-bar-provider>
-      <n-notification-provider>
-        <n-message-provider placement="top">
-          <n-dialog-provider>
-            <RouterView />
-            <AppSub />
-          </n-dialog-provider>
-        </n-message-provider>
-      </n-notification-provider>
-    </n-loading-bar-provider>
-  </n-config-provider>
+  <div class="page-root">
+    <RouterView />
+    <AppSub />
+  </div>
 </template>
 
 <style lang="scss">

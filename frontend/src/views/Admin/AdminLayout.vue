@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import AutoRouterView from '@/components/CommonUI/AutoRouterView.vue'
 import AdminSidebar from '@/views/Admin/AdminSidebar.vue'
 import AdminHeader from '@/views/Admin/AdminHeader.vue'
 import {useStorage} from '@vueuse/core'

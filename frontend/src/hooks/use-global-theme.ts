@@ -3,9 +3,6 @@ import {LdThemeType} from '@/enum/settings'
 
 import {useMainStore} from '@/store/main'
 import {getSystemIsDarkMode, hexToRgb} from '@/utils/color'
-import {GlobalThemeOverrides} from 'naive-ui'
-import {IOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
-import {createGlobalState} from '@vueuse/core'
 
 export const useGlobalTheme = () => {
   const mainStore = useMainStore()
@@ -112,24 +109,7 @@ export const useGlobalTheme = () => {
     updateThemeColor()
   })
 
-  // NaiveUI GlobalThemeOverrides
-  const themeOverrides = computed<GlobalThemeOverrides>(() => {
-    const primaryColor = settingsStore.themeColor || '#258292'
-
-    return {
-      common: {
-        borderRadiusSmall: '0',
-        borderRadius: '2px',
-        primaryColor,
-        primaryColorHover: primaryColor,
-        primaryColorPressed: primaryColor,
-        primaryColorSuppl: primaryColor,
-      },
-    } as GlobalThemeOverrides
-  })
-
   return {
     isAppDarkMode,
-    themeOverrides,
   }
 }

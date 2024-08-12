@@ -2,7 +2,7 @@
 import {formatSiteTitle} from '@/router'
 import {sleep} from '@/utils'
 import {useSystemStore} from '@/store/system'
-import {useThemeOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
+import {useThemeOptions} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
 import {useIconThemes} from '@/components/OS/ThemedIcon/use-icon-themes'
 
 const systemStore = useSystemStore()

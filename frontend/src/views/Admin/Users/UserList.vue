@@ -2,14 +2,14 @@
 import AutoFilterList from '@/views/Admin/Common/AutoFilterList.vue'
 import {usersApi} from '@/api/users'
 import {CreateEditUserDto} from '@server/modules/users/user.dto'
-import {renderNDropdownMenu} from '@/components/CommonUI/OptionUI/Tools/renders'
-import AutoFormNaive from '@/components/CommonUI/AutoFormNaive/index.vue'
+import {renderNDropdownMenu} from '@/components/CanUI/packages/OptionUI/Tools/renders'
+import AutoFormNaive from '@/components/CanUI/packages/AutoFormNaive/index.vue'
 import {FormRules, NTag} from 'naive-ui'
 import {
   AutoFormItem,
   AutoFormItemType,
   MixedFormItems,
-} from '@/components/CommonUI/AutoFormNaive/enum'
+} from '@/components/CanUI/packages/AutoFormNaive/enum'
 import {DisabledOptions, IUserInfo, UserRoleOptions} from '@server/types/user'
 import {formatDate} from '@/utils'
 import {TableColumn} from 'naive-ui/es/data-table/src/interface'

@@ -1,5 +1,5 @@
 <script lang="ts">
-import VueRender from '@/components/CommonUI/OptionUI/Tools/VueRender.vue'
+import VueRender from '@/components/CanUI/packages/OptionUI/Tools/VueRender.vue'
 import {defineComponent, PropType} from 'vue'
 import ItemAction from './ItemAction.vue'
 import {StOptionItem, StOptionType} from './enum'

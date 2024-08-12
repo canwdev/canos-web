@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
+import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
 import {useDebounceFn, useScriptTag, useStorage, watchDebounced} from '@vueuse/core'
 
 interface Props {

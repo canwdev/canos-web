@@ -2,8 +2,8 @@
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
-import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
-import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
+import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
+import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
 import {useSystemStore} from '@/store/system'
 import {useDevicePixelRatio, useDevicesList} from '@vueuse/core'
 
@@ -46,7 +46,7 @@ export default defineComponent({
                     console.log(devices.value)
                   },
                 },
-                'Print to Console'
+                'Print to Console',
               ),
             },
             ...Array.from(devices.value).map((i) => {

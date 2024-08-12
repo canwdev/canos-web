@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {formatTimeHMS} from '@/utils'
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
-import TkSeekbar from '@/components/CommonUI/TkSeekBar.vue'
+import TkSeekbar from '@/components/TkSeekBar.vue'
 import Mousetrap from 'mousetrap'
 import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'

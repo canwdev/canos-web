@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
-import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
+import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
 import {useSystemStore} from '@/store/system'
 import {Subtract20Filled} from '@vicons/fluent'
 import DesktopContent from '@/components/OS/DesktopWindowManager/DesktopContent.vue'

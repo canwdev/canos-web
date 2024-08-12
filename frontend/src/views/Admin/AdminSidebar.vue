@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
-import type {StOptionItem} from '@/components/CommonUI/OptionUI/enum'
+import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
+import type {StOptionItem} from '@/components/CanUI/packages/OptionUI/enum'
 import {RouterLink, useRoute, useRouter} from 'vue-router'
 import {adminRoutes} from '@/router/admin'
 

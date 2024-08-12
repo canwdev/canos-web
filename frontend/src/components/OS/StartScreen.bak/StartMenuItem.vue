@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ShortcutItem} from '@/enum/os'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
-import AutoRatioBox from '@/components/CommonUI/AutoRatioBox.vue'
+import AutoRatioBox from '@/components/CanUI/packages/AutoRatioBox.vue'
 import {IStartMenuItem} from '@/components/OS/StartMenu/types'
 
 interface Props {

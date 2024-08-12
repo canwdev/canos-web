@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ViewPortWindow from '@/components/CommonUI/ViewPortWindow/index.vue'
+import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
 import {TaskItem, TaskQueue} from '@/utils/task-queue'
 import {fsWebApi} from '@/api/filesystem'
 import {

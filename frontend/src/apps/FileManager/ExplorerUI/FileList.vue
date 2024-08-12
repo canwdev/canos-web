@@ -2,7 +2,7 @@
 import {IEntry, SortType} from '@server/types/server'
 import FileListItem from './FileListItem.vue'
 import {generateTextFile, normalizePath, toggleArrayElement} from '../utils'
-import {showInputPrompt} from '@/components/CommonUI/input-prompt'
+import {showInputPrompt} from '@/components/CanUI/functions/input-prompt'
 import {fsWebApi} from '@/api/filesystem'
 import {useDropZone, useStorage, useVModel} from '@vueuse/core'
 import {LsKeys} from '@/enum'
@@ -27,8 +27,8 @@ import {
   Copy20Regular,
   ClipboardPaste20Regular,
 } from '@vicons/fluent'
-import QuickOptions from '@/components/CommonUI/QuickOptions/index.vue'
-import QuickContextMenu from '@/components/CommonUI/QuickOptions/utils/QuickContextMenu.vue'
+import QuickOptions from '@/components/CanUI/packages/QuickOptions/index.vue'
+import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/utils/QuickContextMenu.vue'
 import UploadQueue from '../UploadQueue.vue'
 import {useCopyPaste} from './hooks/use-copy-paste'
 import {ExplorerEvents, useExplorerBusOn} from '../utils/bus'

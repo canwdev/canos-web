@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import {computed} from 'vue'
-import AutoFormElPlus from '@/components/CommonUI/AutoFormNaive/index.vue'
+import AutoFormElPlus from '@/components/CanUI/packages/AutoFormNaive/index.vue'
 import {
   AutoFormItem,
   AutoFormItemType,
   AutoFormSchema,
   MixedFormItems,
-} from '@/components/CommonUI/AutoFormNaive/enum'
+} from '@/components/CanUI/packages/AutoFormNaive/enum'
 import {DataTableColumn} from 'naive-ui'
 import {useRoute} from 'vue-router'
 import {ArrowSync16Regular} from '@vicons/fluent'
-import {getFlatFormItems} from '@/components/CommonUI/AutoFormNaive/utils'
+import {getFlatFormItems} from '@/components/CanUI/packages/AutoFormNaive/utils'
 
 const props = withDefaults(
   defineProps<{

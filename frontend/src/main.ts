@@ -16,23 +16,24 @@ momentDurationFormatSetup(moment)
 
 import {createApp} from 'vue'
 import App from './App.vue'
-import {create} from 'naive-ui'
 import './styles/style.scss'
 import 'normalize.css'
-import '@/components/CommonUI/ViewPortWindow/theme/index.scss'
+import '@/components/CanUI/packages/ViewPortWindow/theme/index.scss'
 import router from './router'
 import {createPinia} from 'pinia'
-const naive = create({})
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import i18n from '@/i18n/index'
-import AutoRatioBox from '@/components/CommonUI/AutoRatioBox.vue'
 import '@/apps/app-list'
+
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import CanUI from '@/components/CanUI'
+
 const app = createApp(App)
 
-app.component('AutoRatioBox', AutoRatioBox)
-
 app.use(i18n)
-app.use(naive)
+app.use(CanUI)
+app.use(ElementPlus)
 app.use(router)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

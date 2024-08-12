@@ -2,10 +2,10 @@
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
-import OptionUI from '@/components/CommonUI/OptionUI/index.vue'
+import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
 import {ldThemeOptions, SettingsTabType} from '@/enum/settings'
-import {StOptionItem, StOptionType} from '@/components/CommonUI/OptionUI/enum'
-import {useThemeOptions} from '@/components/CommonUI/ViewPortWindow/utils/use-theme'
+import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
+import {useThemeOptions} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
 import {useIconThemes} from '@/components/OS/ThemedIcon/use-icon-themes'
 
 const getWallpaperText = () => {

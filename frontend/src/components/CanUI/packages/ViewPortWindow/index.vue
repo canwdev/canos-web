@@ -142,7 +142,7 @@ export default defineComponent({
               JSON.stringify({
                 ...s,
                 maximized: isMaximized.value,
-              })
+              }),
             )
           }
           return
@@ -152,7 +152,7 @@ export default defineComponent({
           localStorage.setItem(storageKey, JSON.stringify({...winOptions}))
         }
       },
-      {deep: Boolean(props.wid), debounce: 500}
+      {deep: Boolean(props.wid), debounce: 500},
     )
 
     watch(allowMove, (val) => {
@@ -287,7 +287,7 @@ export default defineComponent({
         layoutPreviewData.value = checkWindowAttach(params)
       },
       150,
-      true
+      true,
     )
 
     const handleMove = async (data) => {
@@ -323,7 +323,7 @@ export default defineComponent({
         emit('resize', winOptions)
       },
       50,
-      true
+      true,
     )
 
     onBeforeUnmount(() => {
@@ -425,9 +425,24 @@ export default defineComponent({
             <slot name="titleBarRightControls"> </slot>
             <slot name="titleBarRight">
               <button v-if="allowMinimum" @click="isMinimized = true" class="is-minimize">
-                <n-icon size="20">
-                  <Subtract20Filled />
-                </n-icon>
+                <svg
+                  width="20"
+                  height="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <rect
+                      x="3"
+                      y="9.25"
+                      width="14"
+                      height="1.5"
+                      rx=".75"
+                      fill="currentColor"
+                    ></rect>
+                  </g>
+                </svg>
               </button>
 
               <button
@@ -436,14 +451,55 @@ export default defineComponent({
                 @click="toggleMaximized"
                 :class="[isMaximized ? 'is-restore' : 'is-maximize']"
               >
-                <n-icon size="20">
-                  <ArrowMinimize20Regular v-if="isMaximized" />
-                  <ArrowMaximize20Regular v-else />
-                </n-icon>
+                <template v-if="isMaximized">
+                  <svg
+                    width="20"
+                    height="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 16 16"
+                  >
+                    <g fill="none">
+                      <path
+                        d="M13.854 2.854a.5.5 0 0 0-.708-.708L10 5.293V3.5a.5.5 0 0 0-1 0v2.9a.6.6 0 0 0 .6.6h2.9a.5.5 0 0 0 0-1h-1.793l3.147-3.146zM6.5 13a.5.5 0 0 1-.5-.5v-1.793l-3.146 3.147a.5.5 0 0 1-.708-.708L5.293 10H3.5a.5.5 0 0 1 0-1h2.9a.6.6 0 0 1 .6.6v2.9a.5.5 0 0 1-.5.5z"
+                        fill="currentColor"
+                      ></path>
+                    </g>
+                  </svg>
+                </template>
+                <template v-else>
+                  <svg
+                    width="16"
+                    height="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 16 16"
+                  >
+                    <g fill="none">
+                      <path
+                        d="M8.5 2a.5.5 0 0 0 0 1h3.793L3 12.293V8.5a.5.5 0 0 0-1 0v4.9a.6.6 0 0 0 .6.6h4.9a.5.5 0 0 0 0-1H3.707L13 3.707V7.5a.5.5 0 0 0 1 0V2.6a.6.6 0 0 0-.6-.6H8.5z"
+                        fill="currentColor"
+                      ></path>
+                    </g>
+                  </svg>
+                </template>
               </button>
 
               <button v-if="showClose" :title="`Close`" @click="handleClose" class="is-close">
-                <n-icon size="20"><Dismiss20Regular /></n-icon>
+                <svg
+                  width="20"
+                  height="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <path
+                      d="M4.089 4.216l.057-.07a.5.5 0 0 1 .638-.057l.07.057L10 9.293l5.146-5.147a.5.5 0 0 1 .638-.057l.07.057a.5.5 0 0 1 .057.638l-.057.07L10.707 10l5.147 5.146a.5.5 0 0 1 .057.638l-.057.07a.5.5 0 0 1-.638.057l-.07-.057L10 10.707l-5.146 5.147a.5.5 0 0 1-.638.057l-.07-.057a.5.5 0 0 1-.057-.638l.057-.07L9.293 10L4.146 4.854a.5.5 0 0 1-.057-.638l.057-.07l-.057.07z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
               </button>
             </slot>
           </div>

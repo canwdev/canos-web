@@ -12,8 +12,8 @@ import {
   StartLayoutGroup,
   IStartMenuItem,
 } from '@/components/OS/StartMenu/types'
-import QuickContextMenu from '@/components/CommonUI/QuickOptions/utils/QuickContextMenu.vue'
-import {QuickOptionItem} from '@/components/CommonUI/QuickOptions/enum'
+import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/utils/QuickContextMenu.vue'
+import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {LsKeys} from '@/enum'
 import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'
 import TitleEdit from '@/components/OS/StartMenu/Sub/TitleEdit.vue'

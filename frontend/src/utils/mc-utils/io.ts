@@ -1,4 +1,4 @@
-import {showInputPrompt} from '@/components/CommonUI/input-prompt'
+import {showInputPrompt} from '@/components/CanUI/functions/input-prompt'
 import moment from 'moment'
 
 export const promptGetFileName = async (name?, fallbackPrefix = 'PageCraft') => {
