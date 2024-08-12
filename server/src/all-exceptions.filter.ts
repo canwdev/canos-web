@@ -12,16 +12,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>()
     const status = exception instanceof HttpException ? exception.getStatus() : 500
 
-    const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : {message: 'Internal server error'}
-
     const errBody = {
       statusCode: status,
       timestamp: Date.now(),
       path: ctx.getRequest().url,
-      message: message,
+      message: exception.toString(),
     }
 
     // 获取错误的堆栈信息

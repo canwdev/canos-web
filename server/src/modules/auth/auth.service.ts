@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string) {
-    serverLog.log('[validateUser]', username)
+    serverLog.log('[AuthService][validateUser]', username)
     const user = await this.usersService.findUser({username})
 
     if (!user) {
@@ -34,8 +34,9 @@ export class AuthService {
 
   // 生成access_token
   async login(user) {
-    serverLog.log('[AuthService login]', user)
-    const payload = {username: user.username, sub: user.id}
+    serverLog.log('[AuthService][login]', user)
+    // 不要放入过多信息，因为内容签名后不可变
+    const payload = {sub: user.id}
     return {
       // 生成token，返回给客户端
       access_token: this.jwtService.sign(payload),

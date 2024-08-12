@@ -18,6 +18,19 @@ export class UsersService {
     return this.usersRepository.findOneBy(where)
   }
 
+  async getUserProfile(id: number): Promise<IUserInfo> {
+    if (id === undefined || id === null) {
+      throw new Error('id is not valid')
+    }
+    const user = await this.findUser({id: id})
+    return {
+      id: user.id,
+      username: user.username,
+      roles: user.roles.split(',') as UserRole[],
+      disabled: user.disabled,
+    }
+  }
+
   async findUsers(where: any = {}) {
     const rolesToFind = where.roles
     delete where.roles

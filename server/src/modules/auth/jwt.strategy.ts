@@ -4,6 +4,7 @@ import {Injectable} from '@nestjs/common'
 import {APP_JWT_SECRET} from '@/enum'
 import {IUserInfo} from '@/types/user'
 import {UsersService} from '@/modules/users/users.service'
+import {serverLog} from '@/utils/server-log'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -23,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user || user.disabled) {
       return null
     }
-    // serverLog.log('[JwtStrategy validate]', payload)
+    serverLog.trace('[JwtStrategy][validate]', payload)
     return payload
   }
 }

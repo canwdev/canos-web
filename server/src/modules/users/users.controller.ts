@@ -9,6 +9,7 @@ import {
   Put,
   Query,
   Request,
+  UseGuards,
   UseInterceptors,
   UsePipes,
 } from '@nestjs/common'
@@ -16,22 +17,28 @@ import {UsersService} from '@/modules/users/users.service'
 import {ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags} from '@nestjs/swagger'
 import {CreateEditUserDto} from '@/modules/users/user.dto'
 import {RemoveEmptyQueryInterceptor} from '@/utils/params-handle'
+import {RolesGuard} from '@/modules/auth/roles.guard'
+import {Roles} from '@/modules/auth/roles.decorator'
+import {UserRole} from '@/types/user'
 
 @ApiTags('用户管理')
 @Controller('users')
+// 仅允许角色为 admin 的用户访问
+@Roles([UserRole.admin])
+@UseGuards(RolesGuard)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get('get-users')
   @ApiOperation({summary: '获取用户列表'})
-  @UseInterceptors(RemoveEmptyQueryInterceptor) // 只在此接口生效
+  // 自动删除query参数中的空参数
+  @UseInterceptors(RemoveEmptyQueryInterceptor)
   async getUsers(
     @Query('id') id: number,
     @Query('username') username: string,
     @Query('roles') roles: string,
     @Query('disabled') disabled: boolean,
   ) {
-    throw new HttpException('demo error', HttpStatus.BAD_REQUEST)
     return this.usersService.findUsers({
       id,
       username,

@@ -63,7 +63,7 @@ function Service(config: any) {
 
       // extract backend message
       const backendMessage = response?.data?.message
-      console.log(backendMessage)
+      console.log('[backendMessage]', backendMessage)
       if (isToast) {
         if (backendMessage) {
           window.$message.error(backendMessage)

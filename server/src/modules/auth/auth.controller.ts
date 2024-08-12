@@ -2,9 +2,10 @@ import {Controller, Get, Post, Request, UseGuards} from '@nestjs/common'
 import {AuthService} from './auth.service'
 import {LocalAuthGuard} from '@/modules/auth/local-auth.guard'
 import {JwtAuthGuard} from '@/modules/auth/jwt-auth.guard'
-import {SkipAuth} from '@/modules/auth/skip-auth'
+import {SkipAuth} from '@/modules/auth/roles.decorator'
 import {UsersService} from '@/modules/users/users.service'
 import {IUserInfo, UserRole} from '@/types/user'
+import {serverLog} from '@/utils/server-log'
 
 @Controller('users/auth')
 export class AuthController {
@@ -24,13 +25,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@Request() req): Promise<IUserInfo> {
-    const user = await this.usersService.findUser({id: req.user.id})
-    return {
-      id: user.id,
-      username: user.username,
-      roles: user.roles.split(',') as UserRole[],
-      disabled: user.disabled,
-    }
+  async getProfile(@Request() req) {
+    serverLog.trace('[AuthController][getProfile]', req.user)
+    return this.usersService.getUserProfile(req.user.sub)
   }
 }
