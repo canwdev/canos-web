@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user || user.disabled) {
       return null
     }
-    console.log('[JwtStrategy validate]', payload)
+    // serverLog.log('[JwtStrategy validate]', payload)
     return payload
   }
 }

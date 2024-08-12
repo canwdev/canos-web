@@ -59,7 +59,7 @@ const navOptions = computed((): StOptionItem[] => {
 })
 
 function handleLogoClick() {
-  // globalEventBus.emit(GlobalEvents.TOGGLE_DRAWER)
+  router.push({name: 'AdminHome'})
 }
 </script>
 

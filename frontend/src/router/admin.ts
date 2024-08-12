@@ -1,6 +1,7 @@
 export const adminRoutes = [
   {
-    path: 'manage',
+    path: 'admin',
+    redirect: '/system32/home',
     name: 'AdminManageGroup',
     meta: {
       title: `Manage`,

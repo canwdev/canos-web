@@ -16,7 +16,10 @@ export const serverInfo: ServerInfo = {
 
 export const JWT_TOKEN_EXPIRE = process.env.JWT_EXPIRES_IN || '30 days'
 
-export const configBasePath = Path.join(serverInfo.homeDir, '/.config/can-os-web')
+// 配置、数据库和日志存放路径
+export const configBasePath = isDev
+  ? Path.join(process.cwd(), './data')
+  : Path.join(serverInfo.homeDir, '/.config/can-os-web')
 fs.ensureDirSync(configBasePath)
 console.log('[configBasePath]', configBasePath)
 

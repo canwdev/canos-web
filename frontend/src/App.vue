@@ -27,6 +27,7 @@ export default defineComponent({
     :theme="isAppDarkMode ? darkTheme : null"
     :theme-overrides="themeOverrides"
     class="page-root _line-grid"
+    inline-theme-disabled
   >
     <n-loading-bar-provider>
       <n-notification-provider>

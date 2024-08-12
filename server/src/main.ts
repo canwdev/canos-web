@@ -6,6 +6,8 @@ import * as os from 'os'
 import {program} from 'commander'
 import {serverInfo} from '@/enum'
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
+import {AllExceptionsFilter} from '@/all-exceptions.filter'
+import {logger} from 'sequelize/types/utils/logger'
 
 program
   .name('canos-web-server')
@@ -28,6 +30,9 @@ async function bootstrap() {
   })
   // 设置全局接口前缀
   app.setGlobalPrefix('api')
+
+  // 使用全局异常过滤器
+  app.useGlobalFilters(new AllExceptionsFilter())
 
   const protocol = 'http://'
 

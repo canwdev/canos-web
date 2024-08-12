@@ -31,6 +31,7 @@ export class UsersController {
     @Query('roles') roles: string,
     @Query('disabled') disabled: boolean,
   ) {
+    throw new HttpException('demo error', HttpStatus.BAD_REQUEST)
     return this.usersService.findUsers({
       id,
       username,
@@ -52,7 +53,6 @@ export class UsersController {
     try {
       return await this.usersService.deleteUser(id)
     } catch (e) {
-      console.error(e)
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }
   }
@@ -64,7 +64,6 @@ export class UsersController {
     try {
       await this.usersService.updateUser(editUserDto)
     } catch (e) {
-      console.error(e)
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }
   }

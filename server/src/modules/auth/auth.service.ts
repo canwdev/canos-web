@@ -3,6 +3,7 @@ import {UsersService} from '../users/users.service'
 import {JwtService} from '@nestjs/jwt'
 import * as bcrypt from 'bcryptjs'
 import {IUserInfo, UserRole} from '@/types/user'
+import {serverLog} from '@/utils/server-log'
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string) {
-    console.log('[validateUser]', username)
+    serverLog.log('[validateUser]', username)
     const user = await this.usersService.findUser({username})
 
     if (!user) {
@@ -33,7 +34,7 @@ export class AuthService {
 
   // 生成access_token
   async login(user) {
-    console.log('[AuthService login]', user)
+    serverLog.log('[AuthService login]', user)
     const payload = {username: user.username, sub: user.id}
     return {
       // 生成token，返回给客户端

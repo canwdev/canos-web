@@ -9,15 +9,16 @@ import {CryptInterceptor} from '@/modules/crypt/crypt.interceptor'
 import {CryptMiddleware} from '@/modules/crypt/crypt.middleware'
 import {UsersModule} from '@/modules/users/users.module'
 import {AuthModule} from '@/modules/auth/auth.module'
-import {isDev} from '@/enum'
+import {configBasePath, isDev} from '@/enum'
 import {join} from 'path'
 import {TypeOrmModule} from '@nestjs/typeorm'
+import * as Path from 'path'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'data/db.sqlite',
+      database: Path.join(configBasePath, 'db', 'db.sqlite'),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: isDev, // 在开发环境下可以使用，生产环境下尽量关闭
     }),

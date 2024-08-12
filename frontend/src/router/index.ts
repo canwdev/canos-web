@@ -30,12 +30,23 @@ const routes = [
   },
   {
     path: '/system32',
+    redirect: '/system32/home',
     name: 'AdminRootView',
     component: () => import('@/views/Admin/AdminLayout.vue'),
     meta: {
       title: `Admin System`,
     },
-    children: adminRoutes,
+    children: [
+      {
+        path: 'home',
+        name: 'AdminHome',
+        component: () => import('@/views/Admin/AdminDashboard.vue'),
+        meta: {
+          title: `Home`,
+        },
+      },
+      ...adminRoutes,
+    ],
   },
   {
     path: '/login',
