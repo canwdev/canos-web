@@ -71,7 +71,7 @@ onMounted(() => {
             :disabled="isLoading"
           />
 
-          <el-space>
+          <div class="login-actions">
             <button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">
               IP
             </button>
@@ -83,7 +83,7 @@ onMounted(() => {
             >
               Login{{ isLoading ? 'ing...' : '' }}
             </button>
-          </el-space>
+          </div>
         </div>
       </ViewPortWindow>
     </DesktopWallpaper>
@@ -109,6 +109,13 @@ onMounted(() => {
   .btn-login {
     background-color: $primary;
     color: white;
+  }
+
+  .login-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
   }
 }
 </style>

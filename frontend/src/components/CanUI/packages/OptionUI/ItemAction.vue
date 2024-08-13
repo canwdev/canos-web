@@ -73,10 +73,10 @@ export default defineComponent({
     </el-select>
 
     <el-color-picker
-      class="option-select"
       v-else-if="item.type === StOptionType.COLOR_PICKER"
       v-model="dynamicValue"
       v-bind="item.props"
+      :predefine="['#ff4500', '#ff8c00', '#ffd700', '#90ee90', '#00ced1', '#1e90ff', '#c71585']"
     />
 
     <!-- 高级的数字输入框-->

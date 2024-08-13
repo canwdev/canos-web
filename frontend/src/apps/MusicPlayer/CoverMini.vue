@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
-import {MusicNote220Filled} from '@vicons/fluent'
 
 interface Props {
   src?: string
@@ -12,9 +11,7 @@ const props = withDefaults(defineProps<Props>(), {})
   <button class="btn-no-style btn-cover flex items-center justify-center">
     <slot></slot>
     <CoverDisplay v-if="src" :src="src" />
-    <i v-else class="icon-wrap">
-      <MusicNote220Filled />
-    </i>
+    <i v-else class="icon-wrap"> 🎵 </i>
   </button>
 </template>
 

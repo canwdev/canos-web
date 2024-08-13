@@ -3,7 +3,6 @@ import {fsWebApi} from '@/api/filesystem'
 import {IDrive} from '@server/types/server'
 import {useStorage} from '@vueuse/core'
 import {LsKeys} from '@/enum'
-import {ChevronLeft20Filled} from '@vicons/fluent'
 import {normalizePath} from '@/apps/FileManager/utils'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import {bytesToSize} from '@/utils'
@@ -96,7 +95,7 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
       :class="{_folded: !showSidebar}"
       @click="showSidebar = !showSidebar"
     >
-      <ChevronLeft20Filled />
+      <span>◀️</span>
     </button>
     <div class="file-sidebar-content">
       <button
@@ -137,16 +136,14 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
     z-index: 10;
     &._folded {
       right: -20px;
-      svg {
+      span {
         transform: rotate(180deg);
       }
     }
     &:hover {
       opacity: 1;
     }
-    svg {
-      width: 20px;
-      height: 20px;
+    span {
     }
   }
   .file-sidebar-content {

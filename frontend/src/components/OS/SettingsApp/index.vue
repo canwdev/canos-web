@@ -20,47 +20,37 @@ const curTab = ref(SettingsTabType.PERSONALIZATION)
 
 <template>
   <div class="settings-app">
-    <n-layout has-sider style="height: 100%">
-      <n-layout-sider
-        collapse-mode="width"
-        :collapsed-width="0"
-        :width="200"
-        style="height: 100%"
-        show-trigger="arrow-circle"
-        bordered
+    <el-tabs type="border-card" v-model="curTab">
+      <el-tab-pane
+        v-for="item in settingsTabs"
+        :key="item.value"
+        :label="item.label"
+        :name="item.value"
       >
-        <n-list hoverable clickable>
-          <n-list-item
-            class="left-list-item"
-            v-for="item in settingsTabs"
-            :key="item.value"
-            @click="curTab = item.value"
-            :class="{active: curTab === item.value}"
-          >
-            {{ item.label }}
-          </n-list-item>
-        </n-list>
-      </n-layout-sider>
-      <n-layout-content>
-        <SettingsPersonalization v-if="curTab === SettingsTabType.PERSONALIZATION" />
-        <SettingsPrograms v-else-if="curTab === SettingsTabType.PROGRAMS" />
-        <SettingsHardware v-else-if="curTab === SettingsTabType.HARDWARE" />
-        <SettingsSystem v-else-if="curTab === SettingsTabType.SYSTEM" />
-      </n-layout-content>
-    </n-layout>
+      </el-tab-pane>
+    </el-tabs>
+    <div class="settings-content">
+      <SettingsPersonalization v-if="curTab === SettingsTabType.PERSONALIZATION" />
+      <SettingsPrograms v-else-if="curTab === SettingsTabType.PROGRAMS" />
+      <SettingsHardware v-else-if="curTab === SettingsTabType.HARDWARE" />
+      <SettingsSystem v-else-if="curTab === SettingsTabType.SYSTEM" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .settings-app {
   height: 100%;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 
-  .left-list-item {
-    &.active {
-      background-color: $primary_opacity;
-      border-radius: 0;
-    }
+  :deep(.el-tabs__content) {
+    padding: 0;
+  }
+
+  .settings-content {
+    flex: 1;
+    overflow-y: auto;
   }
 }
 </style>

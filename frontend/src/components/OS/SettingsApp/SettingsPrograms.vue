@@ -30,8 +30,8 @@ export default defineComponent({
               iconRender: h(ThemedIcon, {name: item.icon}),
               label: item.title,
               key: item.appid,
-              actionRender: h('div', {style: 'display:flex; align-items: center; gap:8px;'}, () => [
-                h('div', {}, '开机自启'),
+              actionRender: h('div', {style: 'display:flex; align-items: center; gap:8px;'}, [
+                h('div', {}, '自启动'),
                 h(ElSwitch, {
                   modelValue: aIdsMap[item.appid],
                   onClick: () => {

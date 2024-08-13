@@ -11,14 +11,6 @@ import {
   useMusicSettingsStore,
   useMusicStore,
 } from '@/apps/MusicPlayer/utils/music-state'
-import {
-  PlayCircle20Regular,
-  PauseCircle20Regular,
-  Previous20Filled,
-  Next20Filled,
-  Speaker220Filled,
-  SpeakerOff20Regular,
-} from '@vicons/fluent'
 
 // interface Props {}
 // const props = withDefaults(defineProps<Props>(), {})
@@ -143,7 +135,7 @@ const musicItem = computed(() => musicStore.musicItem)
           :title="$t('previous')"
           @click="previous"
         >
-          <i class="icon-wrap"><Previous20Filled /></i>
+          <i class="icon-wrap">⏮️</i>
         </button>
 
         <button
@@ -153,8 +145,8 @@ const musicItem = computed(() => musicStore.musicItem)
           @click="togglePlay"
         >
           <i class="icon-wrap _lg">
-            <PlayCircle20Regular v-if="musicStore.paused" />
-            <PauseCircle20Regular v-else />
+            <template v-if="musicStore.paused">▶️</template>
+            <template v-else>⏸️</template>
           </i>
         </button>
 
@@ -164,7 +156,7 @@ const musicItem = computed(() => musicStore.musicItem)
           :title="$t('next')"
           @click="next"
         >
-          <i class="icon-wrap"><Next20Filled /></i>
+          <i class="icon-wrap">⏭️</i>
         </button>
 
         <button
@@ -183,18 +175,18 @@ const musicItem = computed(() => musicStore.musicItem)
           <template #trigger>
             <button class="btn-action btn-no-style" :title="$t('volume')">
               <i class="icon-wrap">
-                <Speaker220Filled v-if="mSettingsStore.audioVolume > 0" />
-                <SpeakerOff20Regular v-else />
+                <template v-if="mSettingsStore.audioVolume > 0">🔊</template>
+                <template v-else>🔇</template>
               </i>
             </button>
           </template>
           <div style="display: flex; align-items: center; flex-direction: column">
-            <n-slider
+            <el-slider
               vertical
               style="height: 100px"
               :max="100"
               :tooltip="false"
-              v-model:value="mSettingsStore.audioVolume"
+              v-model="mSettingsStore.audioVolume"
             />
             <span style="font-size: 12px">{{ mSettingsStore.audioVolume }}</span>
           </div>

@@ -29,21 +29,14 @@ Limit: ${size(memory.value.jsHeapSizeLimit)}
 </script>
 
 <template>
-  <n-tooltip v-if="isSupported" trigger="hover">
-    <template #trigger>
-      <div class="tray-icon">
-        <div class="status-bar">
-          <div class="status-value" :style="{height: `${percent}%`}"></div>
-          <div class="status-display">
-            {{ percent.toFixed(0) }}
-          </div>
-        </div>
+  <div class="tray-icon" :title="titleDisplay">
+    <div class="status-bar">
+      <div class="status-value" :style="{height: `${percent}%`}"></div>
+      <div class="status-display">
+        {{ percent.toFixed(0) }}
       </div>
-    </template>
-    <div class="font-code" style="white-space: pre-wrap">
-      {{ titleDisplay }}
     </div>
-  </n-tooltip>
+  </div>
 </template>
 
 <style lang="scss" scoped>

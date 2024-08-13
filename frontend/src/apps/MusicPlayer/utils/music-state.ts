@@ -1,4 +1,3 @@
-import {ArrowRepeatAll20Regular} from '@vicons/fluent'
 import {getRandomInt, guid} from '@/utils'
 import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 import {normalizePath} from '@/apps/FileManager/utils'
@@ -64,12 +63,12 @@ export const loopModeMap = {
   },
   [LoopModeType.LOOP_SEQUENCE]: {
     value: LoopModeType.LOOP_SEQUENCE,
-    icon: ArrowRepeatAll20Regular,
+    icon: '🔁',
     i18nKey: 'msg.sequential-loop',
   },
   [LoopModeType.LOOP_REVERSE]: {
     value: LoopModeType.LOOP_REVERSE,
-    icon: ArrowRepeatAll20Regular,
+    icon: '🔁r',
     className: 'reverse-x',
     i18nKey: 'msg.reverse-loop',
   },

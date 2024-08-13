@@ -2,12 +2,7 @@
 import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
 import {TaskItem, TaskQueue} from '@/utils/task-queue'
 import {fsWebApi} from '@/api/filesystem'
-import {
-  CheckmarkCircle20Regular,
-  DismissCircle20Regular,
-  Pause20Regular,
-  ArrowUpload20Regular,
-} from '@vicons/fluent'
+
 import {bytesToSize} from '@/utils'
 
 const emit = defineEmits(['complete'])
@@ -111,12 +106,12 @@ defineExpose({
         :key="index"
         class="upload-item"
       >
-        <n-icon size="20" :title="item.reason">
-          <CheckmarkCircle20Regular v-if="item.success" />
-          <DismissCircle20Regular v-else-if="item.failed" />
-          <ArrowUpload20Regular v-else-if="item.progress > 0" />
-          <Pause20Regular v-else />
-        </n-icon>
+        <span style="font-size: 20px" :title="item.reason">
+          <template v-if="item.success">✅</template>
+          <template v-else-if="item.failed">⛔</template>
+          <template v-else-if="item.progress > 0">🔄</template>
+          <template v-else>⏸️</template>
+        </span>
         <div class="upload-content">
           <div class="upload-title text-overflow" :title="item.path">{{ item.name }}</div>
           <div v-if="item.progress > 0" class="upload-status font-code">

@@ -1,32 +1,8 @@
 <script lang="ts" setup>
 import {IEntry, SortType} from '@server/types/server'
 import FileListItem from './FileListItem.vue'
-import {generateTextFile, normalizePath, toggleArrayElement} from '../utils'
-import {showInputPrompt} from '@/components/CanUI/functions/input-prompt'
-import {fsWebApi} from '@/api/filesystem'
-import {useDropZone, useStorage, useVModel} from '@vueuse/core'
-import {LsKeys} from '@/enum'
-import {useFileDialog} from '@vueuse/core'
+import {useVModel} from '@vueuse/core'
 import FileGridItem from './FileGridItem.vue'
-import moment from 'moment'
-import {
-  DocumentAdd16Regular,
-  FolderAdd16Regular,
-  DocumentArrowUp16Regular,
-  FolderArrowUp16Regular,
-  DocumentArrowDown16Regular,
-  Rename16Regular,
-  Delete16Regular,
-  SelectAllOn24Regular,
-  Eye16Filled,
-  EyeOff16Filled,
-  Grid16Regular,
-  AppsList20Regular,
-  ArrowSortDownLines16Regular,
-  Cut20Regular,
-  Copy20Regular,
-  ClipboardPaste20Regular,
-} from '@vicons/fluent'
 import QuickOptions from '@/components/CanUI/packages/QuickOptions/index.vue'
 import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/utils/QuickContextMenu.vue'
 import UploadQueue from '../UploadQueue.vue'
@@ -107,37 +83,25 @@ const {
 </script>
 
 <template>
-  <div ref="dropZoneRef" :class="{isOverDropZone}" class="explorer-list-wrap" @contextmenu.prevent>
-    <transition name="fade">
-      <div class="os-loading-container _absolute" v-if="isLoading">
-        <n-spin />
-      </div>
-    </transition>
-
+  <div
+    ref="dropZoneRef"
+    :class="{isOverDropZone}"
+    v-loading="isLoading"
+    class="explorer-list-wrap"
+    @contextmenu.prevent
+  >
     <div class="explorer-actions vp-panel">
       <div class="action-group">
-        <button class="vp-button" @click="handleCreateFile" title="Create Document">
-          <n-icon size="16">
-            <DocumentAdd16Regular />
-          </n-icon>
-        </button>
-        <button class="vp-button" @click="handleCreateFolder" title="Create Folder">
-          <n-icon size="16">
-            <FolderAdd16Regular />
-          </n-icon>
-        </button>
+        <button class="vp-button" @click="handleCreateFile" title="Create Document">➕📄</button>
+        <button class="vp-button" @click="handleCreateFolder" title="Create Folder">➕📂</button>
 
         <div class="split-line"></div>
 
         <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files">
-          <n-icon size="16">
-            <DocumentArrowUp16Regular />
-          </n-icon>
+          ⏫📄
         </button>
         <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder">
-          <n-icon size="16">
-            <FolderArrowUp16Regular />
-          </n-icon>
+          ⏫📁
         </button>
         <button
           class="vp-button"
@@ -145,27 +109,19 @@ const {
           @click="handleDownload"
           title="Download"
         >
-          <n-icon size="16">
-            <DocumentArrowDown16Regular />
-          </n-icon>
+          ⏬
         </button>
 
         <div class="split-line"></div>
 
         <button class="vp-button" :disabled="!enableAction" @click="handleCut" title="Cut">
-          <n-icon size="16">
-            <Cut20Regular />
-          </n-icon>
+          ✂️
         </button>
         <button class="vp-button" :disabled="!enableAction" @click="handleCopy" title="Copy">
-          <n-icon size="16">
-            <Copy20Regular />
-          </n-icon>
+          📑
         </button>
         <button class="vp-button" :disabled="!enablePaste" @click="handlePaste" title="Paste">
-          <n-icon size="16">
-            <ClipboardPaste20Regular />
-          </n-icon>
+          📋
         </button>
 
         <button
@@ -174,14 +130,10 @@ const {
           @click="handleRename"
           title="Rename"
         >
-          <n-icon size="16">
-            <Rename16Regular />
-          </n-icon>
+          ✏️
         </button>
         <button class="vp-button" :disabled="!enableAction" @click="confirmDelete" title="Delete">
-          <n-icon size="16">
-            <Delete16Regular />
-          </n-icon>
+          ❌
         </button>
 
         <div class="split-line"></div>
@@ -192,31 +144,17 @@ const {
           @click="showHidden = !showHidden"
           title="Toggle hidden file visible"
         >
-          <n-icon size="16">
-            <Eye16Filled v-if="showHidden" />
-            <EyeOff16Filled v-else />
-          </n-icon>
+          {{ showHidden ? '😐' : '🫥' }}
         </button>
         <button @click="isGridView = !isGridView" class="vp-button" title="Toggle grid view">
-          <n-icon size="16">
-            <Grid16Regular v-if="isGridView" />
-            <AppsList20Regular v-else />
-          </n-icon>
+          {{ isGridView ? '🎛️' : '🎚️' }}
         </button>
         <div class="action-button-wrap">
-          <button class="vp-button" title="Toggle Sort" @click="showSortMenu = true">
-            <n-icon size="16">
-              <ArrowSortDownLines16Regular />
-            </n-icon>
-          </button>
+          <button class="vp-button" title="Toggle Sort" @click="showSortMenu = true">📶</button>
           <QuickOptions v-model:visible="showSortMenu" :options="sortOptions" />
         </div>
 
-        <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">
-          <n-icon size="16">
-            <SelectAllOn24Regular />
-          </n-icon>
-        </button>
+        <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">✅</button>
       </div>
     </div>
     <div

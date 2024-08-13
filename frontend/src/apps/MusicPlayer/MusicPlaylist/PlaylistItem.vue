@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
 import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
-import {Play20Filled, Pause20Filled} from '@vicons/fluent'
 
 interface Props {
   item: MusicItem
@@ -19,8 +18,8 @@ const isCurrent = computed(() => {
   <div class="playlist-item">
     <div class="item-left">
       <div v-if="isCurrent" class="status-icon">
-        <Play20Filled v-if="!musicStore.paused" />
-        <Pause20Filled v-else />
+        <template v-if="!musicStore.paused">▶️</template>
+        <template v-else>⏸️</template>
       </div>
       <CoverMini :src="item.cover" force-show-icon />
     </div>
