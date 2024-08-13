@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {AutoTableSchema} from './enum'
+import {AutoTableColumn} from './types'
 import {useCustomColumns} from './use-custom-columns'
 import VueRender from '@/components/CanUI/packages/OptionUI/Tools/VueRender.vue'
 
-interface Props {
-  tableSchema: AutoTableSchema
+interface IAutoTableProps {
+  columns: AutoTableColumn[]
   data: any
   customizeColumnStorageKey?: string
 }
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IAutoTableProps>(), {
   customizeColumnStorageKey: 'ate_hidden_column_keys',
 })
 const emit = defineEmits(['selectionChange'])

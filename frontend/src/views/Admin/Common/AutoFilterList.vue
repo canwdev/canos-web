@@ -7,16 +7,18 @@ import {
   AutoFormSchema,
   MixedFormItems,
 } from '@/components/CanUI/packages/AutoFormElPlus/enum'
-import {DataTableColumn} from 'naive-ui'
 import {useRoute} from 'vue-router'
 import {getFlatFormItems} from '@/components/CanUI/packages/AutoFormElPlus/utils'
+import AutoTableElPlus from '@/components/CanUI/packages/AutoTableElPlus/index.vue'
+import {AutoTableColumn} from '@/components/CanUI/packages/AutoTableElPlus/types'
+import AutoTableElPlusTest from '@/components/CanUI/packages/AutoTableElPlus/AutoTableElPlusTest.vue'
 
 const props = withDefaults(
   defineProps<{
     title?: string
     titleDesc?: string
     filterFormItems?: MixedFormItems[]
-    tableColumns: DataTableColumn[]
+    tableColumns: AutoTableColumn[]
     requestDataFn: (any) => Promise<any>
     enablePagination?: boolean
   }>(),
@@ -108,7 +110,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="auto-list-wrap">
+  <div class="auto-list-wrap" v-loading="isLoading">
     <div class="common-title-row">
       <div class="common-title text-overflow" :title="titleDesc">
         {{ title || pageTitle }}
@@ -121,30 +123,33 @@ defineExpose({
       </div>
     </div>
 
-    <n-card size="small" class="filter-card" v-if="filterFormSchema">
+    <div class="vp-panel filter-card" v-if="filterFormSchema">
       <AutoFormElPlus :form-schema="filterFormSchema" @onSubmit="loadData({isResetPage: true})" />
-    </n-card>
-    <n-data-table size="small" :data="tableData" :columns="tableColumns" :loading="isLoading" />
+    </div>
 
-    <n-pagination
-      v-if="enablePagination"
-      :disabled="isLoading"
-      class="table-pagination"
-      v-model:page="pageNumber"
-      v-model:page-size="pageSize"
-      show-size-picker
-      :page-sizes="[10, 50, 100, 200, 500]"
-      :item-count="totalCount"
-      show-quick-jumper
-      @update:page-size="loadData"
-      @update:page="loadData"
-    >
-      <template #prefix="{itemCount, startIndex}"> 共 {{ itemCount }} 项 </template>
-    </n-pagination>
+    <div class="vp-panel">
+      <AutoTableElPlus :data="tableData" :columns="tableColumns" />
+
+      <n-pagination
+        v-if="enablePagination"
+        :disabled="isLoading"
+        class="table-pagination"
+        v-model:page="pageNumber"
+        v-model:page-size="pageSize"
+        show-size-picker
+        :page-sizes="[10, 50, 100, 200, 500]"
+        :item-count="totalCount"
+        show-quick-jumper
+        @update:page-size="loadData"
+        @update:page="loadData"
+      >
+        <template #prefix="{itemCount, startIndex}"> 共 {{ itemCount }} 项 </template>
+      </n-pagination>
+    </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .auto-list-wrap {
   .common-title-row {
     display: flex;
@@ -170,7 +175,15 @@ defineExpose({
       justify-content: flex-end;
       align-items: flex-start;
       gap: 8px;
+
+      .el-button + .el-button {
+        margin-left: 0 !important;
+      }
     }
+  }
+
+  .filter-card {
+    padding: 10px;
   }
 
   .filter-card {

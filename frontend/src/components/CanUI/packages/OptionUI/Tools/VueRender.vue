@@ -8,10 +8,11 @@ export default defineComponent({
       type: [Object, Function],
       required: true,
     },
+    params: null,
   },
-  render() {
+  render(props) {
     if (typeof this.renderFn === 'function') {
-      return this.renderFn()
+      return this.renderFn(props.params)
     }
     return this.renderFn
   },

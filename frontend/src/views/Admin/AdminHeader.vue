@@ -55,16 +55,16 @@ const userDropdownOptions = computed(() => {
       </el-button>
     </div>
     <div class="header-side">
-      <n-dropdown
+      <DropdownMenu
         v-if="mainStore.userInfo"
         trigger="hover"
         key-field="label"
         :options="userDropdownOptions"
       >
-        <n-avatar :title="mainStore.userInfo.username" round>{{
-          mainStore.userInfo.username
-        }}</n-avatar>
-      </n-dropdown>
+        <el-avatar :size="34" :title="mainStore.userInfo.username">
+          {{ mainStore.userInfo.username }}
+        </el-avatar>
+      </DropdownMenu>
     </div>
   </div>
 </template>
@@ -88,12 +88,10 @@ const userDropdownOptions = computed(() => {
     transform: rotateY(180deg);
   }
 
-  .n-avatar {
+  .el-avatar {
     user-select: none;
     cursor: pointer;
-    :deep(.n-avatar__text) {
-      font-size: 12px;
-    }
+    font-size: 12px;
   }
 }
 </style>

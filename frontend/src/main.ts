@@ -16,7 +16,6 @@ momentDurationFormatSetup(moment)
 
 import {createApp} from 'vue'
 import App from './App.vue'
-import './styles/style.scss'
 import 'normalize.css'
 import '@/components/CanUI/packages/ViewPortWindow/theme/index.scss'
 import router from './router'
@@ -28,6 +27,7 @@ import '@/apps/app-list'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import CanUI from '@/components/CanUI'
+import './styles/style.scss'
 
 const app = createApp(App)
 

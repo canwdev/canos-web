@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import AutoTableElPlus from './index.vue'
+import {AutoTableColumn} from './types'
 
 const tableData = ref<any[]>([
   {id: 1, name: 'test 1', name2: 'test 21'},
@@ -8,42 +9,38 @@ const tableData = ref<any[]>([
   {id: 3, name: 'test 3', name2: 'test 23'},
   {id: 4, name: 'test 4', name2: 'test 24'},
 ])
-const tableSchema = computed(() => {
-  return {
-    columns: [
-      {
-        label: 'selection',
-        type: 'selection',
-        width: 50,
-        fixed: 'left',
-        props: {
-          // 当 type: 'selection' 时，传入此值可以在切换分页后保持选中
-          reserveSelection: true,
-        },
-      },
-      {
-        key: 'id',
-        label: 'ID',
-        width: 80,
-      },
-      {
-        key: 'name',
-        label: 'name',
-        width: 300,
-        render: (scope) => {
-          return h('div', {style: {color: 'red'}}, scope.row.name)
-        },
-      },
-      {
-        key: 'name2',
-        label: 'name2',
-        formatter: (scope) => {
-          return `!! ${scope.row.name2} !!`
-        },
-      },
-    ],
-  }
-})
+const tableColumns: AutoTableColumn[] = [
+  {
+    label: 'selection',
+    type: 'selection',
+    width: 50,
+    fixed: 'left',
+    props: {
+      // 当 type: 'selection' 时，传入此值可以在切换分页后保持选中
+      reserveSelection: true,
+    },
+  },
+  {
+    key: 'id',
+    label: 'ID',
+    width: 80,
+  },
+  {
+    key: 'name',
+    label: 'name',
+    width: 300,
+    render: (scope) => {
+      return h('div', {style: {color: 'red'}}, scope.row.name)
+    },
+  },
+  {
+    key: 'name2',
+    label: 'name2',
+    formatter: (scope) => {
+      return `!! ${scope.row.name2} !!`
+    },
+  },
+]
 
 const autoTableRef = ref()
 const multipleSelection = ref<any[]>([])
@@ -67,7 +64,7 @@ const clearSelect = () => {
   <AutoTableElPlus
     ref="autoTableRef"
     :data="tableData"
-    :table-schema="tableSchema"
+    :columns="tableColumns"
     @selectionChange="handleSelectionChange"
     :row-key="(row) => row.id"
   />

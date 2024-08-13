@@ -1,5 +1,5 @@
-import NDropdownMenu from './NDropdownMenu.vue'
+import DropdownMenu from './DropdownMenu.vue'
 
-export const renderNDropdownMenu = (options: any[] = []) => {
-  return h(NDropdownMenu, {options})
+export const renderDropdownMenu = (options: any[] = [], props?) => {
+  return h(DropdownMenu, {options, props})
 }

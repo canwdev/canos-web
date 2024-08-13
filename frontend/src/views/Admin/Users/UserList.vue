@@ -2,7 +2,7 @@
 import AutoFilterList from '@/views/Admin/Common/AutoFilterList.vue'
 import {usersApi} from '@/api/users'
 import {CreateEditUserDto} from '@server/modules/users/user.dto'
-import {renderNDropdownMenu} from '@/components/CanUI/packages/OptionUI/Tools/renders'
+import {renderDropdownMenu} from '@/components/CanUI/packages/OptionUI/Tools/renders'
 import AutoFormNaive from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
 import {FormRules, NTag} from 'naive-ui'
 import {
@@ -12,28 +12,30 @@ import {
 } from '@/components/CanUI/packages/AutoFormElPlus/enum'
 import {DisabledOptions, IUserInfo, UserRoleOptions} from '@server/types/user'
 import {formatDate} from '@/utils'
-import {TableColumn} from 'naive-ui/es/data-table/src/interface'
+// import {TableColumn} from 'naive-ui/es/data-table/src/interface'
+import {AutoTableColumn} from '@/components/CanUI/packages/AutoTableElPlus/types'
+import {ElTag} from 'element-plus'
 
 const autoListRef = ref()
-const tableColumns = ref<TableColumn<IUserInfo>[]>([
+const tableColumns = ref<AutoTableColumn[]>([
   {
     key: 'id',
-    title: 'ID',
+    label: 'ID',
     width: 100,
   },
   {
     key: 'username',
-    title: 'Username',
+    label: 'Username',
     minWidth: 100,
   },
   {
     key: 'roles',
-    title: 'Roles',
+    label: 'Roles',
     minWidth: 100,
-    render: (row) => {
+    render: ({row}) => {
       return row.roles.map((tagKey) => {
         return h(
-          'span',
+          ElTag,
           {
             size: 'small',
             style: {
@@ -51,64 +53,68 @@ const tableColumns = ref<TableColumn<IUserInfo>[]>([
   },
   {
     key: 'disabled',
-    title: 'Availability',
+    label: 'Availability',
     width: '100px',
-    render(row) {
-      return row.disabled ? 'Disabled' : 'Enable'
+    formatter(scope) {
+      return scope.row.disabled ? 'Disabled' : 'Enable'
     },
   },
   {
     key: 'created_at',
-    title: 'Created At',
+    label: 'Created At',
     width: '180px',
-    render(row) {
-      return formatDate(row.created_at)
+    formatter(scope) {
+      return formatDate(scope.row.created_at)
     },
   },
   {
     key: 'updated_at',
-    title: 'Updated At',
+    label: 'Updated At',
     width: '180px',
-    render(row) {
-      return formatDate(row.updated_at)
+    formatter(scope) {
+      return formatDate(scope.row.updated_at)
     },
   },
   {
-    title: 'Action',
+    label: 'Action',
     key: 'actions',
     width: 70,
-    align: 'right',
     fixed: 'right',
-    render(row) {
-      return renderNDropdownMenu([
-        {
-          label: 'Edit',
-          props: {
-            onClick: () => {
-              isCreate.value = false
-              isShowEditDialog.value = true
-              dataForm.value = formatFormData(row)
+    render({row}) {
+      return renderDropdownMenu(
+        [
+          {
+            label: 'Edit',
+            props: {
+              onClick: () => {
+                isCreate.value = false
+                isShowEditDialog.value = true
+                dataForm.value = formatFormData(row)
+              },
             },
           },
-        },
-        {
-          label: 'Delete',
-          props: {
-            onClick: () => {
-              window.$dialog.warning({
-                title: 'Confirm Delete',
-                content: `Are you sure you want to delete ${row.username}? This action is not recoverable!`,
-                positiveText: 'OK',
-                negativeText: 'Cancel',
-                onPositiveClick: () => {
-                  doDelete(row.id)
-                },
-                onNegativeClick: () => {},
-              })
+          {
+            label: 'Delete',
+            props: {
+              onClick: () => {
+                window.$dialog
+                  .confirm(
+                    `Are you sure you want to delete ${row.username}? This action is not recoverable!`,
+                    'Confirm Delete',
+                    {
+                      type: 'warning',
+                    },
+                  )
+                  .then(() => {
+                    doDelete(row.id)
+                  })
+                  .catch()
+              },
             },
           },
-        },
-      ])
+        ],
+        {},
+      )
     },
   },
 ])

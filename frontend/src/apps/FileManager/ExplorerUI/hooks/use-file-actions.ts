@@ -78,16 +78,14 @@ export const useFileActions = ({
     }
   }
   const confirmDelete = () => {
-    window.$dialog.warning({
-      title: 'Confirm Delete',
-      content: `确认删除？此操作不可撤销`,
-      positiveText: 'OK',
-      negativeText: 'Cancel',
-      onPositiveClick: () => {
+    window.$dialog
+      .confirm(`确认删除？此操作不可撤销`, 'Confirm Delete', {
+        type: 'warning',
+      })
+      .then(() => {
         doDeleteSelected()
-      },
-      onNegativeClick: () => {},
-    })
+      })
+      .catch()
   }
 
   const ctxMenuOptions = computed((): QuickOptionItem[] => {

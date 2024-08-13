@@ -174,10 +174,10 @@ export default defineComponent({
       :show-icon="false"
       :title="$t('playback-speed')"
     >
-      <n-space align="center">
+      <el-space align="center">
         <el-button @click="handlePlaybackRateChange(1)">重置</el-button>
 
-        <n-slider
+        <el-slider
           style="width: 200px"
           v-model:value="musicStore.playbackRate"
           @update:value="handlePlaybackRateChange(musicStore.playbackRate)"
@@ -186,7 +186,7 @@ export default defineComponent({
           :min="0.2"
           :marks="{[0.2]: '0.2', [0.5]: '0.5', 1: '1', [1.2]: '1.2', [1.5]: '1.5', 2: '2'}"
         />
-      </n-space>
+      </el-space>
     </n-modal>
 
     <n-modal

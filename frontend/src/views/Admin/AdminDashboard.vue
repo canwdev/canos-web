@@ -15,7 +15,7 @@ import {adminRoutes} from '@/router/admin'
             <RouterLink
               v-if="item.meta && !item.meta.hidden"
               :key="index2"
-              class="route-item"
+              class="route-item vp-panel"
               :to="{name: item.name}"
             >
               <div class="route-item__icon" :class="{empty: !item.meta.icon}">

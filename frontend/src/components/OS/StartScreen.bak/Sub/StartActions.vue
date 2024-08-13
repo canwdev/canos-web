@@ -20,16 +20,14 @@ const doShutdown = async () => {
   location.reload()
 }
 const confirmShutdown = () => {
-  window.$dialog.warning({
-    title: 'Confirm Shutdown',
-    content: `确认停止服务？停止后需要在服务端手动启动。`,
-    positiveText: 'OK',
-    negativeText: 'Cancel',
-    onPositiveClick: () => {
+  window.$dialog
+    .confirm(`确认停止服务？停止后需要在服务端手动启动。`, 'Confirm Shutdown', {
+      type: 'warning',
+    })
+    .then(() => {
       doShutdown()
-    },
-    onNegativeClick: () => {},
-  })
+    })
+    .catch()
 }
 </script>
 

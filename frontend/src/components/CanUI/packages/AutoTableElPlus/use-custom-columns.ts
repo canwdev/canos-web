@@ -1,6 +1,7 @@
 // 自定义表列
-import {computed, onMounted, ref} from 'vue'
+import {Ref, ref} from 'vue'
 import {useStorage} from '@vueuse/core'
+import {AutoTableColumn} from './types'
 
 interface IOption {
   label: string
@@ -8,17 +9,19 @@ interface IOption {
 }
 
 export const useCustomColumns = (props) => {
-  const {tableSchema} = toRefs(props)
+  const {columns} = toRefs(props) as {
+    columns: Ref<AutoTableColumn[]>
+  }
   const isShowColumnEdit = ref(false)
 
-  const tableColumnsOptions = ref<IOption[]>([])
+  const columnsOptions = ref<IOption[]>([])
   const getTableColumnsOptions = () => {
-    if (!tableSchema.value) {
+    if (!columns.value || !columns.value.length) {
       return []
     }
     const options: IOption[] = []
 
-    tableSchema.value.columns.forEach((item) => {
+    columns.value.forEach((item) => {
       if (!item.label || item.isCustomizeColumn) {
         return
       }
@@ -36,9 +39,9 @@ export const useCustomColumns = (props) => {
   }
   watch(isShowColumnEdit, (val) => {
     if (val) {
-      tableColumnsOptions.value = getTableColumnsOptions()
+      columnsOptions.value = getTableColumnsOptions()
     } else {
-      tableColumnsOptions.value = []
+      columnsOptions.value = []
       filteredColumns.value = getFilteredColumns()
     }
   })
@@ -52,17 +55,16 @@ export const useCustomColumns = (props) => {
     }
   }
 
-  const filteredColumns = ref([])
-  const getFilteredColumns = () => {
-    if (!tableSchema.value) {
+  const filteredColumns = ref<AutoTableColumn[]>([])
+  const getFilteredColumns = (): AutoTableColumn[] => {
+    if (!columns.value) {
       return []
     }
-    const columns = tableSchema.value.columns || []
     if (!hiddenColumnKeyMap.value || !Object.values(hiddenColumnKeyMap.value).length) {
-      return columns
+      return columns.value
     }
 
-    return columns.filter((item) => {
+    return columns.value.filter((item) => {
       if (!item.label) {
         return true
       }
@@ -78,7 +80,7 @@ export const useCustomColumns = (props) => {
   return {
     isShowColumnEdit,
     hiddenColumnKeyMap,
-    tableColumnsOptions,
+    columnsOptions,
     filteredColumns,
     handleUpdateCheck,
   }

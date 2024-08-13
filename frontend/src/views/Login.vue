@@ -64,9 +64,14 @@ onMounted(() => {
         <template #titleBarLeft>Login</template>
 
         <div class="card-wrap">
-          <LoginForm ref="loginFormRef" @submit="handleLogin" :disabled="isLoading" />
+          <LoginForm
+            v-loading="isLoading"
+            ref="loginFormRef"
+            @submit="handleLogin"
+            :disabled="isLoading"
+          />
 
-          <n-space size="small" justify="end">
+          <el-space>
             <button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">
               IP
             </button>
@@ -78,7 +83,7 @@ onMounted(() => {
             >
               Login{{ isLoading ? 'ing...' : '' }}
             </button>
-          </n-space>
+          </el-space>
         </div>
       </ViewPortWindow>
     </DesktopWallpaper>

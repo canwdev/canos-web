@@ -90,19 +90,18 @@ export default defineComponent({
   <div class="iframe-browser-inner-wrap">
     <div class="iframe-browser-address-bar-wrap">
       <div class="button-wrap">
-        <el-button size="tiny" @click="showShortcuts = true">@</el-button>
+        <button class="vp-button" @click="showShortcuts = true">@</button>
         <QuickOptions :options="shortcutList" v-model:visible="showShortcuts" title="Shortcuts" />
       </div>
 
-      <n-input
-        class="iframe-browser-input font-code"
-        size="tiny"
-        v-model:value="addressBarUrl"
+      <input
+        class="iframe-browser-input vp-input font-code"
+        v-model="addressBarUrl"
         placeholder="input url (https://)"
         type="text"
         @keyup.enter="handleGo()"
       />
-      <el-button size="tiny" @click="handleGo()">Go</el-button>
+      <button class="vp-button" @click="handleGo()">Go</button>
     </div>
     <iframe
       ref="iframeRef"

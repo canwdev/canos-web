@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 interface Props {
   options: any[]
+  props?: any
 }
 
 const props = withDefaults(defineProps<Props>(), {})
 </script>
 
 <template>
-  <el-dropdown :teleported="false">
+  <el-dropdown v-bind="props">
     <slot>
       <button class="btn-no-style">
         <svg

@@ -95,7 +95,7 @@ export const showInputPrompt = (options: any = {}): Promise<string> => {
       },
     )
 
-    // Assuming you have a method to mount the dialog, e.g., a function in your Vue app
+    // TODO
     window.$dialog.show(dialog)
   })
 }
