@@ -20,7 +20,7 @@ import * as Path from 'path'
       type: 'better-sqlite3',
       database: Path.join(configBasePath, 'db', 'db.sqlite'),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: isDev, // 在开发环境下可以使用，生产环境下尽量关闭
+      synchronize: isDev, // 在开发环境下可以使用，在生产环境中不要使用
     }),
     AuthModule,
     UsersModule,

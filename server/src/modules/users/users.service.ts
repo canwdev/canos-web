@@ -31,7 +31,7 @@ export class UsersService {
     }
   }
 
-  async findUsers(where: any = {}) {
+  async findUsers(where: any = {}, page: number = 1, limit: number = 10) {
     const rolesToFind = where.roles
     delete where.roles
     // console.log(where, rolesToFind)
@@ -70,18 +70,24 @@ export class UsersService {
     // 处理其他条件
     // queryBuilder.andWhere(where)
     // 执行查询
-    const users = await queryBuilder.getMany()
+    const [users, total] = await queryBuilder
+      .skip((page - 1) * limit) // 跳过的条数
+      .take(limit) // 每页的数量
+      .getManyAndCount() // 获取结果和总数
 
-    return users.map((user): IUserInfo => {
-      return {
-        id: user.id,
-        username: user.username,
-        roles: user.roles.split(',') as UserRole[],
-        disabled: user.disabled,
-        created_at: user.created_at,
-        updated_at: user.updated_at,
-      }
-    })
+    return {
+      results: users.map((user): IUserInfo => {
+        return {
+          id: user.id,
+          username: user.username,
+          roles: user.roles.split(',') as UserRole[],
+          disabled: user.disabled,
+          created_at: user.created_at,
+          updated_at: user.updated_at,
+        }
+      }),
+      total,
+    }
   }
 
   async createUser(createUserDto: CreateEditUserDto) {

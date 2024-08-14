@@ -38,13 +38,19 @@ export class UsersController {
     @Query('username') username: string,
     @Query('roles') roles: string,
     @Query('disabled') disabled: boolean,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
   ) {
-    return this.usersService.findUsers({
-      id,
-      username,
-      roles,
-      disabled,
-    })
+    return this.usersService.findUsers(
+      {
+        id,
+        username,
+        roles,
+        disabled,
+      },
+      page,
+      limit,
+    )
   }
 
   @Post('create-user')

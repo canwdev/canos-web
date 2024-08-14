@@ -105,6 +105,12 @@ function handleLogoClick() {
   }
   :deep(.c-panel-item .panel-body) {
     padding: 0;
+
+    .sub-item {
+      &.active {
+        background-color: $primary_opacity;
+      }
+    }
   }
 
   .nav-list {

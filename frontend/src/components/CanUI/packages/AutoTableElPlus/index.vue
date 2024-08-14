@@ -31,7 +31,6 @@ defineExpose({
 <template>
   <el-table
     ref="tableRef"
-    v-horizontal-scroll
     :data="data"
     class="auto-table-el-plus"
     v-bind="$attrs"

@@ -289,6 +289,7 @@ const handleCreateEdit = async () => {
     :table-columns="tableColumns"
     :filterFormItems="filterFormItems"
     :request-data-fn="usersApi.getUsers"
+    enable-pagination
   >
     <template #actionsMore>
       <el-button type="primary" @click="beforeCreate">Create</el-button>

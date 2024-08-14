@@ -30,8 +30,8 @@ const isSidebarFold = useStorage('ls_key_admin_is_sidebar_fold', false)
     overflow: hidden;
     .manage-content {
       flex: 1;
-      padding: 10px;
-      overflow: auto;
+      overflow: hidden;
+      overflow-x: auto;
     }
   }
 

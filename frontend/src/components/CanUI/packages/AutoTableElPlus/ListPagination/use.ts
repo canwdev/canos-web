@@ -3,7 +3,7 @@ import {computed, reactive, watch} from 'vue'
 export const usePaginationData = (defaultData: any = {}) => {
   const paginationData = reactive({
     totalItems: defaultData.totalItems || 0,
-    pageSize: defaultData.pageSize || 50,
+    pageSize: defaultData.pageSize || 10,
     currentPage: defaultData.currentPage || 1,
     totalPages: defaultData.totalPages || 0,
   })

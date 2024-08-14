@@ -12,6 +12,8 @@ import {getFlatFormItems} from '@/components/CanUI/packages/AutoFormElPlus/utils
 import AutoTableElPlus from '@/components/CanUI/packages/AutoTableElPlus/index.vue'
 import {AutoTableColumn} from '@/components/CanUI/packages/AutoTableElPlus/types'
 import AutoTableElPlusTest from '@/components/CanUI/packages/AutoTableElPlus/AutoTableElPlusTest.vue'
+import ListPagination from '@/components/CanUI/packages/AutoTableElPlus/ListPagination/index.vue'
+import {usePaginationData} from '@/components/CanUI/packages/AutoTableElPlus/ListPagination/use'
 
 const props = withDefaults(
   defineProps<{
@@ -33,9 +35,8 @@ const pageTitle = computed(() => route.meta.title)
 const {requestDataFn, filterFormItems, enablePagination} = toRefs(props)
 const isLoading = ref(false)
 const tableData = ref([])
-const pageNumber = ref(1)
-const pageSize = ref(10)
-const totalCount = ref(0)
+
+const {paginationData} = usePaginationData()
 
 const filterFormData = ref<any>({})
 const filterFormSchema = computed((): AutoFormSchema | null => {
@@ -66,13 +67,13 @@ async function loadData({isResetPage = false} = {}) {
     isLoading.value = true
 
     if (enablePagination.value && isResetPage) {
-      pageNumber.value = 1
+      paginationData.currentPage = 1
     }
     let params: any = {}
     if (enablePagination.value) {
       params = {
-        offset: (pageNumber.value - 1) * pageSize.value,
-        limit: pageSize.value,
+        page: paginationData.currentPage,
+        limit: paginationData.pageSize,
       }
     }
     params = {
@@ -87,8 +88,8 @@ async function loadData({isResetPage = false} = {}) {
     }
     // console.log(res)
     if (enablePagination.value) {
-      tableData.value = res.list
-      totalCount.value = res.count
+      tableData.value = res.results
+      paginationData.totalItems = res.total
     } else {
       tableData.value = res
     }
@@ -127,41 +128,38 @@ defineExpose({
       <AutoFormElPlus :form-schema="filterFormSchema" @onSubmit="loadData({isResetPage: true})" />
     </div>
 
-    <div class="vp-panel">
-      <AutoTableElPlus :data="tableData" :columns="tableColumns" />
-
-      <n-pagination
-        v-if="enablePagination"
-        :disabled="isLoading"
-        class="table-pagination"
-        v-model:page="pageNumber"
-        v-model:page-size="pageSize"
-        show-size-picker
-        :page-sizes="[10, 50, 100, 200, 500]"
-        :item-count="totalCount"
-        show-quick-jumper
-        @update:page-size="loadData"
-        @update:page="loadData"
-      >
-        <template #prefix="{itemCount, startIndex}"> 共 {{ itemCount }} 项 </template>
-      </n-pagination>
+    <div class="vp-panel table-wrap">
+      <AutoTableElPlus height="100%" :data="tableData" :columns="tableColumns" />
     </div>
+
+    <ListPagination
+      v-if="enablePagination"
+      :pagination-data="paginationData"
+      @sizeChange="loadData()"
+      @currentChange="loadData()"
+    />
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .auto-list-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  height: 100%;
+  min-width: 200px;
+
+  @media screen and (max-width: 1200px) {
+    padding: 10px;
+    gap: 10px;
+  }
   .common-title-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 30px;
     flex-wrap: wrap;
     gap: 8px;
-
-    @media screen and (max-width: $mq_pc_min_width) {
-      margin-bottom: 15px;
-    }
 
     .common-title {
       font-size: 24px;
@@ -176,7 +174,7 @@ defineExpose({
       align-items: flex-start;
       gap: 8px;
 
-      .el-button + .el-button {
+      :deep(.el-button + .el-button) {
         margin-left: 0 !important;
       }
     }
@@ -186,17 +184,17 @@ defineExpose({
     padding: 10px;
   }
 
-  .filter-card {
-    margin-bottom: 10px;
-    :deep(.n-form-item-feedback-wrapper) {
-      display: none;
-    }
-    :deep(.auto-form-actions) {
-      margin-top: 8px;
-    }
+  .table-wrap {
+    flex: 1;
+    overflow: hidden;
   }
-  .table-pagination {
-    margin-top: 10px;
+
+  .common-pagination-wrap {
+    :deep(.el-pagination) {
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+    }
   }
 }
 </style>
