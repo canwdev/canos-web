@@ -128,8 +128,8 @@ defineExpose({
       <AutoFormElPlus :form-schema="filterFormSchema" @onSubmit="loadData({isResetPage: true})" />
     </div>
 
-    <div class="vp-panel table-wrap">
-      <AutoTableElPlus height="100%" :data="tableData" :columns="tableColumns" />
+    <div class="table-wrap">
+      <AutoTableElPlus stripe border height="100%" :data="tableData" :columns="tableColumns" />
     </div>
 
     <ListPagination

@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
 import RectSwitch from './Tools/RectSwitch.vue'
-import {StOptionItem, StOptionType} from './enum'
+import {StOptionItem, StOptionType, swatches} from './enum'
 import VueRender from './Tools/VueRender.vue'
 import AdvancedNumberInput from './Tools/AdvancedNumberInput.vue'
 
@@ -34,6 +34,7 @@ export default defineComponent({
     return {
       StOptionType,
       dynamicValue,
+      swatches,
     }
   },
 })
@@ -58,6 +59,7 @@ export default defineComponent({
       class="option-select option-input"
       v-else-if="item.type === StOptionType.INPUT"
       v-model="dynamicValue"
+      clearable
       v-bind="item.props"
     />
 
@@ -72,11 +74,19 @@ export default defineComponent({
       <el-option v-for="vi in item.options" :key="vi.value" :label="vi.label" :value="vi.value" />
     </el-select>
 
+    <!--<n-dynamic-tags-->
+    <!--    class="dynamic-tags"-->
+    <!--    v-else-if="item.type === StOptionType.DYNAMIC_TAGS"-->
+    <!--    v-model:value="dynamicValue"-->
+    <!--    size="small"-->
+    <!--    v-bind="item.props"-->
+    <!--  />-->
+
     <el-color-picker
       v-else-if="item.type === StOptionType.COLOR_PICKER"
       v-model="dynamicValue"
       v-bind="item.props"
-      :predefine="['#ff4500', '#ff8c00', '#ffd700', '#90ee90', '#00ced1', '#1e90ff', '#c71585']"
+      :predefine="swatches"
     />
 
     <!-- 高级的数字输入框-->

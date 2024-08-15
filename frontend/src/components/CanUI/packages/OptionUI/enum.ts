@@ -45,9 +45,31 @@ export enum StOptionType {
   INPUT = 'input',
   INPUT_NUMBER = 'input_number',
   COLOR_PICKER = 'color_picker',
+  DYNAMIC_TAGS = 'dynamic_tags',
 }
 
 export type SwitchOption = {
   label: string
   value: string
 }
+
+export const swatches = [
+  '#258292',
+  '#3A6EA5',
+  '#F0C869',
+  '#E81123',
+  '#e91e63',
+  '#FFFFFF',
+  '#000000',
+  '#007aff',
+  '#a2845e',
+  '#8e8e93',
+  '#28cd41',
+  '#5856d6',
+  '#ff9500',
+  '#ff2d55',
+  '#af52de',
+  '#ff3b30',
+  '#5ac8fa',
+  '#ffcc00',
+]

@@ -3,6 +3,7 @@ import {LdThemeType} from '@/enum/settings'
 
 import {useMainStore} from '@/store/main'
 import {getSystemIsDarkMode, hexToRgb} from '@/utils/color'
+import {useElementPlusTheme} from '@/hooks/use-element-plus-theme'
 
 export const useGlobalTheme = () => {
   const mainStore = useMainStore()
@@ -36,8 +37,12 @@ export const useGlobalTheme = () => {
     (val) => {
       if (val) {
         document.body.classList.add('_dark')
+
+        // Element Plus 暗黑模式 https://element-plus.org/zh-CN/guide/dark-mode.html
+        document.documentElement.classList.add('dark')
       } else {
         document.body.classList.remove('_dark')
+        document.documentElement.classList.remove('dark')
       }
     },
     {immediate: true},
@@ -58,10 +63,13 @@ export const useGlobalTheme = () => {
     },
   )
 
+  const {changeTheme} = useElementPlusTheme(settingsStore.themeColor)
+
   const updateThemeColor = () => {
     const themeColor = settingsStore.themeColor
     // console.log({themeColor})
     if (themeColor) {
+      changeTheme(themeColor)
       try {
         const res = hexToRgb(themeColor)
         if (!res) {

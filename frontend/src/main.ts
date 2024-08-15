@@ -14,18 +14,19 @@ console.info(
 import momentDurationFormatSetup from 'moment-duration-format'
 momentDurationFormatSetup(moment)
 
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
+
 import {createApp} from 'vue'
 import App from './App.vue'
 import 'normalize.css'
-import '@/components/CanUI/packages/ViewPortWindow/theme/index.scss'
 import router from './router'
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import i18n from '@/i18n/index'
 import '@/apps/app-list'
-
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import '@/components/CanUI/packages/ViewPortWindow/theme/index.scss'
 import CanUI from '@/components/CanUI'
 import './styles/style.scss'
 
