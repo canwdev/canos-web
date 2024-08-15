@@ -1,7 +1,7 @@
-import {MessageApiInjection} from 'naive-ui/es/message/src/MessageProvider'
-import {DialogApiInjection} from 'naive-ui/es/dialog/src/DialogProvider'
 import VueRouter, {Route} from 'vue-router'
 import {ShortcutItem} from '@/enum/os'
+import {Message} from 'element-plus'
+import {SFCInstallWithContext} from 'element-plus/es/utils'
 
 declare global {
   interface Window {

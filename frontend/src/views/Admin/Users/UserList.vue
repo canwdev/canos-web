@@ -4,17 +4,11 @@ import {usersApi} from '@/api/users'
 import {CreateEditUserDto} from '@server/modules/users/user.dto'
 import {renderDropdownMenu} from '@/components/CanUI/packages/OptionUI/Tools/renders'
 import AutoFormNaive from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
-import {FormRules, NTag} from 'naive-ui'
-import {
-  AutoFormItem,
-  AutoFormItemType,
-  MixedFormItems,
-} from '@/components/CanUI/packages/AutoFormElPlus/enum'
+import {AutoFormItemType, MixedFormItems} from '@/components/CanUI/packages/AutoFormElPlus/enum'
 import {DisabledOptions, IUserInfo, UserRoleOptions} from '@server/types/user'
 import {formatDate} from '@/utils'
-// import {TableColumn} from 'naive-ui/es/data-table/src/interface'
 import {AutoTableColumn} from '@/components/CanUI/packages/AutoTableElPlus/types'
-import {ElTag} from 'element-plus'
+import {ElTag, FormRules} from 'element-plus'
 
 const autoListRef = ref()
 const tableColumns = ref<AutoTableColumn[]>([
@@ -216,7 +210,7 @@ const formItems = computed((): MixedFormItems[] => {
       label: `Password`,
       props: {
         type: 'password',
-        showPasswordOn: 'click',
+        showPassword: true,
         placeholder: isCreate.value ? 'Please input password' : 'Optional to update password',
       },
     },

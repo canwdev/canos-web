@@ -2,6 +2,7 @@
 import {useMainStore} from '@/store/main'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
 import {useVModel} from '@vueuse/core'
+import BreadcrumbList from '@/views/Admin/Layout/BreadcrumbList.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -53,6 +54,8 @@ const userDropdownOptions = computed(() => {
           </g>
         </svg>
       </el-button>
+
+      <BreadcrumbList />
     </div>
     <div class="header-side">
       <DropdownMenu
@@ -81,6 +84,7 @@ const userDropdownOptions = computed(() => {
   gap: 8px;
   .header-side {
     display: flex;
+    align-items: center;
     gap: 8px;
   }
 

@@ -32,6 +32,7 @@ import {adminRoutes} from '@/router/admin'
 
 <style lang="scss" scoped>
 .dashboard-view {
+  padding: 20px;
   .route-group {
     margin-bottom: 80px;
 

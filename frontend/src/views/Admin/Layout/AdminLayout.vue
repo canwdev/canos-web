@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import AdminSidebar from '@/views/Admin/AdminSidebar.vue'
-import AdminHeader from '@/views/Admin/AdminHeader.vue'
+import AdminSidebar from '@/views/Admin/Layout/AdminSidebar.vue'
+import AdminHeader from '@/views/Admin/Layout/AdminHeader.vue'
 import {useStorage} from '@vueuse/core'
 
 const isSidebarFold = useStorage('ls_key_admin_is_sidebar_fold', false)

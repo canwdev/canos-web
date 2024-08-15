@@ -64,7 +64,7 @@ const formItems = computed((): MixedFormItems[] => {
       placeholder: ' ',
       props: {
         type: 'password',
-        showPasswordOn: 'click',
+        showPassword: true,
         onKeyup: (e: KeyboardEvent) => {
           if (e.key === 'Enter') {
             submitForm()
