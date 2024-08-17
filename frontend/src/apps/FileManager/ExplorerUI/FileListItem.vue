@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {bytesToSize, formatDate} from '@/utils'
-import {Folder20Regular, Document20Regular} from '@vicons/fluent'
 import {IEntry} from '@server/types/server'
 import {useFileItem} from './hooks/use-file-item'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
