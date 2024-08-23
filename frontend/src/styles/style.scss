@@ -53,7 +53,7 @@ html, body, #app {
   //}
 }
 
-._scrollbar_mini, ._scrollbar_mini * {
+.scrollbar-mini * {
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -75,6 +75,9 @@ html, body, #app {
   &::-webkit-scrollbar-track {
     border-radius: 4px;
     background: transparent;
+  }
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
   }
 }
 

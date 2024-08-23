@@ -10,7 +10,6 @@ export default defineComponent({
   name: 'AppSub',
   setup() {
     window.$message = ElMessage
-    // TODO
     window.$dialog = ElMessageBox
     // window.$loadingBar = useLoadingBar()
     const router = useRouter()

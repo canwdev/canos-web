@@ -274,7 +274,7 @@ export default defineComponent({
 <template>
   <div
     v-if="mVisible || isStatic"
-    class="quick-options _scrollbar_mini"
+    class="quick-options scrollbar-mini"
     :class="{_absolute: !isStatic, _s: isStatic, horizontal, 'vp-panel': !horizontal && !isStatic}"
     @keydown.stop="handleKeyPress"
     tabindex="0"

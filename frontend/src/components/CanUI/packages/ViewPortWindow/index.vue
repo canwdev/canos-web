@@ -496,7 +496,7 @@ export default defineComponent({
           </div>
         </div>
 
-        <div class="vp-window-body _bg _scrollbar_mini">
+        <div class="vp-window-body _bg scrollbar-mini">
           <slot></slot>
         </div>
       </div>

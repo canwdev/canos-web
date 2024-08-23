@@ -89,7 +89,7 @@ const {
         </div>
       </div>
     </div>
-    <div class="explorer-content-wrap _scrollbar_mini">
+    <div class="explorer-content-wrap scrollbar-mini">
       <FileSidebar @openDrive="(i) => handleOpenPath(i.path)" :current-path="basePath" />
       <FileList
         v-model:is-loading="isLoading"
