@@ -26,4 +26,17 @@ self.MonacoEnvironment = {
 
 import * as monaco from 'monaco-editor'
 
+import {emmetCSS, registerCustomSnippets} from 'emmet-monaco-es'
+emmetCSS(monaco, ['css', 'scss'])
+
+registerCustomSnippets('css', {
+  // 自定义emmet
+  mdm: `@media screen and (max-width: $mq_mobile_width) {
+  \${1:}
+}`,
+  rtl: `&:dir(rtl) {
+  \${1:}
+}`,
+})
+
 export default monaco

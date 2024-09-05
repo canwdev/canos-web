@@ -404,7 +404,7 @@ export default defineComponent({
 
 <template>
   <transition :name="transitionName">
-    <div v-show="isInit && mVisible" class="vp-window" ref="rootRef">
+    <div v-show="isInit && mVisible" class="vp-window" ref="rootRef" :id="wid">
       <LayoutPreview :preview-data="layoutPreviewData" />
       <LayoutHelper v-model:visible="isShowLayoutHelper" @setWindowLayout="setWindowLayout" />
       <div class="vp-window-content">
@@ -577,6 +577,10 @@ export default defineComponent({
         align-items: center;
         gap: 4px;
         line-height: 1.4;
+
+        img {
+          pointer-events: none;
+        }
       }
     }
     .vp-window-body {

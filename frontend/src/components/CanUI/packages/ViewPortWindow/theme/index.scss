@@ -33,6 +33,29 @@
   }
 }
 
+.vp-button-group {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0 !important;
+  .vp-button {
+    &:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:not(:first-child):not(:last-child) {
+      border-radius: 0;
+    }
+    &:not(:last-child) {
+      border-right: 0;
+    }
+    &:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
 .vp-button {
   padding: 6px 8px;
   cursor: pointer;
@@ -40,6 +63,13 @@
   &:disabled {
     cursor: not-allowed;
     opacity: .5;
+  }
+  &.danger {
+    color: #f44336;
+  }
+  &.primary {
+    background: $primary !important;
+    color: white !important;
   }
 }
 

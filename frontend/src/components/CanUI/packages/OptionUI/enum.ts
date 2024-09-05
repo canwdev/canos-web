@@ -21,6 +21,7 @@ export interface StOptionItem {
   // 图标
   icon?: string
   iconRender?: any
+  iconClass?: any
   // 小标题
   subtitle?: string
   // 提示

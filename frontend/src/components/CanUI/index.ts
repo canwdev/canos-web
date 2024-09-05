@@ -3,6 +3,7 @@ import AutoRatioBox from './packages/AutoRatioBox.vue'
 import AutoRouterView from './packages/AutoRouterView.vue'
 import VueRender from './packages/OptionUI/Tools/VueRender.vue'
 import DropdownMenu from './packages/OptionUI/Tools/DropdownMenu.vue'
+import './packages/ViewPortWindow/theme/index.scss'
 
 const CanUI = {
   install(app: App) {

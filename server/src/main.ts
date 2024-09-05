@@ -2,12 +2,10 @@ import {NestFactory} from '@nestjs/core'
 import {AppModule} from './app.module'
 import * as process from 'process'
 import * as opener from 'opener'
-import * as os from 'os'
 import {program} from 'commander'
-import {serverInfo} from '@/enum'
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
 import {AllExceptionsFilter} from '@/all-exceptions.filter'
-import {logger} from 'sequelize/types/utils/logger'
+import {printServerRunningOn} from '@/utils'
 
 program
   .name('canos-web-server')
@@ -34,8 +32,6 @@ async function bootstrap() {
   // 使用全局异常过滤器
   app.useGlobalFilters(new AllExceptionsFilter())
 
-  const protocol = 'http://'
-
   // Swagger 步骤
   const config = new DocumentBuilder()
     .setTitle('Web API')
@@ -49,24 +45,8 @@ async function bootstrap() {
   const host = options.host || process.env.HOST || '0.0.0.0'
   await app.listen(port, host)
 
-  const ifaces = os.networkInterfaces()
-  const localhostUrl = protocol + '127.0.0.1' + ':' + port
-
+  const {localhostUrl} = printServerRunningOn(host, port)
   console.log(`API Documents on: ${localhostUrl}/swagger`)
-
-  const urls = []
-  Object.keys(ifaces).forEach(function (dev) {
-    ifaces[dev].forEach(function (details) {
-      if (details.family === 'IPv4') {
-        const url = protocol + details.address + ':' + port
-        urls.push(url)
-        serverInfo.hostUrls.push(url)
-      }
-    })
-  })
-  console.log(`Server running on: ${localhostUrl}`)
-  console.log(`Available on:`)
-  console.log(urls.join('\n'))
 
   // console.log(options)
   if (process.env.NODE_ENV !== 'development' && options.open) {

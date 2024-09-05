@@ -313,15 +313,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .advanced-number-input {
   padding: 1px 8px;
-  background-color: #080a0b;
-  color: #c0c4cc;
   font-size: 12px;
   border-radius: 4px;
   transition: all 0.3s;
-  border: 1px solid transparent;
+  border: 1px solid $color_border;
   position: relative;
   height: 24px;
-  min-width: 50px;
+  min-width: 80px;
 
   .debug-val {
     position: absolute;

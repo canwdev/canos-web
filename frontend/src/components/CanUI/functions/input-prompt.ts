@@ -1,6 +1,3 @@
-import {ElButton, ElInput, ElDialog} from 'element-plus'
-import {ref, h} from 'vue'
-
 export const showInputPrompt = (options: any = {}): Promise<string> => {
   const {
     // 弹窗标题
@@ -17,85 +14,28 @@ export const showInputPrompt = (options: any = {}): Promise<string> => {
     allowEmpty = false,
   } = options
 
-  return new Promise((resolve, reject) => {
-    const editingValue = ref(value)
-    const inputRef = ref()
-
-    const handlePositiveClick = async () => {
-      if (!editingValue.value && !allowEmpty) {
-        return
-      }
-      if (typeof validateFn === 'function') {
-        const message = await validateFn(editingValue.value)
-        if (typeof message === 'string') {
-          window.$message.error(message)
+  return new Promise<string>((resolve, reject) => {
+    window.$dialog
+      .prompt(placeholder, title, {
+        inputType: type,
+        inputValue: value,
+        inputValidator: (val) => {
+          if (!allowEmpty && val === '') {
+            return 'input value is required'
+          }
+          if (validateFn) {
+            return validateFn(val)
+          }
           return
-        }
-      }
-      resolve(editingValue.value)
-      d.visible = false
-    }
-
-    const d = {
-      visible: true,
-      title,
-      close: () => {
-        reject()
-        d.visible = false
-      },
-    }
-
-    const dialog = h(
-      ElDialog,
-      {
-        modelValue: d.visible,
-        title,
-        onClose: d.close,
-        onOpen: () => {
-          inputRef.value?.focus()
         },
-      },
-      {
-        default: () => [
-          h(ElInput, {
-            ref: inputRef,
-            modelValue: editingValue.value,
-            placeholder,
-            type,
-            clearable: true,
-            'onUpdate:modelValue': (v) => {
-              editingValue.value = v
-            },
-            onKeydown: (event) => {
-              if (event.key === 'Enter') {
-                event.preventDefault()
-                handlePositiveClick()
-              }
-            },
-          }),
-        ],
-        footer: () => [
-          h(
-            ElButton,
-            {
-              type: 'primary',
-              disabled: !allowEmpty && !editingValue.value,
-              onClick: handlePositiveClick,
-            },
-            () => 'OK',
-          ),
-          h(
-            ElButton,
-            {
-              onClick: d.close,
-            },
-            () => 'Cancel',
-          ),
-        ],
-      },
-    )
-
-    // TODO
-    window.$dialog.show(dialog)
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+      })
+      .then(({value}) => {
+        resolve(value)
+      })
+      .catch(() => {
+        reject()
+      })
   })
 }

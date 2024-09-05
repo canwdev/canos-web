@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import QuickOptions from '@/components/CanUI/packages/QuickOptions/index.vue'
+
 interface Props {
   options: any[]
   props?: any
@@ -8,7 +10,7 @@ const props = withDefaults(defineProps<Props>(), {})
 </script>
 
 <template>
-  <el-dropdown v-bind="props">
+  <el-dropdown v-bind="props" options="">
     <slot>
       <button class="btn-no-style">
         <svg
@@ -27,11 +29,7 @@ const props = withDefaults(defineProps<Props>(), {})
       </button>
     </slot>
     <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item v-for="(item, index) in options" :key="index" v-bind="item.props">{{
-          item.label
-        }}</el-dropdown-item>
-      </el-dropdown-menu>
+      <QuickOptions :options="options" visible :show-index="false" />
     </template>
   </el-dropdown>
 </template>

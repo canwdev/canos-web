@@ -1,12 +1,13 @@
 .theme-default {
   $border: 1px solid rgba(0, 0, 0, 0.45);
+  $radius: 4px;
 
   .vp-window {
     border: $border;
     background-color: #F3F3F3;
     transition: opacity 0.3s, transform 0.3s, background-color 0.5s;
     padding: 0;
-    border-radius: 0;
+    border-radius: $radius;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27);
 
     .vp-window-content {
@@ -17,7 +18,7 @@
         margin-left: 0;
         margin-right: 0;
         padding-right: 0;
-        border-radius:0;
+        //border-radius: $radius $radius 0 0;
         height: 30px;
 
         .vp-window-title-bar-text {
@@ -26,6 +27,7 @@
       }
       .vp-window-body {
         border: 0;
+        border-radius: 0 0 $radius $radius;
         height: calc(100% - 30px);
       }
     }
@@ -86,13 +88,14 @@
     background-color: rgba(255, 255, 255, 0.9);
     border: 1px solid $color_border;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 0;
+    border-radius: $radius;
   }
 
   .vp-button {
     background-color: #FDFDFD;
     border: 1px solid $color_border;
-    border-radius: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    border-radius: $radius;
 
     &:not(:disabled) {
       &:hover {
@@ -105,7 +108,7 @@
   }
 
   .vp-input {
-    border-radius: 0;
+    border-radius: $radius;
   }
 
   &._dark {
@@ -180,6 +183,7 @@
     .vp-button {
       background-color: #252525;
       color: white;
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
     }
     .vp-input {
       background-color: rgba(0, 0, 0, 0.3);

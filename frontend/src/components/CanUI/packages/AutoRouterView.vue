@@ -4,7 +4,7 @@ const isKeepAlive = (route: any) => {
   if (!route.meta) {
     return true
   }
-  return route.meta && route.meta.keepAlive !== false
+  return route.meta && route.meta.keepAlive
 }
 </script>
 <template>
