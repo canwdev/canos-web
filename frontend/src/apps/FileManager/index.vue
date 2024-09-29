@@ -57,7 +57,7 @@ const {
 
 const handleOpenWrap = (item: IEntry) => {
   if (selectFileMode.value === 'file' && !item.isDirectory) {
-    emit('handleSelect', item)
+    emit('handleSelect', {items: [item], basePath: fileListRef.value.basePath})
     return
   }
   return handleOpen(item)

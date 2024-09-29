@@ -1,9 +1,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
-import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
-import {useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
 import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import {MusicEvents, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
 
 const DetailTabEnum = {
   LYRIC: 'LYRIC',
@@ -32,7 +31,8 @@ export default defineComponent({
     }
   },
   setup() {
-    const mediaStore = useMediaStore()
+    const storeId = inject('storeId')
+    const mediaStore = useMediaStore(storeId.value)
     return {
       mediaStore,
       musicItem: computed(() => mediaStore.musicItem),

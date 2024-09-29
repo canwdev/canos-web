@@ -3,20 +3,19 @@ import {formatTimeHMS} from '@/utils'
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
 import TkSeekbar from '@/components/TkSeekBar.vue'
 import Mousetrap from 'mousetrap'
-import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'
 import {
   loopModeMap,
   LoopModeTypeValues,
   useMusicSettingsStore,
-  useMediaStore,
 } from '@/apps/MusicPlayer/utils/music-state'
-import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import {MusicEvents, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
 
 // interface Props {}
 // const props = withDefaults(defineProps<Props>(), {})
 
-const mediaStore = useMediaStore()
+const storeId = inject('storeId')
+const mediaStore = useMediaStore(storeId.value)
 
 const KEY_SPACE = 'space'
 const KEY_PREVIOUS = ['left', 'pageup', 'k', 'l']
@@ -36,7 +35,7 @@ const mousetrapRef = shallowRef()
 
 const togglePlay = (e) => {
   e.preventDefault()
-  musicBus.emit(MusicEvents.ACTION_TOGGLE_PLAY)
+  mediaStore.mediaBus.emit(MusicEvents.ACTION_TOGGLE_PLAY)
 }
 const previous = () => {
   mediaStore.playPrev()
@@ -70,7 +69,7 @@ const progressSeeking = (value) => {
 }
 const progressChange = (value) => {
   value = Number(value)
-  musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, value)
+  mediaStore.mediaBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, value)
   isSeeking.value = false
 }
 
@@ -108,10 +107,10 @@ watch(
 const musicItem = computed(() => mediaStore.musicItem)
 
 const jumpForward = () => {
-  musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (mediaStore.currentTime += 5))
+  mediaStore.mediaBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (mediaStore.currentTime += 5))
 }
 const jumpBackward = () => {
-  musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (mediaStore.currentTime -= 5))
+  mediaStore.mediaBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (mediaStore.currentTime -= 5))
 }
 </script>
 

@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import musicBus, {MusicEvents, useMusicBusOn} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'
-import {MediaItem, useMusicSettingsStore, useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
+import {MediaItem, useMusicSettingsStore} from '@/apps/MusicPlayer/utils/music-state'
 import {fsWebApi} from '@/api/filesystem'
+import {MusicEvents, useBusOn, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
 
 // interface Props {}
 // const props = withDefaults(defineProps<Props>(), {})
 
-const mediaStore = useMediaStore()
+const storeId = inject('storeId')
+const mediaStore = useMediaStore(storeId.value)
 
 const {t: $t} = useI18n()
 const audioRef = ref()
@@ -119,10 +120,10 @@ onMounted(() => {
   changeSpeed(mediaStore.playbackRate)
 })
 
-useMusicBusOn(MusicEvents.ACTION_TOGGLE_PLAY, togglePlay)
-useMusicBusOn(MusicEvents.ACTION_PLAY, play)
-useMusicBusOn(MusicEvents.ACTION_PAUSE, pause)
-useMusicBusOn(MusicEvents.ACTION_CHANGE_CURRENT_TIME, changeCurrentTime)
+useBusOn(mediaStore.mediaBus, MusicEvents.ACTION_TOGGLE_PLAY, togglePlay)
+useBusOn(mediaStore.mediaBus, MusicEvents.ACTION_PLAY, play)
+useBusOn(mediaStore.mediaBus, MusicEvents.ACTION_PAUSE, pause)
+useBusOn(mediaStore.mediaBus, MusicEvents.ACTION_CHANGE_CURRENT_TIME, changeCurrentTime)
 
 onBeforeUnmount(() => {})
 </script>

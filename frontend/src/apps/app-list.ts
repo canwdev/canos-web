@@ -33,11 +33,10 @@ export const SystemAppMusicPlayer: ShortcutItem = {
   title: 'Media Player',
   icon: 'multimedia-audio-player',
   winOptions: {
-    width: '500px',
-    height: '500px',
+    width: '800px',
+    height: '600px',
   },
   component: defineAsyncComponent(() => import('@/apps/MusicPlayer/index.vue')),
-  singleInstance: true,
   requireBackend: true,
 }
 

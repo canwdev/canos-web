@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import {defineComponent} from 'vue'
 import PlaylistItem from '@/apps/MusicPlayer/MusicPlaylist/PlaylistItem.vue'
-import {MediaItem, useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
-import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
+import {MediaItem} from '@/apps/MusicPlayer/utils/music-state'
 import FileSelector from '@/apps/FileManager/FileSelector.vue'
 import {IEntry} from '@server/types/server'
 import {isSupportedMediaFormat} from '@/utils/is'
+import {MusicEvents, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
+import DropdownMenu from '@/components/CanUI/packages/OptionUI/Tools/DropdownMenu.vue'
 
-const mediaStore = useMediaStore()
+const storeId = inject('storeId')
+const mediaStore = useMediaStore(storeId.value)
 const filterText = ref('')
 
 const handleItemClick = (item: MediaItem) => {
@@ -17,7 +18,7 @@ const handleItemClick = (item: MediaItem) => {
     return
   }
   if (idx === mediaStore.playingIndex) {
-    musicBus.emit(MusicEvents.ACTION_TOGGLE_PLAY)
+    mediaStore.mediaBus.emit(MusicEvents.ACTION_TOGGLE_PLAY)
     return
   }
   mediaStore.playByIndex(idx)
@@ -57,9 +58,23 @@ const handleSelect = (data) => {
   <div class="music-play-list">
     <div class="vp-bg playlist-action-bar">
       <input class="vp-input" :placeholder="$t('filter-by-name')" v-model="filterText" />
+
       <span class="number-display"
         >{{ mediaStore.playingIndex + 1 }} / {{ mediaStore.playingList.length }}</span
       >
+
+      <DropdownMenu
+        :options="[
+          {
+            label: 'Reset',
+            props: {
+              onClick() {
+                mediaStore.reset()
+              },
+            },
+          },
+        ]"
+      />
     </div>
     <div class="flex-row-center-gap media-open-actions" v-if="!mediaStore.playingList.length">
       <FileSelector select-file-mode="file" multiple @handleSelect="handleSelect" />
@@ -96,7 +111,6 @@ const handleSelect = (data) => {
     font-size: 12px;
     padding: 4px;
     .number-display {
-      padding: 0 8px;
     }
   }
 

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
-import {MediaItem, useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
+import {MediaItem} from '@/apps/MusicPlayer/utils/music-state'
+import {useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
 
 interface Props {
   item: MediaItem
 }
 const props = withDefaults(defineProps<Props>(), {})
-const mediaStore = useMediaStore()
+const storeId = inject('storeId')
+const mediaStore = useMediaStore(storeId.value)
 
 const {item} = toRefs(props)
 const isCurrent = computed(() => {
