@@ -12,7 +12,7 @@ const mediaStore = useMediaStore(storeId.value)
 
 const {item} = toRefs(props)
 const isCurrent = computed(() => {
-  return item.value.guid === mediaStore.musicItem?.guid
+  return item.value.guid === mediaStore.mediaItem?.guid
 })
 </script>
 

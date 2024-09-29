@@ -60,13 +60,15 @@ watch(
           <MusicPlaylist />
         </template>
         <template #default>
-          <MusicDetail />
+          <div class="media-detail">
+            <PlayerCore v-show="mediaStore.isVideo" />
+            <MusicDetail />
+          </div>
         </template>
       </FoldableSidebarLayout>
     </div>
     <div class="music-below">
       <MusicControl />
-      <PlayerCore v-show="false" />
     </div>
   </div>
 </template>
@@ -79,6 +81,9 @@ watch(
   .music-above {
     flex: 1;
     overflow: hidden;
+  }
+  .media-detail {
+    height: 100%;
   }
   .music-below {
     height: 75px;

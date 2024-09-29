@@ -78,7 +78,7 @@ const handleSelect = (data) => {
     </div>
     <div class="flex-row-center-gap media-open-actions" v-if="!mediaStore.playingList.length">
       <FileSelector select-file-mode="file" multiple @handleSelect="handleSelect" />
-      <FileSelector select-file-mode="folder" @handleSelect="handleSelect" />
+      <!--<FileSelector select-file-mode="folder" @handleSelect="handleSelect" />-->
     </div>
     <div v-else class="music-list">
       <PlaylistItem

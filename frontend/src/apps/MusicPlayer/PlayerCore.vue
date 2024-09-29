@@ -11,15 +11,15 @@ const storeId = inject('storeId')
 const mediaStore = useMediaStore(storeId.value)
 
 const {t: $t} = useI18n()
-const audioRef = ref()
+const avRef = ref()
 const mSettingsStore = useMusicSettingsStore()
 const audioSrc = ref<string | undefined>()
 
 const play = () => {
-  audioRef.value.play()
+  avRef.value.play()
 }
 const pause = () => {
-  audioRef.value.pause()
+  avRef.value.pause()
 }
 const previous = () => {
   mediaStore.playPrev()
@@ -28,16 +28,17 @@ const next = () => {
   mediaStore.playNext()
 }
 const togglePlay = () => {
-  if (!audioRef.value || !audioRef.value.src) {
+  if (!avRef.value || !avRef.value.src) {
     return
   }
-  if (audioRef.value.paused) {
+  if (avRef.value.paused) {
     play()
   } else {
     pause()
   }
 }
-const registerAudioEvents = (audio) => {
+const registerMediaEvents = (av) => {
+  console.log(av)
   if ('mediaSession' in navigator) {
     navigator.mediaSession.setActionHandler('play', play)
     navigator.mediaSession.setActionHandler('pause', pause)
@@ -47,50 +48,58 @@ const registerAudioEvents = (audio) => {
     navigator.mediaSession.setActionHandler('nexttrack', next)
   }
 
-  audio.addEventListener('play', () => {
+  av.addEventListener('play', () => {
     mediaStore.paused = false
     mediaStore.isLoadedAutoplay = true
   })
 
-  audio.addEventListener('pause', () => {
+  av.addEventListener('pause', () => {
     mediaStore.paused = true
     mediaStore.isLoadedAutoplay = false
   })
 
-  audio.addEventListener('ended', () => {
+  av.addEventListener('ended', () => {
     mediaStore.handlePlayEnded()
   })
 
-  audio.addEventListener('canplay', (evt) => {
-    // console.log('canplay', audio)
+  av.addEventListener('volumechange', () => {
+    console.log(av.volume)
+    mSettingsStore.setAudioVolume(av.volume * 100)
+  })
+  av.addEventListener('ratechange', function () {
+    mediaStore.playbackRate = av.playbackRate
+  })
+
+  av.addEventListener('canplay', (evt) => {
+    // console.log('canplay', av)
     mediaStore.duration = evt.target.duration
     if (mediaStore.isLoadedAutoplay) {
       play()
     }
   })
 
-  audio.addEventListener('timeupdate', (evt) => {
+  av.addEventListener('timeupdate', (evt) => {
     // console.log('timeupdate', evt.target.currentTime)
     mediaStore.currentTime = evt.target.currentTime
   })
 
-  audio.addEventListener('error', (error) => {
+  av.addEventListener('error', (error) => {
     console.error(error)
     window.$message.error($t('msg.load-fail-or-no-supported-source'))
   })
 }
 const changeCurrentTime = (newTime) => {
-  audioRef.value && (audioRef.value.currentTime = newTime)
+  avRef.value && (avRef.value.currentTime = newTime)
 }
 const changeVolume = (val) => {
-  audioRef.value && (audioRef.value.volume = val / 100)
+  avRef.value && (avRef.value.volume = val / 100)
 }
 const changeSpeed = (val = 1) => {
-  if (!audioRef.value) {
+  if (!avRef.value) {
     return
   }
   try {
-    audioRef.value.playbackRate = val
+    avRef.value.playbackRate = val
   } catch (e: any) {
     window.$message.error(e.message)
   }
@@ -100,7 +109,7 @@ watch(() => mSettingsStore.audioVolume, changeVolume)
 watch(() => mediaStore.playbackRate, changeSpeed)
 
 watch(
-  () => mediaStore.musicItem,
+  () => mediaStore.mediaItem,
   async (item: MediaItem) => {
     if (!item) {
       audioSrc.value = undefined
@@ -114,11 +123,17 @@ watch(
   {immediate: true},
 )
 
-onMounted(() => {
-  registerAudioEvents(audioRef.value)
-  changeVolume(mSettingsStore.audioVolume)
-  changeSpeed(mediaStore.playbackRate)
-})
+watch(
+  () => mediaStore.isVideo,
+  () => {
+    setTimeout(() => {
+      registerMediaEvents(avRef.value)
+      changeVolume(mSettingsStore.audioVolume)
+      changeSpeed(mediaStore.playbackRate)
+    })
+  },
+  {immediate: true},
+)
 
 useBusOn(mediaStore.mediaBus, MusicEvents.ACTION_TOGGLE_PLAY, togglePlay)
 useBusOn(mediaStore.mediaBus, MusicEvents.ACTION_PLAY, play)
@@ -130,6 +145,19 @@ onBeforeUnmount(() => {})
 
 <template>
   <div class="player-core">
-    <audio ref="audioRef" :src="audioSrc" controls></audio>
+    <video v-if="mediaStore.isVideo" ref="avRef" :src="audioSrc" controls></video>
+    <audio v-else ref="avRef" :src="audioSrc" controls></audio>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.player-core {
+  height: 100%;
+  width: 100%;
+  video {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+}
+</style>

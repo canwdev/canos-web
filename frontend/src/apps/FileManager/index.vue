@@ -75,12 +75,12 @@ const isSelectAFolder = computed(() => {
 // 处理选择操作
 const handleSelect = () => {
   let items = fileListRef.value.selectedItems
+  // 打开文件夹
+  if (isSelectAFolder.value) {
+    handleOpen(items[0])
+    return
+  }
   if (selectFileMode.value === 'folder') {
-    // 打开文件夹
-    if (isSelectAFolder.value) {
-      handleOpen(items[0])
-      return
-    }
     emit('handleSelect', {basePath: fileListRef.value.basePath})
   }
   if (!items.length) {

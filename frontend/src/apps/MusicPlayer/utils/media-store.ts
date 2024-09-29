@@ -4,7 +4,7 @@ import mitt from 'mitt'
 
 type IStore = {
   mediaBus: mitt
-  musicItem: MediaItem | null
+  mediaItem: MediaItem | null
   playingList: MediaItem[]
   playingIndex: number
   paused: boolean
@@ -29,7 +29,7 @@ export const useMediaStore = (uniqueStoreName = 'mediaStore') => {
     state: (): IStore => {
       return {
         mediaBus: mitt(),
-        musicItem: null,
+        mediaItem: null,
         playingList: [], // current playing list
         playingIndex: 0, // playing music index in playingList
         paused: true, // is current playing paused
@@ -40,6 +40,11 @@ export const useMediaStore = (uniqueStoreName = 'mediaStore') => {
         isPlayEnded: false,
         isLoadedAutoplay: true,
       }
+    },
+    getters: {
+      isVideo() {
+        return this.mediaItem && this.mediaItem.type === 'video'
+      },
     },
     actions: {
       /**
@@ -54,7 +59,7 @@ export const useMediaStore = (uniqueStoreName = 'mediaStore') => {
 
         this.playingList = list
         this.playingIndex = index
-        this.musicItem = playItem
+        this.mediaItem = playItem
 
         this.isLoadedAutoplay = true
       },
@@ -117,9 +122,9 @@ export const useMediaStore = (uniqueStoreName = 'mediaStore') => {
         this.playNext()
       },
       playByIndex(index: number) {
-        this.musicItem = this.playingList[index]
+        this.mediaItem = this.playingList[index]
         this.playingIndex = index
-        console.log('[playByIndex]', index, this.musicItem)
+        console.log('[playByIndex]', index, this.mediaItem)
         setTimeout(() => {
           if (this.isPlayEnded) {
             this.mediaBus.emit(MusicEvents.ACTION_PLAY)
@@ -131,7 +136,7 @@ export const useMediaStore = (uniqueStoreName = 'mediaStore') => {
       },
       reset() {
         this.mediaBus.emit(MusicEvents.ACTION_PAUSE)
-        this.musicItem = null
+        this.mediaItem = null
         this.playingList = []
       },
     },

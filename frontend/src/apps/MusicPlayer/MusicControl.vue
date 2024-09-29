@@ -104,7 +104,7 @@ watch(
   },
 )
 
-const musicItem = computed(() => mediaStore.musicItem)
+const mediaItem = computed(() => mediaStore.mediaItem)
 
 const jumpForward = () => {
   mediaStore.mediaBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (mediaStore.currentTime += 5))
@@ -115,7 +115,7 @@ const jumpBackward = () => {
 </script>
 
 <template>
-  <div v-if="musicItem" class="actionbar-wrapper">
+  <div v-if="mediaItem" class="actionbar-wrapper">
     <div class="progressbar">
       <span class="time text-overflow">{{ formatTimeHMS(mCurrentTime) }}</span>
 
@@ -129,11 +129,11 @@ const jumpBackward = () => {
       <span class="time text-overflow">{{ formatTimeHMS(mediaStore.duration) }}</span>
     </div>
     <div class="actionbar">
-      <CoverMini :src="musicItem.cover" icon-name="audiotrack" @click="$emit('onCoverClick')" />
+      <CoverMini :src="mediaItem.cover" icon-name="audiotrack" @click="$emit('onCoverClick')" />
       <button class="btn-song-info btn-no-style" @click="$emit('onTitleClick')">
-        <span class="title text-overflow">{{ musicItem.titleDisplay }}</span>
-        <span v-show="musicItem.artist" class="artist text-overflow">{{ musicItem.artist }}</span>
-        <span v-show="musicItem.album" class="album text-overflow">{{ musicItem.album }}</span>
+        <span class="title text-overflow">{{ mediaItem.titleDisplay }}</span>
+        <span v-show="mediaItem.artist" class="artist text-overflow">{{ mediaItem.artist }}</span>
+        <span v-show="mediaItem.album" class="album text-overflow">{{ mediaItem.album }}</span>
       </button>
       <div class="buttons-scroll">
         <button

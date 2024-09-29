@@ -35,19 +35,19 @@ export default defineComponent({
     const mediaStore = useMediaStore(storeId.value)
     return {
       mediaStore,
-      musicItem: computed(() => mediaStore.musicItem),
+      mediaItem: computed(() => mediaStore.mediaItem),
     }
   },
 })
 </script>
 
 <template>
-  <div v-if="musicItem" class="music-detail">
+  <div v-if="mediaItem && !mediaStore.isVideo" class="music-detail">
     <AutoRatioBox class="cover-wrap-box">
       <div class="cover-wrap">
         <CoverDisplay
           class="big-cover"
-          :src="musicItem.cover"
+          :src="mediaItem.cover"
           :is-rotating="false"
           :is-rounded="false"
           :is-show-icon="false"
@@ -114,7 +114,7 @@ export default defineComponent({
               cols="30"
               rows="15"
               readonly
-              :value="JSON.stringify(musicItem, null, 2)"
+              :value="JSON.stringify(mediaItem, null, 2)"
               :placeholder="$t('msg.no-data')"
             ></textarea>
           </div>
@@ -128,9 +128,9 @@ export default defineComponent({
         :class="{opacity: isShowDetail}"
         @click="isShowDetail = !isShowDetail"
       >
-        <div class="title">{{ musicItem.titleDisplay }}</div>
-        <div class="subtitle">{{ musicItem.artisDisplay }}</div>
-        <div class="subtitle">{{ musicItem.album }}</div>
+        <div class="title">{{ mediaItem.titleDisplay }}</div>
+        <div class="subtitle">{{ mediaItem.artisDisplay }}</div>
+        <div class="subtitle">{{ mediaItem.album }}</div>
       </div>
 
       <div class="actions-wrap">
@@ -148,8 +148,8 @@ export default defineComponent({
     <ViewPortWindow v-model:visible="isShowLyricSearch">
       <template #titleBarLeft> {{ $t('playback-speed') }} TBD </template>
       <!--      <LyricSearch-->
-      <!--        :search="musicItem.filenameDisplay"-->
-      <!--        :current-lyric="musicItem.lyric"-->
+      <!--        :search="mediaItem.filenameDisplay"-->
+      <!--        :current-lyric="mediaItem.lyric"-->
       <!--        @saveLyric="handleSaveLyric"-->
       <!--      />-->
     </ViewPortWindow>
