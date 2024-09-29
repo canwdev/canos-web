@@ -2,7 +2,8 @@
 import {defineComponent} from 'vue'
 import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
 import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
-import {useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import {useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
+import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
 
 const DetailTabEnum = {
   LYRIC: 'LYRIC',
@@ -12,6 +13,7 @@ const DetailTabEnum = {
 export default defineComponent({
   name: 'MusicDetail',
   components: {
+    ViewPortWindow,
     CoverDisplay,
   },
   data() {
@@ -26,24 +28,14 @@ export default defineComponent({
       isShowLyricSearch: false,
       isLyricLock: false,
       lyricObj: null, // TODO: lyric
-      isShowPlaybackRate: false,
       isShowCountdownConfig: false,
     }
   },
   setup() {
-    const musicStore = useMusicStore()
+    const mediaStore = useMediaStore()
     return {
-      musicStore,
-      musicItem: computed(() => musicStore.musicItem),
-      jumpForward() {
-        musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (musicStore.currentTime += 5))
-      },
-      jumpBackward() {
-        musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (musicStore.currentTime -= 5))
-      },
-      handlePlaybackRateChange(val) {
-        musicStore.playbackRate = Number(val)
-      },
+      mediaStore,
+      musicItem: computed(() => mediaStore.musicItem),
     }
   },
 })
@@ -62,7 +54,7 @@ export default defineComponent({
           @click="isShowDetail = true"
         />
         <transition name="fade">
-          <div v-show="isShowDetail" class="detail-content bg-dark">
+          <div v-show="isShowDetail" class="detail-content">
             <div class="tab-wrap">
               <button
                 v-for="item in detailTabList"
@@ -142,18 +134,6 @@ export default defineComponent({
       </div>
 
       <div class="actions-wrap">
-        <button class="btn-no-style" @click="jumpBackward">
-          <i class="material-icons">replay_5</i>
-          <!--          SkipBack1020Regular-->
-        </button>
-
-        <button
-          class="btn-no-style"
-          :title="$t('playback-speed')"
-          @click="isShowPlaybackRate = true"
-        >
-          <i class="material-icons">speed</i>
-        </button>
         <!--        <button-->
         <!--          class="btn-no-style"-->
         <!--          :class="{active: stopCountdown}"-->
@@ -162,50 +142,23 @@ export default defineComponent({
         <!--        >-->
         <!--          <i class="material-icons">timer</i>-->
         <!--        </button>-->
-        <button class="btn-no-style" @click="jumpForward">
-          <i class="material-icons">forward_5</i>
-        </button>
       </div>
     </div>
 
-    <n-modal
-      v-model:show="isShowPlaybackRate"
-      preset="dialog"
-      :show-icon="false"
-      :title="$t('playback-speed')"
-    >
-      <el-space align="center">
-        <el-button @click="handlePlaybackRateChange(1)">重置</el-button>
-
-        <el-slider
-          style="width: 200px"
-          v-model:value="musicStore.playbackRate"
-          @update:value="handlePlaybackRateChange(musicStore.playbackRate)"
-          step="marks"
-          :max="2"
-          :min="0.2"
-          :marks="{[0.2]: '0.2', [0.5]: '0.5', 1: '1', [1.2]: '1.2', [1.5]: '1.5', 2: '2'}"
-        />
-      </el-space>
-    </n-modal>
-
-    <n-modal
-      v-model:show="isShowLyricSearch"
-      preset="dialog"
-      :show-icon="false"
-      title="Search Lyric"
-      >TBD
+    <ViewPortWindow v-model:visible="isShowLyricSearch">
+      <template #titleBarLeft> {{ $t('playback-speed') }} TBD </template>
       <!--      <LyricSearch-->
       <!--        :search="musicItem.filenameDisplay"-->
       <!--        :current-lyric="musicItem.lyric"-->
       <!--        @saveLyric="handleSaveLyric"-->
       <!--      />-->
-    </n-modal>
+    </ViewPortWindow>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .music-detail {
+  height: 100%;
   width: 100%;
   text-align: center;
   user-select: text;
@@ -284,8 +237,8 @@ export default defineComponent({
     height: 100%;
     display: flex;
     flex-direction: column;
-    color: black;
-    background: rgba(255, 255, 255, 0.8);
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);
     border-radius: inherit;
 

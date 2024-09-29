@@ -13,7 +13,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  width: '180px',
+  width: '160px',
 })
 
 const {currentPath} = toRefs(props)
@@ -89,14 +89,30 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
 </script>
 
 <template>
-  <div class="file-sidebar" :style="{width: showSidebar ? width : '0'}">
+  <div class="explorer-file-sidebar" :style="{width: showSidebar ? width : '0'}">
     <button
       class="btn-toggle btn-no-style"
       :class="{_folded: !showSidebar}"
       @click="showSidebar = !showSidebar"
     >
-      <span>◀️</span>
+      <svg
+        width="16"
+        height="16"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 16 16"
+      >
+        <g fill="none">
+          <path
+            d="M10.354 3.146a.5.5 0 0 1 0 .708L6.207 8l4.147 4.146a.5.5 0 0 1-.708.708l-4.5-4.5a.5.5 0 0 1 0-.708l4.5-4.5a.5.5 0 0 1 .708 0z"
+            fill="currentColor"
+          ></path>
+        </g>
+      </svg>
     </button>
+
+    <slot></slot>
+
     <div class="file-sidebar-content">
       <button
         class="drive-item btn-no-style"
@@ -106,26 +122,33 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
         :class="{active: item.path === currentPath}"
         @click="handleOpen(item)"
       >
-        <div class="drive-icon">
+        <span class="drive-icon">
           <ThemedIcon :name="getIcon(item)" />
-        </div>
-        <div class="drive-content">
-          <div class="drive-title text-overflow">{{ item.label }}</div>
-          <div v-if="item.total" class="volume-bar">
-            <div :style="{width: (item!.free / item.total) * 100 + '%'}" class="volume-value"></div>
-          </div>
-        </div>
+        </span>
+        <span class="drive-content">
+          <span class="drive-title text-overflow">{{ item.label }}</span>
+          <span v-if="item.total" class="volume-bar">
+            <span
+              :style="{width: (item!.free / item.total) * 100 + '%'}"
+              class="volume-value"
+            ></span>
+          </span>
+        </span>
       </button>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-.file-sidebar {
+<style lang="scss">
+.explorer-file-sidebar {
   //width: 180px;
   height: 100%;
   border-right: 1px solid $color_border;
   position: relative;
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+
   .btn-toggle {
     position: absolute;
     right: 0px;
@@ -136,7 +159,7 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
     z-index: 10;
     &._folded {
       right: -20px;
-      span {
+      svg {
         transform: rotate(180deg);
       }
     }
@@ -147,7 +170,7 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
     }
   }
   .file-sidebar-content {
-    height: 100%;
+    flex: 1;
     overflow: auto;
   }
 
@@ -175,6 +198,12 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
       height: 20px;
       display: flex;
       flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        display: flex;
+      }
       img {
         width: 100%;
         height: 100%;

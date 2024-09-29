@@ -4,8 +4,9 @@ import PlayerCore from '@/apps/MusicPlayer/PlayerCore.vue'
 import MusicControl from '@/apps/MusicPlayer/MusicControl.vue'
 import MusicPlaylist from '@/apps/MusicPlayer/MusicPlaylist/index.vue'
 import {IEntry} from '@server/types/server'
-import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
-import {isSupportedMusicFormat} from '@/utils/is'
+import {MediaItem, useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
+import {isSupportedMediaFormat} from '@/utils/is'
+import FoldableSidebarLayout from '@/components/CanUI/packages/Layouts/FoldableSidebarLayout.vue'
 
 type AppParams = {
   item: IEntry
@@ -21,8 +22,9 @@ const props = withDefaults(defineProps<Props>(), {})
 
 // const {params} = toRefs(props)
 
-const musicStore = useMusicStore()
+const mediaStore = useMediaStore()
 
+// 应用启动传参
 watch(
   () => props.appParams,
   () => {
@@ -31,39 +33,40 @@ watch(
       return
     }
     const {item, list, basePath} = props.appParams
-    const musics = list
-      .map((i) => new MusicItem(i.name, basePath))
+    const medias = list
+      .map((i) => new MediaItem(i.name, basePath))
       .filter((i) => {
-        return isSupportedMusicFormat(i.filename)
+        return isSupportedMediaFormat(i.filename)
       })
-    const idx = musics.findIndex((i) => i.filename === item.name)
+    const idx = medias.findIndex((i) => i.filename === item.name)
 
-    musicStore.playFromList(musics, idx)
+    mediaStore.playFromList(medias, idx)
   },
   {immediate: true},
 )
-
-const isShowPlaylist = ref(true)
 </script>
 
 <template>
-  <div class="music-player-wrap">
+  <div class="media-player-wrap">
     <div class="music-above">
-      <MusicPlaylist v-show="isShowPlaylist" />
-      <MusicDetail v-show="!isShowPlaylist" />
+      <FoldableSidebarLayout>
+        <template #sidebar>
+          <MusicPlaylist />
+        </template>
+        <template #default>
+          <MusicDetail />
+        </template>
+      </FoldableSidebarLayout>
     </div>
     <div class="music-below">
-      <MusicControl
-        @onCoverClick="isShowPlaylist = !isShowPlaylist"
-        @onTitleClick="isShowPlaylist = !isShowPlaylist"
-      />
+      <MusicControl />
       <PlayerCore v-show="false" />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.music-player-wrap {
+.media-player-wrap {
   height: 100%;
   display: flex;
   flex-direction: column;

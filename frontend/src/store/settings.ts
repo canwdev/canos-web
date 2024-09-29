@@ -41,7 +41,7 @@ export const useSettingsStore = defineStore('settingsStore', {
       themeColor: '#0078d4',
       desktopBgColor: '#515c6b',
       disableAnimation: false,
-      isWindowed: window.innerHeight > 500,
+      isWindowed: window.innerWidth > 500,
 
       taskbarShowFps: false,
       taskbarShowMemory: false,

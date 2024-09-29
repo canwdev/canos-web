@@ -7,7 +7,7 @@ export const useSelectionArea = ({
   toggleClass = 'active',
   selectables = ['.selectable'],
 }) => {
-  const selectionRef = ref()
+  const selectionRef = shallowRef()
   onMounted(() => {
     // https://github.com/simonwep/selection/tree/master/packages/vanilla
     selectionRef.value = new SelectionArea({
@@ -43,7 +43,7 @@ export const useSelectionArea = ({
           for (const el of removed) {
             el.classList.remove(toggleClass)
           }
-        }
+        },
       )
       .on('stop', ({store: {stored}}) => {
         setTimeout(() => {
@@ -53,11 +53,10 @@ export const useSelectionArea = ({
   })
   onBeforeUnmount(() => {
     if (selectionRef.value) {
+      // console.log('onBeforeUnmount', selectionRef.value)
       selectionRef.value.destroy()
     }
   })
 
-  return {
-    selectionRef,
-  }
+  return selectionRef
 }

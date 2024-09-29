@@ -2,13 +2,13 @@ import {getRandomInt, guid} from '@/utils'
 import musicBus, {MusicEvents} from '@/apps/MusicPlayer/utils/bus'
 import {normalizePath} from '@/apps/FileManager/utils'
 
-export interface MusicItem {
+export interface MediaItem {
   guid: string
   filename: string
   basePath: string
 }
 
-export class MusicItem {
+export class MediaItem {
   constructor(filename, basePath) {
     this.guid = guid()
     this.filename = filename
@@ -25,8 +25,8 @@ export class MusicItem {
 }
 
 type IStore = {
-  musicItem: MusicItem | null
-  playingList: MusicItem[]
+  musicItem: MediaItem | null
+  playingList: MediaItem[]
   playingIndex: number
   paused: boolean
   currentTime: number
@@ -56,10 +56,12 @@ export const loopModeMap = {
   [LoopModeType.NONE]: {
     value: LoopModeType.NONE,
     i18nKey: 'msg.play-in-order',
+    icon: '➡️',
   },
   [LoopModeType.SHUFFLE]: {
     value: LoopModeType.SHUFFLE,
     i18nKey: 'shuffle',
+    icon: '🔀',
   },
   [LoopModeType.LOOP_SEQUENCE]: {
     value: LoopModeType.LOOP_SEQUENCE,
@@ -68,17 +70,18 @@ export const loopModeMap = {
   },
   [LoopModeType.LOOP_REVERSE]: {
     value: LoopModeType.LOOP_REVERSE,
-    icon: '🔁r',
+    icon: '🔁',
     className: 'reverse-x',
     i18nKey: 'msg.reverse-loop',
   },
   [LoopModeType.LOOP_SINGLE]: {
     value: LoopModeType.LOOP_SINGLE,
+    icon: '🔂',
     i18nKey: 'msg.single-cycle',
   },
 }
 
-export const useMusicStore = defineStore('music', {
+export const useMediaStore = defineStore('media', {
   state: (): IStore => {
     return {
       musicItem: null,
@@ -97,7 +100,7 @@ export const useMusicStore = defineStore('music', {
     /**
      * 从文件列表播放音乐
      */
-    playFromList(list: MusicItem[] = [], index = 0) {
+    playFromList(list: MediaItem[] = [], index = 0) {
       const playItem = list[index]
       if (!playItem) {
         window.$message.error(`index=${index} not found`)
@@ -222,6 +225,6 @@ export const useMusicSettingsStore = defineStore('musicSettings', {
     },
   },
   persist: {
-    key: 'ls_key_canos_music_settings',
+    key: 'ls_key_canos_media_settings',
   },
 })

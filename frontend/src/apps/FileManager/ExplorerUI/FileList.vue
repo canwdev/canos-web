@@ -15,19 +15,33 @@ import {useTransfer} from './hooks/use-transfer'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
-interface Props {
-  files: IEntry[]
-  isLoading: boolean
-  basePath: string
-}
-
-const props = withDefaults(defineProps<Props>(), {})
-const {basePath, files} = toRefs(props)
+const props = withDefaults(
+  defineProps<{
+    files: IEntry[]
+    isLoading: boolean
+    basePath: string
+    // 是否文件(夹)选择器
+    selectFileMode?: 'file' | 'folder'
+    // 文件选择器允许多选
+    multiple?: boolean
+  }>(),
+  {},
+)
+const {basePath, files, selectFileMode, multiple} = toRefs(props)
 const isLoading = useVModel(props, 'isLoading', emit)
 useExplorerBusOn(ExplorerEvents.REFRESH, () => emit('refresh'))
 
 // 布局和排序方式
 const {isGridView, showSortMenu, sortOptions, filteredFiles, showHidden} = useLayoutSort(files)
+
+const allowMultipleSelection = computed(() => {
+  if (selectFileMode.value === 'folder') {
+    return false
+  } else if (selectFileMode.value === 'file') {
+    return multiple.value
+  }
+  return true
+})
 
 // 文件选择功能
 const {
@@ -37,7 +51,7 @@ const {
   toggleSelect,
   toggleSelectAll,
   selectedPaths,
-} = useSelection({filteredFiles, basePath})
+} = useSelection({filteredFiles, basePath, allowMultipleSelection})
 
 // 复制粘贴功能
 const {enablePaste, handleCut, handleCopy, handlePaste} = useCopyPaste({
@@ -80,6 +94,11 @@ const {
   handleDownload,
   emit,
 })
+
+defineExpose({
+  selectedItems,
+  basePath,
+})
 </script>
 
 <template>
@@ -101,50 +120,52 @@ const {
           <i class="fa fa-folder-o" aria-hidden="true"></i>
         </button>
 
-        <div class="split-line"></div>
+        <template v-if="!selectFileMode">
+          <div class="split-line"></div>
 
-        <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files">
-          <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
-          <i class="fa fa-file-o" aria-hidden="true"></i>
-        </button>
-        <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder">
-          <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
-          <i class="fa fa-folder-o" aria-hidden="true"></i>
-        </button>
-        <button
-          class="vp-button"
-          :disabled="!enableAction"
-          @click="handleDownload"
-          title="Download"
-        >
-          <i class="fa fa-download" aria-hidden="true"></i>
-        </button>
+          <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files">
+            <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
+            <i class="fa fa-file-o" aria-hidden="true"></i>
+          </button>
+          <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder">
+            <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
+            <i class="fa fa-folder-o" aria-hidden="true"></i>
+          </button>
+          <button
+            class="vp-button"
+            :disabled="!enableAction"
+            @click="handleDownload"
+            title="Download"
+          >
+            <i class="fa fa-download" aria-hidden="true"></i>
+          </button>
 
-        <div class="split-line"></div>
+          <div class="split-line"></div>
 
-        <button class="vp-button" :disabled="!enableAction" @click="handleCut" title="Cut">
-          <i class="fa fa-scissors" aria-hidden="true"></i>
-        </button>
-        <button class="vp-button" :disabled="!enableAction" @click="handleCopy" title="Copy">
-          <i class="fa fa-files-o" aria-hidden="true"></i>
-        </button>
-        <button class="vp-button" :disabled="!enablePaste" @click="handlePaste" title="Paste">
-          <i class="fa fa-clipboard" aria-hidden="true"></i>
-        </button>
+          <button class="vp-button" :disabled="!enableAction" @click="handleCut" title="Cut">
+            <i class="fa fa-scissors" aria-hidden="true"></i>
+          </button>
+          <button class="vp-button" :disabled="!enableAction" @click="handleCopy" title="Copy">
+            <i class="fa fa-files-o" aria-hidden="true"></i>
+          </button>
+          <button class="vp-button" :disabled="!enablePaste" @click="handlePaste" title="Paste">
+            <i class="fa fa-clipboard" aria-hidden="true"></i>
+          </button>
 
-        <button
-          class="vp-button"
-          :disabled="selectedItems.length !== 1"
-          @click="handleRename"
-          title="Rename"
-        >
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        </button>
-        <button class="vp-button" :disabled="!enableAction" @click="confirmDelete" title="Delete">
-          <i class="fa fa-trash-o" aria-hidden="true"></i>
-        </button>
+          <button
+            class="vp-button"
+            :disabled="selectedItems.length !== 1"
+            @click="handleRename"
+            title="Rename"
+          >
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </button>
+          <button class="vp-button" :disabled="!enableAction" @click="confirmDelete" title="Delete">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
 
-        <div class="split-line"></div>
+          <div class="split-line"></div>
+        </template>
       </div>
       <div class="action-group">
         <button
@@ -174,9 +195,11 @@ const {
           <QuickOptions v-model:visible="showSortMenu" :options="sortOptions" />
         </div>
 
-        <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">
-          <i class="fa fa-check-square-o" aria-hidden="true"></i>
-        </button>
+        <template v-if="!selectFileMode || (selectFileMode && multiple)">
+          <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          </button>
+        </template>
 
         <!--<button-->
         <!--  class="vp-button"-->
@@ -209,6 +232,7 @@ const {
           :key="item.name"
           :data-name="item.name"
           :active="selectedItemsSet.has(item)"
+          :show-checkbox="allowMultipleSelection"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
           @contextmenu.prevent.stop="handleShowCtxMenu(item, $event)"
@@ -222,6 +246,7 @@ const {
           :key="item.name"
           :data-name="item.name"
           :active="selectedItemsSet.has(item)"
+          :show-checkbox="allowMultipleSelection"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
           @contextmenu.prevent.stop="handleShowCtxMenu(item, $event)"

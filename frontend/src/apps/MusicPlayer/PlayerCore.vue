@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import musicBus, {MusicEvents, useMusicBusOn} from '@/apps/MusicPlayer/utils/bus'
 import {useI18n} from 'vue-i18n'
-import {MusicItem, useMusicSettingsStore, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import {MediaItem, useMusicSettingsStore, useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
 import {fsWebApi} from '@/api/filesystem'
 
 // interface Props {}
 // const props = withDefaults(defineProps<Props>(), {})
 
-const musicStore = useMusicStore()
+const mediaStore = useMediaStore()
 
 const {t: $t} = useI18n()
 const audioRef = ref()
@@ -21,10 +21,10 @@ const pause = () => {
   audioRef.value.pause()
 }
 const previous = () => {
-  musicStore.playPrev()
+  mediaStore.playPrev()
 }
 const next = () => {
-  musicStore.playNext()
+  mediaStore.playNext()
 }
 const togglePlay = () => {
   if (!audioRef.value || !audioRef.value.src) {
@@ -47,30 +47,30 @@ const registerAudioEvents = (audio) => {
   }
 
   audio.addEventListener('play', () => {
-    musicStore.paused = false
-    musicStore.isLoadedAutoplay = true
+    mediaStore.paused = false
+    mediaStore.isLoadedAutoplay = true
   })
 
   audio.addEventListener('pause', () => {
-    musicStore.paused = true
-    musicStore.isLoadedAutoplay = false
+    mediaStore.paused = true
+    mediaStore.isLoadedAutoplay = false
   })
 
   audio.addEventListener('ended', () => {
-    musicStore.handlePlayEnded()
+    mediaStore.handlePlayEnded()
   })
 
   audio.addEventListener('canplay', (evt) => {
     // console.log('canplay', audio)
-    musicStore.duration = evt.target.duration
-    if (musicStore.isLoadedAutoplay) {
+    mediaStore.duration = evt.target.duration
+    if (mediaStore.isLoadedAutoplay) {
       play()
     }
   })
 
   audio.addEventListener('timeupdate', (evt) => {
     // console.log('timeupdate', evt.target.currentTime)
-    musicStore.currentTime = evt.target.currentTime
+    mediaStore.currentTime = evt.target.currentTime
   })
 
   audio.addEventListener('error', (error) => {
@@ -96,13 +96,14 @@ const changeSpeed = (val = 1) => {
 }
 
 watch(() => mSettingsStore.audioVolume, changeVolume)
-watch(() => musicStore.playbackRate, changeSpeed)
+watch(() => mediaStore.playbackRate, changeSpeed)
 
 watch(
-  () => musicStore.musicItem,
-  async (item: MusicItem) => {
+  () => mediaStore.musicItem,
+  async (item: MediaItem) => {
     if (!item) {
       audioSrc.value = undefined
+      return
     }
     const {key} = (await fsWebApi.createShareLink({
       paths: [item.absPath],
@@ -115,7 +116,7 @@ watch(
 onMounted(() => {
   registerAudioEvents(audioRef.value)
   changeVolume(mSettingsStore.audioVolume)
-  changeSpeed(musicStore.playbackRate)
+  changeSpeed(mediaStore.playbackRate)
 })
 
 useMusicBusOn(MusicEvents.ACTION_TOGGLE_PLAY, togglePlay)

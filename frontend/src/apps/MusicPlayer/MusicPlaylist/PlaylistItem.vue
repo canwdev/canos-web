@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
-import {MusicItem, useMusicStore} from '@/apps/MusicPlayer/utils/music-state'
+import {MediaItem, useMediaStore} from '@/apps/MusicPlayer/utils/music-state'
 
 interface Props {
-  item: MusicItem
+  item: MediaItem
 }
 const props = withDefaults(defineProps<Props>(), {})
-const musicStore = useMusicStore()
+const mediaStore = useMediaStore()
 
 const {item} = toRefs(props)
 const isCurrent = computed(() => {
-  return item.value.guid === musicStore.musicItem?.guid
+  return item.value.guid === mediaStore.musicItem?.guid
 })
 </script>
 
@@ -18,7 +18,7 @@ const isCurrent = computed(() => {
   <div class="playlist-item">
     <div class="item-left">
       <div v-if="isCurrent" class="status-icon">
-        <template v-if="!musicStore.paused">▶️</template>
+        <template v-if="!mediaStore.paused">▶️</template>
         <template v-else>⏸️</template>
       </div>
       <CoverMini :src="item.cover" force-show-icon />
@@ -38,7 +38,6 @@ const isCurrent = computed(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s;
   cursor: pointer;
   border-bottom: 1px solid $color_border;
 

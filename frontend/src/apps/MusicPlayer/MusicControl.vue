@@ -9,13 +9,14 @@ import {
   loopModeMap,
   LoopModeTypeValues,
   useMusicSettingsStore,
-  useMusicStore,
+  useMediaStore,
 } from '@/apps/MusicPlayer/utils/music-state'
+import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
 
 // interface Props {}
 // const props = withDefaults(defineProps<Props>(), {})
 
-const musicStore = useMusicStore()
+const mediaStore = useMediaStore()
 
 const KEY_SPACE = 'space'
 const KEY_PREVIOUS = ['left', 'pageup', 'k', 'l']
@@ -38,10 +39,10 @@ const togglePlay = (e) => {
   musicBus.emit(MusicEvents.ACTION_TOGGLE_PLAY)
 }
 const previous = () => {
-  musicStore.playPrev()
+  mediaStore.playPrev()
 }
 const next = () => {
-  musicStore.playNext()
+  mediaStore.playNext()
 }
 const volumeUpFn = (e) => {
   e.preventDefault()
@@ -96,7 +97,7 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => musicStore.currentTime,
+  () => mediaStore.currentTime,
   (val) => {
     if (!isSeeking.value) {
       mCurrentTime.value = val
@@ -104,7 +105,14 @@ watch(
   },
 )
 
-const musicItem = computed(() => musicStore.musicItem)
+const musicItem = computed(() => mediaStore.musicItem)
+
+const jumpForward = () => {
+  musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (mediaStore.currentTime += 5))
+}
+const jumpBackward = () => {
+  musicBus.emit(MusicEvents.ACTION_CHANGE_CURRENT_TIME, (mediaStore.currentTime -= 5))
+}
 </script>
 
 <template>
@@ -113,13 +121,13 @@ const musicItem = computed(() => musicStore.musicItem)
       <span class="time text-overflow">{{ formatTimeHMS(mCurrentTime) }}</span>
 
       <TkSeekbar
-        :max="musicStore.duration"
+        :max="mediaStore.duration"
         :value="mCurrentTime"
         @input="progressSeeking"
         @change="progressChange"
       />
 
-      <span class="time text-overflow">{{ formatTimeHMS(musicStore.duration) }}</span>
+      <span class="time text-overflow">{{ formatTimeHMS(mediaStore.duration) }}</span>
     </div>
     <div class="actionbar">
       <CoverMini :src="musicItem.cover" icon-name="audiotrack" @click="$emit('onCoverClick')" />
@@ -131,66 +139,94 @@ const musicItem = computed(() => musicStore.musicItem)
       <div class="buttons-scroll">
         <button
           :disabled="isDisabled"
-          class="btn-action btn-no-style"
+          class="btn-action btn-no-style icon-wrap"
           :title="$t('previous')"
           @click="previous"
+          @contextmenu.prevent="jumpBackward"
         >
-          <i class="icon-wrap">⏮️</i>
+          <i class="fa fa-step-backward" aria-hidden="true"></i>
         </button>
 
         <button
           :disabled="isDisabled"
-          class="btn-action btn-no-style"
-          :title="musicStore.paused ? $t('play') : $t('pause')"
+          class="btn-action btn-no-style icon-wrap"
+          :title="mediaStore.paused ? $t('play') : $t('pause')"
           @click="togglePlay"
         >
-          <i class="icon-wrap _lg">
-            <template v-if="musicStore.paused">▶️</template>
-            <template v-else>⏸️</template>
-          </i>
+          <template v-if="mediaStore.paused">
+            <i class="fa fa-play" aria-hidden="true"></i>
+          </template>
+          <template v-else>
+            <i class="fa fa-pause" aria-hidden="true"></i>
+          </template>
         </button>
 
         <button
           :disabled="isDisabled"
-          class="btn-action btn-no-style"
+          class="btn-action btn-no-style icon-wrap"
           :title="$t('next')"
           @click="next"
+          @contextmenu.prevent="jumpForward"
         >
-          <i class="icon-wrap">⏭️</i>
+          <i class="fa fa-step-forward" aria-hidden="true"></i>
         </button>
+
+        <el-popover placement="top" trigger="click">
+          <template #reference>
+            <button class="btn-action btn-no-style icon-wrap" :title="$t('playback-speed')">
+              {{ mediaStore.playbackRate }}x
+            </button>
+          </template>
+
+          <div class="flex-row-center-gap">
+            <button class="vp-button" @click="mediaStore.playbackRate = Number(1)">重置</button>
+            <el-slider
+              style="width: 150px"
+              v-model="mediaStore.playbackRate"
+              :max="2"
+              :min="0.1"
+              :step="0.1"
+            />
+          </div>
+        </el-popover>
 
         <button
           v-if="currentLoopMode"
-          class="btn-action btn-no-style"
+          class="btn-action btn-no-style icon-wrap"
           :title="$t(currentLoopMode.i18nKey)"
           @click="switchLoopMode"
         >
-          <i class="icon-wrap" :class="currentLoopMode.className">
-            <component v-if="currentLoopMode.icon" :is="currentLoopMode.icon"></component>
-            <span v-else>{{ $t(currentLoopMode.i18nKey) }}</span>
-          </i>
+          <span
+            v-if="currentLoopMode.icon"
+            class="material-icons"
+            :class="currentLoopMode.className"
+          >
+            {{ currentLoopMode.icon }}
+          </span>
+          <span v-else>{{ $t(currentLoopMode.i18nKey) }}</span>
         </button>
 
-        <n-popover placement="top" trigger="click">
-          <template #trigger>
-            <button class="btn-action btn-no-style" :title="$t('volume')">
-              <i class="icon-wrap">
-                <template v-if="mSettingsStore.audioVolume > 0">🔊</template>
-                <template v-else>🔇</template>
-              </i>
+        <el-popover placement="top" trigger="click">
+          <template #reference>
+            <button class="btn-action btn-no-style icon-wrap" :title="$t('volume')">
+              <template v-if="mSettingsStore.audioVolume > 0">
+                <i class="fa fa-volume-up" aria-hidden="true"></i>
+              </template>
+              <template v-else>
+                <i class="fa fa-volume-off" aria-hidden="true"></i>
+              </template>
             </button>
           </template>
           <div style="display: flex; align-items: center; flex-direction: column">
             <el-slider
-              vertical
-              style="height: 100px"
+              style="width: 100px"
               :max="100"
               :tooltip="false"
               v-model="mSettingsStore.audioVolume"
             />
             <span style="font-size: 12px">{{ mSettingsStore.audioVolume }}</span>
           </div>
-        </n-popover>
+        </el-popover>
       </div>
     </div>
   </div>
@@ -202,15 +238,9 @@ const musicItem = computed(() => musicStore.musicItem)
   $bottomZIndex: 2100;
 
   .icon-wrap {
-    svg {
-      width: 20px;
-      height: 20px;
-    }
+    font-size: 18px;
     &._lg {
-      svg {
-        width: 32px;
-        height: 32px;
-      }
+      font-size: 28px;
     }
   }
 
@@ -288,7 +318,6 @@ const musicItem = computed(() => musicStore.musicItem)
         height: 100%;
         width: 55px;
         flex-shrink: 0;
-        font-size: 12px;
         display: flex;
         align-items: center;
         justify-content: center;

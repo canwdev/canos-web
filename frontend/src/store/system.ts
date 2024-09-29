@@ -33,7 +33,7 @@ export const useSystemStore = defineStore('system', {
       if (shortcut) {
         return this.createTask(shortcut, params)
       }
-      alert(`appid ${appid} not found!`)
+      window.$message.error(`appid ${appid} not found!`)
     },
     /**
      * 从快捷方式创建任务

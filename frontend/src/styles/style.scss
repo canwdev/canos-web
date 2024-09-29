@@ -81,6 +81,13 @@ html, body, #app {
   }
 }
 
+.flex-row-center-gap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .error-tip-button {
   background-color: #f44336;
   cursor: pointer;

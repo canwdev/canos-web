@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {defineComponent} from 'vue'
 import TrayClock from '@/components/OS/TaskBar/TrayClock.vue'
 import StartMenu from '@/components/OS/StartMenu/index.vue'
 import {useSystemStore} from '@/store/system'
@@ -12,7 +11,7 @@ import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
-const isShowStart = ref(true)
+const isShowStart = ref(false)
 const taskList = ref([])
 const handleItemClick = (item) => {
   const result = systemStore.setTaskActive(item, true)

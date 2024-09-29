@@ -29,8 +29,8 @@ export const SystemAppExplorer: ShortcutItem = {
 }
 
 export const SystemAppMusicPlayer: ShortcutItem = {
-  appid: 'os.music_player',
-  title: 'Music Player',
+  appid: 'os.media_player',
+  title: 'Media Player',
   icon: 'multimedia-audio-player',
   winOptions: {
     width: '500px',

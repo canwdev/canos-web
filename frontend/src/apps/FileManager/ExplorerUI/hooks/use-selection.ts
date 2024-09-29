@@ -2,7 +2,7 @@ import {useSelectionArea} from '@/hooks/use-selection-area'
 import {generateTextFile, normalizePath, toggleArrayElement} from '../../utils'
 import {IEntry} from '@server/types/server'
 
-export const useSelection = ({filteredFiles, basePath}) => {
+export const useSelection = ({filteredFiles, basePath, allowMultipleSelection}) => {
   const selectedItems = ref<IEntry[]>([])
   const selectedItemsSet = computed(() => {
     return new Set(selectedItems.value)
@@ -12,7 +12,7 @@ export const useSelection = ({filteredFiles, basePath}) => {
   })
 
   const explorerContentRef = ref()
-  useSelectionArea({
+  const selectionRef = useSelectionArea({
     containerRef: explorerContentRef,
     onStart: () => {
       selectedItems.value = []
@@ -36,7 +36,30 @@ export const useSelection = ({filteredFiles, basePath}) => {
       selectedItems.value = list
     },
   })
+
+  watch(
+    allowMultipleSelection,
+    (val) => {
+      setTimeout(() => {
+        // console.log(selectionRef, selectionRef.value, val)
+        if (!selectionRef.value) {
+          return
+        }
+        if (val) {
+          selectionRef.value.enable()
+        } else {
+          selectionRef.value.disable()
+        }
+      })
+    },
+    {immediate: true},
+  )
+
   const toggleSelect = ({item, event, toggle = false}) => {
+    if (!allowMultipleSelection.value) {
+      selectedItems.value = [item]
+      return
+    }
     if (event.ctrlKey || event.metaKey || toggle) {
       // 使用ctrl键多选
       selectedItems.value = toggleArrayElement([...selectedItems.value], item)
@@ -58,6 +81,9 @@ export const useSelection = ({filteredFiles, basePath}) => {
     }
   }
   const toggleSelectAll = () => {
+    if (!allowMultipleSelection.value) {
+      return
+    }
     const allFiles = filteredFiles.value
     if (selectedItems.value.length === allFiles.length) {
       selectedItems.value = []

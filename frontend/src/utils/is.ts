@@ -1,5 +1,10 @@
-export const supportedMusicFormat = /\.(mp3|wav|ogg|flac|opus)$/i
-export const isSupportedMusicFormat = (name) => supportedMusicFormat.test(name)
+export const regSupportedImageFormat = /\.(jpg|jpeg|png|gif|webp)$/i
+export const regSupportedVideoFormat = /\.(mp4|webm|mov)$/i
+export const regSupportedMusicFormat = /\.(mp3|wav|ogg|flac|opus)$/i
+export const isSupportedMediaFormat = (name) =>
+  regSupportedMusicFormat.test(name) ||
+  regSupportedVideoFormat.test(name) ||
+  regSupportedImageFormat.test(name)
 
 /**
  * 是否外部链接

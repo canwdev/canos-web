@@ -8,6 +8,7 @@ const emit = defineEmits(['open', 'select'])
 interface Props {
   item: IEntry
   active: boolean
+  showCheckbox?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {})
 
@@ -24,6 +25,7 @@ const {iconName, titleDesc} = useFileItem(props)
     :title="titleDesc"
   >
     <input
+      v-if="showCheckbox"
       class="file-checkbox"
       type="checkbox"
       :checked="active"
