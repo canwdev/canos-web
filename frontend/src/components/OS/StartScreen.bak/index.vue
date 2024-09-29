@@ -12,7 +12,7 @@ import {
   StartLayoutGroup,
   IStartMenuItem,
 } from '@/components/OS/StartMenu/types'
-import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/utils/QuickContextMenu.vue'
+import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {LsKeys} from '@/enum'
 import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'

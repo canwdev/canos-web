@@ -12,11 +12,14 @@ function onClick() {
 <template>
   <div class="wake-lock-wrap">
     <template v-if="wakeLock.isSupported">
-      <div>保持计算机唤醒（不休眠）: {{ wakeLock.isActive ? '已开启' : '已关闭' }}</div>
+      <div>
+        保持当前浏览器所在的计算机唤醒（不休眠）:
+        {{ wakeLock.isActive ? '已开启' : '已关闭' }}
+      </div>
       <button class="vp-button" @click="onClick">
         {{ text }}
       </button>
-      <div>提示：必须保持此程序运行，并且浏览器在前台，否则功能失效。</div>
+      <div>提示：必须保持此程和浏览器在前台运行，否则无效。</div>
     </template>
     <template v-else> 该浏览器不支持唤醒锁定。 </template>
   </div>

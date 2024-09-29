@@ -4,7 +4,7 @@ import FileListItem from './FileListItem.vue'
 import {useVModel} from '@vueuse/core'
 import FileGridItem from './FileGridItem.vue'
 import QuickOptions from '@/components/CanUI/packages/QuickOptions/index.vue'
-import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/utils/QuickContextMenu.vue'
+import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
 import UploadQueue from '../UploadQueue.vue'
 import {useCopyPaste} from './hooks/use-copy-paste'
 import {ExplorerEvents, useExplorerBusOn} from '../utils/bus'
@@ -92,16 +92,24 @@ const {
   >
     <div class="explorer-actions vp-panel">
       <div class="action-group">
-        <button class="vp-button" @click="handleCreateFile" title="Create Document">➕📄</button>
-        <button class="vp-button" @click="handleCreateFolder" title="Create Folder">➕📂</button>
+        <button class="vp-button" @click="handleCreateFile()" title="Create Document">
+          <i class="fa fa-plus icon-small-abs" aria-hidden="true"></i>
+          <i class="fa fa-file-o" aria-hidden="true"></i>
+        </button>
+        <button class="vp-button" @click="handleCreateFolder" title="Create Folder">
+          <i class="fa fa-plus icon-small-abs" aria-hidden="true"></i>
+          <i class="fa fa-folder-o" aria-hidden="true"></i>
+        </button>
 
         <div class="split-line"></div>
 
         <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files">
-          ⏫📄
+          <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
+          <i class="fa fa-file-o" aria-hidden="true"></i>
         </button>
         <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder">
-          ⏫📁
+          <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
+          <i class="fa fa-folder-o" aria-hidden="true"></i>
         </button>
         <button
           class="vp-button"
@@ -109,19 +117,19 @@ const {
           @click="handleDownload"
           title="Download"
         >
-          ⏬
+          <i class="fa fa-download" aria-hidden="true"></i>
         </button>
 
         <div class="split-line"></div>
 
         <button class="vp-button" :disabled="!enableAction" @click="handleCut" title="Cut">
-          ✂️
+          <i class="fa fa-scissors" aria-hidden="true"></i>
         </button>
         <button class="vp-button" :disabled="!enableAction" @click="handleCopy" title="Copy">
-          📑
+          <i class="fa fa-files-o" aria-hidden="true"></i>
         </button>
         <button class="vp-button" :disabled="!enablePaste" @click="handlePaste" title="Paste">
-          📋
+          <i class="fa fa-clipboard" aria-hidden="true"></i>
         </button>
 
         <button
@@ -130,10 +138,10 @@ const {
           @click="handleRename"
           title="Rename"
         >
-          ✏️
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </button>
         <button class="vp-button" :disabled="!enableAction" @click="confirmDelete" title="Delete">
-          ❌
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
         </button>
 
         <div class="split-line"></div>
@@ -144,17 +152,39 @@ const {
           @click="showHidden = !showHidden"
           title="Toggle hidden file visible"
         >
-          {{ showHidden ? '😐' : '🫥' }}
+          <template v-if="showHidden">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </template>
+          <template v-else>
+            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+          </template>
         </button>
         <button @click="isGridView = !isGridView" class="vp-button" title="Toggle grid view">
-          {{ isGridView ? '🎛️' : '🎚️' }}
+          <template v-if="isGridView">
+            <i class="fa fa-list" aria-hidden="true"></i>
+          </template>
+          <template v-else>
+            <i class="fa fa-th" aria-hidden="true"></i>
+          </template>
         </button>
         <div class="action-button-wrap">
-          <button class="vp-button" title="Toggle Sort" @click="showSortMenu = true">📶</button>
+          <button class="vp-button" title="Toggle Sort" @click="showSortMenu = true">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
           <QuickOptions v-model:visible="showSortMenu" :options="sortOptions" />
         </div>
 
-        <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">✅</button>
+        <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+        </button>
+
+        <!--<button-->
+        <!--  class="vp-button"-->
+        <!--  @click="($event) => handleShowCtxMenu(null, $event)"-->
+        <!--  title="Menu"-->
+        <!--&gt;-->
+        <!--  <i class="fa fa-bars" aria-hidden="true"></i>-->
+        <!--</button>-->
       </div>
     </div>
     <div
@@ -240,10 +270,19 @@ const {
       .vp-button {
         display: inline-flex;
         padding: 4px 6px;
+        position: relative;
+        .icon-small-abs {
+          font-size: 12px;
+          position: absolute;
+          left: 50%;
+          top: 60%;
+          transform: translate(-50%, -50%) scale(0.6);
+        }
       }
       .action-button-wrap {
         display: inline-flex;
         position: relative;
+        z-index: 10;
         .quick-options {
           position: absolute;
           top: 100%;
@@ -271,7 +310,7 @@ const {
       border-right: 0;
       position: sticky;
       top: 0;
-      padding: 0 !important;
+      padding: 4px 0;
       z-index: 1;
     }
 

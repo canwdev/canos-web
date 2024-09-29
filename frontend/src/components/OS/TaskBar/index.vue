@@ -83,7 +83,7 @@ const handleItemClick = (item) => {
     width: 100%;
     display: flex;
     overflow: hidden;
-    border-radius: 0;
+    border-radius: 0 !important;
     border: none;
     box-sizing: border-box;
     //background-color: rgba(255, 255, 255, 0.8);
