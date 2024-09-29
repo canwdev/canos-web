@@ -20,10 +20,14 @@ const isCurrent = computed(() => {
   <div class="playlist-item">
     <div class="item-left">
       <div v-if="isCurrent" class="status-icon">
-        <template v-if="!mediaStore.paused">▶️</template>
-        <template v-else>⏸️</template>
+        <template v-if="!mediaStore.paused">
+          <i class="fa fa-play" aria-hidden="true"></i>
+        </template>
+        <template v-else>
+          <i class="fa fa-pause" aria-hidden="true"></i>
+        </template>
       </div>
-      <CoverMini :src="item.cover" force-show-icon />
+      <CoverMini :src="item.cover" force-show-icon :is-video="item.type === 'video'" />
     </div>
     <div class="item-main">
       <div class="item-title">{{ item.titleDisplay }}</div>
@@ -53,10 +57,7 @@ const isCurrent = computed(() => {
     .status-icon {
       position: absolute;
       z-index: 1;
-      svg {
-        width: 16px;
-        height: 16px;
-      }
+      font-size: 14px;
     }
   }
 

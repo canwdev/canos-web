@@ -13,7 +13,7 @@ const mediaStore = useMediaStore(storeId.value)
 const {t: $t} = useI18n()
 const avRef = ref()
 const mSettingsStore = useMusicSettingsStore()
-const audioSrc = ref<string | undefined>()
+const avSrc = ref<string | undefined>()
 
 const play = () => {
   avRef.value.play()
@@ -38,7 +38,7 @@ const togglePlay = () => {
   }
 }
 const registerMediaEvents = (av) => {
-  console.log(av)
+  // console.log(av)
   if ('mediaSession' in navigator) {
     navigator.mediaSession.setActionHandler('play', play)
     navigator.mediaSession.setActionHandler('pause', pause)
@@ -63,10 +63,11 @@ const registerMediaEvents = (av) => {
   })
 
   av.addEventListener('volumechange', () => {
-    console.log(av.volume)
+    // console.log(av.volume)
     mSettingsStore.setAudioVolume(av.volume * 100)
   })
   av.addEventListener('ratechange', function () {
+    // console.log('[ratechange]', av.playbackRate)
     mediaStore.playbackRate = av.playbackRate
   })
 
@@ -112,13 +113,20 @@ watch(
   () => mediaStore.mediaItem,
   async (item: MediaItem) => {
     if (!item) {
-      audioSrc.value = undefined
+      avSrc.value = undefined
       return
     }
     const {key} = (await fsWebApi.createShareLink({
       paths: [item.absPath],
     })) as unknown as any
-    audioSrc.value = fsWebApi.getStreamShareLink(key)
+    avSrc.value = fsWebApi.getStreamShareLink(key)
+    const playbackRate = mediaStore.playbackRate
+    avRef.value.load()
+
+    // 由于媒体标签变更src会导致速度重置为1，在此还原设置速度
+    setTimeout(() => {
+      changeSpeed(playbackRate)
+    })
   },
   {immediate: true},
 )
@@ -127,9 +135,9 @@ watch(
   () => mediaStore.isVideo,
   () => {
     setTimeout(() => {
-      registerMediaEvents(avRef.value)
       changeVolume(mSettingsStore.audioVolume)
       changeSpeed(mediaStore.playbackRate)
+      registerMediaEvents(avRef.value)
     })
   },
   {immediate: true},
@@ -145,8 +153,8 @@ onBeforeUnmount(() => {})
 
 <template>
   <div class="player-core">
-    <video v-if="mediaStore.isVideo" ref="avRef" :src="audioSrc" controls></video>
-    <audio v-else ref="avRef" :src="audioSrc" controls></audio>
+    <video v-if="mediaStore.isVideo" ref="avRef" :src="avSrc" controls></video>
+    <audio v-else ref="avRef" :src="avSrc" controls></audio>
   </div>
 </template>
 

@@ -129,7 +129,11 @@ const jumpBackward = () => {
       <span class="time text-overflow">{{ formatTimeHMS(mediaStore.duration) }}</span>
     </div>
     <div class="actionbar">
-      <CoverMini :src="mediaItem.cover" icon-name="audiotrack" @click="$emit('onCoverClick')" />
+      <CoverMini
+        :src="mediaItem.cover"
+        :is-video="mediaItem.type === 'video'"
+        @click="$emit('onCoverClick')"
+      />
       <button class="btn-song-info btn-no-style" @click="$emit('onTitleClick')">
         <span class="title text-overflow">{{ mediaItem.titleDisplay }}</span>
         <span v-show="mediaItem.artist" class="artist text-overflow">{{ mediaItem.artist }}</span>
@@ -170,7 +174,7 @@ const jumpBackward = () => {
           <i class="fa fa-step-forward" aria-hidden="true"></i>
         </button>
 
-        <el-popover placement="top" trigger="click">
+        <el-popover placement="top" trigger="hover">
           <template #reference>
             <button class="btn-action btn-no-style icon-wrap" :title="$t('playback-speed')">
               {{ mediaStore.playbackRate }}x
@@ -205,7 +209,7 @@ const jumpBackward = () => {
           <span v-else>{{ $t(currentLoopMode.i18nKey) }}</span>
         </button>
 
-        <el-popover placement="top" trigger="click">
+        <el-popover placement="top" trigger="hover">
           <template #reference>
             <button class="btn-action btn-no-style icon-wrap" :title="$t('volume')">
               <template v-if="mSettingsStore.audioVolume > 0">

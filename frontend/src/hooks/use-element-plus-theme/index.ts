@@ -1,5 +1,7 @@
 import {PRE, PRE_DARK, PRE_LIGHT, WHITE, BLACK} from './token'
 import {onBeforeMount} from 'vue'
+import {useStyleTag} from '@vueuse/core'
+import {StyleEditorKeys} from '@/components/StyleEditor/enum'
 
 const html = document.documentElement
 
@@ -23,25 +25,45 @@ const mix = (color1: string, color2: string, weight: number) => {
   return '#' + _r + _g + _b
 }
 
-/**
- * 更换颜色的方法
- * @param color 颜色
- */
-const changeTheme = (color?: string) => {
-  if (!color) return
-  // 设置主要颜色
-  html.style.setProperty(PRE, color)
-  // 循环设置次级颜色
-  for (let i = 1; i < 10; i += 1) {
-    html.style.setProperty(`${PRE_LIGHT}-${i}`, mix(color, WHITE, i * 0.1))
-  }
-  // 设置主要暗色
-  const dark = mix(color, BLACK, 0.2)
-  html.style.setProperty(`${PRE_DARK}-2`, dark)
-}
-
 export function useElementPlusTheme(color?: string) {
+  const {css} = useStyleTag('', {id: 'element-style-override'})
   onBeforeMount(() => changeTheme(color))
+
+  /**
+   * 更换颜色的方法
+   * @param color 颜色
+   */
+  const changeTheme = (color?: string) => {
+    if (!color) return
+    const styleObj: any = {}
+    const styleObjDark: any = {}
+    // 设置主要颜色
+    styleObj[PRE] = color
+    styleObjDark[PRE] = color
+    // 循环设置次级颜色
+    for (let i = 1; i < 10; i += 1) {
+      styleObj[`${PRE_LIGHT}-${i}`] = mix(color, WHITE, i * 0.1)
+      styleObjDark[`${PRE_LIGHT}-${i}`] = mix(color, BLACK, i * 0.1)
+    }
+    // 设置主要暗色
+    const dark = mix(color, BLACK, 0.2)
+    styleObj[`${PRE_DARK}-2`] = dark
+
+    css.value = `body {
+${Object.keys(styleObj)
+  .map((key) => {
+    return `${key}: ${styleObj[key]}`
+  })
+  .join(';\n')}
+}
+html.dark body {
+${Object.keys(styleObjDark)
+  .map((key) => {
+    return `${key}: ${styleObjDark[key]}`
+  })
+  .join(';\n')}
+}`
+  }
 
   return {
     changeTheme,

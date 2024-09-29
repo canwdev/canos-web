@@ -3,6 +3,7 @@ import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
 
 interface Props {
   src?: string
+  isVideo?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {})
 </script>
@@ -11,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {})
   <button class="btn-no-style btn-cover flex items-center justify-center">
     <slot></slot>
     <CoverDisplay v-if="src" :src="src" />
-    <i v-else class="icon-wrap"> 🎵 </i>
+    <i v-else class="icon-wrap fa" :class="[isVideo ? 'fa-film' : 'fa-music']"></i>
   </button>
 </template>
 
@@ -26,10 +27,7 @@ const props = withDefaults(defineProps<Props>(), {})
     height: 100%;
   }
   .icon-wrap {
-    svg {
-      width: 40px;
-      height: 40px;
-    }
+    font-size: 24px;
   }
 }
 </style>
