@@ -2,7 +2,7 @@ import {IEntry} from '@server/types/server'
 import {fsWebApi} from '@/api/filesystem'
 import {normalizePath} from '../../utils'
 import {useSystemStore} from '@/store/system'
-import {isSupportedMediaFormat} from '@/utils/is'
+import {isSupportedMediaFormat, regSupportedTextFormat} from '@/utils/is'
 
 export const useOpener = (basePath, isLoading) => {
   const systemStore = useSystemStore()
@@ -13,10 +13,7 @@ export const useOpener = (basePath, isLoading) => {
   const openFileNewTab = async (item: IEntry) => {
     try {
       isLoading.value = true
-      const {key} = (await fsWebApi.createShareLink({
-        paths: [normalizePath(basePath.value + '/' + item.name)],
-      })) as unknown as any
-      window.open(fsWebApi.getStreamShareLink(key))
+      window.open(fsWebApi.getStreamShareLink([normalizePath(basePath.value + '/' + item.name)]))
     } finally {
       isLoading.value = false
     }
@@ -25,6 +22,11 @@ export const useOpener = (basePath, isLoading) => {
   const openFile = async (item: IEntry, list: IEntry[]) => {
     if (isSupportedMediaFormat(item.name)) {
       systemStore.createTaskById('os.media_player', {item, list, basePath: basePath.value})
+      return
+    }
+
+    if (regSupportedTextFormat.test(item.name)) {
+      systemStore.createTaskById('os.text_editor', {item, basePath: basePath.value})
       return
     }
     await openFileNewTab(item)

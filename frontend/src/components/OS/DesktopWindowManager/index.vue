@@ -58,7 +58,12 @@ const getIsMaximum = (task: TaskItem) => {
           <span>{{ task.title }}</span>
         </template>
 
-        <component v-if="task.component" :is="task.component" :appParams="task.params"></component>
+        <component
+          v-if="task.component"
+          :is="task.component"
+          :task="task"
+          :appParams="task.params"
+        ></component>
         <iframe
           v-else-if="task.url"
           :src="task.url"
@@ -67,7 +72,12 @@ const getIsMaximum = (task: TaskItem) => {
         ></iframe>
       </ViewPortWindow>
       <div v-else class="static-window vp-bg" v-show="task.guid === systemStore.activeId">
-        <component v-if="task.component" :is="task.component" :appParams="task.params"></component>
+        <component
+          v-if="task.component"
+          :is="task.component"
+          :task="task"
+          :appParams="task.params"
+        ></component>
         <iframe
           v-else-if="task.url"
           :src="task.url"

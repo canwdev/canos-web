@@ -27,7 +27,7 @@ const taskHandler = (task: TaskItem) => {
   return new Promise(async (resolve, reject) => {
     try {
       const {path, file} = data
-      await fsWebApi.createFile(
+      await fsWebApi.uploadFile(
         {
           path,
           file,

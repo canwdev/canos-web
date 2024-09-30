@@ -1,4 +1,6 @@
-export const regSupportedImageFormat = /\.(jpg|jpeg|png|gif|webp)$/i
+export const regSupportedTextFormat =
+  /\.(txt|csv|md|log|ini|js|jsx|ts|tsx|py|java|cpp|h|cs|rb|go|php|html|xml|yaml|css|scss|styl|vue)$/i
+export const regSupportedImageFormat = /\.(jpg|jpeg|png|gif|webp|svg)$/i
 export const regSupportedVideoFormat = /\.(mp4|webm|mov)$/i
 export const regSupportedMusicFormat = /\.(mp3|wav|ogg|flac|opus)$/i
 export const isSupportedMediaFormat = (name) =>

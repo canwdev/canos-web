@@ -89,7 +89,7 @@ export class FsController {
       storage: diskStorage({
         destination: (req, file, cb) => {
           const dest = Path.dirname(req.query.path as string)
-          console.log(dest)
+          console.log('dest', dest)
           cb(null, dest || './uploads/')
         },
         filename: (req, file, cb) => {

@@ -18,6 +18,7 @@ export const getLastDirName = (path) => {
 }
 
 export const generateTextFile = (text: string, name: string) => {
+  // 创建一个 Blob 对象，将输入的文本转换为文本文件
   const blob = new Blob([text], {type: 'text/plain;charset=utf-8'})
   return new File([blob], name)
 }

@@ -87,7 +87,7 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
 
   .watermark-tip {
     position: absolute;
-    bottom: 38px;
+    bottom: 48px;
     right: 8px;
     text-shadow: none;
     white-space: break-spaces;

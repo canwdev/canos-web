@@ -40,6 +40,18 @@ export const SystemAppMusicPlayer: ShortcutItem = {
   requireBackend: true,
 }
 
+export const SystemAppTextEditor: ShortcutItem = {
+  appid: 'os.text_editor',
+  title: 'Text Editor',
+  icon: '',
+  winOptions: {
+    width: '800px',
+    height: '600px',
+  },
+  component: defineAsyncComponent(() => import('@/apps/TextEditor/index.vue')),
+  requireBackend: true,
+}
+
 export const SystemAppWebBrowser: ShortcutItem = {
   appid: 'os.web_browser',
   title: 'Iframe Browser',
@@ -107,6 +119,7 @@ const defineWebApp = (title = 'WebApp', url): ShortcutItem => {
 export const AllAppList: ShortcutItem[] = [
   SystemAppExplorer,
   SystemAppMusicPlayer,
+  SystemAppTextEditor,
   SystemAppWebBrowser,
   SystemAppSettings,
   AppPianoJs,

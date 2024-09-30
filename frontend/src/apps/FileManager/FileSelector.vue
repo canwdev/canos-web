@@ -8,15 +8,16 @@ const props = withDefaults(
     selectFileMode?: 'file' | 'folder'
     // 文件选择器允许多选
     multiple?: boolean
-    buttonLabel?: string
+    showButton?: boolean
   }>(),
   {
-    buttonLabel: '',
+    selectFileMode: 'file',
+    showButton: true,
     multiple: false,
   },
 )
 const emit = defineEmits(['handleSelect'])
-const {buttonLabel, selectFileMode, multiple} = toRefs(props)
+const {selectFileMode, multiple} = toRefs(props)
 
 const isShowFileSelectWindow = ref(false)
 
@@ -26,20 +27,27 @@ const handleSelect = (val) => {
 }
 
 const actionLabel = computed(() => {
-  return (
-    buttonLabel.value ||
-    (selectFileMode.value === 'file'
-      ? multiple.value
-        ? 'Open Files...'
-        : 'Open File...'
-      : 'Open Folder...')
-  )
+  return selectFileMode.value === 'file'
+    ? multiple.value
+      ? 'Open Files...'
+      : 'Open File...'
+    : 'Open Folder...'
+})
+
+defineExpose({
+  isShowFileSelectWindow,
+  show() {
+    isShowFileSelectWindow.value = true
+  },
+  close() {
+    isShowFileSelectWindow.value = false
+  },
 })
 </script>
 
 <template>
   <div class="file-selector">
-    <button class="vp-button primary" @click="isShowFileSelectWindow = true">
+    <button v-if="showButton" class="vp-button primary" @click="isShowFileSelectWindow = true">
       {{ actionLabel }}
     </button>
 

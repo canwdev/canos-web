@@ -25,7 +25,7 @@ const {iconName, titleDesc, extDisplay} = useFileItem(props)
     @dblclick.stop="$emit('open', item)"
     :title="titleDesc"
   >
-    <div class="list-col c-filename">
+    <span class="list-col c-filename">
       <input
         v-if="showCheckbox"
         class="file-checkbox"
@@ -39,11 +39,11 @@ const {iconName, titleDesc, extDisplay} = useFileItem(props)
       <span class="text-overflow filename-text" @click.stop="$emit('open', item)" @dblclick.stop>
         {{ item.name }}
       </span>
-    </div>
-    <div class="list-col c-ext text-overflow">{{ extDisplay }}</div>
-    <div class="list-col c-size">{{ bytesToSize(item.size) }}</div>
-    <div class="list-col c-time">{{ formatDate(item.lastModified) }}</div>
-    <div class="list-col c-time">{{ formatDate(item.birthtime) }}</div>
+    </span>
+    <span class="list-col c-ext text-overflow">{{ extDisplay }}</span>
+    <span class="list-col c-size">{{ bytesToSize(item.size) }}</span>
+    <span class="list-col c-time">{{ formatDate(item.lastModified) }}</span>
+    <span class="list-col c-time">{{ formatDate(item.birthtime) }}</span>
   </button>
 </template>
 

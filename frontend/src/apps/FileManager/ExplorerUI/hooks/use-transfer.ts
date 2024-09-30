@@ -100,10 +100,7 @@ export const useTransfer = ({basePath, isLoading, selectedItems}) => {
         paths.push(normalizePath(basePath.value + '/' + item.name))
       }
 
-      const {key} = (await fsWebApi.createShareLink({
-        paths,
-      })) as unknown as any
-      window.open(fsWebApi.getDownloadShareLink(key))
+      window.open(fsWebApi.getDownloadShareLink(paths))
     } finally {
       isLoading.value = false
     }

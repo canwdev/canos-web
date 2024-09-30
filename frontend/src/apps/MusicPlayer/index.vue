@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'MediaPlayer',
+}
+</script>
+
 <script lang="ts" setup>
 import MusicDetail from '@/apps/MusicPlayer/MusicDetail.vue'
 import PlayerCore from '@/apps/MusicPlayer/PlayerCore.vue'

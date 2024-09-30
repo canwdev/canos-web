@@ -8,9 +8,9 @@ const service = Service({
 })
 
 export const fsWebApi = {
-  fsApi(params) {
-    return service.post('/fs-api', params)
-  },
+  // fsApi(params) {
+  //   return service.post('/fs-api', params)
+  // },
   getDrives(params) {
     return service.post('/drives', params)
   },
@@ -26,7 +26,9 @@ export const fsWebApi = {
   createDir(params) {
     return service.post('/create-dir', params)
   },
-  createFile(params, config: any = {}) {
+  // 上传，创建或写入文件
+  uploadFile(params, config: any = {}) {
+    console.log('[uploadFile]', params)
     const {path, file} = params
     const formData = new FormData()
     formData.append('file', file)
@@ -51,10 +53,17 @@ export const fsWebApi = {
   createShareLink(params) {
     return service.post('/create-share-link', params)
   },
-  getDownloadShareLink(key) {
+  async getDownloadShareLink(paths) {
+    const {key} = await this.createShareLink({paths})
     return baseURL + `/download-share?key=${key}`
   },
-  getStreamShareLink(key) {
+  // 以纯文本读取文件
+  async readFile(path, config = {responseType: 'text'}) {
+    const {key} = await this.createShareLink({paths: [path]})
+    return service.get(`/download-share?key=${key}`, config)
+  },
+  async getStreamShareLink(paths) {
+    const {key} = await this.createShareLink({paths})
     return baseURL + `/stream-share?key=${key}`
   },
 }
