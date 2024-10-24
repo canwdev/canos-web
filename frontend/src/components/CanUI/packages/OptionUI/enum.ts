@@ -31,6 +31,8 @@ export interface StOptionItem {
   cls?: string
   // action渲染函数
   actionRender?: any
+  // 整体渲染函数
+  render?: any
   // 点击item执行函数
   clickFn?: any
   // 隐藏展开按钮图标

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import QuickOptions from '@/components/CanUI/packages/QuickOptions/index.vue'
+import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 
 interface Props {
-  options: any[]
+  options: QuickOptionItem[]
   props?: any
 }
 

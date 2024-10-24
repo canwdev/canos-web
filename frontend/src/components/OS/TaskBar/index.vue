@@ -23,29 +23,31 @@ const handleItemClick = (item) => {
     <transition name="fade">
       <StartMenu v-model:visible="isShowStart" />
     </transition>
-    <div class="task-bar-container vp-panel vp-window-panel _panel-bg">
-      <div class="task-start-menu _fc">
+    <div class="task-bar-container vp-window-panel">
+      <div class="task-start-menu _fc vp-panel _panel-bg">
         <button class="start-button vp-button" @click="isShowStart = !isShowStart">Start</button>
       </div>
-      <div class="task-list _fc">
-        <div
-          tabindex="0"
-          class="task-item"
-          v-for="item in systemStore.tasks"
-          :key="item.guid"
-          :class="{active: item.guid === systemStore.activeId}"
-          @click="handleItemClick(item)"
-        >
-          <div class="task-item-main">
-            <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
-            <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
-              {{ item.title }}
-            </span>
+      <div class="task-list-wrap">
+        <div v-show="systemStore.tasks.length" class="task-list _fc vp-panel _panel-bg">
+          <div
+            tabindex="0"
+            class="task-item"
+            v-for="item in systemStore.tasks"
+            :key="item.guid"
+            :class="{active: item.guid === systemStore.activeId}"
+            @click="handleItemClick(item)"
+          >
+            <div class="task-item-main">
+              <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
+              <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
+                {{ item.title }}
+              </span>
+            </div>
+            <div class="btn-close" @click="systemStore.closeTask(item.guid)">✕</div>
           </div>
-          <div class="btn-close" @click="systemStore.closeTask(item.guid)">✕</div>
         </div>
       </div>
-      <div class="task-tray _fc">
+      <div class="task-tray vp-panel _panel-bg _fc">
         <div class="tray-list _fc">
           <TrayFps v-if="settingsStore.taskbarShowFps" />
           <TrayMemory v-if="settingsStore.taskbarShowMemory" />
@@ -102,19 +104,23 @@ const handleItemClick = (item) => {
         border-radius: 0;
         height: 100%;
         padding: 2px 10px;
-        background: $primary;
-        color: white;
       }
     }
 
-    .task-list {
+    .task-list-wrap {
       flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .task-list {
       padding: 0 4px;
       display: flex;
       gap: 2px;
       flex-wrap: wrap;
       overflow-y: auto;
       box-sizing: border-box;
+      pointer-events: auto;
 
       .task-item {
         min-width: 140px;

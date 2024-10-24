@@ -19,7 +19,7 @@ function onClick() {
       <button class="vp-button" @click="onClick">
         {{ text }}
       </button>
-      <div>提示：必须保持此程和浏览器在前台运行，否则无效。</div>
+      <div>提示：必须保持此App和浏览器在前台运行，否则无效。</div>
     </template>
     <template v-else> 该浏览器不支持唤醒锁定。 </template>
   </div>

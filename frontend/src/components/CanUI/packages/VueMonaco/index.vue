@@ -37,7 +37,7 @@ export default defineComponent({
       () => mainStore.isAppDarkMode,
       () => {
         editorInstance.value.updateOptions({theme: getThemeName()})
-      },
+      }
     )
 
     watch(
@@ -46,7 +46,7 @@ export default defineComponent({
         if (editorInstance.value && newValue !== editorInstance.value.getValue()) {
           editorInstance.value.setValue(newValue)
         }
-      },
+      }
     )
 
     watch(
@@ -55,7 +55,7 @@ export default defineComponent({
         if (editorInstance.value) {
           monaco.editor.setModelLanguage(editorInstance.value.getModel(), newValue)
         }
-      },
+      }
     )
 
     onMounted(() => {
@@ -118,7 +118,7 @@ export default defineComponent({
         })
       },
       500,
-      true,
+      true
     )
     useEventListener('resize', handleResizeDebounced)
 

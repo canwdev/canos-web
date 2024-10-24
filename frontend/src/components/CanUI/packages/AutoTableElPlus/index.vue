@@ -61,9 +61,7 @@ defineExpose({
         </template>
       </template>
       <template v-if="item.formatter || item.render" #default="scope">
-        <template v-if="item.formatter">
-          {{ item.formatter(scope) }}
-        </template>
+        <span v-html="item.formatter(scope)" v-if="item.formatter"> </span>
         <template v-if="item.render">
           <VueRender :render-fn="item.render" :params="scope" />
         </template>

@@ -21,6 +21,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    isLabelHtml: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, {emit}) {
     const mValue = useModelWrapper(props, emit)
@@ -40,7 +44,10 @@ export default defineComponent({
       @click="mValue = item.value"
       :class="{active: item.value === mValue}"
     >
-      {{ item.label || item.value }}
+      <div v-if="isLabelHtml" v-html="item.label"></div>
+      <template v-else>
+        {{ item.label || item.value }}
+      </template>
     </div>
   </div>
 </template>
@@ -70,6 +77,7 @@ export default defineComponent({
     transition: all 0.3s;
     cursor: pointer;
     line-height: 1.3;
+    text-align: center;
 
     &.active {
       background-color: $primary;
