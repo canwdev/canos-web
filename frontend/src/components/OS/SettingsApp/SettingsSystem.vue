@@ -79,14 +79,8 @@ export default defineComponent({
               type: StOptionType.SWITCH,
             },
             {
-              label: '托盘：内存',
+              label: '托盘：JS 内存',
               key: 'taskbarShowMemory',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-            {
-              label: '托盘：网络',
-              key: 'taskbarShowNetwork',
               store: settingsStore,
               type: StOptionType.SWITCH,
             },

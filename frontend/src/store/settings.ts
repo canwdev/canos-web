@@ -23,7 +23,6 @@ type IStore = {
   // 托盘显示
   taskbarShowFps: boolean
   taskbarShowMemory: boolean
-  taskbarShowNetwork: boolean
   taskbarShowBattery: boolean
   taskbarShowClock: boolean
   // 任务栏只显示图标
@@ -45,8 +44,7 @@ export const useSettingsStore = defineStore('settingsStore', {
 
       taskbarShowFps: false,
       taskbarShowMemory: false,
-      taskbarShowNetwork: true,
-      taskbarShowBattery: true,
+      taskbarShowBattery: false,
       taskbarShowClock: true,
 
       taskbarIconOnly: false,

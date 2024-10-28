@@ -27,7 +27,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="tray-datetime" v-html="time"></div>
+  <div class="tray-datetime font-code" v-html="time"></div>
 </template>
 
 <style lang="scss" scoped>
@@ -35,7 +35,7 @@ export default defineComponent({
   box-sizing: border-box;
   padding: 2px 4px;
   text-align: right;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 </style>

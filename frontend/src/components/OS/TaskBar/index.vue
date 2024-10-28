@@ -19,16 +19,20 @@ const handleItemClick = (item) => {
 </script>
 
 <template>
-  <div class="canos-task-bar">
+  <div class="canos-task-bar vp-panel">
     <transition name="fade">
       <StartMenu v-model:visible="isShowStart" />
     </transition>
     <div class="task-bar-container vp-window-panel">
-      <div class="task-start-menu _fc vp-panel _panel-bg">
-        <button class="start-button vp-button" @click="isShowStart = !isShowStart">Start</button>
-      </div>
-      <div class="task-list-wrap">
-        <div v-show="systemStore.tasks.length" class="task-list _fc vp-panel _panel-bg">
+      <button
+        class="task-start-menu btn-no-style _fc"
+        :class="{active: isShowStart}"
+        @click="isShowStart = !isShowStart"
+      >
+        <img class="menu-logo" src="@/assets/images/logo.svg" alt="start" />
+      </button>
+      <div class="task-side">
+        <div v-show="systemStore.tasks.length" class="task-list _fc">
           <div
             tabindex="0"
             class="task-item"
@@ -43,15 +47,20 @@ const handleItemClick = (item) => {
                 {{ item.title }}
               </span>
             </div>
-            <div class="btn-close" @click="systemStore.closeTask(item.guid)">✕</div>
+            <div
+              v-if="!settingsStore.taskbarIconOnly"
+              class="btn-close"
+              @click="systemStore.closeTask(item.guid)"
+            >
+              ✕
+            </div>
           </div>
         </div>
       </div>
-      <div class="task-tray vp-panel _panel-bg _fc">
+      <div class="task-tray _fc">
         <div class="tray-list _fc">
           <TrayFps v-if="settingsStore.taskbarShowFps" />
           <TrayMemory v-if="settingsStore.taskbarShowMemory" />
-          <TrayNetwork v-if="settingsStore.taskbarShowNetwork" />
           <TrayBattery v-if="settingsStore.taskbarShowBattery" />
           <TrayClock v-if="settingsStore.taskbarShowClock" />
         </div>
@@ -78,6 +87,10 @@ const handleItemClick = (item) => {
   font-size: 14px;
   user-select: none;
   z-index: 100;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 0 !important;
 
   .task-bar-container {
     height: 100%;
@@ -100,17 +113,30 @@ const handleItemClick = (item) => {
     .task-start-menu {
       display: flex;
       gap: 2px;
+      background-color: transparent;
+      transition: all 0.3s;
+      width: 44px;
+      align-items: center;
+      justify-content: center;
+      &:hover,
+      &.active {
+        background-color: rgba(198, 198, 198, 0.3);
+      }
       .start-button {
         border-radius: 0;
         height: 100%;
         padding: 2px 10px;
       }
+      .menu-logo {
+        width: 32px;
+        height: 32px;
+        display: block;
+      }
     }
 
-    .task-list-wrap {
+    .task-side {
       flex: 1;
       display: flex;
-      justify-content: center;
     }
 
     .task-list {
@@ -123,9 +149,8 @@ const handleItemClick = (item) => {
       pointer-events: auto;
 
       .task-item {
-        min-width: 140px;
         height: 100%;
-        padding: 0 8px;
+        padding: 0 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -133,7 +158,7 @@ const handleItemClick = (item) => {
         max-width: 200px;
         overflow: hidden;
         transition: all 0.3s;
-        gap: 4px;
+        gap: 8px;
         border: none;
         line-height: 1.2;
         cursor: pointer;
@@ -168,7 +193,7 @@ const handleItemClick = (item) => {
           flex: 1;
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 6px;
           .task-icon {
             width: 24px;
             height: 24px;
