@@ -66,7 +66,7 @@ function handleLogoClick() {
 <template>
   <div class="admin-sidebar" :class="{folded: isFolded}">
     <div @click="handleLogoClick" class="logo-wrap">
-      <img src="../../../assets/images/wilford.png" alt="logo" />
+      <img src="../../../assets/images/logo.svg" alt="logo" />
       <span v-if="!isFolded">Admin System</span>
     </div>
     <OptionUI class="nav-list" :option-list="navOptions" />

@@ -117,3 +117,26 @@
   transform: scale(0.92);
   transition: opacity 0.3s, transform 0.3s;
 }
+
+
+.fade-up-enter-active,
+.fade-up-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-up-enter-from,
+.fade-up-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.fade-left-enter-active,
+.fade-left-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-left-enter-from,
+.fade-left-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}

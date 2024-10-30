@@ -47,20 +47,7 @@ const confirmShutdown = () => {
         ></path>
       </svg>
     </button>
-    <button class="action-button" @click="$emit('resetStart')" title="Refresh">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
-          fill="currentColor"
-          data-darkreader-inline-fill=""
-          style="--darkreader-inline-fill: currentColor"
-        ></path>
-      </svg>
-    </button>
+
     <button class="action-button" @click="toggleFullscreen" title="Fullscreen">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -115,6 +102,9 @@ const confirmShutdown = () => {
           ></path>
         </svg>
       </button>
+      <button class="action-button" @click="$router.push({name: 'AdminRootView'})" title="Admin">
+        🔧
+      </button>
       <button class="action-button" @click="confirmShutdown" title="Shutdown">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -141,8 +131,8 @@ const confirmShutdown = () => {
   gap: 8px;
 
   .action-button {
-    width: 45px;
-    height: 45px;
+    width: 38px;
+    height: 38px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -151,6 +141,7 @@ const confirmShutdown = () => {
     align-items: center;
     justify-content: center;
     color: inherit;
+    border-radius: 4px;
 
     img,
     svg {

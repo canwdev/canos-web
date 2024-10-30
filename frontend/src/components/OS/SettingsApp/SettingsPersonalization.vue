@@ -53,7 +53,7 @@ export default defineComponent({
               tips: getWallpaperText(),
               placeholder: 'optional',
             },
-            !settingsStore.desktopWallpaper && {
+            {
               label: '桌面背景色',
               key: 'desktopBgColor',
               store: settingsStore,

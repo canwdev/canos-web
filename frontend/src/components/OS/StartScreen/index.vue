@@ -1,30 +1,34 @@
+<script lang="ts">
+export default {
+  name: 'StartScreen',
+}
+</script>
+
 <script setup lang="ts">
 import defaultStartLayout from './Sub/default-layout.json'
-import StartMenuItem from '@/components/OS/StartMenu/StartMenuItem.vue'
+import StartMenuItem from './StartMenuItem.vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {onClickOutside, useFullscreen, useStorage} from '@vueuse/core'
 import {useSettingsStore} from '@/store/settings'
-import StartActions from '@/components/OS/StartMenu/Sub/StartActions.vue'
-import {
-  StartItemSizeOptions,
-  StartLayoutGroup,
-  IStartMenuItem,
-} from '@/components/OS/StartMenu/types'
+import StartActions from './Sub/StartActions.vue'
+import {StartItemSizeOptions, StartLayoutGroup, IStartMenuItem} from './types'
 import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {LsKeys} from '@/enum'
-import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'
-import TitleEdit from '@/components/OS/StartMenu/Sub/TitleEdit.vue'
+import StartDragOver from './Sub/StartDragOver.vue'
+import TitleEdit from './Sub/TitleEdit.vue'
 import {LineHelper} from '@/utils/line-helper'
 
-interface Props {
-  visible: boolean
-}
-const props = withDefaults(defineProps<Props>(), {
-  visible: false,
-})
+const props = withDefaults(
+  defineProps<{
+    visible: boolean
+  }>(),
+  {
+    visible: true,
+  },
+)
 const emit = defineEmits(['update:visible'])
 
 const mVisible = useModelWrapper(props, emit, 'visible')
@@ -34,10 +38,6 @@ const settingsStore = useSettingsStore()
 const handleItemClick = (item: ShortcutItem) => {
   mVisible.value = false
   systemStore.createTask(item)
-}
-const startApp = (appId) => {
-  mVisible.value = false
-  systemStore.createTaskById(appId)
 }
 
 const appListFiltered = computed((): ShortcutItem[] => {
@@ -313,10 +313,6 @@ const handleGroupDrop = (indexData: StarIndexData) => {
 
 <template>
   <div ref="rootRef" v-show="mVisible" class="start-screen">
-    <div class="start-above">
-      <div class="start-title">Start</div>
-      <StartActions @startApp="startApp" @resetStart="refreshStartLayout" />
-    </div>
     <div class="start-content" :class="{isItemDragging, isGroupDragging}" ref="startContentRef">
       <div v-for="(groups, colIndex) in startLayoutColumns" :key="colIndex" class="app-col">
         <div v-for="(group, rowIndex) in groups" :key="rowIndex" class="app-group">
@@ -343,35 +339,38 @@ const handleGroupDrop = (indexData: StarIndexData) => {
               })
             "
           >
-            <StartMenuItem
-              class="card-item"
-              :menuItem="menuItem"
-              :shortcutItem="appIdMapped[menuItem.id]"
-              v-for="(menuItem, index) in group.children"
-              :key="index"
-              :class="[menuItem.size]"
-              @click="handleItemClick(appIdMapped[menuItem.id])"
-              @contextmenu.prevent="handleShowCtxMenu($event, menuItem)"
-              :disabled="appIdMapped[menuItem.id].requireBackend && !systemStore.isBackendAvailable"
-              draggable="true"
-              @dragstart="
-                handleItemDragStart(menuItem, {
-                  colIndex,
-                  rowIndex,
-                  index,
-                })
-              "
-              @dragend="handleItemDragEnd"
-              @dragover.prevent.stop="handleDragOver"
-              @dragleave.prevent.stop="handleDragLeave"
-              @drop.prevent.stop="
-                handleDrop({
-                  colIndex,
-                  rowIndex,
-                  index,
-                })
-              "
-            />
+            <template v-for="(menuItem, index) in group.children" :key="index">
+              <StartMenuItem
+                v-if="appIdMapped[menuItem.id]"
+                class="card-item"
+                :menuItem="menuItem"
+                :shortcutItem="appIdMapped[menuItem.id]"
+                :class="[menuItem.size]"
+                @click="handleItemClick(appIdMapped[menuItem.id])"
+                @contextmenu.prevent="handleShowCtxMenu($event, menuItem)"
+                :disabled="
+                  appIdMapped[menuItem.id].requireBackend && !systemStore.isBackendAvailable
+                "
+                draggable="true"
+                @dragstart="
+                  handleItemDragStart(menuItem, {
+                    colIndex,
+                    rowIndex,
+                    index,
+                  })
+                "
+                @dragend="handleItemDragEnd"
+                @dragover.prevent.stop="handleDragOver"
+                @dragleave.prevent.stop="handleDragLeave"
+                @drop.prevent.stop="
+                  handleDrop({
+                    colIndex,
+                    rowIndex,
+                    index,
+                  })
+                "
+              />
+            </template>
           </div>
         </div>
 
@@ -398,35 +397,15 @@ const handleGroupDrop = (indexData: StarIndexData) => {
 
 <style lang="scss" scoped>
 .start-screen {
-  position: fixed;
-  top: 0;
-  bottom: $taskbar_height;
+  height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.834);
-  color: white;
-  font-family: 'Segoe UI Light';
   overflow: auto;
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 40px 20px;
+  //padding: 20px 20px;
+  padding: 10px 2px;
   box-sizing: border-box;
-
-  .start-above {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    line-height: 1;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 1200px;
-    flex-wrap: wrap;
-
-    .start-title {
-      font-size: 45px;
-    }
-  }
 
   .start-content {
     flex: 1;
@@ -434,7 +413,7 @@ const handleGroupDrop = (indexData: StarIndexData) => {
     margin: 0 auto;
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 40px;
 
     &.isItemDragging {

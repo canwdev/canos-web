@@ -30,6 +30,8 @@ const props = withDefaults(defineProps<Props>(), {})
 <style lang="scss" scoped>
 .shortcut-item {
   cursor: pointer;
+  color: white;
+  text-shadow: 1px 1px 2px #000;
   &.sm {
     .shortcut-title {
       font-size: 12px;

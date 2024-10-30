@@ -178,7 +178,6 @@ export const AllAppList: ShortcutItem[] = [
     defineAsyncComponent(() => import('@/apps/AppUtils/ScreenClock/index.vue')),
   ),
   defineWebApp('Bing', 'https://bing.com'),
-  // defineWebApp('CanOS', location.href),
 ]
 
 window.$appList = AllAppList

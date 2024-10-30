@@ -1,5 +1,10 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
+export default {
+  name: 'StartMenu',
+}
+</script>
+
+<script lang="ts" setup>
 import StartMenuItem from '@/components/OS/StartMenu/StartMenuItem.vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
@@ -8,84 +13,51 @@ import {onClickOutside, useFullscreen} from '@vueuse/core'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
 import {useSettingsStore} from '@/store/settings'
 import {serverApi} from '@/api/server'
+import StartActions from '@/components/OS/StartScreen/Sub/StartActions.vue'
+import StartScreen from '@/components/OS/StartScreen/index.vue'
 
-export default defineComponent({
-  name: 'StartMenu',
-  components: {StartMenuItem},
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
+const props = withDefaults(
+  defineProps<{
+    visible: boolean
+  }>(),
+  {
+    visible: true,
   },
-  setup(props, {emit}) {
-    const mVisible = useModelWrapper(props, emit, 'visible')
-    const systemStore = useSystemStore()
-    const settingsStore = useSettingsStore()
+)
+const emit = defineEmits(['update:visible'])
 
-    const filterText = ref('')
+const mVisible = useModelWrapper(props, emit, 'visible')
+const systemStore = useSystemStore()
+const settingsStore = useSettingsStore()
 
-    const handleItemClick = (item: ShortcutItem) => {
-      mVisible.value = false
+const filterText = ref('')
 
-      systemStore.createTask(item)
-    }
+const handleItemClick = (item: ShortcutItem) => {
+  mVisible.value = false
 
-    const appListFiltered = computed(() => {
-      return systemStore.allApps
-    })
+  systemStore.createTask(item)
+}
 
-    const rootRef = ref()
-
-    onClickOutside(rootRef, (event) => {
-      if (mVisible.value) {
-        setTimeout(() => {
-          mVisible.value = false
-        })
-      }
-    })
-
-    const doShutdown = async () => {
-      mVisible.value = false
-      systemStore.shutdown()
-      await serverApi.shutdown()
-      location.reload()
-    }
-    const confirmShutdown = () => {
-      window.$dialog
-        .confirm(`确认停止服务？停止后需要在服务端手动启动。`, 'Confirm Shutdown', {
-          type: 'warning',
-        })
-        .then(() => {
-          doShutdown()
-        })
-        .catch()
-    }
-
-    const doRefresh = () => {
-      location.reload()
-    }
-
-    const doLogout = () => {
-      globalEventBus.emit(GlobalEvents.GLOBAL_EVENT_LOGOUT)
-    }
-
-    const {toggle: toggleFullscreen} = useFullscreen(document.documentElement)
-
-    return {
-      rootRef,
-      mVisible,
-      systemStore,
-      appListFiltered,
-      handleItemClick,
-      confirmShutdown,
-      doRefresh,
-      doLogout,
-      toggleFullscreen,
-      settingsStore,
-    }
-  },
+const appListFiltered = computed(() => {
+  return systemStore.allApps
 })
+
+const rootRef = ref()
+
+onClickOutside(rootRef, (event) => {
+  if (mVisible.value) {
+    setTimeout(() => {
+      mVisible.value = false
+    })
+  }
+})
+
+const startApp = (appId) => {
+  mVisible.value = false
+  systemStore.createTaskById(appId)
+}
+
+const isAllApps = ref(false)
 </script>
 
 <template>
@@ -96,35 +68,28 @@ export default defineComponent({
     :class="{_full: !settingsStore.isWindowed}"
   >
     <div class="start-menu-row">
-      <div class="start-menu-left">
-        <div class="program-list vp-bg">
-          <div class="shortcut-list">
-            <StartMenuItem
-              :item="item"
-              v-for="(item, index) in appListFiltered"
-              :key="index"
-              @click="handleItemClick(item)"
-              :disabled="item.requireBackend && !systemStore.isBackendAvailable"
-            />
-          </div>
+      <div class="start-menu-above">
+        <div class="start-title-wrap">
+          <div class="start-title">Start</div>
+          <button class="btn-no-style" @click="isAllApps = !isAllApps">All apps »</button>
+        </div>
+        <div class="start-main-wrap">
+          <transition-group name="fade-left">
+            <div v-if="isAllApps" class="all-apps-list">
+              <StartMenuItem
+                :item="item"
+                v-for="(item, index) in appListFiltered"
+                :key="index"
+                @click="handleItemClick(item)"
+                :disabled="item.requireBackend && !systemStore.isBackendAvailable"
+              />
+            </div>
+            <StartScreen v-else />
+          </transition-group>
         </div>
       </div>
-      <div class="start-menu-right">
-        <button class="vp-button" @click="doRefresh">🔃 Refresh</button>
-        <button class="vp-button" @click="toggleFullscreen">📺 Fullscreen</button>
-        <template v-if="systemStore.isBackendAvailable">
-          <button class="vp-button" @click="$router.push({name: 'IpChooserView'})">🌐 IP</button>
-          <button
-            class="vp-button"
-            @click="(mVisible = false), systemStore.createTaskById('os.settings')"
-          >
-            ⚙️ Settings
-          </button>
-          <button class="vp-button" @click="$router.push({name: 'AdminRootView'})">🔧 Admin</button>
-
-          <button class="vp-button" @click="doLogout">🚪 Logout</button>
-          <button class="vp-button" @click="confirmShutdown">✖️ Shutdown</button>
-        </template>
+      <div class="start-actions-wrap">
+        <StartActions @startApp="startApp" />
       </div>
     </div>
   </div>
@@ -132,7 +97,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .start-menu {
-  width: 400px;
+  width: 340px;
   //background-color: rgba(255, 255, 255, 0.8);
   //backdrop-filter: blur(10px);
   //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
@@ -142,6 +107,17 @@ export default defineComponent({
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  font-family: 'Segoe UI Light';
+
+  &:not(&._full) {
+    left: 8px;
+    bottom: $taskbar_height + 8px;
+    .start-main-wrap {
+      height: 40vh;
+    }
+    .start-screen {
+    }
+  }
 
   &._full {
     width: 100%;
@@ -150,16 +126,17 @@ export default defineComponent({
     top: 0;
     box-shadow: none !important;
     .start-menu-row,
-    .start-menu-left,
-    .program-list {
+    .start-menu-above,
+    .start-main-wrap {
       height: 100%;
     }
 
-    .program-list {
+    .start-main-wrap {
       display: flex;
       flex-direction: column;
+      flex: 1;
 
-      .shortcut-list {
+      .all-apps-list {
         flex: 1;
         max-height: 100%;
       }
@@ -168,48 +145,55 @@ export default defineComponent({
 
   .start-menu-row {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    flex-direction: column;
     padding: 8px;
     gap: 8px;
-    .start-menu-left {
+    box-sizing: border-box;
+    .start-menu-above {
       flex: 1;
-    }
-
-    .start-menu-right {
-      width: 150px;
       display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      gap: 4px;
-      button {
-        width: 100%;
-        padding: 4px 10px;
-        font-size: 14px;
-        text-align: inherit;
-      }
+      flex-direction: column;
+      gap: 10px;
     }
   }
 
-  .program-list {
+  .start-main-wrap {
     min-height: 300px;
+    border-bottom: 1px solid $color_border;
+    position: relative;
   }
 
-  .shortcut-list {
-    max-height: 300px;
+  .all-apps-list {
     overflow: auto;
+    height: 100%;
+    width: 100%;
   }
 
-  .shortcut-split {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-top: 1px solid $color_border;
+  .start-actions-wrap {
+    display: flex;
+    justify-content: center;
   }
 
-  .start-menu-bottom {
-    border-top: 1px solid $color_border;
-    height: $taskbar_height;
+  .start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .start-title-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    line-height: 1;
+    width: 100%;
+    max-width: 1200px;
+    flex-wrap: wrap;
+
+    .start-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
   }
 }
 </style>

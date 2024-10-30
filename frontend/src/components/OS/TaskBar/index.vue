@@ -1,3 +1,8 @@
+<script lang="ts">
+export default {
+  name: 'TaskBar',
+}
+</script>
 <script setup lang="ts">
 import TrayClock from '@/components/OS/TaskBar/TrayClock.vue'
 import StartMenu from '@/components/OS/StartMenu/index.vue'
@@ -11,7 +16,7 @@ import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
-const isShowStart = ref(false)
+const isShowStart = ref(true)
 const taskList = ref([])
 const handleItemClick = (item) => {
   const result = systemStore.setTaskActive(item, true)
@@ -20,7 +25,7 @@ const handleItemClick = (item) => {
 
 <template>
   <div class="canos-task-bar vp-panel">
-    <transition name="fade">
+    <transition name="fade-up">
       <StartMenu v-model:visible="isShowStart" />
     </transition>
     <div class="task-bar-container vp-window-panel">
