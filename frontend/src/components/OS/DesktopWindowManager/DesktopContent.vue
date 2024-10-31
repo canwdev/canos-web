@@ -1,108 +1,98 @@
 <script setup lang="ts">
-import {ShortcutItem} from '@/enum/os'
+import FileList from '@/apps/FileManager/ExplorerUI/FileList.vue'
+import {useNavigation} from '@/apps/FileManager/ExplorerUI/hooks/use-navigation'
+import {fsWebApi} from '@/api/filesystem'
 import {useSystemStore} from '@/store/system'
-import {useSelectionArea} from '@/hooks/use-selection-area'
-import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
-
+import {IEntry} from '@server/types/server'
+import {normalizePath} from '@/apps/FileManager/utils'
+import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 const systemStore = useSystemStore()
 
-const handleItemClick = (item: ShortcutItem) => {
-  systemStore.createTask(item)
+const {
+  isLoading,
+  filteredFiles,
+  handleOpen,
+  handleRefresh,
+  basePathNormalized,
+  basePath,
+  handleOpenPath,
+} = useNavigation({
+  getListFn: async () => {
+    const res = await fsWebApi.getList({
+      path: basePath.value,
+    })
+    // console.log(res)
+
+    return res
+  },
+})
+
+watch(
+  () => systemStore.serverInfo,
+  () => {
+    if (systemStore.serverInfo) {
+      handleOpenPath(systemStore.serverInfo.dirs.dataDesktopPath)
+    }
+  },
+  {immediate: true},
+)
+
+const handleOpenWrap = (item: IEntry) => {
+  if (item.isDirectory) {
+    const path = normalizePath(basePath.value + '/' + item.name)
+    systemStore.createTaskById('os.explorer', {path})
+    return
+  }
+  return handleOpen(item)
 }
 
-const selected = reactive<Set<number>>(new Set())
-const rootRef = ref()
-useSelectionArea({
-  containerRef: rootRef,
-  selectables: ['.desktop-icon'],
-  onStart: () => {
-    selected.clear()
-  },
-  onStop: (stored) => {
-    stored.forEach((el) => {
-      const index = el.getAttribute('data-index')
-      // console.log(index)
-      selected.add(Number(index))
-    })
-  },
+const moreOptions = computed((): QuickOptionItem[] => {
+  return [
+    {split: true},
+    {
+      label: 'Personalization',
+      props: {
+        onClick() {
+          systemStore.createTaskById('os.settings')
+        },
+      },
+    },
+  ]
 })
 </script>
 
 <template>
-  <div ref="rootRef" class="desktop-content" @click="selected.clear()">
-    <button
-      v-for="(item, index) in systemStore.allApps"
-      :key="index"
-      :data-index="index"
-      :class="{active: selected.has(index)}"
-      @dblclick.stop="handleItemClick(item)"
-      @click.stop
-      @keyup.enter="handleItemClick(item)"
-      class="desktop-icon btn-no-style"
-      :disabled="item.requireBackend && !systemStore.isBackendAvailable"
-    >
-      <ThemedIcon class="desktop-icon-image" :name="item.icon" />
-      <span @dbclick.stop @click.stop="handleItemClick(item)" class="desktop-icon-name">{{
-        item.title
-      }}</span>
-    </button>
+  <div ref="rootRef" class="desktop-content">
+    <FileList
+      class="desktop-file-list"
+      v-if="systemStore.isBackendAvailable"
+      ref="fileListRef"
+      v-model:is-loading="isLoading"
+      :files="filteredFiles"
+      @open="handleOpenWrap"
+      @refresh="handleRefresh"
+      :base-path="basePathNormalized"
+      :content-only="true"
+      grid-view
+      :more-options="moreOptions"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .desktop-content {
-  height: 100%;
+  height: calc(100% - $taskbar_height);
   width: 100%;
-  padding: 10px;
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(auto-fill, 74px);
-  grid-template-rows: repeat(auto-fill, 70px);
-  place-content: flex-start;
-  gap: 28px 1px;
-  user-select: none;
 
-  .desktop-icon {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    cursor: default;
-    border-radius: 2px;
-    position: relative;
-    color: white;
-    text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.7);
-
-    &:focus {
-      outline: 1px dashed white;
-    }
-
-    &:hover {
-      background-color: rgba(224, 224, 224, 0.3);
-    }
-
-    &.active {
-      background-color: rgba(224, 224, 224, 0.3);
-    }
-
-    .desktop-icon-image {
-      flex-shrink: 0;
-      width: 48px;
-      height: 48px;
-      pointer-events: none;
-    }
-
-    .desktop-icon-name {
-      text-align: center;
-      font-size: 12px;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      line-height: 1.4;
-      text-shadow: 1px 1px 2px #000;
-
-      cursor: pointer;
-      &:hover {
-        text-decoration: underline;
-      }
+  .desktop-file-list {
+    //user-select: none;
+    :deep(.explorer-grid-view) {
+      //display: grid;
+      //grid-auto-flow: column;
+      //grid-template-columns: repeat(auto-fill, 74px);
+      //grid-template-rows: repeat(auto-fill, 70px);
+      //place-content: flex-start;
+      //gap: 28px 1px;
     }
   }
 }

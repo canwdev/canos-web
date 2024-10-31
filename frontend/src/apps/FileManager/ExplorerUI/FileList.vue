@@ -12,6 +12,7 @@ import {useLayoutSort} from './hooks/use-layout-sort'
 import {useSelection} from './hooks/use-selection'
 import {useFileActions} from './hooks/use-file-actions'
 import {useTransfer} from './hooks/use-transfer'
+import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -24,10 +25,17 @@ const props = withDefaults(
     selectFileMode?: 'file' | 'folder'
     // 文件选择器允许多选
     multiple?: boolean
+    contentOnly?: boolean
+    gridView?: boolean
+    moreOptions?: QuickOptionItem[]
   }>(),
-  {},
+  {
+    moreOptions() {
+      return []
+    },
+  },
 )
-const {basePath, files, selectFileMode, multiple} = toRefs(props)
+const {basePath, files, selectFileMode, multiple, moreOptions} = toRefs(props)
 const isLoading = useVModel(props, 'isLoading', emit)
 useExplorerBusOn(ExplorerEvents.REFRESH, () => emit('refresh'))
 
@@ -95,6 +103,49 @@ const {
   emit,
 })
 
+const allContextMenu = computed((): QuickOptionItem[] => {
+  return [
+    {
+      label: 'Create Document',
+      props: {
+        onClick() {
+          handleCreateFile()
+        },
+      },
+    },
+    {
+      label: 'Create Folder',
+      props: {
+        onClick() {
+          handleCreateFolder()
+        },
+      },
+    },
+    {split: true},
+    {
+      label: 'Upload Files...',
+      props: {
+        onClick() {
+          openSelectFiles()
+        },
+      },
+    },
+    {
+      label: 'Upload Folder...',
+      props: {
+        onClick() {
+          openSelectFolder()
+        },
+      },
+    },
+    {split: true},
+    {label: 'Sort', children: sortOptions.value},
+    {split: true},
+    ...ctxMenuOptions.value,
+    ...moreOptions.value,
+  ]
+})
+
 defineExpose({
   selectedItems,
   basePath,
@@ -109,13 +160,13 @@ defineExpose({
     class="explorer-list-wrap"
     @contextmenu.prevent
   >
-    <div class="explorer-actions vp-panel">
+    <div v-if="!contentOnly" class="explorer-actions vp-panel">
       <div class="action-group">
         <button class="vp-button" @click="handleCreateFile()" title="Create Document">
           <i class="fa fa-plus icon-small-abs" aria-hidden="true"></i>
           <i class="fa fa-file-o" aria-hidden="true"></i>
         </button>
-        <button class="vp-button" @click="handleCreateFolder" title="Create Folder">
+        <button class="vp-button" @click="handleCreateFolder()" title="Create Folder">
           <i class="fa fa-plus icon-small-abs" aria-hidden="true"></i>
           <i class="fa fa-folder-o" aria-hidden="true"></i>
         </button>
@@ -123,11 +174,11 @@ defineExpose({
         <template v-if="!selectFileMode">
           <div class="split-line"></div>
 
-          <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files">
+          <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files...">
             <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
             <i class="fa fa-file-o" aria-hidden="true"></i>
           </button>
-          <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder">
+          <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder...">
             <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
             <i class="fa fa-folder-o" aria-hidden="true"></i>
           </button>
@@ -216,7 +267,7 @@ defineExpose({
       @click="selectedItems = []"
       @contextmenu.prevent.stop="handleShowCtxMenu(null, $event)"
     >
-      <div v-if="!isGridView" class="explorer-list-view">
+      <div v-if="!(isGridView || gridView)" class="explorer-list-view">
         <div class="vp-bg file-list-header file-list-row">
           <div class="list-col c-filename" style="padding-left: 24px">Name</div>
           <div class="list-col c-ext">Ext</div>
@@ -253,7 +304,7 @@ defineExpose({
         />
       </div>
 
-      <QuickContextMenu :options="ctxMenuOptions" ref="ctxMenuRef" />
+      <QuickContextMenu :options="allContextMenu" ref="ctxMenuRef" />
     </div>
 
     <UploadQueue ref="uploadQueueRef" @complete="emit('refresh')" />

@@ -1,8 +1,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
+import CoverDisplay from '@/apps/MediaPlayer/CoverDisplay.vue'
 import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
-import {MusicEvents, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
+import {MusicEvents, useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 
 const DetailTabEnum = {
   LYRIC: 'LYRIC',

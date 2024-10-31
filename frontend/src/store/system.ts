@@ -46,13 +46,14 @@ export const useSystemStore = defineStore('system', {
         if (task) {
           task.params = params
           this.setTaskActive(task)
-          return
+          return task
         }
       }
       const newTask = new TaskItem({...shortcut, params})
       // console.log(newTask)
       this.tasks = [...this.tasks, newTask]
       this.activeId = newTask.guid
+      return newTask
     },
     /**
      * 关闭任务

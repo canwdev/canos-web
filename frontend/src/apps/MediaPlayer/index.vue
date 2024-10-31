@@ -5,15 +5,15 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import MusicDetail from '@/apps/MusicPlayer/MusicDetail.vue'
-import PlayerCore from '@/apps/MusicPlayer/PlayerCore.vue'
-import MusicControl from '@/apps/MusicPlayer/MusicControl.vue'
-import MusicPlaylist from '@/apps/MusicPlayer/MusicPlaylist/index.vue'
+import MusicDetail from '@/apps/MediaPlayer/MusicDetail.vue'
+import PlayerCore from '@/apps/MediaPlayer/PlayerCore.vue'
+import MusicControl from '@/apps/MediaPlayer/MusicControl.vue'
+import MusicPlaylist from '@/apps/MediaPlayer/Playlist/index.vue'
 import {IEntry} from '@server/types/server'
-import {MediaItem} from '@/apps/MusicPlayer/utils/music-state'
+import {MediaItem} from '@/apps/MediaPlayer/utils/music-state'
 import {isSupportedMediaFormat} from '@/utils/is'
 import FoldableSidebarLayout from '@/components/CanUI/packages/Layouts/FoldableSidebarLayout.vue'
-import {useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
+import {useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 import {guid} from '@/utils'
 
 type AppParams = {
@@ -22,11 +22,12 @@ type AppParams = {
   basePath: string
 }
 
-interface Props {
-  appParams?: AppParams
-}
-
-const props = withDefaults(defineProps<Props>(), {})
+const props = withDefaults(
+  defineProps<{
+    appParams?: AppParams
+  }>(),
+  {},
+)
 
 // const {params} = toRefs(props)
 

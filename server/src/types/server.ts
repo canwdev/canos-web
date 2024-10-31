@@ -1,10 +1,17 @@
+import {dataBasePath, dataDesktopPath} from '@/enum'
+
 export type ServerInfo = {
   name: string
   version: string
-  homeDir: string
   platform: NodeJS.Platform
   hostname: string
   hostUrls: string[]
+  dirs: {
+    osHomedir: string
+    osTmpdir: string
+    dataBasePath: string
+    dataDesktopPath: string
+  }
 }
 
 export interface IEntry {

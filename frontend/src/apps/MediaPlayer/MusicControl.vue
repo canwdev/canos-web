@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {formatTimeHMS} from '@/utils'
-import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
+import CoverMini from '@/apps/MediaPlayer/CoverMini.vue'
 import TkSeekbar from '@/components/TkSeekBar.vue'
 import Mousetrap from 'mousetrap'
 import {useI18n} from 'vue-i18n'
@@ -8,8 +8,8 @@ import {
   loopModeMap,
   LoopModeTypeValues,
   useMusicSettingsStore,
-} from '@/apps/MusicPlayer/utils/music-state'
-import {MusicEvents, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
+} from '@/apps/MediaPlayer/utils/music-state'
+import {MusicEvents, useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 
 // interface Props {}
 // const props = withDefaults(defineProps<Props>(), {})

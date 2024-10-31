@@ -16,6 +16,7 @@ const settingsStore = useSettingsStore()
 
 <style lang="scss">
 #app {
+  font-family: 'Segoe UI Light';
   .vp-window._maximized {
     bottom: $taskbar_height !important;
     height: calc(100% - $taskbar_height) !important;

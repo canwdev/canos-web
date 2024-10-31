@@ -10,17 +10,24 @@ import FileList from './ExplorerUI/FileList.vue'
 import {getLastDirName, normalizePath, toggleArrayElement} from './utils'
 import {useNavigation} from './ExplorerUI/hooks/use-navigation'
 import {IEntry} from '@server/types/server'
-import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+
+type AppParams = {
+  path: string
+}
 
 const props = withDefaults(
   defineProps<{
+    appParams?: AppParams
     // 是否文件(夹)选择器
     selectFileMode?: 'file' | 'folder'
     // 文件选择器允许多选
     multiple?: boolean
+    // 只展示内容
+    contentOnly?: boolean
   }>(),
   {
     multiple: false,
+    contentOnly: false,
   },
 )
 const emit = defineEmits(['handleSelect', 'cancelSelect'])
@@ -53,6 +60,31 @@ const {
 
     return res
   },
+})
+
+// 应用启动传参
+watch(
+  () => props.appParams,
+  () => {
+    if (!props.appParams) {
+      return
+    }
+    const {path} = props.appParams
+    if (path) {
+      handleOpenPath(path)
+    }
+  },
+  {immediate: true},
+)
+
+const fileSidebarRef = ref()
+onMounted(async () => {
+  if (fileSidebarRef.value) {
+    await fileSidebarRef.value.handleRefresh()
+    if (!props.appParams?.path) {
+      fileSidebarRef.value.openFirstDrive()
+    }
+  }
 })
 
 const handleOpenWrap = (item: IEntry) => {
@@ -99,7 +131,7 @@ const handleSelect = () => {
 
 <template>
   <div class="explorer-wrap">
-    <div class="explorer-header vp-panel">
+    <div v-if="!contentOnly" class="explorer-header vp-panel">
       <div class="nav-address">
         <div class="nav-wrap">
           <button
@@ -146,7 +178,12 @@ const handleSelect = () => {
       </div>
     </div>
     <div class="explorer-content-wrap scrollbar-mini">
-      <FileSidebar @openDrive="(i) => handleOpenPath(i.path)" :current-path="basePath">
+      <FileSidebar
+        ref="fileSidebarRef"
+        v-if="!contentOnly"
+        @openDrive="(i) => handleOpenPath(i.path)"
+        :current-path="basePath"
+      >
         <div v-if="starList.length" class="file-sidebar-content star-list">
           <div v-for="(path, index) in starList" :key="path">
             <button
@@ -174,6 +211,7 @@ const handleSelect = () => {
         :base-path="basePathNormalized"
         :selectFileMode="selectFileMode"
         :multiple="multiple"
+        :content-only="contentOnly"
       />
     </div>
 

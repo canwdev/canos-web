@@ -21,7 +21,7 @@ const {currentPath} = toRefs(props)
 const emit = defineEmits(['openDrive'])
 
 const isLoading = ref(false)
-const dataList = ref<IDrive[]>([])
+const driveList = ref<IDrive[]>([])
 
 const getPathNormalized = (path) => {
   path = normalizePath(path)
@@ -36,19 +36,15 @@ const handleRefresh = async () => {
     isLoading.value = true
 
     const drives = (await fsWebApi.getDrives({})) as unknown as IDrive[]
-    dataList.value = drives.map((i) => {
+    driveList.value = drives.map((i) => {
       return {
         ...i,
         path: getPathNormalized(i.path),
       }
     })
-
-    if (drives[0]) {
-      emit('openDrive', drives[0])
-    }
   } catch (e) {
     console.error(e)
-    dataList.value = []
+    driveList.value = []
   } finally {
     isLoading.value = false
   }
@@ -56,6 +52,13 @@ const handleRefresh = async () => {
 onMounted(() => {
   handleRefresh()
 })
+
+const openFirstDrive = () => {
+  if (driveList.value[0]) {
+    console.log(driveList.value[0].path)
+    emit('openDrive', driveList.value[0])
+  }
+}
 
 const getIcon = (item: IDrive) => {
   if (item.label.toLowerCase() === 'home') {
@@ -86,6 +89,11 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
   }
   return txt
 }
+
+defineExpose({
+  handleRefresh,
+  openFirstDrive,
+})
 </script>
 
 <template>
@@ -116,7 +124,7 @@ Storage: ${bytesToSize(item.free)} / ${bytesToSize(item.total)}
     <div class="file-sidebar-content">
       <button
         class="drive-item btn-no-style"
-        v-for="(item, index) in dataList"
+        v-for="(item, index) in driveList"
         :key="index"
         :title="getTitle(item)"
         :class="{active: item.path === currentPath}"

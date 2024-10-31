@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CoverDisplay from '@/apps/MusicPlayer/CoverDisplay.vue'
+import CoverDisplay from '@/apps/MediaPlayer/CoverDisplay.vue'
 
 interface Props {
   src?: string

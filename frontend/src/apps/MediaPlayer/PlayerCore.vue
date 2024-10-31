@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {useI18n} from 'vue-i18n'
-import {MediaItem, useMusicSettingsStore} from '@/apps/MusicPlayer/utils/music-state'
+import {MediaItem, useMusicSettingsStore} from '@/apps/MediaPlayer/utils/music-state'
 import {fsWebApi} from '@/api/filesystem'
-import {MusicEvents, useBusOn, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
+import {MusicEvents, useBusOn, useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 
 // interface Props {}
 // const props = withDefaults(defineProps<Props>(), {})

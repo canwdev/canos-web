@@ -7,7 +7,7 @@ import {ldThemeOptions, SettingsTabType} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
 import pkg from '../../../../package.json'
 import {useSystemStore} from '@/store/system'
-import {loopModeMap} from '@/apps/MusicPlayer/utils/music-state'
+import {loopModeMap} from '@/apps/MediaPlayer/utils/music-state'
 
 export default defineComponent({
   name: 'SettingsSystem',

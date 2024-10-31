@@ -143,7 +143,15 @@ export class FsService {
     let dirs: IDrive[] = [
       {
         label: 'Home',
-        path: serverInfo.homeDir,
+        path: serverInfo.dirs.osHomedir,
+      },
+      {
+        label: 'Desktop',
+        path: serverInfo.dirs.dataDesktopPath,
+      },
+      {
+        label: 'Data',
+        path: serverInfo.dirs.dataBasePath,
       },
     ]
     const driveList = nodeDiskInfo.getDiskInfoSync()

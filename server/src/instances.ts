@@ -1,9 +1,9 @@
-import {configBasePath} from '@/enum'
+import {dataBasePath} from '@/enum'
 import * as Path from 'path'
 import {JsonStorage} from '@/utils/json-storage'
 
 // IServerSettings
 export const serverSettingsStore = new JsonStorage(
-  Path.join(configBasePath, 'server-settings.json'),
+  Path.join(dataBasePath, 'server-settings.json'),
   {users: []},
 )

@@ -5,16 +5,14 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import StartMenuItem from '@/components/OS/StartMenu/StartMenuItem.vue'
+import MenuListItem from '@/components/OS/StartMenu/MenuListItem.vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
 import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {onClickOutside, useFullscreen} from '@vueuse/core'
-import globalEventBus, {GlobalEvents} from '@/utils/bus'
 import {useSettingsStore} from '@/store/settings'
-import {serverApi} from '@/api/server'
-import StartActions from '@/components/OS/StartScreen/Sub/StartActions.vue'
-import StartScreen from '@/components/OS/StartScreen/index.vue'
+import StartActions from '@/components/OS/StartMenu/Sub/StartActions.vue'
+import StartScreen from '@/components/OS/StartMenu/StartScreen.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -76,7 +74,7 @@ const isAllApps = ref(false)
         <div class="start-main-wrap">
           <transition-group name="fade-left">
             <div v-if="isAllApps" class="all-apps-list">
-              <StartMenuItem
+              <MenuListItem
                 :item="item"
                 v-for="(item, index) in appListFiltered"
                 :key="index"
@@ -84,7 +82,7 @@ const isAllApps = ref(false)
                 :disabled="item.requireBackend && !systemStore.isBackendAvailable"
               />
             </div>
-            <StartScreen v-else />
+            <StartScreen v-else @onCreateTask="mVisible = false" />
           </transition-group>
         </div>
       </div>
@@ -107,7 +105,6 @@ const isAllApps = ref(false)
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  font-family: 'Segoe UI Light';
 
   &:not(&._full) {
     left: 8px;

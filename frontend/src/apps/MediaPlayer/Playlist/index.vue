@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import PlaylistItem from '@/apps/MusicPlayer/MusicPlaylist/PlaylistItem.vue'
-import {MediaItem} from '@/apps/MusicPlayer/utils/music-state'
+import PlaylistItem from '@/apps/MediaPlayer/Playlist/PlaylistItem.vue'
+import {MediaItem} from '@/apps/MediaPlayer/utils/music-state'
 import FileSelector from '@/apps/FileManager/FileSelector.vue'
 import {IEntry} from '@server/types/server'
 import {isSupportedMediaFormat} from '@/utils/is'
-import {MusicEvents, useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
+import {MusicEvents, useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 import DropdownMenu from '@/components/CanUI/packages/OptionUI/Tools/DropdownMenu.vue'
 
 const storeId = inject('storeId')

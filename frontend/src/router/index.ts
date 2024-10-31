@@ -7,6 +7,7 @@ import {serverApi} from '@/api/server'
 import {useSystemStore} from '@/store/system'
 import {usersApi} from '@/api/users'
 import {adminRoutes} from '@/router/admin'
+import {ServerInfo} from '@server/types/server'
 
 // const history = createWebHashHistory()
 const history = createWebHistory(PROXY_BASE_URL)
@@ -66,7 +67,7 @@ router.beforeEach(async (to, from, next) => {
 
   // 检查服务器是否可用
   try {
-    systemStore.serverInfo = await serverApi.getServerInfo()
+    systemStore.serverInfo = (await serverApi.getServerInfo()) as ServerInfo
     systemStore.isBackendAvailable = true
   } catch (e) {
     console.log(e)

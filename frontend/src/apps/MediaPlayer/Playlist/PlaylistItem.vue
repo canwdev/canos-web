@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CoverMini from '@/apps/MusicPlayer/CoverMini.vue'
-import {MediaItem} from '@/apps/MusicPlayer/utils/music-state'
-import {useMediaStore} from '@/apps/MusicPlayer/utils/media-store'
+import CoverMini from '@/apps/MediaPlayer/CoverMini.vue'
+import {MediaItem} from '@/apps/MediaPlayer/utils/music-state'
+import {useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 
 interface Props {
   item: MediaItem

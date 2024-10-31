@@ -36,7 +36,7 @@ export const SystemAppMusicPlayer: ShortcutItem = {
     width: '800px',
     height: '600px',
   },
-  component: defineAsyncComponent(() => import('@/apps/MusicPlayer/index.vue')),
+  component: defineAsyncComponent(() => import('@/apps/MediaPlayer/index.vue')),
   requireBackend: true,
 }
 

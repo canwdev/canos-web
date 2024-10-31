@@ -5,39 +5,33 @@ export default {
 </script>
 
 <script setup lang="ts">
-import defaultStartLayout from './Sub/default-layout.json'
-import StartMenuItem from './StartMenuItem.vue'
+import defaultStartLayout from '@/components/OS/StartMenu/Sub/default-layout.json'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
-import {useModelWrapper} from '@/hooks/use-model-wrapper'
-import {onClickOutside, useFullscreen, useStorage} from '@vueuse/core'
+import {useStorage} from '@vueuse/core'
 import {useSettingsStore} from '@/store/settings'
-import StartActions from './Sub/StartActions.vue'
 import {StartItemSizeOptions, StartLayoutGroup, IStartMenuItem} from './types'
 import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {LsKeys} from '@/enum'
-import StartDragOver from './Sub/StartDragOver.vue'
-import TitleEdit from './Sub/TitleEdit.vue'
+import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'
+import TitleEdit from '@/components/OS/StartMenu/Sub/TitleEdit.vue'
 import {LineHelper} from '@/utils/line-helper'
+import MenuDesktopIcon from '@/components/OS/StartMenu/MenuDesktopIcon.vue'
 
-const props = withDefaults(
-  defineProps<{
-    visible: boolean
-  }>(),
-  {
-    visible: true,
-  },
-)
-const emit = defineEmits(['update:visible'])
+// const props = withDefaults(
+//   defineProps<{
+//   }>(),
+//   {
+//   },
+// )
+const emit = defineEmits(['onCreateTask'])
 
-const mVisible = useModelWrapper(props, emit, 'visible')
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
 
 const handleItemClick = (item: ShortcutItem) => {
-  mVisible.value = false
-  systemStore.createTask(item)
+  emit('onCreateTask', systemStore.createTask(item))
 }
 
 const appListFiltered = computed((): ShortcutItem[] => {
@@ -54,13 +48,6 @@ const appIdMapped = computed(() => {
 
 const rootRef = ref()
 
-onClickOutside(rootRef, (event) => {
-  if (mVisible.value) {
-    setTimeout(() => {
-      mVisible.value = false
-    })
-  }
-})
 const startLayoutColumns = useStorage<StartLayoutGroup[][]>(LsKeys.START_MENU_LAYOUT, [])
 const refreshStartLayout = () => {
   // 查找缺失的app，并添加
@@ -312,7 +299,7 @@ const handleGroupDrop = (indexData: StarIndexData) => {
 </script>
 
 <template>
-  <div ref="rootRef" v-show="mVisible" class="start-screen">
+  <div ref="rootRef" class="start-screen">
     <div class="start-content" :class="{isItemDragging, isGroupDragging}" ref="startContentRef">
       <div v-for="(groups, colIndex) in startLayoutColumns" :key="colIndex" class="app-col">
         <div v-for="(group, rowIndex) in groups" :key="rowIndex" class="app-group">
@@ -340,7 +327,7 @@ const handleGroupDrop = (indexData: StarIndexData) => {
             "
           >
             <template v-for="(menuItem, index) in group.children" :key="index">
-              <StartMenuItem
+              <MenuDesktopIcon
                 v-if="appIdMapped[menuItem.id]"
                 class="card-item"
                 :menuItem="menuItem"
@@ -438,7 +425,7 @@ const handleGroupDrop = (indexData: StarIndexData) => {
       height: 100%;
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      gap: 30px;
 
       .app-group {
         min-width: 300px;
@@ -451,29 +438,29 @@ const handleGroupDrop = (indexData: StarIndexData) => {
           gap: 8px;
 
           .card-item {
-            background: $primary;
+            //background: $primary;
             transition: all 0.2s;
 
             &.md {
               grid-column: span 2;
               grid-row: span 2;
-              background-color: rgb(133, 63, 163);
+              //background-color: rgb(133, 63, 163);
             }
 
             &.lg {
               grid-column: span 4;
-              background-color: rgb(163, 100, 63);
+              //background-color: rgb(163, 100, 63);
             }
 
             &.xl {
               grid-column: span 4;
-              background-color: rgb(65, 163, 63);
+              //background-color: rgb(65, 163, 63);
             }
 
             &:hover,
             &:active,
             &:focus {
-              outline: 2px solid white;
+              //outline: 2px solid white;
             }
 
             &:active {

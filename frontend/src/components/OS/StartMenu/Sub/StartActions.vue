@@ -81,6 +81,9 @@ const confirmShutdown = () => {
           ></path>
         </svg>
       </button>
+      <button class="action-button" @click="$router.push({name: 'AdminRootView'})" title="Admin">
+        🔧
+      </button>
 
       <button class="action-button" @click="doLogout" title="Logout">
         <svg
@@ -101,9 +104,6 @@ const confirmShutdown = () => {
             style="--darkreader-inline-fill: currentColor"
           ></path>
         </svg>
-      </button>
-      <button class="action-button" @click="$router.push({name: 'AdminRootView'})" title="Admin">
-        🔧
       </button>
       <button class="action-button" @click="confirmShutdown" title="Shutdown">
         <svg

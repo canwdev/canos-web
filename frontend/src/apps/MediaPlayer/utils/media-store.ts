@@ -1,5 +1,5 @@
 import {getRandomInt} from '@/utils'
-import {LoopModeType, MediaItem, useMusicSettingsStore} from '@/apps/MusicPlayer/utils/music-state'
+import {LoopModeType, MediaItem, useMusicSettingsStore} from '@/apps/MediaPlayer/utils/music-state'
 import mitt from 'mitt'
 
 type IStore = {
