@@ -6,6 +6,7 @@ import {useSystemStore} from '@/store/system'
 import {IEntry} from '@server/types/server'
 import {normalizePath} from '@/apps/FileManager/utils'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import {SettingsTabType} from '@/enum/settings'
 const systemStore = useSystemStore()
 
 const {
@@ -53,7 +54,7 @@ const moreOptions = computed((): QuickOptionItem[] => {
       label: 'Personalization',
       props: {
         onClick() {
-          systemStore.createTaskById('os.settings')
+          systemStore.createTaskById('os.settings', {curTab: SettingsTabType.PERSONALIZATION})
         },
       },
     },
@@ -87,12 +88,19 @@ const moreOptions = computed((): QuickOptionItem[] => {
   .desktop-file-list {
     //user-select: none;
     :deep(.explorer-grid-view) {
-      //display: grid;
-      //grid-auto-flow: column;
-      //grid-template-columns: repeat(auto-fill, 74px);
-      //grid-template-rows: repeat(auto-fill, 70px);
-      //place-content: flex-start;
-      //gap: 28px 1px;
+      display: grid;
+      grid-auto-flow: column;
+      height: 100%;
+      grid-template-columns: repeat(auto-fill, 74px);
+      grid-template-rows: repeat(auto-fill, 70px);
+      place-content: flex-start;
+      gap: 30px 18px;
+    }
+  }
+  :deep(.file-grid-item) {
+    .desktop-icon-name {
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
     }
   }
 }

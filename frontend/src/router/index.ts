@@ -26,6 +26,7 @@ const routes = [
     name: 'IpChooserView',
     component: () => import('@/views/IpChooser.vue'),
     meta: {
+      title: 'IP Address',
       skipLogin: true,
     },
   },
@@ -55,6 +56,7 @@ const routes = [
     name: 'LoginPage',
     component: () => import('@/views/Login.vue'),
     meta: {
+      title: 'Login',
       skipLogin: true,
     },
   },

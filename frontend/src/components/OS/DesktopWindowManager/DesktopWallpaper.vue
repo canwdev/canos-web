@@ -89,9 +89,10 @@ const {isOverDropZone} = useDropZone(dropZoneRef, {
     position: absolute;
     bottom: 48px;
     right: 8px;
-    text-shadow: none;
     white-space: break-spaces;
     text-align: right;
+    color: white;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
   }
 }
 </style>

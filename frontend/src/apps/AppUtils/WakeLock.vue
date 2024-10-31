@@ -10,16 +10,16 @@ function onClick() {
 </script>
 
 <template>
-  <div class="wake-lock-wrap">
+  <div class="wake-lock-wrap" :class="{active: wakeLock.isActive}">
     <template v-if="wakeLock.isSupported">
       <div>
-        保持当前浏览器所在的计算机唤醒（不休眠）:
-        {{ wakeLock.isActive ? '已开启' : '已关闭' }}
+        保持唤醒（不休眠）:
+        {{ wakeLock.isActive ? '已开启✅' : '已关闭🛑' }}
       </div>
       <button class="vp-button" @click="onClick">
         {{ text }}
       </button>
-      <div>提示：必须保持此App和浏览器在前台运行，否则无效。</div>
+      <div>提示：必须保持此页面在前台运行，否则无效。</div>
     </template>
     <template v-else> 该浏览器不支持唤醒锁定。 </template>
   </div>
@@ -27,6 +27,7 @@ function onClick() {
 
 <style lang="scss" scoped>
 .wake-lock-wrap {
+  height: 100%;
   padding: 10px;
   box-sizing: border-box;
   line-height: 2;

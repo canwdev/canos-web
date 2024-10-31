@@ -82,7 +82,13 @@ export const useSystemStore = defineStore('system', {
             }
           }
           if (lastIdx > -1) {
-            this.setTaskActive(_tasks[lastIdx])
+            const lastTask = _tasks[lastIdx]
+            if (!lastTask.minimized) {
+              // 激活上一个窗口
+              if (lastTask.windowRef) {
+                lastTask.windowRef.setActive()
+              }
+            }
           }
         }, 300)
       }

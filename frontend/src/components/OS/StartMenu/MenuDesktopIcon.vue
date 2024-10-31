@@ -23,6 +23,7 @@ const systemStore = useSystemStore()
     @keyup.enter="$emit('openItem', shortcutItem)"
     class="desktop-icon btn-no-style"
     :disabled="shortcutItem.requireBackend && !systemStore.isBackendAvailable"
+    :title="shortcutItem.title"
   >
     <ThemedIcon class="desktop-icon-image" :name="shortcutItem.icon" />
     <span @dbclick.stop class="desktop-icon-name">{{ shortcutItem.title }}</span>

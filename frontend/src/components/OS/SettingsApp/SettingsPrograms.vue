@@ -6,7 +6,7 @@ import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
 import {StOptionItem} from '@/components/CanUI/packages/OptionUI/enum'
 import {useSystemStore} from '@/store/system'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
-import {ElSwitch} from 'element-plus'
+import {ElCheckbox, ElSwitch} from 'element-plus'
 
 export default defineComponent({
   name: 'SettingsPrograms',
@@ -29,12 +29,30 @@ export default defineComponent({
             return {
               iconRender: h(ThemedIcon, {name: item.icon}),
               label: item.title,
+              subtitle: [
+                item.appid,
+                item.singleInstance && '单例模式',
+                item.requireBackend && '需要后端服务',
+              ]
+                .filter(Boolean)
+                .join(' | '),
               key: item.appid,
               actionRender: h('div', {style: 'display:flex; align-items: center; gap:8px;'}, [
-                h('div', {}, '自启动'),
-                h(ElSwitch, {
-                  modelValue: aIdsMap[item.appid],
+                h(
+                  'button',
+                  {
+                    class: 'vp-button',
+                    onClick() {
+                      systemStore.createTaskById(item.appid)
+                    },
+                  },
+                  '启动',
+                ),
+                h(ElCheckbox, {
+                  label: '自动启动',
+                  checked: aIdsMap[item.appid],
                   onClick: () => {
+                    console.log(aIdsMap)
                     // 切换开机自动启动
                     if (aIdsMap[item.appid]) {
                       delete aIdsMap[item.appid]

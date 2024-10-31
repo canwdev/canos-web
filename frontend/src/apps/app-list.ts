@@ -54,7 +54,7 @@ export const SystemAppTextEditor: ShortcutItem = {
 
 export const SystemAppWebBrowser: ShortcutItem = {
   appid: 'os.web_browser',
-  title: 'Iframe Browser',
+  title: 'iFrame',
   icon: 'web-browser',
   winOptions: {
     top: '150px',
@@ -177,7 +177,7 @@ export const AllAppList: ShortcutItem[] = [
     '屏幕时钟',
     defineAsyncComponent(() => import('@/apps/AppUtils/ScreenClock/index.vue')),
   ),
-  defineWebApp('Bing', 'https://bing.com'),
+  defineWebApp('Google', 'https://www.google.com/webhp?igu=1'),
 ]
 
 window.$appList = AllAppList

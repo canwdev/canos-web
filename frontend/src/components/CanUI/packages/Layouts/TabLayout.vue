@@ -96,21 +96,27 @@ export default defineComponent({
   &.horizontal {
     overflow: unset;
     justify-content: flex-start;
+    flex-direction: column;
 
     .sidebar-wrap {
       min-width: fit-content;
-      width: auto;
+      height: auto;
       border-right: 0;
       border-bottom: 1px solid $color_border;
       overflow: hidden;
+      width: 100%;
       .mc-tab-list {
         display: flex;
         .list-item {
           flex-shrink: 0;
           display: flex;
           align-items: center;
+          padding: 4px 16px;
         }
       }
+    }
+    .content-wrap {
+      width: 100%;
     }
   }
 

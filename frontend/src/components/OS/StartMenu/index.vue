@@ -33,7 +33,7 @@ const filterText = ref('')
 const handleItemClick = (item: ShortcutItem) => {
   mVisible.value = false
 
-  systemStore.createTask(item)
+  systemStore.createTaskById(item.appid)
 }
 
 const appListFiltered = computed(() => {
@@ -87,7 +87,7 @@ const isAllApps = ref(false)
         </div>
       </div>
       <div class="start-actions-wrap">
-        <StartActions @startApp="startApp" />
+        <StartActions @startApp="startApp" @actionOpened="mVisible = false" />
       </div>
     </div>
   </div>

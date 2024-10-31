@@ -73,7 +73,7 @@ const refreshStartLayout = () => {
         children: newApps.map((item, index) => {
           return {
             id: item.appid,
-            size: index === 0 ? 'md' : 'sm',
+            size: 'sm',
           }
         }),
       },
