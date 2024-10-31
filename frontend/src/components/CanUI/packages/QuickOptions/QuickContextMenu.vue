@@ -2,23 +2,41 @@
 import QuickOptions from './index.vue'
 import {QuickOptionItem} from './enum'
 import {useContextMenu} from './utils/use-context-menu'
+import {useMouseInElement} from '@vueuse/core'
 
-interface Props {
-  options: QuickOptionItem[]
-}
+const props = withDefaults(
+  defineProps<{
+    options: QuickOptionItem[]
+    transitionName?: string
+  }>(),
+  {
+    transitionName: 'fade',
+  },
+)
 
-const props = withDefaults(defineProps<Props>(), {})
+const {
+  menuRef,
+  isShow,
+  ctxMenuStyle,
+  showMenu,
+  showMenuByPoint,
+  showMenuByElement,
 
-const {menuRef, ctxMenuStyle, showMenu, isShow} = useContextMenu()
+  hideMenu,
+} = useContextMenu()
 
 defineExpose({
-  showMenu,
   isShow,
+  menuRef,
+  showMenu,
+  showMenuByPoint,
+  showMenuByElement,
+  hideMenu,
 })
 </script>
 
 <template>
-  <transition name="fade">
+  <transition :name="transitionName">
     <QuickOptions
       ref="menuRef"
       v-model:visible="isShow"

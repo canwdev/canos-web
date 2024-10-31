@@ -10,14 +10,41 @@ import {useSystemStore} from '@/store/system'
 import {useSettingsStore} from '@/store/settings'
 import TrayBattery from '@/components/OS/TaskBar/TrayBattery.vue'
 import TrayFps from '@/components/OS/TaskBar/TrayFps.vue'
-import TrayNetwork from '@/components/OS/TaskBar/TrayNetwork.vue'
 import TrayMemory from '@/components/OS/TaskBar/TrayMemory.vue'
-import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import TaskbarItem from '@/components/OS/TaskBar/TaskbarItem.vue'
+import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
+import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import {TaskItem} from '@/enum/os'
 
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
-const isShowStart = ref(true)
+const isShowStart = ref(false)
+
+const taskItemMenuRef = ref()
+const currentTaskItem = ref<TaskItem | null>(null)
+const handleTaskbarItemMenu = (target, item) => {
+  currentTaskItem.value = item
+  setTimeout(() => {
+    const taskItemEl = target.closest('.taskbar-item')
+    taskItemMenuRef.value.showMenuByElement(taskItemEl)
+  })
+}
+const taskItemMenuOptions = computed((): QuickOptionItem[] => {
+  if (!currentTaskItem.value) {
+    return []
+  }
+  return [
+    {
+      label: 'Close',
+      props: {
+        onClick() {
+          systemStore.closeTask(currentTaskItem.value!.guid)
+          currentTaskItem.value = null
+        },
+      },
+    },
+  ]
+})
 </script>
 
 <template>
@@ -25,6 +52,11 @@ const isShowStart = ref(true)
     <transition name="fade-up">
       <StartMenu v-model:visible="isShowStart" />
     </transition>
+    <QuickContextMenu
+      :transition-name="`fade-up`"
+      :options="taskItemMenuOptions"
+      ref="taskItemMenuRef"
+    />
     <div class="task-bar-container vp-window-panel">
       <button
         class="task-start-menu btn-no-style _fc"
@@ -40,7 +72,13 @@ const isShowStart = ref(true)
           v-show="systemStore.tasks.length"
           class="task-list _fc"
         >
-          <TaskbarItem v-for="item in systemStore.tasks" :key="item.guid" :item="item" />
+          <TaskbarItem
+            v-for="item in systemStore.tasks"
+            :key="item.guid"
+            :item="item"
+            @contextmenu.prevent="handleTaskbarItemMenu($event.target, item)"
+            @mouseOverShow="(target) => handleTaskbarItemMenu(target, item)"
+          />
         </transition-group>
       </div>
       <div class="task-tray _fc">

@@ -1,19 +1,19 @@
-import {useEventListener} from '@vueuse/core'
+import {useDebounceFn, useEventListener, useThrottleFn} from '@vueuse/core'
 /**
  * 检测鼠标是否在元素上，支持延时
  */
 export const useMouseOver = (target, options: any = {}) => {
   const {timeout = 0, onEnter, onOut} = options
   let timer
-  useEventListener(target, 'mouseover', () => {
+  useEventListener(target, 'mouseover', (event) => {
     clearTimeout(timer)
     timer = setTimeout(() => {
-      onEnter && onEnter()
+      onEnter && onEnter(event)
     }, timeout)
   })
-  useEventListener(target, 'mouseleave', () => {
+  useEventListener(target, 'mouseleave', (event) => {
     clearTimeout(timer)
-    onOut && onOut()
+    onOut && onOut(event)
   })
   useEventListener(target, 'click', () => {
     clearTimeout(timer)
@@ -37,4 +37,56 @@ export const useDynamicClassName = (targetRef, className, enableRef) => {
   onMounted(() => {
     toggle(enableRef.value)
   })
+}
+
+import {onMounted, onBeforeUnmount, Ref} from 'vue'
+
+// 检测鼠标或触摸按下后，向上移动距离
+export const useElementMoveUpDetection = (
+  elementRef: Ref<HTMLElement | null>,
+  distance: number,
+  callback: (event) => void,
+) => {
+  let startY = 0 // 记录按下时的 Y 轴坐标
+  let isMoving = false // 记录是否处于移动状态
+
+  const handleStart = (event: TouchEvent | MouseEvent) => {
+    const clientY = event instanceof TouchEvent ? event.touches[0].clientY : event.clientY
+    startY = clientY // 保存开始位置
+    if (!isMoving) {
+      window.addEventListener('mousemove', handleMove)
+      window.addEventListener('touchmove', handleMove)
+      isMoving = true
+    }
+  }
+
+  const handleMove = useDebounceFn((event: TouchEvent | MouseEvent) => {
+    // console.log('handleMove', event)
+    const element = elementRef.value
+    if (element) {
+      const clientY = event instanceof TouchEvent ? event.touches[0].clientY : event.clientY
+
+      // 检测元素相对于视口的位置
+      const rect = element.getBoundingClientRect()
+      const positionFromTop = rect.top
+
+      // 判断是否向上移动指定距离
+      if (clientY < startY - distance && clientY < positionFromTop) {
+        // console.log('callback', event)
+        handleEnd()
+        callback(event)
+      }
+    }
+  }, 50)
+
+  const handleEnd = () => {
+    window.removeEventListener('mousemove', handleMove)
+    window.removeEventListener('touchmove', handleMove)
+    isMoving = false
+  }
+
+  useEventListener(elementRef, 'mousedown', handleStart)
+  useEventListener(elementRef, 'touchstart', handleStart)
+  useEventListener(elementRef, 'mouseup', handleEnd)
+  useEventListener(elementRef, 'touchend', handleEnd)
 }

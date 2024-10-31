@@ -3,6 +3,10 @@ import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import {TaskItem} from '@/enum/os'
 import {useSettingsStore} from '@/store/settings'
 import {useSystemStore} from '@/store/system'
+import {
+  useElementMoveUpDetection,
+  useMouseOver,
+} from '@/components/CanUI/packages/ViewPortWindow/utils/use-utils'
 
 const props = withDefaults(
   defineProps<{
@@ -10,7 +14,7 @@ const props = withDefaults(
   }>(),
   {},
 )
-const emit = defineEmits([])
+const emit = defineEmits(['mouseOverShow'])
 const {item} = toRefs(props)
 
 const systemStore = useSystemStore()
@@ -31,10 +35,16 @@ watch(
     visible.value = !val
   },
 )
+
+const rootRef = ref()
+useElementMoveUpDetection(rootRef, 30, (event) => {
+  emit('mouseOverShow', rootRef.value)
+})
 </script>
 
 <template>
   <div
+    ref="rootRef"
     v-show="visible"
     tabindex="0"
     class="taskbar-item"
@@ -43,24 +53,25 @@ watch(
   >
     <div class="task-item-main">
       <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
+      <span v-else class="mdi mdi-apps task-icon"></span>
       <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
         {{ item.title }}
       </span>
     </div>
-    <div
-      v-if="!settingsStore.taskbarIconOnly"
-      class="btn-close"
-      @click="systemStore.closeTask(item.guid)"
-    >
-      ✕
-    </div>
+    <!--<div-->
+    <!--  v-if="!settingsStore.taskbarIconOnly"-->
+    <!--  class="btn-close"-->
+    <!--  @click="systemStore.closeTask(item.guid)"-->
+    <!--&gt;-->
+    <!--  ✕-->
+    <!--</div>-->
   </div>
 </template>
 
 <style lang="scss" scoped>
 .taskbar-item {
   height: 100%;
-  padding: 0 10px;
+  padding: 0 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -115,6 +126,10 @@ watch(
       width: 24px;
       height: 24px;
       pointer-events: none;
+    }
+    .mdi {
+      font-size: 24px;
+      line-height: 1;
     }
   }
 
