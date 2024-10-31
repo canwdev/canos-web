@@ -20,9 +20,16 @@ fs.ensureDirSync(dataDesktopPath)
 export const serverInfo: ServerInfo = {
   name: 'CanOS Server',
   version: process.env.npm_package_version,
-  platform: os.platform(),
-  hostname: os.hostname(),
   hostUrls: [],
+  os: {
+    hostname: os.hostname(),
+    platform: os.platform(),
+    release: os.release(),
+    arch: os.arch(),
+    type: os.type(),
+    version: os.version(),
+    cpu: os.cpus()[0].model,
+  },
   dirs: {
     osHomedir: os.homedir(),
     osTmpdir: os.tmpdir(),

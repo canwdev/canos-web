@@ -162,57 +162,81 @@ defineExpose({
   >
     <div v-if="!contentOnly" class="explorer-actions vp-panel">
       <div class="action-group">
-        <button class="vp-button" @click="handleCreateFile()" title="Create Document">
-          <i class="fa fa-plus icon-small-abs" aria-hidden="true"></i>
-          <i class="fa fa-file-o" aria-hidden="true"></i>
+        <button class="btn-action btn-no-style" @click="handleCreateFile()" title="Create Document">
+          <span class="mdi mdi-file-document-plus-outline"></span>
         </button>
-        <button class="vp-button" @click="handleCreateFolder()" title="Create Folder">
-          <i class="fa fa-plus icon-small-abs" aria-hidden="true"></i>
-          <i class="fa fa-folder-o" aria-hidden="true"></i>
+        <button class="btn-action btn-no-style" @click="handleCreateFolder()" title="Create Folder">
+          <span class="mdi mdi-folder-plus-outline"></span>
         </button>
 
         <template v-if="!selectFileMode">
           <div class="split-line"></div>
 
-          <button class="vp-button" @click="() => openSelectFiles()" title="Upload Files...">
-            <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
-            <i class="fa fa-file-o" aria-hidden="true"></i>
-          </button>
-          <button class="vp-button" @click="() => openSelectFolder()" title="Upload Folder...">
-            <i class="fa fa-arrow-up icon-small-abs" aria-hidden="true"></i>
-            <i class="fa fa-folder-o" aria-hidden="true"></i>
+          <button
+            class="btn-action btn-no-style"
+            @click="() => openSelectFiles()"
+            title="Upload Files..."
+          >
+            <span class="mdi mdi-file-upload-outline"></span>
           </button>
           <button
-            class="vp-button"
+            class="btn-action btn-no-style"
+            @click="() => openSelectFolder()"
+            title="Upload Folder..."
+          >
+            <span class="mdi mdi-folder-upload-outline"></span>
+          </button>
+          <button
+            class="btn-action btn-no-style"
             :disabled="!enableAction"
             @click="handleDownload"
             title="Download"
           >
-            <i class="fa fa-download" aria-hidden="true"></i>
+            <span class="mdi mdi-file-download-outline"></span>
           </button>
 
           <div class="split-line"></div>
 
-          <button class="vp-button" :disabled="!enableAction" @click="handleCut" title="Cut">
-            <i class="fa fa-scissors" aria-hidden="true"></i>
+          <button
+            class="btn-action btn-no-style"
+            :disabled="!enableAction"
+            @click="handleCut"
+            title="Cut"
+          >
+            <span class="mdi mdi-content-cut"></span>
           </button>
-          <button class="vp-button" :disabled="!enableAction" @click="handleCopy" title="Copy">
-            <i class="fa fa-files-o" aria-hidden="true"></i>
+          <button
+            class="btn-action btn-no-style"
+            :disabled="!enableAction"
+            @click="handleCopy"
+            title="Copy"
+          >
+            <span class="mdi mdi-content-copy"></span>
           </button>
-          <button class="vp-button" :disabled="!enablePaste" @click="handlePaste" title="Paste">
-            <i class="fa fa-clipboard" aria-hidden="true"></i>
+          <button
+            class="btn-action btn-no-style"
+            :disabled="!enablePaste"
+            @click="handlePaste"
+            title="Paste"
+          >
+            <span class="mdi mdi-content-paste"></span>
           </button>
 
           <button
-            class="vp-button"
+            class="btn-action btn-no-style"
             :disabled="selectedItems.length !== 1"
             @click="handleRename"
             title="Rename"
           >
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            <span class="mdi mdi-rename"></span>
           </button>
-          <button class="vp-button" :disabled="!enableAction" @click="confirmDelete" title="Delete">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          <button
+            class="btn-action btn-no-style"
+            :disabled="!enableAction"
+            @click="confirmDelete"
+            title="Delete"
+          >
+            <span class="mdi mdi-delete-forever-outline"></span>
           </button>
 
           <div class="split-line"></div>
@@ -220,45 +244,53 @@ defineExpose({
       </div>
       <div class="action-group">
         <button
-          class="vp-button"
+          class="btn-action btn-no-style"
           @click="showHidden = !showHidden"
           title="Toggle hidden file visible"
         >
           <template v-if="showHidden">
-            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span class="mdi mdi-eye-outline"></span>
           </template>
           <template v-else>
-            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+            <span class="mdi mdi-eye-off-outline"></span>
           </template>
         </button>
-        <button @click="isGridView = !isGridView" class="vp-button" title="Toggle grid view">
+        <button
+          @click="isGridView = !isGridView"
+          class="btn-action btn-no-style"
+          title="Toggle grid view"
+        >
           <template v-if="isGridView">
-            <i class="fa fa-list" aria-hidden="true"></i>
+            <span class="mdi mdi-view-grid-outline"></span>
           </template>
           <template v-else>
-            <i class="fa fa-th" aria-hidden="true"></i>
+            <span class="mdi mdi-view-list-outline"></span>
           </template>
         </button>
         <div class="action-button-wrap">
-          <button class="vp-button" title="Toggle Sort" @click="showSortMenu = true">
-            <i class="fa fa-sort" aria-hidden="true"></i>
+          <button class="btn-action btn-no-style" title="Toggle Sort" @click="showSortMenu = true">
+            <span class="mdi mdi-sort-alphabetical-variant"></span>
           </button>
           <QuickOptions v-model:visible="showSortMenu" :options="sortOptions" />
         </div>
 
         <template v-if="!selectFileMode || (selectFileMode && multiple)">
-          <button class="vp-button" @click="toggleSelectAll" title="Toggle Select All">
-            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          <button
+            class="btn-action btn-no-style"
+            @click="toggleSelectAll"
+            title="Toggle Select All"
+          >
+            <span class="mdi mdi-check-all"></span>
           </button>
         </template>
 
-        <!--<button-->
-        <!--  class="vp-button"-->
-        <!--  @click="($event) => handleShowCtxMenu(null, $event)"-->
-        <!--  title="Menu"-->
-        <!--&gt;-->
-        <!--  <i class="fa fa-bars" aria-hidden="true"></i>-->
-        <!--</button>-->
+        <button
+          class="btn-action btn-no-style"
+          @click="($event) => handleShowCtxMenu(null, $event)"
+          title="Menu"
+        >
+          <span class="mdi mdi-menu"></span>
+        </button>
       </div>
     </div>
     <div
@@ -343,10 +375,13 @@ defineExpose({
         margin-left: 2px;
         margin-right: 2px;
       }
-      .vp-button {
+      .btn-action {
         display: inline-flex;
-        padding: 4px 6px;
         position: relative;
+        font-size: 20px;
+        border: none;
+        padding: 2px 4px;
+
         .icon-small-abs {
           font-size: 12px;
           position: absolute;

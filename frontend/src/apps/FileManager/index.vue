@@ -140,7 +140,7 @@ const handleSelect = () => {
             @click="goBack"
             title="Back"
           >
-            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            <span class="mdi mdi-arrow-left"></span>
           </button>
           <button
             :disabled="forwardHistory.length <= 0"
@@ -148,10 +148,10 @@ const handleSelect = () => {
             @click="goForward"
             title="Forward"
           >
-            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            <span class="mdi mdi-arrow-right"></span>
           </button>
           <button class="btn-action vp-button" :disabled="!allowUp" @click="goUp" title="Up">
-            <i class="fa fa-level-up" aria-hidden="true"></i>
+            <span class="mdi mdi-arrow-up"></span>
           </button>
         </div>
         <div class="input-wrap">
@@ -162,14 +162,14 @@ const handleSelect = () => {
             @change="handleRefresh"
           />
           <button class="vp-button btn-action" @click="handleRefresh">
-            <i class="fa fa-refresh" aria-hidden="true"></i>
+            <span class="mdi mdi-refresh"></span>
           </button>
           <button class="vp-button btn-action" @click="toggleStar">
             <template v-if="isStared">
-              <i class="fa fa-star" aria-hidden="true"></i>
+              <span class="mdi mdi-star"></span>
             </template>
             <template v-else>
-              <i class="fa fa-star-o" aria-hidden="true"></i>
+              <span class="mdi mdi-star-outline"></span>
             </template>
           </button>
 
@@ -193,7 +193,7 @@ const handleSelect = () => {
               @contextmenu.prevent="() => starList.splice(index, 1)"
             >
               <span class="drive-icon">
-                <i class="fa fa-star"></i>
+                <span class="mdi mdi-star"></span>
               </span>
               <span class="drive-content">
                 <span class="drive-title text-overflow"> {{ getLastDirName(path) }}</span>

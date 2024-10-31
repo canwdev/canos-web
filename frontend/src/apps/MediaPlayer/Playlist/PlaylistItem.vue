@@ -21,10 +21,10 @@ const isCurrent = computed(() => {
     <div class="item-left">
       <div v-if="isCurrent" class="status-icon">
         <template v-if="!mediaStore.paused">
-          <i class="fa fa-play" aria-hidden="true"></i>
+          <span class="mdi mdi-play"></span>
         </template>
         <template v-else>
-          <i class="fa fa-pause" aria-hidden="true"></i>
+          <span class="mdi mdi-pause"></span>
         </template>
       </div>
       <CoverMini :src="item.cover" force-show-icon :is-video="item.type === 'video'" />

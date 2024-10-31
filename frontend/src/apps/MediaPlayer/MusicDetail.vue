@@ -74,7 +74,7 @@ export default defineComponent({
                   :title="$t('search-lyric')"
                   @click="isShowLyricSearch = true"
                 >
-                  <i class="material-icons">search</i>
+                  <i class="mdi mdi-search-web"></i>
                 </button>
 
                 <button
@@ -82,9 +82,7 @@ export default defineComponent({
                   :title="$t('lock-lyric')"
                   @click="isLyricLock = !isLyricLock"
                 >
-                  <i class="material-icons">
-                    {{ isLyricLock ? 'lock' : 'lock_open' }}
-                  </i>
+                  <i class="mdi" :class="[isLyricLock ? 'mdi-lock' : 'mdi-lock-open']"> </i>
                 </button>
               </div>
 

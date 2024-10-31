@@ -9,7 +9,12 @@ export class AppController {
   @SkipAuth()
   @Get()
   getHello() {
-    return this.appService.getHello()
+    return 'Server Online'
+  }
+
+  @Get('server-info')
+  getServerInfo() {
+    return this.appService.getServerInfo()
   }
 
   @Post('shutdown')

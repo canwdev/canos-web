@@ -5,6 +5,7 @@ import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
 import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
 import {useBattery, useDevicePixelRatio, useDevicesList, useNetwork} from '@vueuse/core'
 import moment from 'moment/moment'
+import {useSystemStore} from '@/store/system'
 
 export default defineComponent({
   name: 'SettingsHardware',
@@ -12,6 +13,7 @@ export default defineComponent({
   setup(props, {emit}) {
     const {t: $t} = useI18n()
 
+    const systemStore = useSystemStore()
     const {devices} = useDevicesList()
     const {pixelRatio} = useDevicePixelRatio()
 
@@ -40,12 +42,29 @@ export default defineComponent({
         batteryInfo += `<br>剩余可用时间: ${formatTime(dischargingTime.value)}`
       }
       return [
-        {
-          label: '通用',
-          key: 'common',
+        systemStore.isBackendAvailable && {
+          label: '后端',
+          key: 'server',
           children: [
             {
-              label: '网络信息',
+              key: 'hostname',
+              label: '服务器系统信息',
+              actionRender() {
+                return valueRender(`Hostname: ${systemStore.serverInfo!.os.hostname}
+Platform: ${systemStore.serverInfo!.os.platform} | Arch: ${systemStore.serverInfo!.os.arch}
+OS: ${systemStore.serverInfo!.os.type} | ${systemStore.serverInfo!.os.version} | ${systemStore.serverInfo!.os.release}
+CPU: ${systemStore.serverInfo!.os.cpu}
+`)
+              },
+            },
+          ],
+        },
+        {
+          label: '前端设备信息',
+          key: 'frontend',
+          children: [
+            {
+              label: '浏览器网络',
               actionRender() {
                 return valueRender(`Is Online: ${isOnline.value}
 Offline At: ${offlineAt.value}
@@ -66,7 +85,7 @@ Type: ${type.value}`)
               },
             },
             {
-              label: 'Device Pixel Ratio',
+              label: '设备像素比',
               key: 'pixelRatio',
               actionRender() {
                 return h('div', {
@@ -78,7 +97,7 @@ Type: ${type.value}`)
         },
 
         {
-          label: '多媒体设备',
+          label: '前端多媒体设备',
           key: 'devmgmt.msc',
           children: [
             {
@@ -105,7 +124,7 @@ groupId: ${i.groupId || '/'}`),
             }),
           ],
         },
-      ]
+      ].filter(Boolean) as StOptionItem[]
     })
 
     return {

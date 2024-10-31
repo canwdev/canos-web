@@ -35,6 +35,8 @@ export interface TaskItem {
   maximized: boolean
   // 启动传入的参数
   params?: any
+  // 正在关闭应用
+  isClosing: boolean
 }
 
 export class TaskItem {
@@ -49,5 +51,6 @@ export class TaskItem {
     this.minimized = options.minimized || false
     this.maximized = options.maximized || false
     this.params = options.params
+    this.isClosing = false
   }
 }

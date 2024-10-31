@@ -116,7 +116,7 @@ watch(
       avSrc.value = undefined
       return
     }
-    avSrc.value = fsWebApi.getStreamShareLink([item.absPath])
+    avSrc.value = await fsWebApi.getStreamShareLink([item.absPath])
     const playbackRate = mediaStore.playbackRate
     avRef.value.load()
 

@@ -44,7 +44,7 @@ const getIsMaximum = (task: TaskItem) => {
         ref="vpWindowRefs"
         @onActive="systemStore.setTaskActive(task)"
         @onClose="systemStore.closeTask(task.guid)"
-        :visible="!task.minimized"
+        :visible="!task.minimized && !task.isClosing"
         :wid="task.appid"
         :init-win-options="task.winOptions"
         :allow-move="!getIsMaximum(task)"

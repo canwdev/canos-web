@@ -13,14 +13,11 @@ import TrayFps from '@/components/OS/TaskBar/TrayFps.vue'
 import TrayNetwork from '@/components/OS/TaskBar/TrayNetwork.vue'
 import TrayMemory from '@/components/OS/TaskBar/TrayMemory.vue'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+import TaskbarItem from '@/components/OS/TaskBar/TaskbarItem.vue'
 
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
 const isShowStart = ref(true)
-const taskList = ref([])
-const handleItemClick = (item) => {
-  const result = systemStore.setTaskActive(item, true)
-}
 </script>
 
 <template>
@@ -37,30 +34,14 @@ const handleItemClick = (item) => {
         <img class="menu-logo" src="@/assets/images/logo.svg" alt="start" />
       </button>
       <div class="task-side">
-        <div v-show="systemStore.tasks.length" class="task-list _fc">
-          <div
-            tabindex="0"
-            class="task-item"
-            v-for="item in systemStore.tasks"
-            :key="item.guid"
-            :class="{active: item.guid === systemStore.activeId}"
-            @click="handleItemClick(item)"
-          >
-            <div class="task-item-main">
-              <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
-              <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
-                {{ item.title }}
-              </span>
-            </div>
-            <div
-              v-if="!settingsStore.taskbarIconOnly"
-              class="btn-close"
-              @click="systemStore.closeTask(item.guid)"
-            >
-              ✕
-            </div>
-          </div>
-        </div>
+        <transition-group
+          tag="div"
+          name="task-fade"
+          v-show="systemStore.tasks.length"
+          class="task-list _fc"
+        >
+          <TaskbarItem v-for="item in systemStore.tasks" :key="item.guid" :item="item" />
+        </transition-group>
       </div>
       <div class="task-tray _fc">
         <div class="tray-list _fc">
@@ -83,6 +64,26 @@ const handleItemClick = (item) => {
 }
 </style>
 <style lang="scss">
+/* 1. declare transition */
+.task-fade-move,
+.task-fade-enter-active,
+.task-fade-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. declare enter from and leave to state */
+.task-fade-enter-from,
+.task-fade-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* 3. ensure leaving items are taken out of layout flow so that moving
+      animations can be calculated correctly. */
+.task-fade-leave-active {
+  position: absolute;
+}
+
 .canos-task-bar {
   position: fixed;
   bottom: 0px;
@@ -142,79 +143,16 @@ const handleItemClick = (item) => {
     .task-side {
       flex: 1;
       display: flex;
+      overflow-x: auto;
     }
 
     .task-list {
       padding: 0 4px;
       display: flex;
       gap: 2px;
-      flex-wrap: wrap;
-      overflow-y: auto;
       box-sizing: border-box;
       pointer-events: auto;
-
-      .task-item {
-        height: 100%;
-        padding: 0 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        max-width: 200px;
-        overflow: hidden;
-        transition: all 0.3s;
-        gap: 8px;
-        border: none;
-        line-height: 1.2;
-        cursor: pointer;
-        background-color: transparent;
-        color: inherit;
-
-        &:hover {
-          background-color: $color_hover;
-        }
-
-        &::after {
-          position: absolute;
-          content: '';
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 0;
-          background-color: $primary;
-          opacity: 0;
-          transition: all 0.3s;
-        }
-
-        &.active {
-          background-color: $primary_opacity;
-          &::after {
-            opacity: 1;
-            height: 2px;
-          }
-        }
-
-        .task-item-main {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          .task-icon {
-            width: 24px;
-            height: 24px;
-            pointer-events: none;
-          }
-        }
-
-        .btn-close {
-          display: inline-block;
-          cursor: pointer;
-
-          &:hover {
-            color: #f44336;
-          }
-        }
-      }
+      flex-wrap: nowrap;
     }
 
     .task-tray {

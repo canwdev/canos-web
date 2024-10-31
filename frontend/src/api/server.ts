@@ -7,8 +7,11 @@ const service = Service({
 })
 
 export const serverApi = {
-  getServerInfo() {
+  getHello() {
     return service.get('/')
+  },
+  getServerInfo() {
+    return service.get('server-info')
   },
   shutdown() {
     return service.post('/shutdown')

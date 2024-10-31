@@ -20,7 +20,7 @@ export default defineComponent({
     const optionList = computed((): StOptionItem[] => {
       return [
         {
-          label: '系统信息',
+          label: '软件信息',
           key: 'os_info',
           children: [
             {
@@ -33,11 +33,11 @@ export default defineComponent({
               key: 'backend_version',
               label: '后端服务器版本',
               subtitle: systemStore.isBackendAvailable
-                ? systemStore.serverInfo.name
+                ? systemStore.serverInfo?.name
                 : '后端服务不可用',
               actionRender: h(
                 'div',
-                systemStore.isBackendAvailable ? systemStore.serverInfo.version : 'N/A',
+                systemStore.isBackendAvailable ? systemStore.serverInfo?.version : 'N/A',
               ),
             },
             {

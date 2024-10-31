@@ -66,7 +66,7 @@ export const useSystemStore = defineStore('system', {
       // 窗口关闭动画
       const task = _tasks[idx]
       if (task) {
-        task.minimized = true
+        task.isClosing = true
 
         setTimeout(() => {
           _tasks.splice(idx, 1)

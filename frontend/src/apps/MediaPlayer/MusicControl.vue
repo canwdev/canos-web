@@ -147,7 +147,7 @@ const jumpBackward = () => {
           @click="previous"
           @contextmenu.prevent="jumpBackward"
         >
-          <i class="fa fa-step-backward" aria-hidden="true"></i>
+          <span class="mdi mdi-skip-previous"></span>
         </button>
 
         <button
@@ -157,10 +157,10 @@ const jumpBackward = () => {
           @click="togglePlay"
         >
           <template v-if="mediaStore.paused">
-            <i class="fa fa-play" aria-hidden="true"></i>
+            <span class="mdi mdi-play"></span>
           </template>
           <template v-else>
-            <i class="fa fa-pause" aria-hidden="true"></i>
+            <span class="mdi mdi-pause"></span>
           </template>
         </button>
 
@@ -171,7 +171,7 @@ const jumpBackward = () => {
           @click="next"
           @contextmenu.prevent="jumpForward"
         >
-          <i class="fa fa-step-forward" aria-hidden="true"></i>
+          <span class="mdi mdi-skip-next"></span>
         </button>
 
         <el-popover placement="top" trigger="hover">
@@ -200,11 +200,11 @@ const jumpBackward = () => {
           @click="switchLoopMode"
         >
           <span
-            v-if="currentLoopMode.icon"
+            v-if="currentLoopMode.icon || currentLoopMode.className"
             class="material-icons"
             :class="currentLoopMode.className"
           >
-            {{ currentLoopMode.icon }}
+            <!--{{ currentLoopMode.icon }}-->
           </span>
           <span v-else>{{ $t(currentLoopMode.i18nKey) }}</span>
         </button>
@@ -213,10 +213,10 @@ const jumpBackward = () => {
           <template #reference>
             <button class="btn-action btn-no-style icon-wrap" :title="$t('volume')">
               <template v-if="mSettingsStore.audioVolume > 0">
-                <i class="fa fa-volume-up" aria-hidden="true"></i>
+                <span class="mdi mdi-volume-high"></span>
               </template>
               <template v-else>
-                <i class="fa fa-volume-off" aria-hidden="true"></i>
+                <span class="mdi mdi-volume-variant-off"></span>
               </template>
             </button>
           </template>
@@ -317,6 +317,9 @@ const jumpBackward = () => {
       display: flex;
       align-items: center;
 
+      .mdi {
+        font-size: 28px;
+      }
       & > button {
         height: 100%;
         width: 55px;

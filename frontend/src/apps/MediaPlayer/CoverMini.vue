@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {})
   <button class="btn-no-style btn-cover flex items-center justify-center">
     <slot></slot>
     <CoverDisplay v-if="src" :src="src" />
-    <i v-else class="icon-wrap fa" :class="[isVideo ? 'fa-film' : 'fa-music']"></i>
+    <i v-else class="icon-wrap mdi" :class="[isVideo ? 'mdi-video-outline' : 'mdi-music-note']"></i>
   </button>
 </template>
 

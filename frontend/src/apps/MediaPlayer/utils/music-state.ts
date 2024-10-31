@@ -47,27 +47,31 @@ export const loopModeMap = {
   [LoopModeType.NONE]: {
     value: LoopModeType.NONE,
     i18nKey: 'msg.play-in-order',
+    className: 'mdi mdi-shuffle-disabled',
     icon: '➡️',
   },
   [LoopModeType.SHUFFLE]: {
     value: LoopModeType.SHUFFLE,
     i18nKey: 'shuffle',
+    className: 'mdi mdi-shuffle',
     icon: '🔀',
   },
   [LoopModeType.LOOP_SEQUENCE]: {
     value: LoopModeType.LOOP_SEQUENCE,
     icon: '🔁',
+    className: 'mdi mdi-repeat',
     i18nKey: 'msg.sequential-loop',
   },
   [LoopModeType.LOOP_REVERSE]: {
     value: LoopModeType.LOOP_REVERSE,
     icon: '🔁',
-    className: 'reverse-x',
+    className: 'mdi mdi-repeat-variant reverse-x',
     i18nKey: 'msg.reverse-loop',
   },
   [LoopModeType.LOOP_SINGLE]: {
     value: LoopModeType.LOOP_SINGLE,
     icon: '🔂',
+    className: 'mdi mdi-repeat-once',
     i18nKey: 'msg.single-cycle',
   },
 }

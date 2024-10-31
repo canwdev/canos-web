@@ -1,11 +1,16 @@
-import {dataBasePath, dataDesktopPath} from '@/enum'
-
 export type ServerInfo = {
   name: string
   version: string
-  platform: NodeJS.Platform
-  hostname: string
   hostUrls: string[]
+  os: {
+    hostname: string
+    platform: string
+    release: string
+    arch: string
+    type: string
+    version: string
+    cpu: string
+  }
   dirs: {
     osHomedir: string
     osTmpdir: string
