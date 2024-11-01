@@ -23,6 +23,9 @@ const settingsStore = useSettingsStore()
 const handleItemClick = (item) => {
   const result = systemStore.setTaskActive(item, true)
 }
+const handleNewInstance = (item) => {
+  systemStore.createTaskById(item.appid)
+}
 
 const visible = ref(true)
 onMounted(() => {
@@ -50,6 +53,7 @@ useElementMoveUpDetection(rootRef, 30, (event) => {
     class="taskbar-item"
     :class="{active: item.guid === systemStore.activeId}"
     @click="handleItemClick(item)"
+    @click.middle.prevent="handleNewInstance(item)"
   >
     <div class="task-item-main">
       <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
