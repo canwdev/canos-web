@@ -160,7 +160,6 @@ export const AllAppList: ShortcutItem[] = [
       height: '300px',
     },
     component: defineAsyncComponent(() => import('@/apps/AppUtils/ColorfulScreen.vue')),
-    singleInstance: true,
   },
   {
     appid: 'os.wakelock',

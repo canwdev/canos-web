@@ -14,16 +14,8 @@ const props = withDefaults(
   },
 )
 
-const {
-  menuRef,
-  isShow,
-  ctxMenuStyle,
-  showMenu,
-  showMenuByPoint,
-  showMenuByElement,
-
-  hideMenu,
-} = useContextMenu()
+const {menuRef, isShow, ctxMenuStyle, showMenu, showMenuByPoint, showMenuByElement, hideMenu} =
+  useContextMenu()
 
 defineExpose({
   isShow,

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useCycleList, useEventListener, useFullscreen} from '@vueuse/core'
 
-const {state, next, prev, go} = useCycleList([
+const colorList = [
   '#F44336',
   '#E91E63',
   '#9C27B0',
@@ -29,7 +29,10 @@ const {state, next, prev, go} = useCycleList([
   '#FF00FF',
   '#FFFFFF',
   '#000000',
-])
+]
+const randomIndex = Math.floor(Math.random() * colorList.length)
+
+const {state, next, prev, go} = useCycleList(colorList, {initialValue: colorList[randomIndex]})
 
 const isHide = ref(false)
 const rootRef = ref()

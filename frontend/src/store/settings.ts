@@ -2,6 +2,7 @@ import {LdThemeType} from '@/enum/settings'
 import {DEFAULT_THEME} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
 import {LsKeys} from '@/enum'
 import {DEFAULT_ICON_THEME} from '@/components/OS/ThemedIcon/use-icon-themes'
+import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'
 
 type IStore = {
   // 明暗主题
@@ -29,6 +30,7 @@ type IStore = {
   taskbarIconOnly: boolean
   // 应用自启动appid列表
   appAutoStartIds: string[]
+  taskbarPinnedList: TaskbarPinnedItem[]
 }
 
 export const useSettingsStore = defineStore('settingsStore', {
@@ -50,6 +52,7 @@ export const useSettingsStore = defineStore('settingsStore', {
       taskbarIconOnly: false,
       desktopWallpaper: '',
       appAutoStartIds: [],
+      taskbarPinnedList: [],
     }
   },
   persist: {

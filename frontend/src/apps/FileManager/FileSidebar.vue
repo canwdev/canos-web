@@ -55,7 +55,6 @@ onMounted(() => {
 
 const openFirstDrive = () => {
   if (driveList.value[0]) {
-    console.log(driveList.value[0].path)
     emit('openDrive', driveList.value[0])
   }
 }

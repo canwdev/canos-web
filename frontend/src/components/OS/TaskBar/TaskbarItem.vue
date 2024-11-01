@@ -7,10 +7,11 @@ import {
   useElementMoveUpDetection,
   useMouseOver,
 } from '@/components/CanUI/packages/ViewPortWindow/utils/use-utils'
+import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'
 
 const props = withDefaults(
   defineProps<{
-    item: TaskItem
+    item: TaskItem | TaskbarPinnedItem
   }>(),
   {},
 )
@@ -20,11 +21,31 @@ const {item} = toRefs(props)
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
 
-const handleItemClick = (item) => {
-  const result = systemStore.setTaskActive(item, true)
-}
+const isTask = computed(() => !!item.value.guid)
+
+// compatible like TaskItem
+const commonItem = computed(() => {
+  if (isTask.value) {
+    return item.value
+  }
+  const find = systemStore.allApps.find((i) => i.appid === item.value.appid)
+  return {
+    ...item.value,
+    title: find?.title,
+    icon: find?.icon,
+  }
+})
+
 const handleNewInstance = (item) => {
   systemStore.createTaskById(item.appid)
+}
+
+const handleItemClick = (item) => {
+  if (!isTask.value) {
+    handleNewInstance(item)
+    return
+  }
+  systemStore.setTaskActive(item, true)
 }
 
 const visible = ref(true)
@@ -51,24 +72,17 @@ useElementMoveUpDetection(rootRef, 30, (event) => {
     v-show="visible"
     tabindex="0"
     class="taskbar-item"
-    :class="{active: item.guid === systemStore.activeId}"
+    :class="{active: item.guid === systemStore.activeId, 'is-task': isTask}"
     @click="handleItemClick(item)"
     @click.middle.prevent="handleNewInstance(item)"
   >
     <div class="task-item-main">
-      <ThemedIcon v-if="item.icon" :name="item.icon" class="task-icon" />
+      <ThemedIcon v-if="commonItem.icon" :name="commonItem.icon" class="task-icon" />
       <span v-else class="mdi mdi-apps task-icon"></span>
-      <span v-if="!settingsStore.taskbarIconOnly" class="text-overflow">
-        {{ item.title }}
+      <span v-if="isTask && !settingsStore.taskbarIconOnly" class="text-overflow">
+        {{ commonItem.title }}
       </span>
     </div>
-    <!--<div-->
-    <!--  v-if="!settingsStore.taskbarIconOnly"-->
-    <!--  class="btn-close"-->
-    <!--  @click="systemStore.closeTask(item.guid)"-->
-    <!--&gt;-->
-    <!--  ✕-->
-    <!--</div>-->
   </div>
 </template>
 
@@ -90,34 +104,38 @@ useElementMoveUpDetection(rootRef, 30, (event) => {
   background-color: transparent;
   color: inherit;
 
-  &:hover {
-    background-color: $color_hover;
-  }
-
-  &::after {
-    position: absolute;
-    content: '';
-    bottom: 0;
-    left: 8px;
-    right: 8px;
-    background-color: $primary;
-    opacity: 1;
-    height: 2px;
-    transition: all 0.3s;
-  }
-
-  &:hover {
+  &.is-task {
     &::after {
-      left: 4px;
-      right: 4px;
+      position: absolute;
+      content: '';
+      bottom: 0;
+      left: 8px;
+      right: 8px;
+      background-color: $primary;
+      opacity: 1;
+      height: 2px;
+      transition: all 0.3s;
+    }
+  }
+
+  &:hover,
+  &.hover {
+    background-color: $color_hover;
+    &.is-task {
+      &::after {
+        left: 4px;
+        right: 4px;
+      }
     }
   }
 
   &.active {
     background-color: $primary_opacity;
-    &::after {
-      left: 0;
-      right: 0;
+    &.is-task {
+      &::after {
+        left: 0;
+        right: 0;
+      }
     }
   }
 

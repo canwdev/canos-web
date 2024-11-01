@@ -2,7 +2,12 @@ import {useSelectionArea} from '@/hooks/use-selection-area'
 import {generateTextFile, normalizePath, toggleArrayElement} from '../../utils'
 import {IEntry} from '@server/types/server'
 
-export const useSelection = ({filteredFiles, basePath, allowMultipleSelection}) => {
+export const useSelection = ({
+  filteredFiles,
+  basePath,
+  allowMultipleSelection,
+  selectables = ['.selectable'],
+}) => {
   const selectedItems = ref<IEntry[]>([])
   const selectedItemsSet = computed(() => {
     return new Set(selectedItems.value)
@@ -35,6 +40,7 @@ export const useSelection = ({filteredFiles, basePath, allowMultipleSelection}) 
 
       selectedItems.value = list
     },
+    selectables,
   })
 
   watch(

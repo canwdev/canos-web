@@ -67,6 +67,7 @@ export default defineComponent({
       if (!isStatic.value) {
         setTimeout(() => {
           mVisible.value = false
+          emit('onClose')
         })
       }
     })

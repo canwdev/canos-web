@@ -29,10 +29,15 @@ const props = withDefaults(
     contentOnly?: boolean
     gridView?: boolean
     moreOptions?: QuickOptionItem[]
+    // 设置 selectables 防止跨层级选择
+    selectables?: string[]
   }>(),
   {
     moreOptions() {
       return []
+    },
+    selectables() {
+      return ['.explorer-list-wrap .selectable']
     },
   },
 )
@@ -59,7 +64,6 @@ const allowMultipleSelection = computed(() => {
   }
   return true
 })
-
 // 文件选择功能
 const {
   selectedItems,
@@ -70,7 +74,7 @@ const {
   isAllSelected,
   toggleSelectAll,
   selectedPaths,
-} = useSelection({filteredFiles, basePath, allowMultipleSelection})
+} = useSelection({filteredFiles, basePath, allowMultipleSelection, selectables: props.selectables})
 
 // 复制粘贴功能
 const {enablePaste, handleCut, handleCopy, handlePaste} = useCopyPaste({
@@ -167,13 +171,10 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    ref="dropZoneRef"
-    :class="{isOverDropZone}"
-    v-loading="isLoading"
-    class="explorer-list-wrap"
-    @contextmenu.prevent
-  >
+  <div ref="dropZoneRef" :class="{isOverDropZone}" class="explorer-list-wrap" @contextmenu.prevent>
+    <transition name="fade">
+      <div v-if="isLoading" class="os-loading-container _absolute">Loading...</div>
+    </transition>
     <div v-if="!contentOnly" class="explorer-actions vp-panel">
       <div class="action-group">
         <button class="btn-action btn-no-style" @click="handleCreateFile()" title="Create Document">

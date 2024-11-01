@@ -7,6 +7,7 @@ import {IEntry} from '@server/types/server'
 import {normalizePath} from '@/apps/FileManager/utils'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {SettingsTabType} from '@/enum/settings'
+import {useMainStore} from '@/store/main'
 const systemStore = useSystemStore()
 
 const {
@@ -76,6 +77,7 @@ const moreOptions = computed((): QuickOptionItem[] => {
       :content-only="true"
       grid-view
       :more-options="moreOptions"
+      :selectables="['.desktop-file-list .selectable']"
     />
   </div>
 </template>
@@ -84,6 +86,9 @@ const moreOptions = computed((): QuickOptionItem[] => {
 .desktop-content {
   height: calc(100% - $taskbar_height);
   width: 100%;
+
+  &.preview-desktop {
+  }
 
   .desktop-file-list {
     //user-select: none;

@@ -6,7 +6,9 @@ import DesktopContent from '@/components/OS/DesktopWindowManager/DesktopContent.
 import {useSettingsStore} from '@/store/settings'
 import {TaskItem} from '@/enum/os'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
+import {useMainStore} from '@/store/main'
 
+const mainStore = useMainStore()
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
 const vpWindowRefs = ref()
@@ -33,7 +35,7 @@ const getIsMaximum = (task: TaskItem) => {
 </script>
 
 <template>
-  <div class="desktop-window-manager">
+  <div class="desktop-window-manager" :class="{'preview-desktop': mainStore.isPreviewDesktop}">
     <DesktopWallpaper>
       <DesktopContent />
     </DesktopWallpaper>
@@ -91,7 +93,7 @@ const getIsMaximum = (task: TaskItem) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .desktop-window-manager {
   position: absolute;
   top: 0;
@@ -101,9 +103,20 @@ const getIsMaximum = (task: TaskItem) => {
   z-index: 0;
   overflow: hidden;
   user-select: none;
+
   .vp-window {
     min-width: 350px;
     min-height: 200px;
+  }
+
+  &.preview-desktop {
+    .vp-window {
+      opacity: 0.4;
+      background-color: transparent !important;
+      .vp-window-body {
+        opacity: 0;
+      }
+    }
   }
   .static-window {
     position: absolute;

@@ -15,6 +15,8 @@ import TaskbarItem from '@/components/OS/TaskBar/TaskbarItem.vue'
 import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {TaskItem} from '@/enum/os'
+import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'
+import TrayShowDesktop from '@/components/OS/TaskBar/TrayShowDesktop.vue'
 
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
@@ -33,17 +35,91 @@ const taskItemMenuOptions = computed((): QuickOptionItem[] => {
   if (!currentTaskItem.value) {
     return []
   }
-  return [
-    {
-      label: 'Close',
+  // console.log(currentTaskItem.value)
+  const idx = settingsStore.taskbarPinnedList.findIndex(
+    (i) => i.appid === currentTaskItem.value.appid,
+  )
+  const isTask = !!currentTaskItem.value.guid
+  const options = [
+    idx === -1
+      ? {
+          label: 'Pin to Taskbar',
+          props: {
+            onClick() {
+              settingsStore.taskbarPinnedList.push({appid: currentTaskItem.value.appid})
+            },
+          },
+        }
+      : {
+          label: 'Unpin from Taskbar',
+          props: {
+            onClick() {
+              const idx = settingsStore.taskbarPinnedList.findIndex(
+                (i) => i.appid === currentTaskItem.value.appid,
+              )
+              if (idx > -1) {
+                settingsStore.taskbarPinnedList.splice(idx, 1)
+              }
+            },
+          },
+        },
+  ]
+  if (isTask) {
+    options.push({
+      label: 'Close window',
       props: {
         onClick() {
           systemStore.closeTask(currentTaskItem.value!.guid)
           currentTaskItem.value = null
         },
       },
-    },
-  ]
+    })
+  }
+
+  return options
+})
+const handleMenuClose = () => {
+  currentTaskItem.value = null
+}
+
+const taskbarList = computed(() => {
+  const filteredList = [...settingsStore.taskbarPinnedList]
+
+  const pinnedIndexMap: {[appid: string]: number} = {}
+
+  settingsStore.taskbarPinnedList.forEach((item, index) => {
+    pinnedIndexMap[item.appid] = index
+  })
+
+  const sameAppidGroupMap: {[appid: string]: TaskItem[]} = {}
+  systemStore.tasks.forEach((item: TaskItem | TaskbarPinnedItem) => {
+    // is TaskItem
+    const pinnedIndex = pinnedIndexMap[item.appid]
+    // set new task spawn location
+    if (typeof pinnedIndex === 'number') {
+      if (filteredList[pinnedIndex].guid) {
+        // add new instance after last same task
+        if (!sameAppidGroupMap[item.appid]) {
+          sameAppidGroupMap[item.appid] = []
+        }
+        sameAppidGroupMap[item.appid].push(item)
+      } else {
+        // replace pinned item as running task
+        filteredList.splice(pinnedIndex, 1, item)
+      }
+    } else {
+      filteredList.push(item)
+    }
+  })
+
+  // add new instance after last same task
+  for (const appid in sameAppidGroupMap) {
+    const list = sameAppidGroupMap[appid]
+    const pinnedIndex = pinnedIndexMap[appid]
+    filteredList.splice(pinnedIndex + 1, 0, ...list)
+  }
+
+  return filteredList
 })
 </script>
 
@@ -56,6 +132,7 @@ const taskItemMenuOptions = computed((): QuickOptionItem[] => {
       :transition-name="`fade-up`"
       :options="taskItemMenuOptions"
       ref="taskItemMenuRef"
+      @onClose="handleMenuClose"
     />
     <div class="task-bar-container vp-window-panel">
       <button
@@ -69,12 +146,12 @@ const taskItemMenuOptions = computed((): QuickOptionItem[] => {
         <transition-group
           tag="div"
           name="task-fade"
-          v-show="systemStore.tasks.length"
+          v-show="taskbarList.length"
           class="task-list _fc"
         >
           <TaskbarItem
-            v-for="item in systemStore.tasks"
-            :key="item.guid"
+            v-for="item in taskbarList"
+            :key="item.guid || `p${item.appid}`"
             :item="item"
             @contextmenu.prevent="handleTaskbarItemMenu($event.target, item)"
             @mouseOverShow="(target) => handleTaskbarItemMenu(target, item)"
@@ -87,6 +164,7 @@ const taskItemMenuOptions = computed((): QuickOptionItem[] => {
           <TrayMemory v-if="settingsStore.taskbarShowMemory" />
           <TrayBattery v-if="settingsStore.taskbarShowBattery" />
           <TrayClock v-if="settingsStore.taskbarShowClock" />
+          <TrayShowDesktop />
         </div>
       </div>
     </div>
@@ -196,7 +274,7 @@ const taskItemMenuOptions = computed((): QuickOptionItem[] => {
     .task-tray {
       .tray-list {
         height: 100%;
-        padding: 0 4px;
+        padding: 0 0 0 8px;
         display: flex;
         align-items: center;
         gap: 4px;
