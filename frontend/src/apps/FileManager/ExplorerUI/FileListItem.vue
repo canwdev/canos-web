@@ -25,7 +25,7 @@ const {iconName, titleDesc, extDisplay} = useFileItem(props)
     @dblclick.stop="$emit('open', item)"
     :title="titleDesc"
   >
-    <span class="list-col c-filename">
+    <div class="list-col c-checkbox">
       <input
         v-if="showCheckbox"
         class="file-checkbox"
@@ -34,7 +34,8 @@ const {iconName, titleDesc, extDisplay} = useFileItem(props)
         @click.stop="$emit('select', {item, event: $event, toggle: true})"
         @dblclick.stop
       />
-
+    </div>
+    <span class="list-col c-filename">
       <ThemedIcon :name="iconName" />
       <span class="text-overflow filename-text" @click.stop="$emit('open', item)" @dblclick.stop>
         {{ item.name }}

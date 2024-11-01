@@ -1,12 +1,10 @@
 import {bytesToSize, formatDate} from '@/utils'
+import {getFileIconName} from '@/apps/FileManager/ExplorerUI/file-icons'
 
 export const useFileItem = (props) => {
   const {item} = toRefs(props)
   const iconName = computed(() => {
-    if (item.value.isDirectory) {
-      return 'folder'
-    }
-    return 'text-x-preview'
+    return getFileIconName(item.value)
   })
   const titleDesc = computed(() => {
     return `Name: ${item.value.name}

@@ -13,7 +13,9 @@ export const useOpener = (basePath, isLoading) => {
   const openFileNewTab = async (item: IEntry) => {
     try {
       isLoading.value = true
-      window.open(fsWebApi.getStreamShareLink([normalizePath(basePath.value + '/' + item.name)]))
+      window.open(
+        await fsWebApi.getStreamShareLink([normalizePath(basePath.value + '/' + item.name)]),
+      )
     } finally {
       isLoading.value = false
     }

@@ -13,10 +13,10 @@ export const useLayoutSort = (files) => {
       {label: 'Default', value: SortType.default},
       {label: 'Name ▲', value: SortType.name},
       {label: 'Name ▼', value: SortType.nameDesc},
-      {label: 'Size ▲', value: SortType.size},
-      {label: 'Size ▼', value: SortType.sizeDesc},
       {label: 'Extension ▲', value: SortType.extension},
       {label: 'Extension ▼', value: SortType.extensionDesc},
+      {label: 'Size ▲', value: SortType.size},
+      {label: 'Size ▼', value: SortType.sizeDesc},
       {label: 'Last Modified ▲', value: SortType.lastModified},
       {label: 'Last Modified ▼', value: SortType.lastModifiedDesc},
       {label: 'Created Time ▲', value: SortType.birthTime},
@@ -45,11 +45,46 @@ export const useLayoutSort = (files) => {
       .sort(sortMethodMap[sortMode.value])
   })
 
+  const sortableListHeader = computed(() => {
+    return [
+      {label: 'Name', className: 'c-filename', sortModes: [SortType.name, SortType.nameDesc]},
+      {label: 'Ext', className: 'c-ext', sortModes: [SortType.extension, SortType.extensionDesc]},
+      {label: 'Size', className: 'c-size', sortModes: [SortType.size, SortType.sizeDesc]},
+      {
+        label: 'Last Modified',
+        className: 'c-time',
+        sortModes: [SortType.lastModified, SortType.lastModifiedDesc],
+      },
+      {
+        label: 'Created',
+        className: 'c-time',
+        sortModes: [SortType.birthTime, SortType.birthTimeDesc],
+      },
+    ].map((item) => {
+      const idx = item.sortModes.findIndex((m: SortType) => m === sortMode.value)
+      return {
+        ...item,
+        active: idx > -1,
+        isDesc: idx > 0,
+        onClick: () => {
+          const nextMode = idx + 1
+          if (nextMode > item.sortModes.length) {
+            sortMode.value = SortType.default
+          } else {
+            sortMode.value = item.sortModes[nextMode]
+          }
+        },
+      }
+    })
+  })
+
   return {
     isGridView,
+    sortMode,
     showSortMenu,
     sortOptions,
     filteredFiles,
     showHidden,
+    sortableListHeader,
   }
 }

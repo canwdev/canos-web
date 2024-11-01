@@ -62,12 +62,15 @@ const openFirstDrive = () => {
 
 const getIcon = (item: IDrive) => {
   if (item.label.toLowerCase() === 'home') {
-    return 'user-home'
+    return 'mdi-home-account'
+  }
+  if (item.label.toLowerCase() === 'data') {
+    return 'mdi-folder-pound-outline'
   }
   if (!item.total) {
-    return 'dialog-warning'
+    return 'mdi-folder-outline'
   }
-  return 'drive-harddisk'
+  return 'mdi-harddisk'
 }
 
 const showSidebar = useStorage(LsKeys.EXPLORER_SHOW_SIDEBAR, true)
@@ -103,20 +106,8 @@ defineExpose({
       :class="{_folded: !showSidebar}"
       @click="showSidebar = !showSidebar"
     >
-      <svg
-        width="16"
-        height="16"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 16 16"
-      >
-        <g fill="none">
-          <path
-            d="M10.354 3.146a.5.5 0 0 1 0 .708L6.207 8l4.147 4.146a.5.5 0 0 1-.708.708l-4.5-4.5a.5.5 0 0 1 0-.708l4.5-4.5a.5.5 0 0 1 .708 0z"
-            fill="currentColor"
-          ></path>
-        </g>
-      </svg>
+      <span v-if="!showSidebar" class="mdi mdi-chevron-right"></span>
+      <span v-else class="mdi mdi-chevron-left"></span>
     </button>
 
     <slot></slot>
@@ -131,7 +122,7 @@ defineExpose({
         @click="handleOpen(item)"
       >
         <span class="drive-icon">
-          <ThemedIcon :name="getIcon(item)" />
+          <span :class="['mdi', getIcon(item)]" />
         </span>
         <span class="drive-content">
           <span class="drive-title text-overflow">{{ item.label }}</span>
@@ -167,9 +158,6 @@ defineExpose({
     z-index: 10;
     &._folded {
       right: -20px;
-      svg {
-        transform: rotate(180deg);
-      }
     }
     &:hover {
       opacity: 1;
@@ -209,6 +197,9 @@ defineExpose({
       align-items: center;
       justify-content: center;
 
+      .mdi {
+        font-size: 20px;
+      }
       i {
         display: flex;
       }
@@ -238,12 +229,12 @@ defineExpose({
     }
 
     .volume-bar {
-      margin-top: 2px;
       overflow: hidden;
-      height: 4px;
+      height: 2px;
       width: 100%;
       position: relative;
       background-color: $color_border;
+      display: flex;
 
       .volume-value {
         position: absolute;

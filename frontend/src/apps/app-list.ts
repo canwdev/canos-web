@@ -43,7 +43,7 @@ export const SystemAppMusicPlayer: ShortcutItem = {
 export const SystemAppTextEditor: ShortcutItem = {
   appid: 'os.text_editor',
   title: 'Text Editor',
-  icon: '',
+  icon: 'notes',
   winOptions: {
     width: '800px',
     height: '600px',

@@ -1,6 +1,6 @@
 import {guid} from '@/utils'
 import {normalizePath} from '@/apps/FileManager/utils'
-import {regSupportedMusicFormat, regSupportedVideoFormat} from '@/utils/is'
+import {regSupportedAudioFormat, regSupportedVideoFormat} from '@/utils/is'
 
 export type MediaType = 'music' | 'video'
 
@@ -16,7 +16,7 @@ export class MediaItem {
     this.guid = guid()
     this.filename = filename
     this.basePath = basePath
-    this.type = regSupportedMusicFormat.test(filename) ? 'music' : 'video'
+    this.type = regSupportedAudioFormat.test(filename) ? 'music' : 'video'
   }
 
   get absPath() {

@@ -13,6 +13,7 @@ import {useSelection} from './hooks/use-selection'
 import {useFileActions} from './hooks/use-file-actions'
 import {useTransfer} from './hooks/use-transfer'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import {bytesToSize} from '@/utils'
 
 const emit = defineEmits(['open', 'update:isLoading', 'refresh'])
 
@@ -40,7 +41,15 @@ const isLoading = useVModel(props, 'isLoading', emit)
 useExplorerBusOn(ExplorerEvents.REFRESH, () => emit('refresh'))
 
 // 布局和排序方式
-const {isGridView, showSortMenu, sortOptions, filteredFiles, showHidden} = useLayoutSort(files)
+const {
+  isGridView,
+  sortMode,
+  showSortMenu,
+  sortOptions,
+  filteredFiles,
+  showHidden,
+  sortableListHeader,
+} = useLayoutSort(files)
 
 const allowMultipleSelection = computed(() => {
   if (selectFileMode.value === 'folder') {
@@ -54,9 +63,11 @@ const allowMultipleSelection = computed(() => {
 // 文件选择功能
 const {
   selectedItems,
+  selectedItemsSize,
   selectedItemsSet,
   explorerContentRef,
   toggleSelect,
+  isAllSelected,
   toggleSelectAll,
   selectedPaths,
 } = useSelection({filteredFiles, basePath, allowMultipleSelection})
@@ -104,6 +115,9 @@ const {
 })
 
 const allContextMenu = computed((): QuickOptionItem[] => {
+  if (selectedItems.value.length) {
+    return ctxMenuOptions.value
+  }
   return [
     {
       label: 'Create Document',
@@ -255,18 +269,6 @@ defineExpose({
             <span class="mdi mdi-eye-off-outline"></span>
           </template>
         </button>
-        <button
-          @click="isGridView = !isGridView"
-          class="btn-action btn-no-style"
-          title="Toggle grid view"
-        >
-          <template v-if="isGridView">
-            <span class="mdi mdi-view-grid-outline"></span>
-          </template>
-          <template v-else>
-            <span class="mdi mdi-view-list-outline"></span>
-          </template>
-        </button>
         <div class="action-button-wrap">
           <button class="btn-action btn-no-style" title="Toggle Sort" @click="showSortMenu = true">
             <span class="mdi mdi-sort-alphabetical-variant"></span>
@@ -301,11 +303,28 @@ defineExpose({
     >
       <div v-if="!(isGridView || gridView)" class="explorer-list-view">
         <div class="vp-bg file-list-header file-list-row">
-          <div class="list-col c-filename" style="padding-left: 24px">Name</div>
-          <div class="list-col c-ext">Ext</div>
-          <div class="list-col c-size">Size</div>
-          <div class="list-col c-time">Last Modified</div>
-          <div class="list-col c-time">Created</div>
+          <div class="list-col c-checkbox" @click.stop="toggleSelectAll">
+            <input
+              v-if="allowMultipleSelection"
+              class="file-checkbox"
+              type="checkbox"
+              :checked="isAllSelected"
+            />
+          </div>
+          <div
+            v-for="item in sortableListHeader"
+            :key="item.label"
+            :class="[item.className, {active: item.active}]"
+            class="list-col"
+            @click.stop="item.onClick"
+          >
+            {{ item.label }}
+            <span
+              v-if="item.active"
+              class="mdi"
+              :class="[item.isDesc ? 'mdi-menu-down' : 'mdi-menu-up']"
+            ></span>
+          </div>
         </div>
 
         <FileListItem
@@ -337,6 +356,27 @@ defineExpose({
       </div>
 
       <QuickContextMenu :options="allContextMenu" ref="ctxMenuRef" />
+    </div>
+    <div v-if="!contentOnly" class="explorer-status-bar">
+      <span>
+        {{ filteredFiles.length }} Item(s)
+        <template v-if="selectedItems.length">
+          | {{ selectedItems.length }} item(s) selected | {{ bytesToSize(selectedItemsSize) }}
+        </template>
+      </span>
+
+      <button
+        @click="isGridView = !isGridView"
+        class="btn-action btn-no-style"
+        title="Toggle grid view"
+      >
+        <template v-if="isGridView">
+          <span class="mdi mdi-view-grid-outline"></span>
+        </template>
+        <template v-else>
+          <span class="mdi mdi-view-list-outline"></span>
+        </template>
+      </button>
     </div>
 
     <UploadQueue ref="uploadQueueRef" @complete="emit('refresh')" />
@@ -413,6 +453,7 @@ defineExpose({
   }
 
   .explorer-list-view {
+    width: fit-content;
     .file-list-header {
       font-weight: 500;
       text-transform: capitalize;
@@ -421,14 +462,25 @@ defineExpose({
       border-right: 0;
       position: sticky;
       top: 0;
-      padding: 4px 0;
       z-index: 1;
+
+      .list-col {
+        padding: 4px 5px !important;
+        font-size: 14px;
+        &:hover {
+          background-color: $primary_opacity;
+        }
+        .mdi {
+          transform: scale(1.5);
+        }
+      }
     }
 
     :deep(.file-list-row) {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      width: fit-content;
 
       .list-col {
         padding: 0 5px;
@@ -444,7 +496,7 @@ defineExpose({
           display: flex;
           align-items: center;
           gap: 4px;
-          min-width: 200px;
+          width: 200px;
         }
 
         &.c-type {
@@ -473,18 +525,6 @@ defineExpose({
     }
   }
 
-  :deep(.file-checkbox) {
-    &::before {
-      // 扩大点击范围
-      position: absolute;
-      top: -6px;
-      left: -6px;
-      right: -6px;
-      bottom: -6px;
-      content: '';
-    }
-  }
-
   .explorer-grid-view {
     display: flex;
     align-items: flex-start;
@@ -492,6 +532,21 @@ defineExpose({
     padding: 10px;
     flex-wrap: wrap;
     gap: 4px;
+  }
+
+  .explorer-status-bar {
+    border-top: 1px solid $color_border;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+
+    .mdi {
+      transform: scale(1.2);
+    }
   }
 }
 </style>

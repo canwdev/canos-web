@@ -80,12 +80,21 @@ export const useSelection = ({filteredFiles, basePath, allowMultipleSelection}) 
       selectedItems.value = [item]
     }
   }
+
+  const isAllSelected = computed(() => {
+    const allFiles = filteredFiles.value
+    if (!allFiles.length) {
+      return false
+    }
+    return selectedItems.value.length === allFiles.length
+  })
+
   const toggleSelectAll = () => {
     if (!allowMultipleSelection.value) {
       return
     }
     const allFiles = filteredFiles.value
-    if (selectedItems.value.length === allFiles.length) {
+    if (isAllSelected.value) {
       selectedItems.value = []
     } else {
       selectedItems.value = [...allFiles]
@@ -99,11 +108,23 @@ export const useSelection = ({filteredFiles, basePath, allowMultipleSelection}) 
     })
   })
 
+  const selectedItemsSize = computed(() => {
+    return selectedItems.value.reduce((pv, nv) => {
+      const {size, isDirectory} = nv
+      if (isDirectory) {
+        return NaN
+      }
+      return pv + (size || 0)
+    }, 0)
+  })
+
   return {
     selectedItems,
+    selectedItemsSize,
     selectedItemsSet,
     explorerContentRef,
     toggleSelect,
+    isAllSelected,
     toggleSelectAll,
     selectedPaths,
   }
