@@ -22,6 +22,7 @@ export const ldThemeOptions = [
 export enum SettingsTabType {
   PERSONALIZATION,
   PROGRAMS,
+  WIDGETS,
   SYSTEM,
   HARDWARE,
 }

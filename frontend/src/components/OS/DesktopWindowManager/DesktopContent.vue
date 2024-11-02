@@ -52,6 +52,14 @@ const moreOptions = computed((): QuickOptionItem[] => {
   return [
     {split: true},
     {
+      label: 'Widgets',
+      props: {
+        onClick() {
+          systemStore.createTaskById('os.settings', {curTab: SettingsTabType.WIDGETS})
+        },
+      },
+    },
+    {
       label: 'Personalization',
       props: {
         onClick() {

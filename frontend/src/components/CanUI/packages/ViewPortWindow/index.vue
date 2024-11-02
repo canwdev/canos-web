@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'ViewPortWindow',
+}
+</script>
+
 <script lang="ts" setup>
 import {defineComponent, PropType, shallowRef} from 'vue'
 import {WindowController} from './utils/window-controller'

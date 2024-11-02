@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" setup>
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
@@ -24,78 +24,68 @@ const getWallpaperText = () => {
   return tpl
 }
 
-export default defineComponent({
-  name: 'SettingsPersonalization',
-  components: {OptionUI},
-  setup(props, {emit}) {
-    const {t: $t} = useI18n()
-    const settingsStore = useSettingsStore()
-    const {themeOptions} = useThemeOptions()
-    const {iconOptions} = useIconThemes()
+const {t: $t} = useI18n()
+const settingsStore = useSettingsStore()
+const {themeOptions} = useThemeOptions()
+const {iconOptions} = useIconThemes()
 
-    const optionList = computed((): StOptionItem[] => {
-      return [
+const optionList = computed((): StOptionItem[] => {
+  return [
+    {
+      label: '个性化',
+      key: 'personalization',
+      children: [
         {
-          label: '个性化',
-          key: 'personalization',
-          children: [
-            {
-              label: '主题色',
-              key: 'themeColor',
-              store: settingsStore,
-              type: StOptionType.COLOR_PICKER,
-            },
-            {
-              label: '桌面壁纸',
-              key: 'desktopWallpaper',
-              store: settingsStore,
-              type: StOptionType.INPUT,
-              tips: getWallpaperText(),
-              placeholder: 'optional',
-            },
-            {
-              label: '桌面背景色',
-              key: 'desktopBgColor',
-              store: settingsStore,
-              type: StOptionType.COLOR_PICKER,
-            },
-            {
-              label: '明暗模式',
-              key: 'ldTheme',
-              store: settingsStore,
-              type: StOptionType.MULTIPLE_SWITCH,
-              options: ldThemeOptions,
-            },
-            {
-              label: '系统主题',
-              key: 'customTheme',
-              store: settingsStore,
-              type: StOptionType.SELECT,
-              options: themeOptions.value,
-            },
-            {
-              label: '图标主题',
-              key: 'iconTheme',
-              store: settingsStore,
-              type: StOptionType.SELECT,
-              options: iconOptions.value,
-            },
-            {
-              label: 'Disable Animation',
-              subtitle: 'E-Ink optimization',
-              key: 'disableAnimation',
-              store: settingsStore,
-              type: StOptionType.SWITCH,
-            },
-          ].filter(Boolean),
+          label: '主题色',
+          key: 'themeColor',
+          store: settingsStore,
+          type: StOptionType.COLOR_PICKER,
         },
-      ]
-    })
-
-    return {
-      optionList,
-    }
-  },
+        {
+          label: '桌面壁纸',
+          key: 'desktopWallpaper',
+          store: settingsStore,
+          type: StOptionType.INPUT,
+          tips: getWallpaperText(),
+          placeholder: 'optional',
+        },
+        {
+          label: '桌面背景色',
+          key: 'desktopBgColor',
+          store: settingsStore,
+          type: StOptionType.COLOR_PICKER,
+        },
+        {
+          label: '明暗模式',
+          key: 'ldTheme',
+          store: settingsStore,
+          type: StOptionType.MULTIPLE_SWITCH,
+          options: ldThemeOptions,
+        },
+        {
+          label: '系统主题',
+          key: 'customTheme',
+          store: settingsStore,
+          type: StOptionType.SELECT,
+          options: themeOptions.value,
+        },
+        {
+          label: '图标主题',
+          key: 'iconTheme',
+          store: settingsStore,
+          type: StOptionType.SELECT,
+          options: iconOptions.value,
+        },
+        {
+          label: 'Disable Animation',
+          subtitle: 'E-Ink optimization',
+          key: 'disableAnimation',
+          store: settingsStore,
+          type: StOptionType.SWITCH,
+        },
+      ].filter(Boolean),
+    },
+  ]
 })
 </script>
 

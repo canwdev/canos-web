@@ -30,6 +30,8 @@ type IStore = {
   taskbarIconOnly: boolean
   // 应用自启动appid列表
   appAutoStartIds: string[]
+  // 已启用的小组件appid列表
+  enabledWidgetIds: string[]
   taskbarPinnedList: TaskbarPinnedItem[]
 }
 
@@ -52,6 +54,7 @@ export const useSettingsStore = defineStore('settingsStore', {
       taskbarIconOnly: false,
       desktopWallpaper: '',
       appAutoStartIds: [],
+      enabledWidgetIds: [],
       taskbarPinnedList: [],
     }
   },

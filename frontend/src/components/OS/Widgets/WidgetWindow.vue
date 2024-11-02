@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import {ShortcutItem} from '@/enum/os'
 
 const props = withDefaults(
   defineProps<{
-    text?: string
+    widget: ShortcutItem
   }>(),
-  {
-    text: '',
-  },
+  {},
 )
 const emit = defineEmits([])
 const {text} = toRefs(props)
@@ -19,13 +18,14 @@ const {text} = toRefs(props)
       width: '200px',
       height: '200px',
     }"
+    :wid="widget.appid"
     class="widget-window"
     no-title-bar
     visible
     :allow-snap="false"
     :show-close="false"
   >
-    <slot></slot>
+    <component :is="widget.component"></component>
   </ViewPortWindow>
 </template>
 

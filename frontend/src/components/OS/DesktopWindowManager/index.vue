@@ -148,9 +148,10 @@ const handleRestore = (index) => {
 
   &.preview-desktop {
     .dwm-window {
+      color: white;
       opacity: 0.4;
       background-color: transparent !important;
-      .dwm-window {
+      .vp-window-body {
         opacity: 0;
       }
     }

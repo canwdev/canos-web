@@ -12,6 +12,7 @@ import SettingsPrograms from '@/components/OS/SettingsApp/SettingsPrograms.vue'
 import SettingsHardware from '@/components/OS/SettingsApp/SettingsHardware.vue'
 import TabLayout from '@/components/CanUI/packages/Layouts/TabLayout.vue'
 import RectSwitch from '@/components/CanUI/packages/OptionUI/Tools/RectSwitch.vue'
+import SettingsWidgets from '@/components/OS/SettingsApp/SettingsWidgets.vue'
 
 type AppParams = {
   curTab: SettingsTabType
@@ -26,6 +27,7 @@ const props = withDefaults(
 const settingsTabs = ref([
   {label: '个性化', value: SettingsTabType.PERSONALIZATION},
   {label: '应用程序', value: SettingsTabType.PROGRAMS},
+  {label: 'Widgets', value: SettingsTabType.WIDGETS},
   {label: '硬件', value: SettingsTabType.HARDWARE},
   {label: '系统', value: SettingsTabType.SYSTEM},
 ])
@@ -50,6 +52,7 @@ watch(
       <div class="settings-content">
         <SettingsPersonalization v-if="curTab === SettingsTabType.PERSONALIZATION" />
         <SettingsPrograms v-else-if="curTab === SettingsTabType.PROGRAMS" />
+        <SettingsWidgets v-if="curTab === SettingsTabType.WIDGETS" />
         <SettingsHardware v-else-if="curTab === SettingsTabType.HARDWARE" />
         <SettingsSystem v-else-if="curTab === SettingsTabType.SYSTEM" />
       </div>

@@ -75,6 +75,8 @@ useCursorHider(rootRef, ({el, isShow}) => {
   width: 100%;
   position: relative;
   color: white;
+  transition: all 2s;
+
   .digital-clock-wrapper {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
   }

@@ -1,5 +1,6 @@
 import {ShortcutItem, TaskItem} from '@/enum/os'
 import {ServerInfo} from '@server/types/server'
+import {allWidgetList} from '@/apps/widget-list'
 
 type IStore = {
   isStarting: boolean
@@ -29,6 +30,13 @@ export const useSystemStore = defineStore('system', {
     allAppidMap() {
       const map: {[appid: string]: ShortcutItem} = {}
       this.allApps.forEach((shortcut) => {
+        map[shortcut.appid] = shortcut
+      })
+      return map
+    },
+    allWidgetAppidMap() {
+      const map: {[appid: string]: ShortcutItem} = {}
+      allWidgetList.forEach((shortcut) => {
         map[shortcut.appid] = shortcut
       })
       return map
