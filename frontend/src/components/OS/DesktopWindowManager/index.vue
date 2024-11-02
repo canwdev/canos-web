@@ -12,6 +12,7 @@ const mainStore = useMainStore()
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
 const vpWindowRefs = ref()
+const innerComponentRefs = ref()
 
 watch(
   () => systemStore.tasks,
@@ -32,6 +33,27 @@ watch(
 const getIsMaximum = (task: TaskItem) => {
   return task.maximized
 }
+
+// pass key into child component
+const handleWindowKeydown = (event, task, index) => {
+  // console.log(event, task, index)
+  const targetComponent = innerComponentRefs.value[index]
+  if (targetComponent) {
+    if (targetComponent.handleShortcutKey) {
+      targetComponent.handleShortcutKey(event)
+    }
+  }
+}
+
+const handleRestore = (index) => {
+  const targetWindow = vpWindowRefs.value[index]
+  if (targetWindow) {
+    setTimeout(() => {
+      console.log(targetWindow)
+      targetWindow.focus()
+    })
+  }
+}
 </script>
 
 <template>
@@ -40,12 +62,13 @@ const getIsMaximum = (task: TaskItem) => {
       <DesktopContent />
     </DesktopWallpaper>
 
-    <template v-for="task in systemStore.tasks" :key="task.guid">
+    <template v-for="(task, index) in systemStore.tasks" :key="task.guid">
       <ViewPortWindow
         v-if="settingsStore.isWindowed"
         ref="vpWindowRefs"
         @onActive="systemStore.setTaskActive(task)"
         @onClose="systemStore.closeTask(task.guid)"
+        @onRestored="handleRestore(index)"
         :visible="!task.minimized && !task.isClosing"
         :wid="task.appid"
         :init-win-options="task.winOptions"
@@ -54,6 +77,8 @@ const getIsMaximum = (task: TaskItem) => {
         v-model:maximized="task.maximized"
         :allow-minimum="true"
         v-model:minimized="task.minimized"
+        tabindex="0"
+        @keydown.prevent="handleWindowKeydown($event, task, index)"
       >
         <template #titleBarLeft>
           <ThemedIcon class="window-icon" :name="task.icon" />
@@ -61,6 +86,7 @@ const getIsMaximum = (task: TaskItem) => {
         </template>
 
         <component
+          ref="innerComponentRefs"
           v-if="task.component"
           :is="task.component"
           :task="task"
@@ -73,8 +99,15 @@ const getIsMaximum = (task: TaskItem) => {
           style="width: 100%; height: 100%"
         ></iframe>
       </ViewPortWindow>
-      <div v-else class="static-window vp-bg" v-show="task.guid === systemStore.activeId">
+      <div
+        v-else
+        class="static-window vp-bg"
+        v-show="task.guid === systemStore.activeId && !task.minimized"
+        tabindex="0"
+        @keydown.prevent="handleWindowKeydown($event, task)"
+      >
         <component
+          ref="innerComponentRefs"
           v-if="task.component"
           :is="task.component"
           :task="task"
@@ -107,6 +140,7 @@ const getIsMaximum = (task: TaskItem) => {
   .vp-window {
     min-width: 350px;
     min-height: 200px;
+    outline: none;
   }
 
   &.preview-desktop {
@@ -125,6 +159,7 @@ const getIsMaximum = (task: TaskItem) => {
     right: 0;
     bottom: $taskbar_height;
     z-index: 10;
+    outline: none;
   }
 }
 </style>

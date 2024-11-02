@@ -87,6 +87,12 @@ const {
   handleDownload,
 } = useTransfer({basePath, isLoading, selectedItems})
 
+watch(isLoading, (val) => {
+  if (!val) {
+    dropZoneRef.value.focus()
+  }
+})
+
 // 文件操作功能
 const {
   handleCreateFile,
@@ -159,9 +165,37 @@ const allContextMenu = computed((): QuickOptionItem[] => {
 
 const sortOptionsMenuRef = ref()
 
+const handleShortcutKey = (event) => {
+  event.preventDefault()
+  const key = event.key.toLowerCase()
+  const isCtrlOrMeta = event.ctrlKey || event.metaKey
+  if (isCtrlOrMeta) {
+    if (key === 'r') {
+      emit('refresh')
+    } else if (key === 'a') {
+      toggleSelectAll()
+    } else if (key === 'x') {
+      handleCut()
+    } else if (key === 'c') {
+      handleCopy()
+    } else if (key === 'v') {
+      handlePaste()
+    } else if (key === 'h') {
+      showHidden.value = !showHidden.value
+    } else if (key === 'm') {
+      handleShowCtxMenu(null, event)
+    }
+  } else {
+    if (key === 'delete') {
+      confirmDelete()
+    }
+  }
+}
+
 defineExpose({
   selectedItems,
   basePath,
+  handleShortcutKey,
 })
 </script>
 
@@ -211,7 +245,7 @@ defineExpose({
             class="btn-action btn-no-style"
             :disabled="!enableAction"
             @click="handleCut"
-            title="Cut"
+            title="Cut (ctrl+x)"
           >
             <span class="mdi mdi-content-cut"></span>
           </button>
@@ -219,7 +253,7 @@ defineExpose({
             class="btn-action btn-no-style"
             :disabled="!enableAction"
             @click="handleCopy"
-            title="Copy"
+            title="Copy (ctrl+c)"
           >
             <span class="mdi mdi-content-copy"></span>
           </button>
@@ -227,7 +261,7 @@ defineExpose({
             class="btn-action btn-no-style"
             :disabled="!enablePaste"
             @click="handlePaste"
-            title="Paste"
+            title="Paste (ctrl+v)"
           >
             <span class="mdi mdi-content-paste"></span>
           </button>
@@ -244,7 +278,7 @@ defineExpose({
             class="btn-action btn-no-style"
             :disabled="!enableAction"
             @click="confirmDelete"
-            title="Delete"
+            title="Delete (del)"
           >
             <span class="mdi mdi-delete-forever-outline"></span>
           </button>
@@ -254,7 +288,7 @@ defineExpose({
         <button
           class="btn-action btn-no-style"
           @click="showHidden = !showHidden"
-          title="Toggle hidden file visible"
+          title="Toggle hidden file visible (ctrl+h)"
         >
           <template v-if="showHidden">
             <span class="mdi mdi-eye-outline"></span>
@@ -277,7 +311,7 @@ defineExpose({
           <button
             class="btn-action btn-no-style"
             @click="toggleSelectAll"
-            title="Toggle Select All"
+            title="Toggle Select All (ctrl+a)"
           >
             <span class="mdi mdi-check-all"></span>
           </button>
@@ -286,7 +320,7 @@ defineExpose({
         <button
           class="btn-action btn-no-style"
           @click="ctxMenuRef.showMenuByElement($event.target, 'bottom', true)"
-          title="Menu"
+          title="Menu (ctrl+m)"
         >
           <span class="mdi mdi-menu"></span>
         </button>
@@ -434,7 +468,8 @@ defineExpose({
           transform: translate(-50%, -50%) scale(0.6);
         }
 
-        &:hover {
+        &:hover,
+        &:focus {
           background-color: $primary_opacity;
         }
       }

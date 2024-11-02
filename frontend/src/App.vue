@@ -2,9 +2,20 @@
 import {useGlobalTheme} from '@/hooks/use-global-theme'
 import AppSub from '@/AppSub.vue'
 import {useSettingsStore} from '@/store/settings'
+import {useEventListener} from '@vueuse/core'
+import {useMainStore} from '@/store/main'
 
 const {isAppDarkMode} = useGlobalTheme()
+const mainStore = useMainStore()
 const settingsStore = useSettingsStore()
+
+useEventListener(document, 'keydown', (event) => {
+  const key = event.key.toLowerCase()
+  const isCtrlOrMeta = event.ctrlKey || event.metaKey
+  if (event.altKey && key === 'q') {
+    mainStore.isShowStart = !mainStore.isShowStart
+  }
+})
 </script>
 
 <template>

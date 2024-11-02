@@ -127,10 +127,41 @@ const handleSelect = () => {
     return
   }
 }
+
+const rootRef = ref()
+const inputAddrRef = ref()
+const searchInputRef = ref()
+const handleShortcutKey = (event) => {
+  const key = event.key.toLowerCase()
+  if (event.altKey) {
+    if (key === 'a') {
+      if (inputAddrRef.value) {
+        inputAddrRef.value.focus()
+      }
+    } else if (key === 'f') {
+      if (searchInputRef.value) {
+        searchInputRef.value.focus()
+      }
+    } else if (key === 's') {
+      toggleStar()
+    } else if (event.key === 'ArrowUp') {
+      goUp()
+    } else if (event.key === 'ArrowLeft') {
+      goBack()
+    } else if (event.key === 'ArrowRight') {
+      goForward()
+    }
+  }
+  fileListRef.value.handleShortcutKey(event)
+}
+
+defineExpose({
+  handleShortcutKey,
+})
 </script>
 
 <template>
-  <div class="explorer-wrap">
+  <div ref="rootRef" class="explorer-wrap">
     <div v-if="!contentOnly" class="explorer-header vp-panel">
       <div class="nav-address">
         <div class="nav-wrap">
@@ -138,7 +169,7 @@ const handleSelect = () => {
             :disabled="backHistory.length <= 1"
             class="btn-action btn-no-style"
             @click="goBack"
-            title="Back"
+            title="Back (alt+left)"
           >
             <span class="mdi mdi-arrow-left"></span>
           </button>
@@ -146,25 +177,33 @@ const handleSelect = () => {
             :disabled="forwardHistory.length <= 0"
             class="btn-action btn-no-style"
             @click="goForward"
-            title="Forward"
+            title="Forward (alt+right)"
           >
             <span class="mdi mdi-arrow-right"></span>
           </button>
-          <button class="btn-action btn-no-style" :disabled="!allowUp" @click="goUp" title="Up">
+          <button
+            class="btn-action btn-no-style"
+            :disabled="!allowUp"
+            @click="goUp"
+            title="Up (alt+up)"
+          >
             <span class="mdi mdi-arrow-up"></span>
           </button>
         </div>
-        <div class="input-wrap">
+        <div class="input-wrap" @keydown.stop>
           <input
+            ref="inputAddrRef"
             placeholder="Path"
             v-model="basePath"
             class="input-addr vp-input"
+            @keyup.enter="handleRefresh"
             @change="handleRefresh"
+            title="Address bar (alt+a)"
           />
-          <button class="btn-no-style btn-action" @click="handleRefresh">
+          <button class="btn-no-style btn-action" title="Refresh (ctrl+r)" @click="handleRefresh">
             <span class="mdi mdi-refresh"></span>
           </button>
-          <button class="btn-no-style btn-action" @click="toggleStar">
+          <button class="btn-no-style btn-action" @click="toggleStar" title="Toggle Star (alt+s)">
             <template v-if="isStared">
               <span class="mdi mdi-star"></span>
             </template>
@@ -173,7 +212,14 @@ const handleSelect = () => {
             </template>
           </button>
 
-          <input placeholder="Filter name" v-model="filterText" class="input-filter vp-input" />
+          <input
+            ref="searchInputRef"
+            placeholder="Filter name"
+            v-model="filterText"
+            @keyup.esc="filterText = ''"
+            class="input-filter vp-input"
+            title="Filter bar (alt+f)"
+          />
         </div>
       </div>
     </div>
@@ -232,6 +278,7 @@ const handleSelect = () => {
   display: flex;
   flex-direction: column;
   position: relative;
+  outline: none;
 
   .vp-button {
     line-height: 1;
@@ -305,7 +352,8 @@ const handleSelect = () => {
     &:disabled {
       cursor: not-allowed;
     }
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: $primary_opacity;
     }
   }

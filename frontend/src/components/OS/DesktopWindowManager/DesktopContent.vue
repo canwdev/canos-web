@@ -61,14 +61,16 @@ const moreOptions = computed((): QuickOptionItem[] => {
     },
   ]
 })
+
+const fileListRef = ref()
 </script>
 
 <template>
-  <div ref="rootRef" class="desktop-content">
+  <div ref="rootRef" class="desktop-content" @keydown.stop="fileListRef.handleShortcutKey">
     <FileList
+      ref="fileListRef"
       class="desktop-file-list"
       v-if="systemStore.isBackendAvailable"
-      ref="fileListRef"
       v-model:is-loading="isLoading"
       :files="filteredFiles"
       @open="handleOpenWrap"

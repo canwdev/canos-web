@@ -75,6 +75,9 @@ export const useNavigation = ({getListFn}) => {
     return /^\//g.test(basePath.value)
   })
   const goUp = async () => {
+    if (!allowUp.value) {
+      return
+    }
     const arr = basePath.value.split('/').filter((i) => !!i)
     arr.pop()
     if (!arr.length && !isUnix.value) {

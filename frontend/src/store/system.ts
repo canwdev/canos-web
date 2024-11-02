@@ -131,6 +131,9 @@ export const useSystemStore = defineStore('system', {
       if (task.windowRef) {
         task.windowRef.setActive()
         task.minimized = false
+        setTimeout(() => {
+          task.windowRef.focus()
+        })
       }
     },
   },

@@ -76,6 +76,7 @@ export default defineComponent({
     'resize',
     'onActive',
     'onClose',
+    'onRestored',
     'update:minimized',
     'update:maximized',
   ],
@@ -90,6 +91,17 @@ export default defineComponent({
 
     const isMaximized = useVModel(props, 'maximized', emit, {passive: true})
     const isMinimized = useVModel(props, 'minimized', emit, {passive: true})
+
+    watch(isMinimized, (val) => {
+      if (!val && mVisible.value) {
+        emit('onRestored')
+      }
+    })
+    onMounted(() => {
+      if (!isMinimized.value && mVisible.value) {
+        emit('onRestored')
+      }
+    })
 
     const isTransition = ref(false)
     const setIsTransition = (val: boolean) => {
@@ -380,6 +392,10 @@ export default defineComponent({
 
     const layoutPreviewData = ref<ILayout | undefined>(undefined)
 
+    const focus = () => {
+      rootRef.value.focus()
+    }
+
     return {
       isInit,
       mVisible,
@@ -397,6 +413,7 @@ export default defineComponent({
       setPos,
       mButtonRef,
       layoutPreviewData,
+      focus,
     }
   },
 })

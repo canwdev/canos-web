@@ -17,10 +17,11 @@ import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {TaskItem} from '@/enum/os'
 import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'
 import TrayShowDesktop from '@/components/OS/TaskBar/TrayShowDesktop.vue'
+import {useMainStore} from '@/store/main'
 
+const mainStore = useMainStore()
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
-const isShowStart = ref(false)
 
 const taskItemMenuRef = ref()
 const currentTaskItem = ref<TaskItem | null>(null)
@@ -127,7 +128,7 @@ const taskbarList = computed(() => {
 <template>
   <div class="canos-task-bar vp-panel">
     <transition name="fade-up">
-      <StartMenu v-model:visible="isShowStart" />
+      <StartMenu v-model:visible="mainStore.isShowStart" />
     </transition>
     <QuickContextMenu
       :transition-name="`fade-up`"
@@ -138,8 +139,9 @@ const taskbarList = computed(() => {
     <div class="task-bar-container vp-window-panel">
       <button
         class="task-start-menu btn-no-style _fc"
-        :class="{active: isShowStart}"
-        @click="isShowStart = !isShowStart"
+        :class="{active: mainStore.isShowStart}"
+        @click="mainStore.isShowStart = !mainStore.isShowStart"
+        title="Quick Start (alt+q)"
       >
         <img class="menu-logo" src="@/assets/images/logo.svg" alt="start" />
       </button>

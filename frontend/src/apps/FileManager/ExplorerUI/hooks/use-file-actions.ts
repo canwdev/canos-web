@@ -78,6 +78,9 @@ export const useFileActions = ({
     }
   }
   const confirmDelete = () => {
+    if (!selectedPaths.value.length) {
+      return
+    }
     window.$dialog
       .confirm(`确认删除？此操作不可撤销`, 'Confirm Delete', {
         type: 'warning',
