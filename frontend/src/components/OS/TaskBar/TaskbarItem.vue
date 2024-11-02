@@ -61,7 +61,7 @@ watch(
 )
 
 const rootRef = ref()
-useElementMoveUpDetection(rootRef, 30, (event) => {
+useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
   emit('mouseOverShow', rootRef.value)
 })
 </script>

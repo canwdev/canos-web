@@ -7,7 +7,7 @@ import {useStorage} from '@vueuse/core'
 export const useLayoutSort = (files) => {
   const isGridView = ref(false)
   const sortMode = ref(SortType.default)
-  const showSortMenu = ref(false)
+
   const sortOptions = computed((): QuickOptionItem[] => {
     return [
       {label: 'Default', value: SortType.default},
@@ -81,7 +81,6 @@ export const useLayoutSort = (files) => {
   return {
     isGridView,
     sortMode,
-    showSortMenu,
     sortOptions,
     filteredFiles,
     showHidden,

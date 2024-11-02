@@ -1,4 +1,6 @@
-import {useDebounceFn, useEventListener, useThrottleFn} from '@vueuse/core'
+import {useDebounceFn, useEventListener} from '@vueuse/core'
+import {onMounted, Ref} from 'vue'
+
 /**
  * 检测鼠标是否在元素上，支持延时
  */
@@ -39,20 +41,23 @@ export const useDynamicClassName = (targetRef, className, enableRef) => {
   })
 }
 
-import {onMounted, onBeforeUnmount, Ref} from 'vue'
+type ByPosition = 'top' | 'bottom' | 'left' | 'right'
 
 // 检测鼠标或触摸按下后，向上移动距离
 export const useElementMoveUpDetection = (
   elementRef: Ref<HTMLElement | null>,
   distance: number,
+  position: ByPosition,
   callback: (event) => void,
 ) => {
-  let startY = 0 // 记录按下时的 Y 轴坐标
+  let startPos = 0 // 记录按下时的 Y 轴坐标
   let isMoving = false // 记录是否处于移动状态
 
+  const clientPosKey = position === 'top' || position === 'bottom' ? 'clientY' : 'clientX'
+  const directionFlag = position === 'top' || position === 'bottom' ? 1 : -1
+
   const handleStart = (event: TouchEvent | MouseEvent) => {
-    const clientY = event instanceof TouchEvent ? event.touches[0].clientY : event.clientY
-    startY = clientY // 保存开始位置
+    startPos = event instanceof TouchEvent ? event.touches[0][clientPosKey] : event[clientPosKey] // 保存开始位置
     if (!isMoving) {
       window.addEventListener('mousemove', handleMove)
       window.addEventListener('touchmove', handleMove)
@@ -64,14 +69,11 @@ export const useElementMoveUpDetection = (
     // console.log('handleMove', event)
     const element = elementRef.value
     if (element) {
-      const clientY = event instanceof TouchEvent ? event.touches[0].clientY : event.clientY
-
-      // 检测元素相对于视口的位置
-      const rect = element.getBoundingClientRect()
-      const positionFromTop = rect.top
+      const clientPos =
+        event instanceof TouchEvent ? event.touches[0][clientPosKey] : event[clientPosKey]
 
       // 判断是否向上移动指定距离
-      if (clientY < startY - distance && clientY < positionFromTop) {
+      if (clientPos * directionFlag < startPos - distance) {
         // console.log('callback', event)
         handleEnd()
         callback(event)

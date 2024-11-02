@@ -103,6 +103,9 @@ const moreOptions = computed((): QuickOptionItem[] => {
     }
   }
   :deep(.file-grid-item) {
+    .desktop-icon-image {
+      filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+    }
     .desktop-icon-name {
       color: white;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);

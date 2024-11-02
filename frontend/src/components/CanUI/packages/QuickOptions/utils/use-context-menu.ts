@@ -64,13 +64,19 @@ export const useContextMenu = (options: any = {}) => {
   const byElement = ref<HTMLElement | null>(null)
 
   // 在目标元素的各个方向展示菜单
-  const showMenuByElement = (el: HTMLElement, position: ByPosition = 'top') => {
+  const showMenuByElement = (el: HTMLElement, position: ByPosition = 'top', toggle = false) => {
+    if (toggle) {
+      if (isShow.value) {
+        isShow.value = false
+        return
+      }
+    }
     isShow.value = false
     setTimeout(() => {
       byElement.value = el
       byElementPosition.value = position
       isShow.value = true
-    })
+    }, 10)
   }
 
   const menuRef = ref()
@@ -103,6 +109,9 @@ export const useContextMenu = (options: any = {}) => {
     const position = byElementPosition.value
     byElementPosition.value = null
     const el = byElement.value
+    if (!el) {
+      return
+    }
     byElement.value = null
 
     if (!el || !position) {

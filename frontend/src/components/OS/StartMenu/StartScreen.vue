@@ -34,34 +34,36 @@ const handleItemClick = (item: ShortcutItem) => {
   emit('onCreateTask', systemStore.createTask(item))
 }
 
-const appListFiltered = computed((): ShortcutItem[] => {
-  return systemStore.allApps
-})
-const appIdMapped = computed(() => {
-  const map: {[key: string]: ShortcutItem} = {}
-  appListFiltered.value.forEach((item) => {
-    map[item.appid] = item
-  })
-
-  return map
-})
-
 const rootRef = ref()
 
 const startLayoutColumns = useStorage<StartLayoutGroup[][]>(LsKeys.START_MENU_LAYOUT, [])
 const refreshStartLayout = () => {
   // 查找缺失的app，并添加
   const startAppIdMap: {[key: string]: boolean} = {}
-  startLayoutColumns.value.forEach((col) => {
+
+  // 空的组下标
+  const emptyColIndexes: number[] = []
+
+  startLayoutColumns.value.forEach((col, index) => {
     col.forEach((group) => {
+      // 删除不存在的程序
+      group.children = group.children.filter((item) => {
+        return !systemStore.allAppidMap[item.appid]
+      })
+
       group.children.forEach((item) => {
         startAppIdMap[item.id] = true
       })
+
+      // 记录空的组
+      if (group.children.length === 0) {
+        emptyColIndexes.push(index)
+        return
+      }
     })
   })
-  console.log(startAppIdMap)
   const newApps: ShortcutItem[] = []
-  appListFiltered.value.forEach((item) => {
+  systemStore.allApps.forEach((item) => {
     if (!startAppIdMap[item.appid]) {
       newApps.push(item)
     }
@@ -69,7 +71,7 @@ const refreshStartLayout = () => {
   if (newApps.length > 0) {
     startLayoutColumns.value.push([
       {
-        title: 'Apps',
+        title: 'New Application',
         children: newApps.map((item, index) => {
           return {
             id: item.appid,
@@ -79,6 +81,11 @@ const refreshStartLayout = () => {
       },
     ])
   }
+
+  // 移除空的组，倒叙遍历
+  emptyColIndexes.reverse().forEach((idx) => {
+    startLayoutColumns.value.splice(idx, 1) // 删除指定下标的元素
+  })
 }
 const startContentRef = ref()
 // 定位线
@@ -328,15 +335,16 @@ const handleGroupDrop = (indexData: StarIndexData) => {
           >
             <template v-for="(menuItem, index) in group.children" :key="index">
               <MenuDesktopIcon
-                v-if="appIdMapped[menuItem.id]"
+                v-if="systemStore.allAppidMap[menuItem.id]"
                 class="card-item"
                 :menuItem="menuItem"
-                :shortcutItem="appIdMapped[menuItem.id]"
+                :shortcutItem="systemStore.allAppidMap[menuItem.id]"
                 :class="[menuItem.size]"
-                @click="handleItemClick(appIdMapped[menuItem.id])"
+                @click="handleItemClick(systemStore.allAppidMap[menuItem.id])"
                 @contextmenu.prevent="handleShowCtxMenu($event, menuItem)"
                 :disabled="
-                  appIdMapped[menuItem.id].requireBackend && !systemStore.isBackendAvailable
+                  systemStore.allAppidMap[menuItem.id].requireBackend &&
+                  !systemStore.isBackendAvailable
                 "
                 draggable="true"
                 @dragstart="

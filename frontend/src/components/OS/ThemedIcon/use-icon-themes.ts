@@ -8,7 +8,7 @@ export interface IconOptions {
   fileExt: string
 }
 
-export const DEFAULT_ICON_THEME = 'elementary-xfce'
+export const DEFAULT_ICON_THEME = 'material'
 export const ICON_BASE_URL = './resources/icons'
 
 const useIconThemeState = createGlobalState(() => {

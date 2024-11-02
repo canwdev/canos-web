@@ -291,7 +291,7 @@ export default defineComponent({
 
 <template>
   <div
-    v-if="mVisible || isStatic"
+    v-show="mVisible || isStatic"
     class="quick-options"
     :class="{
       _static: isStatic,

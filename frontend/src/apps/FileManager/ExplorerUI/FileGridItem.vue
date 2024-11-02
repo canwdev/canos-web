@@ -88,7 +88,6 @@ const {iconName, titleDesc} = useFileItem(props)
     width: 48px;
     height: 48px;
     pointer-events: none;
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
   }
 
   .desktop-icon-name {

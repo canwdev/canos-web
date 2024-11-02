@@ -18,7 +18,7 @@ const {iconName, titleDesc, extDisplay} = useFileItem(props)
 
 <template>
   <button
-    class="btn-no-style file-list-item file-list-row font-code"
+    class="btn-no-style file-list-item file-list-row"
     :class="{active, hidden: item.hidden}"
     @click.stop="$emit('select', {item, event: $event})"
     @keyup.enter="$emit('open', item)"

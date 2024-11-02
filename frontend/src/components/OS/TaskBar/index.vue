@@ -25,6 +25,7 @@ const isShowStart = ref(false)
 const taskItemMenuRef = ref()
 const currentTaskItem = ref<TaskItem | null>(null)
 const handleTaskbarItemMenu = (target, item) => {
+  // console.log('handleTaskbarItemMenu', target, item)
   currentTaskItem.value = item
   setTimeout(() => {
     const taskItemEl = target.closest('.taskbar-item')

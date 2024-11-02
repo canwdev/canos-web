@@ -26,10 +26,17 @@ export const useSystemStore = defineStore('system', {
       // }
       // return window.$appList.filter((item) => !item.requireBackend)
     },
+    allAppidMap() {
+      const map: {[appid: string]: ShortcutItem} = {}
+      this.allApps.forEach((shortcut) => {
+        map[shortcut.appid] = shortcut
+      })
+      return map
+    },
   },
   actions: {
     createTaskById(appid: string, params?: any) {
-      const shortcut = window.$appList.find((i) => i.appid === appid)
+      const shortcut = this.allAppidMap[appid]
       if (shortcut) {
         return this.createTask(shortcut, params)
       }

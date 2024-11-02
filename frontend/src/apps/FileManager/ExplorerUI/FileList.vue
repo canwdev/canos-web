@@ -46,15 +46,8 @@ const isLoading = useVModel(props, 'isLoading', emit)
 useExplorerBusOn(ExplorerEvents.REFRESH, () => emit('refresh'))
 
 // 布局和排序方式
-const {
-  isGridView,
-  sortMode,
-  showSortMenu,
-  sortOptions,
-  filteredFiles,
-  showHidden,
-  sortableListHeader,
-} = useLayoutSort(files)
+const {isGridView, sortOptions, filteredFiles, showHidden, sortableListHeader} =
+  useLayoutSort(files)
 
 const allowMultipleSelection = computed(() => {
   if (selectFileMode.value === 'folder') {
@@ -164,6 +157,8 @@ const allContextMenu = computed((): QuickOptionItem[] => {
   ]
 })
 
+const sortOptionsMenuRef = ref()
+
 defineExpose({
   selectedItems,
   basePath,
@@ -253,8 +248,6 @@ defineExpose({
           >
             <span class="mdi mdi-delete-forever-outline"></span>
           </button>
-
-          <div class="split-line"></div>
         </template>
       </div>
       <div class="action-group">
@@ -271,10 +264,13 @@ defineExpose({
           </template>
         </button>
         <div class="action-button-wrap">
-          <button class="btn-action btn-no-style" title="Toggle Sort" @click="showSortMenu = true">
+          <button
+            class="btn-action btn-no-style"
+            title="Toggle Sort"
+            @click="sortOptionsMenuRef.showMenuByElement($event.target, 'bottom', true)"
+          >
             <span class="mdi mdi-sort-alphabetical-variant"></span>
           </button>
-          <QuickOptions v-model:visible="showSortMenu" :options="sortOptions" />
         </div>
 
         <template v-if="!selectFileMode || (selectFileMode && multiple)">
@@ -289,13 +285,18 @@ defineExpose({
 
         <button
           class="btn-action btn-no-style"
-          @click="($event) => handleShowCtxMenu(null, $event)"
+          @click="ctxMenuRef.showMenuByElement($event.target, 'bottom', true)"
           title="Menu"
         >
           <span class="mdi mdi-menu"></span>
         </button>
       </div>
     </div>
+
+    <template v-if="!contentOnly">
+      <QuickContextMenu ref="sortOptionsMenuRef" :options="sortOptions" />
+    </template>
+
     <div
       ref="explorerContentRef"
       class="explorer-content"
@@ -406,6 +407,8 @@ defineExpose({
     border: none;
     box-shadow: none;
     border-radius: 0;
+    border-bottom: 1px solid $color_border;
+
     .action-group {
       display: flex;
       gap: 4px;
@@ -429,6 +432,10 @@ defineExpose({
           left: 50%;
           top: 60%;
           transform: translate(-50%, -50%) scale(0.6);
+        }
+
+        &:hover {
+          background-color: $primary_opacity;
         }
       }
       .action-button-wrap {
@@ -458,7 +465,7 @@ defineExpose({
     .file-list-header {
       font-weight: 500;
       text-transform: capitalize;
-      border: 1px solid $color_border;
+      border-bottom: 1px solid $color_border;
       border-left: 0;
       border-right: 0;
       position: sticky;

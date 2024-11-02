@@ -136,7 +136,7 @@ const handleSelect = () => {
         <div class="nav-wrap">
           <button
             :disabled="backHistory.length <= 1"
-            class="btn-action vp-button"
+            class="btn-action btn-no-style"
             @click="goBack"
             title="Back"
           >
@@ -144,13 +144,13 @@ const handleSelect = () => {
           </button>
           <button
             :disabled="forwardHistory.length <= 0"
-            class="btn-action vp-button"
+            class="btn-action btn-no-style"
             @click="goForward"
             title="Forward"
           >
             <span class="mdi mdi-arrow-right"></span>
           </button>
-          <button class="btn-action vp-button" :disabled="!allowUp" @click="goUp" title="Up">
+          <button class="btn-action btn-no-style" :disabled="!allowUp" @click="goUp" title="Up">
             <span class="mdi mdi-arrow-up"></span>
           </button>
         </div>
@@ -161,10 +161,10 @@ const handleSelect = () => {
             class="input-addr vp-input"
             @change="handleRefresh"
           />
-          <button class="vp-button btn-action" @click="handleRefresh">
+          <button class="btn-no-style btn-action" @click="handleRefresh">
             <span class="mdi mdi-refresh"></span>
           </button>
-          <button class="vp-button btn-action" @click="toggleStar">
+          <button class="btn-no-style btn-action" @click="toggleStar">
             <template v-if="isStared">
               <span class="mdi mdi-star"></span>
             </template>
@@ -271,16 +271,17 @@ const handleSelect = () => {
         flex-wrap: wrap;
         flex: 1;
         gap: 4px;
+        font-size: 14px;
 
         .input-addr {
           flex: 1;
           line-height: 1;
-          padding: 4px 6px;
+          padding: 4px 8px;
         }
         .input-filter {
           width: 100px;
           line-height: 1;
-          padding: 4px 6px;
+          padding: 4px 8px;
         }
       }
     }
@@ -300,8 +301,12 @@ const handleSelect = () => {
   .btn-action {
     display: inline-flex;
     cursor: pointer;
+    font-size: 18px;
     &:disabled {
       cursor: not-allowed;
+    }
+    &:hover {
+      background-color: $primary_opacity;
     }
   }
 
