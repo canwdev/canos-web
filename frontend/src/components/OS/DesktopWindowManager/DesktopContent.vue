@@ -66,7 +66,7 @@ const fileListRef = ref()
 </script>
 
 <template>
-  <div ref="rootRef" class="desktop-content" @keydown.stop="fileListRef.handleShortcutKey">
+  <div ref="rootRef" class="desktop-content" tabindex="0" @keydown="fileListRef.handleShortcutKey">
     <FileList
       ref="fileListRef"
       class="desktop-file-list"

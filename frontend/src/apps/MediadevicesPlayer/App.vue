@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import {defineComponent, onMounted, ref, computed, shallowRef, onBeforeUnmount} from 'vue'
-import {CursorHider, snapVideoImageDownload} from './utils/index'
+import {snapVideoImageDownload} from './utils/index'
 import {useStorage, useFullscreen} from '@vueuse/core'
 import {VideoRecorder} from './utils/video-recorder'
+import {useCursorHider} from '@/hooks/use-cursor'
 
 async function getEnumerateDevices() {
   if (!navigator.mediaDevices?.enumerateDevices) {
@@ -59,26 +60,25 @@ const listenDeviceChange = () => {
   }
 }
 
-const mouseHider = shallowRef()
 const actionBarRef = shallowRef()
 const rootRef = shallowRef()
 
-onMounted(async () => {
-  mouseHider.value = new CursorHider(
-    '#app',
-    ({el, isShow}) => {
-      const actionBarEl = actionBarRef.value
-      if (!isShow) {
-        el.style.cursor = 'none'
-        actionBarEl.classList.remove('visible')
-      } else {
-        el.style.cursor = ''
-        actionBarEl.classList.add('visible')
-      }
-    },
-    3000,
-  )
+useCursorHider(
+  rootRef,
+  ({el, isShow}) => {
+    const actionBarEl = actionBarRef.value
+    if (!isShow) {
+      el.style.cursor = 'none'
+      actionBarEl.classList.remove('visible')
+    } else {
+      el.style.cursor = ''
+      actionBarEl.classList.add('visible')
+    }
+  },
+  3000,
+)
 
+onMounted(async () => {
   try {
     if (currentVideoDeviceId.value || currentAudioDeviceId.value) {
       await startMediaStream()
@@ -111,9 +111,6 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
-  if (mouseHider.value) {
-    mouseHider.value.stop()
-  }
   stopBothVideoAndAudio()
 })
 

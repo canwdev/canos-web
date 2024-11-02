@@ -7,6 +7,7 @@ import {useSettingsStore} from '@/store/settings'
 import {TaskItem} from '@/enum/os'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import {useMainStore} from '@/store/main'
+import WidgetsPlayground from '@/components/OS/Widgets/WidgetsPlayground.vue'
 
 const mainStore = useMainStore()
 const systemStore = useSystemStore()
@@ -60,10 +61,12 @@ const handleRestore = (index) => {
   <div class="desktop-window-manager" :class="{'preview-desktop': mainStore.isPreviewDesktop}">
     <DesktopWallpaper>
       <DesktopContent />
+      <WidgetsPlayground />
     </DesktopWallpaper>
 
     <template v-for="(task, index) in systemStore.tasks" :key="task.guid">
       <ViewPortWindow
+        class="dwm-window"
         v-if="settingsStore.isWindowed"
         ref="vpWindowRefs"
         @onActive="systemStore.setTaskActive(task)"
@@ -137,17 +140,17 @@ const handleRestore = (index) => {
   overflow: hidden;
   user-select: none;
 
-  .vp-window {
+  .dwm-window {
     min-width: 350px;
     min-height: 200px;
     outline: none;
   }
 
   &.preview-desktop {
-    .vp-window {
+    .dwm-window {
       opacity: 0.4;
       background-color: transparent !important;
-      .vp-window-body {
+      .dwm-window {
         opacity: 0;
       }
     }

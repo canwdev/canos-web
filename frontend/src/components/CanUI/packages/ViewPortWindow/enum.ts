@@ -46,6 +46,7 @@ export const layoutList: ILayout[] = [
   LayoutPreset.BOTTOM_RIGHT,
 ]
 
+// 贴边快捷调整窗口大小 (Aero Snap)
 // 窗口边缘贴靠检测
 export const checkWindowAttach = ({x, y}) => {
   if (y <= 0) {

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {useCycleList, useEventListener, useFullscreen} from '@vueuse/core'
+import {useCursorHider} from '@/hooks/use-cursor'
 
 const colorList = [
   '#F44336',
@@ -34,9 +35,20 @@ const randomIndex = Math.floor(Math.random() * colorList.length)
 
 const {state, next, prev, go} = useCycleList(colorList, {initialValue: colorList[randomIndex]})
 
-const isHide = ref(false)
+const isShowBar = ref(true)
 const rootRef = ref()
 const {isFullscreen, enter, exit, toggle} = useFullscreen(rootRef)
+
+useCursorHider(rootRef, ({el, isShow}) => {
+  isShowBar.value = isShow
+  if (isFullscreen.value) {
+    if (!isShow) {
+      el.style.cursor = 'none'
+    } else {
+      el.style.cursor = ''
+    }
+  }
+})
 </script>
 
 <template>
@@ -46,7 +58,6 @@ const {isFullscreen, enter, exit, toggle} = useFullscreen(rootRef)
     :style="{
       backgroundColor: state,
     }"
-    @click="isHide = !isHide"
     @dblclick="toggle"
     @keyup.enter="toggle"
     tabindex="0"
@@ -56,16 +67,13 @@ const {isFullscreen, enter, exit, toggle} = useFullscreen(rootRef)
     @keydown.left="() => prev()"
     @keydown.down="() => prev()"
   >
-    <div
-      @dblclick.stop
-      @click.stop
-      :style="{visibility: isHide ? 'hidden' : 'visible'}"
-      class="ctrl-bar"
-    >
-      <button class="vp-button" @click="() => prev()">⏮️Prev</button>
-      <span @click="toggle" class="cur-color">{{ state }}</span>
-      <button class="vp-button" @click="() => next()">Next⏭️</button>
-    </div>
+    <transition name="fade">
+      <div v-show="isShowBar" @dblclick.stop @click.stop class="ctrl-bar">
+        <button class="vp-button" @click="() => prev()">⏮️Prev</button>
+        <span @click="toggle" class="cur-color">{{ state }}</span>
+        <button class="vp-button" @click="() => next()">Next⏭️</button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -85,11 +93,15 @@ const {isFullscreen, enter, exit, toggle} = useFullscreen(rootRef)
     padding: 5px;
     min-width: 100%;
     text-align: center;
-    display: flex;
-    gap: 3px;
+    gap: 4px;
     align-items: center;
     justify-content: center;
     user-select: none;
+    display: flex;
+
+    &:hover {
+      display: flex !important;
+    }
 
     .cur-color {
       background-color: white;

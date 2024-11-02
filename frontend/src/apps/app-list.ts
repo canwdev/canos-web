@@ -144,10 +144,6 @@ export const AllAppList: ShortcutItem[] = [
     defineAsyncComponent(() => import('@/apps/AppUtils/ObjectSizeWrap/index.vue')),
   ),
   defineDemoApp(
-    'Live2D',
-    defineAsyncComponent(() => import('@/apps/AppUtils/Live2DWrap/index.vue')),
-  ),
-  defineDemoApp(
     'BouncyBall',
     defineAsyncComponent(() => import('@/apps/AppUtils/Games/BouncyBall/index.vue')),
   ),
@@ -172,10 +168,7 @@ export const AllAppList: ShortcutItem[] = [
     component: defineAsyncComponent(() => import('@/apps/AppUtils/WakeLock.vue')),
     singleInstance: true,
   },
-  defineDemoApp(
-    '屏幕时钟',
-    defineAsyncComponent(() => import('@/apps/AppUtils/ScreenClock/index.vue')),
-  ),
+
   defineWebApp('Google', 'https://www.google.com/webhp?igu=1'),
 ]
 

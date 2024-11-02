@@ -37,5 +37,6 @@ export default defineComponent({
   text-align: right;
   font-size: 12px;
   line-height: 1.35;
+  font-family: sans-serif;
 }
 </style>
