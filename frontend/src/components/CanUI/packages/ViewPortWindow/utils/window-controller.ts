@@ -507,8 +507,10 @@ export class WindowController {
       }
     }
 
-    const left = (dragTargetEl.style.left = Math.round(Math.min(docWidth, Math.max(0, x))) + 'px')
-    const top = (dragTargetEl.style.top = Math.round(Math.min(docHeight, Math.max(0, y))) + 'px')
+    const left = (dragTargetEl.style.left =
+      Math.round(Math.max(0, Math.min(docWidth, Math.max(0, x)))) + 'px')
+    const top = (dragTargetEl.style.top =
+      Math.round(Math.max(0, Math.min(docHeight, Math.max(0, y)))) + 'px')
 
     return {left, top}
   }

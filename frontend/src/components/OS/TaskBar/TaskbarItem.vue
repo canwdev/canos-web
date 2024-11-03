@@ -144,6 +144,7 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
     display: flex;
     align-items: center;
     gap: 6px;
+    overflow: hidden;
     .task-icon {
       width: 24px;
       height: 24px;

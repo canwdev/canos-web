@@ -436,12 +436,12 @@ const handleGroupDrop = (indexData: StarIndexData) => {
       gap: 30px;
 
       .app-group {
-        min-width: 300px;
+        min-width: 320px;
         transition: all 0.2s;
 
         .group-content {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(5, 1fr);
           grid-template-rows: auto;
           gap: 8px;
 

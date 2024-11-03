@@ -95,7 +95,7 @@ const isAllApps = ref(false)
 
 <style lang="scss" scoped>
 .start-menu {
-  width: 340px;
+  width: 350px;
   //background-color: rgba(255, 255, 255, 0.8);
   //backdrop-filter: blur(10px);
   //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);

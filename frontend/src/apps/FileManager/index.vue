@@ -10,6 +10,7 @@ import FileList from './ExplorerUI/FileList.vue'
 import {getLastDirName, normalizePath, toggleArrayElement} from './utils'
 import {useNavigation} from './ExplorerUI/hooks/use-navigation'
 import {IEntry} from '@server/types/server'
+import {TaskItem} from '@/enum/os'
 
 type AppParams = {
   path: string
@@ -17,6 +18,7 @@ type AppParams = {
 
 const props = withDefaults(
   defineProps<{
+    task?: TaskItem
     appParams?: AppParams
     // 是否文件(夹)选择器
     selectFileMode?: 'file' | 'folder'
@@ -31,7 +33,7 @@ const props = withDefaults(
   },
 )
 const emit = defineEmits(['handleSelect', 'cancelSelect'])
-const {selectFileMode, multiple} = toRefs(props)
+const {task, selectFileMode, multiple} = toRefs(props)
 
 const {
   isLoading,
@@ -72,6 +74,16 @@ watch(
     const {path} = props.appParams
     if (path) {
       handleOpenPath(path)
+    }
+  },
+  {immediate: true},
+)
+// 应用启动传参
+watch(
+  basePathNormalized,
+  (val) => {
+    if (task.value) {
+      task.value.title = (val || '').replace(/\/$/, '').split('/').pop()
     }
   },
   {immediate: true},
