@@ -29,7 +29,7 @@ export const SystemAppExplorer: ShortcutItem = {
 }
 
 export const SystemAppMusicPlayer: ShortcutItem = {
-  appid: 'os.media_player',
+  appid: 'os.media-player',
   title: 'Media Player',
   icon: 'multimedia-audio-player',
   winOptions: {
@@ -41,7 +41,7 @@ export const SystemAppMusicPlayer: ShortcutItem = {
 }
 
 export const SystemAppTextEditor: ShortcutItem = {
-  appid: 'os.text_editor',
+  appid: 'os.text-editor',
   title: 'Text Editor',
   icon: 'notes',
   winOptions: {
@@ -126,7 +126,7 @@ export const AllAppList: ShortcutItem[] = [
   AppMediadevicesPlayer,
   {
     appid: 'os.calc',
-    title: '简易计算器',
+    title: 'Calculator',
     icon: 'accessories-calculator',
     winOptions: {
       width: '348px',
@@ -142,10 +142,6 @@ export const AllAppList: ShortcutItem[] = [
   defineDemoApp(
     'ObjectSize',
     defineAsyncComponent(() => import('@/apps/AppUtils/ObjectSizeWrap/index.vue')),
-  ),
-  defineDemoApp(
-    'BouncyBall',
-    defineAsyncComponent(() => import('@/apps/AppUtils/Games/BouncyBall/index.vue')),
   ),
   {
     appid: 'os.colorful-screen',

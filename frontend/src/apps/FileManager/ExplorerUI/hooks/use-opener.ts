@@ -23,12 +23,12 @@ export const useOpener = (basePath, isLoading) => {
 
   const openFile = async (item: IEntry, list: IEntry[]) => {
     if (isSupportedMediaFormat(item.name)) {
-      systemStore.createTaskById('os.media_player', {item, list, basePath: basePath.value})
+      systemStore.createTaskById('os.media-player', {item, list, basePath: basePath.value})
       return
     }
 
     if (regSupportedTextFormat.test(item.name)) {
-      systemStore.createTaskById('os.text_editor', {item, basePath: basePath.value})
+      systemStore.createTaskById('os.text-editor', {item, basePath: basePath.value})
       return
     }
     await openFileNewTab(item)

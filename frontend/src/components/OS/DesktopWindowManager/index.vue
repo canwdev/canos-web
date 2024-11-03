@@ -50,7 +50,6 @@ const handleRestore = (index) => {
   const targetWindow = vpWindowRefs.value[index]
   if (targetWindow) {
     setTimeout(() => {
-      console.log(targetWindow)
       targetWindow.focus()
     })
   }

@@ -31,6 +31,7 @@ export const handleImportJson = async () => {
   const str = await handleReadSelectedFile(file)
   return JSON.parse(str as string)
 }
+
 export const handleReadSelectedFile = (file) => {
   // console.log(file)
   return new Promise((resolve, reject) => {

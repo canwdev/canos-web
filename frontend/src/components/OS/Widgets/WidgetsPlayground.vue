@@ -19,7 +19,11 @@ const systemStore = useSystemStore()
 </script>
 
 <template>
-  <div class="desktop-widgets" v-if="settingsStore.enabledWidgetIds.length">
+  <div
+    class="desktop-widgets"
+    v-if="settingsStore.enabledWidgetIds.length"
+    :class="{_z: !settingsStore.isWindowed}"
+  >
     <template v-for="id in settingsStore.enabledWidgetIds" :key="id">
       <WidgetWindow
         v-if="systemStore.allWidgetAppidMap[id]"
@@ -38,5 +42,8 @@ const systemStore = useSystemStore()
   top: 0;
   //background-color: rgba(255, 192, 203, 0.66);
   pointer-events: none;
+  &._z {
+    z-index: 1;
+  }
 }
 </style>

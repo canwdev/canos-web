@@ -4,6 +4,7 @@ import {useSystemStore} from '@/store/system'
 import {useDropZone, useStorage} from '@vueuse/core'
 import {blobToBase64} from '@/utils'
 import {LsKeys} from '@/enum'
+import {DESKTOP_FILE_FLAG, DesktopBackgroundSize} from '@/enum/settings'
 
 const settingsStore = useSettingsStore()
 const systemStore = useSystemStore()
@@ -11,7 +12,7 @@ const wallpaperBase64 = useStorage(LsKeys.WALLPAPER_STORAGE, '')
 
 const bgStyle = computed(() => {
   const s: any = {}
-  if (wallpaperBase64.value && settingsStore.desktopWallpaper === 'file') {
+  if (wallpaperBase64.value && settingsStore.desktopWallpaper === DESKTOP_FILE_FLAG) {
     s.backgroundImage = `url(${wallpaperBase64.value})`
   } else if (settingsStore.desktopWallpaper) {
     s.backgroundImage = `url(${settingsStore.desktopWallpaper})`
@@ -19,6 +20,28 @@ const bgStyle = computed(() => {
   if (settingsStore.desktopBgColor) {
     s.backgroundColor = settingsStore.desktopBgColor
   }
+
+  switch (settingsStore.desktopBackgroundSize) {
+    case DesktopBackgroundSize.COVER:
+      s.backgroundSize = 'cover'
+      break
+    case DesktopBackgroundSize.CONTAIN:
+      s.backgroundSize = 'contain'
+      break
+    case DesktopBackgroundSize.CENTER:
+      s.backgroundSize = 'auto'
+      s.backgroundPosition = 'center'
+      break
+    case DesktopBackgroundSize.TILE:
+      s.backgroundSize = 'auto'
+      s.backgroundPosition = 'left top'
+      s.backgroundRepeat = 'repeat'
+      break
+    case DesktopBackgroundSize.STRETCH:
+      s.backgroundSize = '100% 100%'
+      break
+  }
+
   return s
 })
 
@@ -26,34 +49,34 @@ watch(
   () => settingsStore.desktopWallpaper,
   (val) => {
     // 如果用户修改了这个值，就清除上传的壁纸
-    if (val !== 'file') {
+    if (val !== DESKTOP_FILE_FLAG) {
       wallpaperBase64.value = ''
     }
   },
 )
 
-async function onDrop(files: File[] | null) {
-  if (files && files[0]) {
-    // 使用file字符串判断用户上传了图片作为背景
-    settingsStore.desktopWallpaper = 'file'
-    wallpaperBase64.value = await blobToBase64(files[0])
-  }
-}
+// async function onDrop(files: File[] | null) {
+//   if (files && files[0]) {
+//     // 使用file字符串判断用户上传了图片作为背景
+//     settingsStore.desktopWallpaper = DESKTOP_FILE_FLAG
+//     wallpaperBase64.value = await blobToBase64(files[0])
+//   }
+// }
 const dropZoneRef = ref<HTMLDivElement>()
-
-const {isOverDropZone} = useDropZone(dropZoneRef, {
-  onDrop,
-  dataTypes: (types) => {
-    // console.log(types)
-    if (types && types[0]) {
-      const typeFirst = types[0].split('/')[0]
-      if (typeFirst === 'image') {
-        return true
-      }
-    }
-    return false
-  },
-})
+//
+// const {isOverDropZone} = useDropZone(dropZoneRef, {
+//   onDrop,
+//   dataTypes: (types) => {
+//     // console.log(types)
+//     if (types && types[0]) {
+//       const typeFirst = types[0].split('/')[0]
+//       if (typeFirst === 'image') {
+//         return true
+//       }
+//     }
+//     return false
+//   },
+// })
 </script>
 
 <template>

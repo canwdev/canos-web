@@ -46,7 +46,7 @@ const getPointerXy = (e: any) => {
   return {x, y}
 }
 
-type OnMoveParams = {
+export type OnMoveParams = {
   pointerX?: number
   pointerY?: number
   top?: string
@@ -75,6 +75,8 @@ type DraggableOptions = {
   isDebug?: boolean
   // 是否可以调整窗口大小
   resizeable?: boolean
+  // 调视口口大小时，窗口重新定位的基础方向，默认靠左
+  alignWhenViewPortResize: 'start' | 'end'
   // 窗口是否最大化
   maximized?: boolean
 }
@@ -166,6 +168,7 @@ export class WindowController {
   private readonly handleResizeDebounced: any
   private prevRect: DOMRect
   private currentResizeDirection: string | null
+  private alignWhenViewPortResize: 'start' | 'end'
   private allowMove: boolean
   private maximized: boolean
 
@@ -179,23 +182,32 @@ export class WindowController {
     this.deltaY = 0
     this.allowMove = true
     this.maximized = options.maximized || false
+    this.alignWhenViewPortResize = options.alignWhenViewPortResize || 'start'
 
     this.handleDragStart = this.handleDragStart.bind(this)
     this.handleDragMove = this.handleDragMove.bind(this)
     this.handleDragStop = this.handleDragStop.bind(this)
     this.currentResizeDirection = null
-    this.handleResizeDebounced = useThrottleFn(() => {
-      if (this.isHidden()) {
-        return
-      }
-      const {left, top} = this.setInScreenPosition({
-        x: dragTargetEl.offsetLeft,
-        y: dragTargetEl.offsetTop,
-      })
-      this.debugLog('handleResizeDebounced', {left, top})
 
-      onMove && onMove({top, left})
-    }, 500)
+    // handle browser view port resize
+    this.handleResizeDebounced = useThrottleFn(
+      () => {
+        if (this.isHidden()) {
+          return
+        }
+        const {left, top} = this.setInScreenPosition({
+          x: dragTargetEl.offsetLeft,
+          y: dragTargetEl.offsetTop,
+          isViewPortResize: true,
+        })
+        this.debugLog('handleResizeDebounced', {left, top})
+
+        onMove && onMove({top, left})
+      },
+      50,
+      true,
+      true,
+    )
 
     if (autoPosOnResize) {
       window.addEventListener('resize', this.handleResizeDebounced)
@@ -469,12 +481,31 @@ export class WindowController {
     }
   }
 
-  setInScreenPosition({x, y}) {
+  // 保持窗口在视口内，并微调位置
+  setInScreenPosition({
+    x,
+    y,
+    // 是否视口正在调整大小
+    isViewPortResize = false,
+  }) {
     const {docEl} = this
     const {dragTargetEl} = this.options
     const rect = dragTargetEl.getBoundingClientRect()
     const docWidth = docEl.clientWidth - rect.width
     const docHeight = docEl.clientHeight - rect.height
+
+    // 靠右对齐
+    if (this.alignWhenViewPortResize === 'end' && isViewPortResize) {
+      if (this._prevDocWidth) {
+        const addWidth = docWidth - this._prevDocWidth
+        if (addWidth > 0) {
+          x = x + addWidth
+          this._prevDocWidth = 0
+        }
+      } else {
+        this._prevDocWidth = docWidth
+      }
+    }
 
     const left = (dragTargetEl.style.left = Math.round(Math.min(docWidth, Math.max(0, x))) + 'px')
     const top = (dragTargetEl.style.top = Math.round(Math.min(docHeight, Math.max(0, y))) + 'px')

@@ -26,3 +26,36 @@ export enum SettingsTabType {
   SYSTEM,
   HARDWARE,
 }
+
+export enum DesktopBackgroundSize {
+  COVER = 'cover',
+  CONTAIN = 'contain',
+  CENTER = 'center',
+  TILE = 'tile',
+  STRETCH = 'stretch',
+}
+
+export const DESKTOP_FILE_FLAG = 'file'
+
+export const desktopBackgroundSizeOptions = [
+  {
+    label: 'Fill',
+    value: DesktopBackgroundSize.COVER,
+  },
+  {
+    label: 'Fit',
+    value: DesktopBackgroundSize.CONTAIN,
+  },
+  {
+    label: 'Center',
+    value: DesktopBackgroundSize.CENTER,
+  },
+  {
+    label: 'Tile',
+    value: DesktopBackgroundSize.TILE,
+  },
+  {
+    label: 'Stretch',
+    value: DesktopBackgroundSize.STRETCH,
+  },
+]

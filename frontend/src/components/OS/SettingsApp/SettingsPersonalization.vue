@@ -3,10 +3,19 @@ import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
 import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
-import {ldThemeOptions, SettingsTabType} from '@/enum/settings'
+import {
+  DESKTOP_FILE_FLAG,
+  desktopBackgroundSizeOptions,
+  ldThemeOptions,
+  SettingsTabType,
+} from '@/enum/settings'
 import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
 import {useThemeOptions} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
 import {useIconThemes} from '@/components/OS/ThemedIcon/use-icon-themes'
+import {handleReadSelectedFile} from '@/utils/mc-utils/io'
+import {useStorage} from '@vueuse/core'
+import {LsKeys} from '@/enum'
+import {blobToBase64} from '@/utils'
 
 const getWallpaperText = () => {
   const list = [
@@ -28,6 +37,7 @@ const {t: $t} = useI18n()
 const settingsStore = useSettingsStore()
 const {themeOptions} = useThemeOptions()
 const {iconOptions} = useIconThemes()
+const wallpaperBase64 = useStorage(LsKeys.WALLPAPER_STORAGE, '')
 
 const optionList = computed((): StOptionItem[] => {
   return [
@@ -45,9 +55,58 @@ const optionList = computed((): StOptionItem[] => {
           label: '桌面壁纸',
           key: 'desktopWallpaper',
           store: settingsStore,
-          type: StOptionType.INPUT,
+          type:
+            settingsStore.desktopWallpaper === DESKTOP_FILE_FLAG ? undefined : StOptionType.INPUT,
           tips: getWallpaperText(),
           placeholder: 'optional',
+          actionRender: () => {
+            return h(
+              'div',
+              {class: 'flex-row-center-gap'},
+              [
+                h(
+                  'button',
+                  {
+                    class: 'vp-button',
+                    async onClick() {
+                      const [handle] = await window.showOpenFilePicker({
+                        types: [
+                          {
+                            description: 'Image',
+                            accept: {
+                              'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'],
+                            },
+                          },
+                        ],
+                      })
+                      const file = await handle.getFile()
+                      settingsStore.desktopWallpaper = DESKTOP_FILE_FLAG
+                      wallpaperBase64.value = await blobToBase64(file)
+                    },
+                  },
+                  'Open...',
+                ),
+                settingsStore.desktopWallpaper === DESKTOP_FILE_FLAG &&
+                  h(
+                    'button',
+                    {
+                      class: 'vp-button',
+                      onClick() {
+                        settingsStore.desktopWallpaper = ''
+                      },
+                    },
+                    'Clear',
+                  ),
+              ].filter(Boolean),
+            )
+          },
+        },
+        settingsStore.desktopWallpaper && {
+          label: '壁纸尺寸',
+          key: 'desktopBackgroundSize',
+          store: settingsStore,
+          type: StOptionType.SELECT,
+          options: desktopBackgroundSizeOptions,
         },
         {
           label: '桌面背景色',

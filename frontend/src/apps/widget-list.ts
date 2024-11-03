@@ -21,4 +21,14 @@ export const allWidgetList: ShortcutItem[] = [
     },
     component: defineAsyncComponent(() => import('@/apps/widgets/Live2DWrap/index.vue')),
   },
+  {
+    appid: 'widgets.bouncy-ball',
+    title: 'Bouncy Ball',
+    icon: 'exe',
+    winOptions: {
+      width: '300px',
+      height: '200px',
+    },
+    component: defineAsyncComponent(() => import('@/apps/widgets/BouncyBall/index.vue')),
+  },
 ]

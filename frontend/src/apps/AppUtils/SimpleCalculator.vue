@@ -131,6 +131,7 @@ export default {
     width: 25%;
     height: 80px;
     font-size: 32px;
+    border-radius: 0;
 
     &:hover {
       background-color: $primary_opacity;
@@ -154,6 +155,7 @@ export default {
     text-align: center;
     width: 33.33%;
     font-size: 32px;
+    border-radius: 0;
     &.flex2 {
       flex: 1;
     }

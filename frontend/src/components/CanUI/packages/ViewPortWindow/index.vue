@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {defineComponent, PropType, shallowRef} from 'vue'
-import {WindowController} from './utils/window-controller'
+import {shallowRef} from 'vue'
+import {OnMoveParams, WindowController} from './utils/window-controller'
 
 import LayoutHelper from './utils/LayoutHelper.vue'
 import {useDynamicClassName, useMouseOver} from './utils/use-utils'
-import {useDebounceFn, useThrottleFn, useVModel, watchDebounced} from '@vueuse/core'
+import {useThrottleFn, useVModel, watchDebounced} from '@vueuse/core'
 import {checkWindowAttach, ILayout, WinOptions} from './enum'
 import LayoutPreview from './utils/LayoutPreview.vue'
 
@@ -42,12 +42,18 @@ const props = withDefaults(
     transitionName?: string
     // 不展示标题栏，拖动窗口内容
     noTitleBar?: boolean
+    // 是否允许将窗体移动到视口之外
+    allowOut?: boolean
+    // 调视口口大小时，窗口重新定位的基础方向，默认靠左
+    alignWhenViewPortResize?: 'start' | 'end'
   }>(),
   {
     showClose: true,
     allowMove: true,
     allowSnap: true,
     initCenter: true,
+    allowOut: true,
+    alignWhenViewPortResize: 'start',
     transitionName: 'fade-scale',
   },
 )
@@ -166,7 +172,7 @@ onMounted(() => {
   dWindow.value = new WindowController({
     dragHandleEl: props.noTitleBar ? winBodyRef.value : titleBarRef.value,
     dragTargetEl: rootRef.value,
-    allowOut: true,
+    allowOut: props.allowOut,
     // opacify: 0.8,
     preventNode: titleBarButtonsRef.value,
     onMove: handleMove,
@@ -177,12 +183,13 @@ onMounted(() => {
     isDebug: false,
     resizeable: true,
     maximized: winOptions.maximized || false,
+    alignWhenViewPortResize: props.alignWhenViewPortResize,
   })
   isMaximized.value = winOptions.maximized || false
   dWindow.value.allowMove = allowMove.value
 
   new ResizeObserver(() => {
-    handleResizeDebounced()
+    handleSelfResize()
   }).observe(rootRef.value)
 
   initWindowStyle()
@@ -276,14 +283,14 @@ const checkSnap = useThrottleFn(
   true,
 )
 
-const handleMove = async (data) => {
+const handleMove = async (data: OnMoveParams) => {
   // console.log('[onMove]', data)
   if (data.moveStop) {
     setTimeout(() => {
       layoutPreviewData.value = undefined
     }, 151)
-    await fixWindowInScreen(0)
 
+    await fixWindowInScreen(0)
     if (allowSnap.value) {
       if (data.attachLayout) {
         setWindowLayout(data.attachLayout)
@@ -301,7 +308,7 @@ const handleMove = async (data) => {
   winOptions.left = left
 }
 
-const handleResizeDebounced = useThrottleFn(() => {
+const handleSelfResize = useThrottleFn(() => {
   if (!mVisible.value || !rootRef.value) {
     return
   }
@@ -311,7 +318,7 @@ const handleResizeDebounced = useThrottleFn(() => {
   winOptions.width = size.width
   winOptions.height = size.height
   emit('resize', winOptions)
-}, 10)
+}, 100)
 
 onBeforeUnmount(() => {
   if (dWindow.value) {

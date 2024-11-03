@@ -1,4 +1,4 @@
-import {LdThemeType} from '@/enum/settings'
+import {DesktopBackgroundSize, LdThemeType} from '@/enum/settings'
 import {DEFAULT_THEME} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
 import {LsKeys} from '@/enum'
 import {DEFAULT_ICON_THEME} from '@/components/OS/ThemedIcon/use-icon-themes'
@@ -13,8 +13,10 @@ type IStore = {
   iconTheme: string
   // 主题色
   themeColor: string
-  // 桌面壁纸url
+  // 桌面壁纸 url
   desktopWallpaper: string
+  // 桌面壁纸 background-size
+  desktopBackgroundSize: DesktopBackgroundSize
   // 桌面背景色
   desktopBgColor: string
   // 禁用动画效果
@@ -53,6 +55,7 @@ export const useSettingsStore = defineStore('settingsStore', {
 
       taskbarIconOnly: false,
       desktopWallpaper: '',
+      desktopBackgroundSize: 'cover',
       appAutoStartIds: [],
       enabledWidgetIds: [],
       taskbarPinnedList: [],

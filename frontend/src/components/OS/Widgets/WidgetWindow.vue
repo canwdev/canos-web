@@ -14,16 +14,15 @@ const {text} = toRefs(props)
 
 <template>
   <ViewPortWindow
-    :init-win-options="{
-      width: '200px',
-      height: '200px',
-    }"
+    :init-win-options="widget.winOptions"
     :wid="widget.appid"
     class="widget-window"
     no-title-bar
     visible
     :allow-snap="false"
     :show-close="false"
+    :allow-out="false"
+    :alignWhenViewPortResize="'end'"
   >
     <component :is="widget.component"></component>
   </ViewPortWindow>
@@ -39,10 +38,14 @@ const {text} = toRefs(props)
   background-color: transparent !important;
   min-width: 100px;
   min-height: 100px;
-  transition: all 0.3s;
+  transition:
+    box-shadow 0.3s,
+    border-color 0.3s;
 
   &:not(&:hover) {
-    transition: all 0.6s;
+    transition:
+      box-shadow 0.6s,
+      border-color 0.6s;
     border-color: transparent !important;
     box-shadow: none !important;
     outline: none !important;
