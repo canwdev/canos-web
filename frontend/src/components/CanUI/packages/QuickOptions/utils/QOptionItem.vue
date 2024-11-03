@@ -71,7 +71,7 @@ const {subMenuRef, isMouseOver, isMouseOverSub, hasChildren, subChildren} = useH
       <VueRender :render-fn="item.iconRender" />
     </div>
     <div class="item-icon" v-else-if="item.icon">
-      <img :src="item.icon" />
+      <img :src="item.icon" alt="icon" />
     </div>
     <div class="item-content" v-if="item.html" v-html="item.html"></div>
     <div class="item-content" v-else-if="item.render">

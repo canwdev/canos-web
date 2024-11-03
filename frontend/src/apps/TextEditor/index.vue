@@ -15,6 +15,7 @@ import {useUnSavedChanges} from '@/hooks/use-beforeunload'
 import FileSelector from '@/apps/FileManager/FileSelector.vue'
 import {generateTextFile, normalizePath} from '@/apps/FileManager/utils'
 import {fsWebApi} from '@/api/filesystem'
+import QuickMenuStrip from '@/components/CanUI/packages/QuickOptions/QuickMenuStrip.vue'
 
 type AppParams = {
   item: IEntry
@@ -128,6 +129,16 @@ const menuOptions = computed((): QuickOptionItem[] => {
             onClick() {},
           },
         },
+        {split: true},
+
+        {
+          label: 'Exit!',
+          props: {
+            onClick() {
+              emit('exitApp')
+            },
+          },
+        },
       ].filter(Boolean),
     },
   ]
@@ -136,10 +147,8 @@ const menuOptions = computed((): QuickOptionItem[] => {
 
 <template>
   <div class="text-editor-wrap" ref="rootRef">
-    <div class="menu-strip">
-      <QuickOptions is-static horizontal :options="menuOptions" />
-      <FileSelector :show-button="false" ref="fileSelectorRef" @handleSelect="handleOpenFile" />
-    </div>
+    <QuickMenuStrip :options="menuOptions" />
+    <FileSelector :show-button="false" ref="fileSelectorRef" @handleSelect="handleOpenFile" />
     <VueMonaco v-model="editContent" ref="vueMonacoRef" />
   </div>
 </template>
@@ -152,9 +161,6 @@ const menuOptions = computed((): QuickOptionItem[] => {
   min-width: 200px;
   display: flex;
   flex-direction: column;
-  .menu-strip {
-    height: 32px;
-  }
 
   .vue-monaco-placeholder {
     flex: 1;

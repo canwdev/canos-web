@@ -2,7 +2,6 @@
 import QuickOptions from './index.vue'
 import {QuickOptionItem} from './enum'
 import {useContextMenu} from './utils/use-context-menu'
-import {useMouseInElement} from '@vueuse/core'
 
 const props = withDefaults(
   defineProps<{

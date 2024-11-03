@@ -59,7 +59,15 @@ export const useContextMenu = (options: any = {}) => {
   const menuWidth = ref(0)
   const menuHeight = ref(0)
 
-  type ByPosition = 'top' | 'bottom' | 'left' | 'right'
+  type ByPosition =
+    | 'top'
+    | 'top-left'
+    | 'top-right'
+    | 'bottom'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'left'
+    | 'right'
   const byElementPosition = ref<ByPosition | null>(null)
   const byElement = ref<HTMLElement | null>(null)
 
@@ -71,12 +79,15 @@ export const useContextMenu = (options: any = {}) => {
         return
       }
     }
-    isShow.value = false
+    if (isShow.value) {
+      // console.log('1')
+      isShow.value = false
+    }
     setTimeout(() => {
       byElement.value = el
       byElementPosition.value = position
       isShow.value = true
-    }, 10)
+    }, 0)
   }
 
   const menuRef = ref()
@@ -132,8 +143,24 @@ export const useContextMenu = (options: any = {}) => {
         xRef.value = rect.left + window.scrollX + rect.width / 2 - mw / 2 // 水平居中
         yRef.value = rect.top + window.scrollY - mh // 垂直位置（减去菜单高度）
         break
+      case 'top-left':
+        xRef.value = rect.left + window.scrollX // 水平位置（菜单在元素左上角）
+        yRef.value = rect.top + window.scrollY - mh // 垂直位置（减去菜单高度）
+        break
+      case 'top-right':
+        xRef.value = rect.right + window.scrollX - mw // 水平位置（菜单在元素右上角）
+        yRef.value = rect.top + window.scrollY - mh // 垂直位置（减去菜单高度）
+        break
       case 'bottom':
         xRef.value = rect.left + window.scrollX + rect.width / 2 - mw / 2 // 水平居中
+        yRef.value = rect.bottom + window.scrollY // 垂直位置（菜单在元素下方）
+        break
+      case 'bottom-left':
+        xRef.value = rect.left + window.scrollX // 水平位置（菜单在元素左下角）
+        yRef.value = rect.bottom + window.scrollY // 垂直位置（菜单在元素下方）
+        break
+      case 'bottom-right':
+        xRef.value = rect.right + window.scrollX - mw // 水平位置（菜单在元素右下角）
         yRef.value = rect.bottom + window.scrollY // 垂直位置（菜单在元素下方）
         break
       case 'left':
@@ -176,7 +203,9 @@ export const useContextMenu = (options: any = {}) => {
   })
 
   const showMenu = (event: MouseEvent) => {
-    isShow.value = false
+    if (isShow.value) {
+      isShow.value = false
+    }
     setTimeout(() => {
       xRef.value = event.clientX
       yRef.value = event.clientY

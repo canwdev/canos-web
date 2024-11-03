@@ -93,6 +93,7 @@ const handleRestore = (index) => {
           :is="task.component"
           :task="task"
           :appParams="task.params"
+          @exitApp="systemStore.closeTask(task.guid)"
         ></component>
         <iframe
           v-else-if="task.url"
@@ -114,6 +115,7 @@ const handleRestore = (index) => {
           :is="task.component"
           :task="task"
           :appParams="task.params"
+          @exitApp="systemStore.closeTask(task.guid)"
         ></component>
         <iframe
           v-else-if="task.url"

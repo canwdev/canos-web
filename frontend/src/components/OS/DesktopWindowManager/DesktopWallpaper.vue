@@ -63,7 +63,7 @@ watch(
 //   }
 // }
 const dropZoneRef = ref<HTMLDivElement>()
-//
+const isOverDropZone = ref(false)
 // const {isOverDropZone} = useDropZone(dropZoneRef, {
 //   onDrop,
 //   dataTypes: (types) => {
