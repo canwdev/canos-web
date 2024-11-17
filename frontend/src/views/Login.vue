@@ -60,7 +60,7 @@ onMounted(() => {
 <template>
   <div class="login-view">
     <DesktopWallpaper>
-      <ViewPortWindow :show-close="false">
+      <ViewPortWindow visible :show-close="false">
         <template #titleBarLeft>Login</template>
 
         <div class="card-wrap">

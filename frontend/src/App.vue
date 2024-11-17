@@ -10,7 +10,7 @@ const mainStore = useMainStore()
 const settingsStore = useSettingsStore()
 
 useEventListener(document, 'keydown', (event) => {
-  const key = event.key.toLowerCase()
+  const key = event.key?.toLowerCase()
   const isCtrlOrMeta = event.ctrlKey || event.metaKey
   if (event.altKey && key === 'q') {
     mainStore.isShowStart = !mainStore.isShowStart

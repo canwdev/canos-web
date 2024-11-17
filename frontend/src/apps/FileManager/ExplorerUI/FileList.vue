@@ -167,7 +167,7 @@ const sortOptionsMenuRef = ref()
 
 const handleShortcutKey = (event) => {
   event.preventDefault()
-  const key = event.key.toLowerCase()
+  const key = event.key?.toLowerCase()
   const isCtrlOrMeta = event.ctrlKey || event.metaKey
   if (isCtrlOrMeta) {
     if (key === 'r') {

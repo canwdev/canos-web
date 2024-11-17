@@ -144,7 +144,7 @@ const rootRef = ref()
 const inputAddrRef = ref()
 const searchInputRef = ref()
 const handleShortcutKey = (event) => {
-  const key = event.key.toLowerCase()
+  const key = event.key?.toLowerCase()
   if (event.altKey) {
     if (key === 'a') {
       if (inputAddrRef.value) {
