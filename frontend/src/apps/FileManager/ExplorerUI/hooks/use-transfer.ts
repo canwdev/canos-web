@@ -17,7 +17,7 @@ export const useTransfer = ({basePath, isLoading, selectedItems}) => {
     }
   }
 
-  const {open: openSelectFiles, onChange: onSelectFiles} = useFileDialog({
+  const {open: selectUploadFiles, onChange: onSelectFiles} = useFileDialog({
     multiple: true,
     reset: true,
   })
@@ -71,7 +71,7 @@ export const useTransfer = ({basePath, isLoading, selectedItems}) => {
   }
 
   const {
-    open: openSelectFolder,
+    open: selectUploadFolder,
     reset: resetSelectFolder,
     onChange: onSelectFolder,
   } = useFileDialog({
@@ -125,8 +125,8 @@ export const useTransfer = ({basePath, isLoading, selectedItems}) => {
     uploadQueueRef,
     dropZoneRef,
     isOverDropZone,
-    openSelectFiles,
-    openSelectFolder,
+    selectUploadFiles,
+    selectUploadFolder,
     handleDownload,
   }
 }

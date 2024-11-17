@@ -8,6 +8,8 @@ import {normalizePath} from '@/apps/FileManager/utils'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {SettingsTabType} from '@/enum/settings'
 import {useMainStore} from '@/store/main'
+import {GlobalEvents, useGlobalBusOn} from '@/utils/bus'
+import {ShortcutItem} from '@/enum/os'
 const systemStore = useSystemStore()
 
 const {
@@ -71,6 +73,15 @@ const moreOptions = computed((): QuickOptionItem[] => {
 })
 
 const fileListRef = ref()
+
+useGlobalBusOn(GlobalEvents.SEND_TO_DESKTOP, (appid) => {
+  const shortcutItem: ShortcutItem = systemStore.allAppidMap[appid]
+  if (!shortcutItem) {
+    window.$message.error('No shortcutItem found')
+    return
+  }
+  fileListRef.value.handleCreateFile(`${appid}.shortcut`, JSON.stringify({}, null, 2))
+})
 </script>
 
 <template>

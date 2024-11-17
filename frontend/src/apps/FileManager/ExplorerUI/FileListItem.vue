@@ -13,7 +13,7 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {})
 
-const {iconName, titleDesc, extDisplay} = useFileItem(props)
+const {iconName, titleDesc, extDisplay, nameDisplay, shortcutAppid} = useFileItem(props)
 </script>
 
 <template>
@@ -36,9 +36,9 @@ const {iconName, titleDesc, extDisplay} = useFileItem(props)
       />
     </div>
     <span class="list-col c-filename">
-      <ThemedIcon :name="iconName" />
+      <ThemedIcon :name="iconName" :sub-name="shortcutAppid ? 'shortcut' : ''" />
       <span class="text-overflow filename-text" @click.stop="$emit('open', item)" @dblclick.stop>
-        {{ item.name }}
+        {{ nameDisplay }}
       </span>
     </span>
     <span class="list-col c-ext text-overflow">{{ extDisplay }}</span>

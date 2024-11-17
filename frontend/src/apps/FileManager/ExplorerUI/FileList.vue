@@ -82,8 +82,8 @@ const {
   uploadQueueRef,
   dropZoneRef,
   isOverDropZone,
-  openSelectFiles,
-  openSelectFolder,
+  selectUploadFiles,
+  selectUploadFolder,
   handleDownload,
 } = useTransfer({basePath, isLoading, selectedItems})
 
@@ -143,7 +143,7 @@ const allContextMenu = computed((): QuickOptionItem[] => {
       label: 'Upload Files...',
       props: {
         onClick() {
-          openSelectFiles()
+          selectUploadFiles()
         },
       },
     },
@@ -151,7 +151,7 @@ const allContextMenu = computed((): QuickOptionItem[] => {
       label: 'Upload Folder...',
       props: {
         onClick() {
-          openSelectFolder()
+          selectUploadFolder()
         },
       },
     },
@@ -196,6 +196,7 @@ defineExpose({
   selectedItems,
   basePath,
   handleShortcutKey,
+  handleCreateFile,
 })
 </script>
 
@@ -218,14 +219,14 @@ defineExpose({
 
           <button
             class="btn-action btn-no-style"
-            @click="() => openSelectFiles()"
+            @click="() => selectUploadFiles()"
             title="Upload Files..."
           >
             <span class="mdi mdi-file-upload-outline"></span>
           </button>
           <button
             class="btn-action btn-no-style"
-            @click="() => openSelectFolder()"
+            @click="() => selectUploadFolder()"
             title="Upload Folder..."
           >
             <span class="mdi mdi-folder-upload-outline"></span>

@@ -18,6 +18,8 @@ import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'
 import TitleEdit from '@/components/OS/StartMenu/Sub/TitleEdit.vue'
 import {LineHelper} from '@/utils/line-helper'
 import MenuDesktopIcon from '@/components/OS/StartMenu/MenuDesktopIcon.vue'
+import {usePinUnpinned} from '@/components/OS/TaskBar/types'
+import globalEventBus, {GlobalEvents} from '@/utils/bus'
 
 // const props = withDefaults(
 //   defineProps<{
@@ -25,10 +27,9 @@ import MenuDesktopIcon from '@/components/OS/StartMenu/MenuDesktopIcon.vue'
 //   {
 //   },
 // )
-const emit = defineEmits(['onCreateTask'])
+const emit = defineEmits(['onCreateTask', 'showContextMenu'])
 
 const systemStore = useSystemStore()
-const settingsStore = useSettingsStore()
 
 const handleItemClick = (item: ShortcutItem) => {
   emit('onCreateTask', systemStore.createTask(item))
@@ -101,37 +102,45 @@ onMounted(() => {
   lineHelper.value = new LineHelper(startContentRef.value)
 })
 
-const ctxMenuRef = ref()
 const editingMenuItem = ref<IStartMenuItem>()
 const handleShowCtxMenu = (event, menuItem: IStartMenuItem) => {
-  editingMenuItem.value = menuItem
-  ctxMenuRef.value.isShow = false
-  setTimeout(() => {
-    ctxMenuRef.value.showMenu(event)
-  })
+  emit('showContextMenu', {event, options: getCtxMenuOptions(menuItem)})
 }
 
-const ctxMenuOptions = computed((): QuickOptionItem[] => {
-  if (!editingMenuItem.value) {
+const {getPinUnpinOption} = usePinUnpinned()
+
+const getCtxMenuOptions = (menuItem: IStartMenuItem): QuickOptionItem[] => {
+  if (!menuItem) {
     return []
   }
+  const appid = menuItem.id
   return [
-    // {
-    //   label: 'Change Size',
-    //   children: [],
-    // },
-    ...StartItemSizeOptions.map((item) => {
-      return {
-        label: item.label,
-        props: {
-          onClick: () => {
-            editingMenuItem.value.size = item.value
-          },
+    {
+      label: 'Send to desktop',
+      props: {
+        onClick() {
+          globalEventBus.emit(GlobalEvents.SEND_TO_DESKTOP, appid)
         },
-      }
-    }),
+      },
+    },
+    getPinUnpinOption(appid),
+    {
+      label: 'Change Size',
+      children: [
+        ...StartItemSizeOptions.map((item) => {
+          return {
+            label: item.label,
+            props: {
+              onClick: () => {
+                menuItem.size = item.value
+              },
+            },
+          }
+        }),
+      ],
+    },
   ]
-})
+}
 
 const isItemDragging = ref(false)
 // 记录拖拽时的index，用于删除
@@ -381,8 +390,6 @@ const handleGroupDrop = (indexData: StarIndexData) => {
         v-if="isItemDragging || isGroupDragging"
         @drop.prevent="handleDropNewCol"
       />
-
-      <QuickContextMenu :options="ctxMenuOptions" ref="ctxMenuRef" />
 
       <!-- 辅助定位线 -->
       <div class="line-helper-x"></div>

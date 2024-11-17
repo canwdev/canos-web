@@ -12,7 +12,7 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {})
 
-const {iconName, titleDesc} = useFileItem(props)
+const {iconName, titleDesc, nameDisplay, shortcutAppid} = useFileItem(props)
 </script>
 
 <template>
@@ -32,9 +32,13 @@ const {iconName, titleDesc} = useFileItem(props)
       @click.stop="$emit('select', {item, event: $event, toggle: true})"
       @dblclick.stop
     />
-    <ThemedIcon class="desktop-icon-image" :name="iconName" />
+    <ThemedIcon
+      class="desktop-icon-image"
+      :name="iconName"
+      :sub-name="shortcutAppid ? 'shortcut' : ''"
+    />
     <span class="desktop-icon-name" @click.stop="$emit('open', item)" @dblclick.stop>{{
-      item.name
+      nameDisplay
     }}</span>
   </button>
 </template>

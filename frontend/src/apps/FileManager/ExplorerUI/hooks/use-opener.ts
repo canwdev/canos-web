@@ -2,7 +2,7 @@ import {IEntry} from '@server/types/server'
 import {fsWebApi} from '@/api/filesystem'
 import {normalizePath} from '../../utils'
 import {useSystemStore} from '@/store/system'
-import {isSupportedMediaFormat, regSupportedTextFormat} from '@/utils/is'
+import {isSupportedMediaFormat, regSupportedTextFormat, shortcutFilenameReg} from '@/utils/is'
 
 export const useOpener = (basePath, isLoading) => {
   const systemStore = useSystemStore()
@@ -22,6 +22,10 @@ export const useOpener = (basePath, isLoading) => {
   }
 
   const openFile = async (item: IEntry, list: IEntry[]) => {
+    if (shortcutFilenameReg.test(item.name)) {
+      systemStore.createTaskById(item.name.replace(shortcutFilenameReg, ''))
+      return
+    }
     if (isSupportedMediaFormat(item.name)) {
       systemStore.createTaskById('os.media-player', {item, list, basePath: basePath.value})
       return

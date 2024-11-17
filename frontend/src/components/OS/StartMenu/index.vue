@@ -13,6 +13,12 @@ import {onClickOutside, useFullscreen} from '@vueuse/core'
 import {useSettingsStore} from '@/store/settings'
 import StartActions from '@/components/OS/StartMenu/Sub/StartActions.vue'
 import StartScreen from '@/components/OS/StartMenu/StartScreen.vue'
+import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'
+import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
+import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import MenuDesktopIcon from '@/components/OS/StartMenu/MenuDesktopIcon.vue'
+import {usePinUnpinned} from '@/components/OS/TaskBar/types'
+import globalEventBus, {GlobalEvents} from '@/utils/bus'
 
 const props = withDefaults(
   defineProps<{
@@ -37,7 +43,12 @@ const handleItemClick = (item: ShortcutItem) => {
 }
 
 const appListFiltered = computed(() => {
-  return systemStore.allApps
+  if (!filterText.value) {
+    return systemStore.allApps
+  }
+  return systemStore.allApps.filter((item) =>
+    item.title.toLowerCase().includes(filterText.value.toLowerCase()),
+  )
 })
 
 const rootRef = ref()
@@ -55,7 +66,33 @@ const startApp = (appId) => {
   systemStore.createTaskById(appId)
 }
 
-const isAllApps = ref(false)
+const ctxMenuRef = ref()
+const ctxMenuOptions = ref<QuickOptionItem[]>([])
+const handleShowContextMenu = ({event, options}) => {
+  ctxMenuOptions.value = options
+  ctxMenuRef.value.isShow = false
+  setTimeout(() => {
+    ctxMenuRef.value.showMenu(event)
+  })
+}
+
+const {getPinUnpinOption} = usePinUnpinned()
+
+const beforeShowContextMenu = (event, item: ShortcutItem) => {
+  const options: QuickOptionItem[] = [
+    {
+      label: 'Send to desktop',
+      props: {
+        onClick() {
+          globalEventBus.emit(GlobalEvents.SEND_TO_DESKTOP, item.appid)
+        },
+      },
+    },
+    getPinUnpinOption(item.appid),
+  ]
+
+  handleShowContextMenu({event, options})
+}
 </script>
 
 <template>
@@ -69,20 +106,31 @@ const isAllApps = ref(false)
       <div class="start-menu-above">
         <div class="start-title-wrap">
           <div class="start-title">Start</div>
-          <button class="btn-no-style" @click="isAllApps = !isAllApps">All apps »</button>
+          <button
+            class="btn-no-style"
+            @click="settingsStore.startMenuIsAllApps = !settingsStore.startMenuIsAllApps"
+          >
+            {{ settingsStore.startMenuIsAllApps ? '« All Apps' : 'All Apps »' }}
+          </button>
         </div>
         <div class="start-main-wrap">
           <transition-group name="fade-left">
-            <div v-if="isAllApps" class="all-apps-list">
+            <div v-if="settingsStore.startMenuIsAllApps" class="all-apps-list">
+              <input v-model="filterText" class="vp-input" placeholder="Filter apps" />
               <MenuListItem
                 :item="item"
                 v-for="(item, index) in appListFiltered"
                 :key="index"
                 @click="handleItemClick(item)"
                 :disabled="item.requireBackend && !systemStore.isBackendAvailable"
+                @contextmenu.prevent="beforeShowContextMenu($event, item)"
               />
             </div>
-            <StartScreen v-else @onCreateTask="mVisible = false" />
+            <StartScreen
+              v-else
+              @onCreateTask="mVisible = false"
+              @showContextMenu="handleShowContextMenu"
+            />
           </transition-group>
         </div>
       </div>
@@ -90,6 +138,8 @@ const isAllApps = ref(false)
         <StartActions @startApp="startApp" @actionOpened="mVisible = false" />
       </div>
     </div>
+
+    <QuickContextMenu :options="ctxMenuOptions" ref="ctxMenuRef" />
   </div>
 </template>
 
@@ -164,6 +214,12 @@ const isAllApps = ref(false)
     overflow: auto;
     height: 100%;
     width: 100%;
+
+    .vp-input {
+      width: 100%;
+      position: sticky;
+      top: 0;
+    }
   }
 
   .start-actions-wrap {

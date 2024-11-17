@@ -3,6 +3,7 @@ import {DEFAULT_THEME} from '@/components/CanUI/packages/ViewPortWindow/utils/us
 import {LsKeys} from '@/enum'
 import {DEFAULT_ICON_THEME} from '@/components/OS/ThemedIcon/use-icon-themes'
 import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'
+import {ShortcutItem} from '@/enum/os'
 
 type IStore = {
   // 明暗主题
@@ -35,6 +36,8 @@ type IStore = {
   // 已启用的小组件appid列表
   enabledWidgetIds: string[]
   taskbarPinnedList: TaskbarPinnedItem[]
+
+  startMenuIsAllApps: boolean
 }
 
 export const useSettingsStore = defineStore('settingsStore', {
@@ -59,7 +62,32 @@ export const useSettingsStore = defineStore('settingsStore', {
       appAutoStartIds: [],
       enabledWidgetIds: [],
       taskbarPinnedList: [],
+
+      startMenuIsAllApps: false,
     }
+  },
+  getters: {
+    taskbarPinnedAppidMap() {
+      const map: {[appid: string]: TaskbarPinnedItem} = {}
+      this.taskbarPinnedList.forEach((item) => {
+        map[item.appid] = item
+      })
+      return map
+    },
+  },
+  actions: {
+    pinToTaskbar(appid: string) {
+      const idx = this.taskbarPinnedList.findIndex((i) => i.appid === appid)
+      if (idx === -1) {
+        this.taskbarPinnedList.push({appid: appid})
+      }
+    },
+    unpinFromTaskbar(appid: string) {
+      const idx = this.taskbarPinnedList.findIndex((i) => i.appid === appid)
+      if (idx > -1) {
+        this.taskbarPinnedList.splice(idx, 1)
+      }
+    },
   },
   persist: {
     key: LsKeys.SETTINGS_STORAGE,

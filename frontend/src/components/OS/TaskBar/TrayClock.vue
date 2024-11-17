@@ -13,7 +13,7 @@ export default defineComponent({
     onMounted(() => {
       intervalRef.value = setInterval(() => {
         time.value = moment().format(timeFormat)
-      })
+      }, 1000)
     })
 
     onBeforeUnmount(() => {

@@ -1,3 +1,5 @@
+export const shortcutFilenameReg = /\.shortcut$/i
+
 export const regArchiveFormat =
   /\.(zip|rar|tar|gz|bz2|7z|xz|tgz|zipx|tar\.gz|tar\.bz2|xz|z|zip|lzh|arj|zoo|pkg|lz|7zip|cab|iso|dmg|apk)$/i
 export const regImageFormat = /\.(jpg|jpeg|png|gif|bmp|svg|webp|tiff?|heif|indd)$/i

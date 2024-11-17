@@ -18,16 +18,18 @@ export const useFileActions = ({
   handleDownload,
   emit,
 }) => {
-  const handleCreateFile = async () => {
+  const handleCreateFile = async (name = '', content = '') => {
     try {
-      const name = await showInputPrompt({
-        title: 'Create File',
-        value: `file_${moment(new Date()).format('YYYYMMDD_HHmmss')}.txt`,
-      })
+      name =
+        name ||
+        (await showInputPrompt({
+          title: 'Create File',
+          value: `file_${moment(new Date()).format('YYYYMMDD_HHmmss')}.txt`,
+        }))
       isLoading.value = true
       await fsWebApi.uploadFile({
         path: normalizePath(basePath.value + '/' + name),
-        file: generateTextFile('', name),
+        file: generateTextFile(content, name),
       })
       emit('refresh')
     } finally {

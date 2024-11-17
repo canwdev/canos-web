@@ -15,7 +15,7 @@ import TaskbarItem from '@/components/OS/TaskBar/TaskbarItem.vue'
 import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
 import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
 import {TaskItem} from '@/enum/os'
-import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'
+import {TaskbarPinnedItem, usePinUnpinned} from '@/components/OS/TaskBar/types'
 import TrayShowDesktop from '@/components/OS/TaskBar/TrayShowDesktop.vue'
 import {useMainStore} from '@/store/main'
 
@@ -33,6 +33,9 @@ const handleTaskbarItemMenu = (target, item) => {
     taskItemMenuRef.value.showMenuByElement(taskItemEl)
   })
 }
+
+const {getPinUnpinOption} = usePinUnpinned()
+
 const taskItemMenuOptions = computed((): QuickOptionItem[] => {
   if (!currentTaskItem.value) {
     return []
@@ -42,30 +45,7 @@ const taskItemMenuOptions = computed((): QuickOptionItem[] => {
     (i) => i.appid === currentTaskItem.value.appid,
   )
   const isTask = !!currentTaskItem.value.guid
-  const options = [
-    idx === -1
-      ? {
-          label: 'Pin to Taskbar',
-          props: {
-            onClick() {
-              settingsStore.taskbarPinnedList.push({appid: currentTaskItem.value.appid})
-            },
-          },
-        }
-      : {
-          label: 'Unpin from Taskbar',
-          props: {
-            onClick() {
-              const idx = settingsStore.taskbarPinnedList.findIndex(
-                (i) => i.appid === currentTaskItem.value.appid,
-              )
-              if (idx > -1) {
-                settingsStore.taskbarPinnedList.splice(idx, 1)
-              }
-            },
-          },
-        },
-  ]
+  const options = [getPinUnpinOption(currentTaskItem.value.appid)]
   if (isTask) {
     options.push({
       label: 'Close window',
@@ -126,7 +106,7 @@ const taskbarList = computed(() => {
 </script>
 
 <template>
-  <div class="canos-task-bar vp-panel">
+  <div class="canos-task-bar vp-panel" @contextmenu.prevent>
     <transition name="fade-up">
       <StartMenu v-model:visible="mainStore.isShowStart" />
     </transition>
