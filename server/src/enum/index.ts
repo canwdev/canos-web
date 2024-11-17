@@ -2,20 +2,33 @@ import * as os from 'os'
 import * as Path from 'path'
 import * as fs from 'fs-extra'
 import {ServerInfo} from '@/types/server'
+import {JsonStorage} from '@/utils/json-storage'
+import * as crypto from 'crypto'
 
 export const isDev = process.env.NODE_ENV === 'development'
 
 export const JWT_TOKEN_EXPIRE = process.env.JWT_EXPIRES_IN || '30 days'
 
 // 配置、数据库和日志存放路径
-export const dataBasePath = isDev
+export const DATA_BASE_PATH = isDev
   ? Path.join(process.cwd(), './data')
   : Path.join(os.homedir(), '/.config/can-os-web')
-fs.ensureDirSync(dataBasePath)
-console.log('[dataBasePath]', dataBasePath)
+fs.ensureDirSync(DATA_BASE_PATH)
+console.log('[DATA_BASE_PATH]', DATA_BASE_PATH)
 
-export const dataDesktopPath = Path.join(dataBasePath, 'desktop')
-fs.ensureDirSync(dataDesktopPath)
+export const DATA_CONFIG_PATH = Path.join(DATA_BASE_PATH, 'config')
+export const DATA_DESKTOP_PATH = Path.join(DATA_BASE_PATH, 'desktop')
+fs.ensureDirSync(DATA_DESKTOP_PATH)
+
+export interface ISecretStore {
+  JWT_SECRET: string
+  // 简单接口载荷加密密钥，AES-256 密钥，require('crypto').randomBytes(32).toString('hex')
+  EASY_API_CRYPT_KEY: string
+}
+export const secretsStore = new JsonStorage(Path.join(DATA_CONFIG_PATH, 'secrets.json'), {
+  JWT_SECRET: crypto.randomBytes(32).toString('hex'),
+  EASY_API_CRYPT_KEY: crypto.randomBytes(32).toString('hex'),
+} as ISecretStore)
 
 export const serverInfo: ServerInfo = {
   name: 'CanOS Server',
@@ -33,10 +46,10 @@ export const serverInfo: ServerInfo = {
   dirs: {
     osHomedir: os.homedir(),
     osTmpdir: os.tmpdir(),
-    dataBasePath,
-    dataDesktopPath,
+    dataBasePath: DATA_BASE_PATH,
+    dataDesktopPath: DATA_DESKTOP_PATH,
   },
 }
 
 // If JWT_SECRET is not set, fallback to this
-export const APP_JWT_SECRET = process.env.JWT_SECRET || 'h6jMfsCe6CzowcjdEGxPJKKdnZ0XudUw'
+export const APP_JWT_SECRET = process.env.JWT_SECRET || secretsStore.getData().JWT_SECRET

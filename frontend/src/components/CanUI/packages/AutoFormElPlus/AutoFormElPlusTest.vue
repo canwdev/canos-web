@@ -92,7 +92,6 @@ const formItems = computed((): MixedFormItems[] => {
       props: {
         labelPosition: 'top',
       },
-      actionButtons: true,
       formItems,
     }"
   >

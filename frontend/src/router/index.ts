@@ -8,6 +8,7 @@ import {useSystemStore} from '@/store/system'
 import {usersApi} from '@/api/users'
 import {adminRoutes} from '@/router/admin'
 import {ServerInfo} from '@server/types/server'
+import {cryptKeyRef} from '@/utils/my-crypt'
 
 // const history = createWebHashHistory()
 const history = createWebHistory(PROXY_BASE_URL)
@@ -63,16 +64,23 @@ const routes = [
   {path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/PageNotFound.vue')},
 ]
 const router = createRouter({history, routes})
+
 router.beforeEach(async (to, from, next) => {
   const mainStore = useMainStore()
   const systemStore = useSystemStore()
+
+  const {ck} = to.query
+  if (ck) {
+    cryptKeyRef.value = ck
+  }
+  delete to.query.ck
 
   // 检查服务器是否可用
   try {
     await serverApi.getHello()
     systemStore.isBackendAvailable = true
   } catch (e) {
-    console.log(e)
+    console.error(e)
     systemStore.isBackendAvailable = false
     return next()
   }
@@ -82,6 +90,7 @@ router.beforeEach(async (to, from, next) => {
     return next({
       name: 'LoginPage',
       query: {
+        // TODO: remove ck
         redirect: to.fullPath,
       },
     })
@@ -113,5 +122,15 @@ export const formatSiteTitle = (t?: string) => {
 
 router.afterEach((to, _, failure) => {
   document.title = formatSiteTitle(to?.meta?.title as string)
+  const {query} = to
+
+  // 检查并移除 ck query 参数
+  if (query.ck) {
+    const newQuery = {...query}
+    delete newQuery.ck
+
+    // 使用 replace 进行重定向，不保留在历史记录中
+    router.replace({path: to.path, query: newQuery})
+  }
 })
 export default router

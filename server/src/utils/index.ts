@@ -11,18 +11,18 @@ export const guid = () => {
   return S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4()
 }
 
-export const printServerRunningOn = (host, port) => {
+export const printServerRunningOn = (host, port, params = '') => {
   const ifaces = os.networkInterfaces()
   const protocol = 'http://'
   const localhostUrl = protocol + '127.0.0.1' + ':' + port
 
-  console.log(`Server running on: ${localhostUrl}`)
+  console.log(`Server running on: ${localhostUrl}${params}`)
   if (host === '0.0.0.0') {
     const urls = []
     Object.keys(ifaces).forEach((dev) => {
       ifaces[dev].forEach((details) => {
         if (details.family === 'IPv4') {
-          const url = protocol + details.address + ':' + port
+          const url = protocol + details.address + ':' + port + params
           urls.push(url)
           serverInfo.hostUrls.push(url)
         }

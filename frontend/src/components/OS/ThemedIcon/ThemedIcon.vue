@@ -37,6 +37,8 @@ const subIconSrc = computed(() => {
 .themed-icon {
   display: inline-flex;
   position: relative;
+  width: 100%;
+  height: 100%;
   .themed-icon-img {
     width: 100%;
     height: 100%;

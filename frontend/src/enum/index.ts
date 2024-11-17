@@ -4,6 +4,9 @@ export const HOST_URL_DEFAULT = import.meta.env.VITE_API_HOST
 export const API_PROXY_BASE = import.meta.env.VITE_API_PROXY_BASE || ''
 export const HOST_URL = API_PROXY_BASE + HOST_URL_DEFAULT
 
+export const isDev = import.meta.env.MODE === 'development'
+export const isProd = import.meta.env.MODE === 'production'
+
 export const LsKeys = {
   SETTINGS_STORAGE: 'ls_key_canos_settings',
   LS_KEY_AUTHORIZATION: 'canos_web_authorization',
@@ -15,3 +18,5 @@ export const LsKeys = {
   EXPLORER_SHOW_SIDEBAR: 'canos_web_explorer_show_sidebar',
   START_MENU_LAYOUT: 'canos_web_start_menu_layout',
 }
+
+export const LS_KEY_EASY_API_CRYPT_KEY = 'canos_web_easy_api_crypt_key'

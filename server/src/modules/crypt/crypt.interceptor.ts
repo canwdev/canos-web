@@ -1,7 +1,7 @@
 import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from '@nestjs/common'
-import {AppService} from '@/app.service'
 import {Observable} from 'rxjs'
 import {map} from 'rxjs/operators'
+import {myApiEncrypt} from '@/utils/my-crypt'
 
 export interface Response<T> {
   data: T
@@ -9,10 +9,10 @@ export interface Response<T> {
 
 @Injectable()
 export class CryptInterceptor<T> implements NestInterceptor<T, Response<T>> {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
-    const myCrypt = this.appService.getMyCrypt()
+    const myCrypt = myApiEncrypt
 
     return next.handle().pipe(
       map((data) => {
@@ -23,7 +23,6 @@ export class CryptInterceptor<T> implements NestInterceptor<T, Response<T>> {
         const str = JSON.stringify(data)
         return {
           main: myCrypt.encrypt(str),
-          ie: true,
         }
       }),
     )

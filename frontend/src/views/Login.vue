@@ -5,9 +5,24 @@ import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
 import {usersApi} from '@/api/users'
 import LoginForm from '@/components/OS/SettingsApp/Users/LoginForm.vue'
+import {cryptKeyRef} from '@/utils/my-crypt'
 
 const route = useRoute()
 const router = useRouter()
+
+const cryptKeyEditing = ref('')
+watch(
+  cryptKeyRef,
+  (val) => {
+    cryptKeyEditing.value = val
+  },
+  {immediate: true},
+)
+const isShowCryptKeyConfig = ref(false)
+const saveCryptKey = () => {
+  cryptKeyRef.value = cryptKeyEditing.value
+  isShowCryptKeyConfig.value = false
+}
 
 const isLoading = ref(false)
 const handleLogin = async (data) => {
@@ -63,7 +78,24 @@ onMounted(() => {
       <ViewPortWindow visible :show-close="false">
         <template #titleBarLeft>Login</template>
 
-        <div class="card-wrap">
+        <div
+          v-if="!cryptKeyRef || isShowCryptKeyConfig"
+          class="card-wrap flex-row-center-gap font-code"
+        >
+          <div>请输入接口密钥:</div>
+          <input
+            type="text"
+            class="vp-input"
+            v-model="cryptKeyEditing"
+            style="width: 100%"
+            placeholder="请输入接口密钥"
+          />
+          <button class="vp-button primary" @click="saveCryptKey()" :disabled="!cryptKeyEditing">
+            Submit
+          </button>
+        </div>
+
+        <div v-else class="card-wrap">
           <LoginForm
             v-loading="isLoading"
             ref="loginFormRef"
@@ -72,8 +104,11 @@ onMounted(() => {
           />
 
           <div class="login-actions">
-            <button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">
-              IP
+            <!--<button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">-->
+            <!--  IP-->
+            <!--</button>-->
+            <button class="vp-button" type="button" @click="isShowCryptKeyConfig = true">
+              <span class="mdi mdi-security-network"></span>
             </button>
             <button
               class="vp-button btn-login"

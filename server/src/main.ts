@@ -6,6 +6,7 @@ import {program} from 'commander'
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
 import {AllExceptionsFilter} from '@/all-exceptions.filter'
 import {printServerRunningOn} from '@/utils'
+import {isDev, secretsStore} from '@/enum'
 
 program
   .name('canos-web-server')
@@ -32,25 +33,34 @@ async function bootstrap() {
   // 使用全局异常过滤器
   app.useGlobalFilters(new AllExceptionsFilter())
 
-  // Swagger 步骤
-  const config = new DocumentBuilder()
-    .setTitle('Web API')
-    .setDescription('API Documentation')
-    .setVersion('1.0')
-    .build()
-  const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('swagger', app, document)
+  if (isDev) {
+    // Swagger 步骤
+    const config = new DocumentBuilder()
+      .setTitle('Web API')
+      .setDescription('API Documentation')
+      .setVersion('1.0')
+      .build()
+    const document = SwaggerModule.createDocument(app, config)
+    SwaggerModule.setup('swagger', app, document)
+  }
 
   const port = options.port || process.env.PORT || 12021
   const host = options.host || process.env.HOST || '0.0.0.0'
   await app.listen(port, host)
 
-  const {localhostUrl} = printServerRunningOn(host, port)
-  console.log(`API Documents on: ${localhostUrl}/swagger`)
+  const ck = secretsStore.getData().EASY_API_CRYPT_KEY
+  const params = `?ck=${ck}`
+  const {localhostUrl} = printServerRunningOn(host, port, params)
+
+  console.log(`EASY_API_CRYPT_KEY: ${ck}`)
+
+  if (isDev) {
+    console.log(`API Documents on: ${localhostUrl}/swagger`)
+  }
 
   // console.log(options)
   if (process.env.NODE_ENV !== 'development' && options.open) {
-    await opener(localhostUrl + '/ip')
+    await opener(localhostUrl + `/ip${params}`)
   }
 }
 bootstrap()

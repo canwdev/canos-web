@@ -9,7 +9,7 @@ import {CryptInterceptor} from '@/modules/crypt/crypt.interceptor'
 import {CryptMiddleware} from '@/modules/crypt/crypt.middleware'
 import {UsersModule} from '@/modules/users/users.module'
 import {AuthModule} from '@/modules/auth/auth.module'
-import {dataBasePath, isDev} from '@/enum'
+import {DATA_CONFIG_PATH, isDev} from '@/enum'
 import {join} from 'path'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import * as Path from 'path'
@@ -18,7 +18,7 @@ import * as Path from 'path'
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: Path.join(dataBasePath, 'db', 'db.sqlite'),
+      database: Path.join(DATA_CONFIG_PATH, 'db.sqlite'),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: isDev, // 在开发环境下可以使用，在生产环境中不要使用
     }),
@@ -33,13 +33,11 @@ import * as Path from 'path'
   controllers: [AppController],
   providers: [
     AppService,
-    /*
     // 开启全局请求加密
     {
       provide: APP_INTERCEPTOR,
       useClass: CryptInterceptor,
     },
-*/
     // 在当前 module 下都开启JwtAuth守卫
     // 若要开启一个路由无需登录即可访问的权限，请使用 @SkipAuth() 装饰器
     {
@@ -49,8 +47,8 @@ import * as Path from 'path'
   ],
 })
 export class AppModule {
-  /*  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer) {
     // 设置全局请求加密
     consumer.apply(CryptMiddleware).forRoutes('*')
-  }*/
+  }
 }

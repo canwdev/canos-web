@@ -1,12 +1,12 @@
 import * as log4js from 'log4js'
 import * as Path from 'path'
-import {dataBasePath} from '@/enum'
+import {DATA_BASE_PATH} from '@/enum'
 
 const logConfig = {
   appenders: {
     logFile: {
       type: 'dateFile',
-      filename: Path.join(dataBasePath, 'logs', 'log'), // 根据日期命名
+      filename: Path.join(DATA_BASE_PATH, 'logs', 'log'), // 根据日期命名
       pattern: 'yyyy-MM-dd.log',
       keepFileExt: true,
       alwaysIncludePattern: true,

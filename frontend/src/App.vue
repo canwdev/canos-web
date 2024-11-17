@@ -4,6 +4,7 @@ import AppSub from '@/AppSub.vue'
 import {useSettingsStore} from '@/store/settings'
 import {useEventListener} from '@vueuse/core'
 import {useMainStore} from '@/store/main'
+import {useRouter} from 'vue-router'
 
 const {isAppDarkMode} = useGlobalTheme()
 const mainStore = useMainStore()
@@ -14,6 +15,20 @@ useEventListener(document, 'keydown', (event) => {
   const isCtrlOrMeta = event.ctrlKey || event.metaKey
   if (event.altKey && key === 'q') {
     mainStore.isShowStart = !mainStore.isShowStart
+  }
+})
+const router = useRouter()
+
+onMounted(() => {
+  const currentRoute = router.currentRoute.value
+  const {query} = currentRoute
+
+  // 检查并移除 ck query 参数
+  if (query.ck) {
+    const newQuery = {...query}
+    delete newQuery.ck
+
+    router.replace({query: newQuery})
   }
 })
 </script>

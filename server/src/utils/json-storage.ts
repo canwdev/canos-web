@@ -1,15 +1,34 @@
 import * as fs from 'fs'
 import * as Path from 'path'
+import {deepMerge, isKeyEqual} from './json-storage-utils'
+
+interface IOptions {
+  autoMigrate?: boolean
+}
 
 export class JsonStorage {
   private filePath: string
   private data: any
   private defaultData: any
 
-  constructor(filePath: string, defaultData = {}) {
+  constructor(filePath: string, defaultData = {}, options: IOptions = {autoMigrate: true}) {
     this.filePath = filePath
     this.defaultData = JSON.parse(JSON.stringify(defaultData))
-    this.data = this.readData()
+    let rawData = this.readData()
+
+    if (options.autoMigrate) {
+      // 自动更新原始数据
+      if (rawData && defaultData && !isKeyEqual(rawData, defaultData)) {
+        rawData = deepMerge(defaultData, rawData)
+        // console.log('自动更新原始数据', rawData)
+        this.writeData(rawData)
+      } else if (!rawData && defaultData) {
+        this.writeData(defaultData)
+        rawData = this.readData()
+      }
+    }
+
+    this.data = rawData
     // console.log(this.data)
   }
 
@@ -19,13 +38,13 @@ export class JsonStorage {
       return JSON.parse(rawData)
     } catch (error) {
       // Return defaultData || null if file doesn't exist or has invalid JSON
-      return this.defaultData || null
+      return null
     }
   }
 
-  writeData() {
+  writeData(data = this.data) {
     try {
-      const jsonData = JSON.stringify(this.data, null, 2)
+      const jsonData = JSON.stringify(data, null, 2)
       fs.writeFileSync(this.filePath, jsonData)
     } catch (error) {
       console.error('Error writing data:', error)

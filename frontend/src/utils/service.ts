@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from 'axios'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
 import {LsKeys} from '@/enum'
+import {feDecryptResponse, feEncryptRequest} from '@/utils/my-crypt'
 
 export const getToken = () => {
   const Authorization = localStorage.getItem(LsKeys.LS_KEY_AUTHORIZATION)
@@ -36,6 +37,8 @@ function Service(config: any) {
         config.headers.Authorization = getToken()
       }
 
+      // 加密请求
+      feEncryptRequest(config)
       return config
     },
     (error) => Promise.reject(error),
@@ -47,6 +50,7 @@ function Service(config: any) {
       if (isRawResponse) {
         return response
       }
+      feDecryptResponse(response)
       const {data} = response
 
       // window.$loadingBar.finish()

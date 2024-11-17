@@ -91,6 +91,14 @@ const dynamicValue = computed({
       v-bind="item.props"
     />
 
+    <el-date-picker
+      v-else-if="item.type === StOptionType.DATE_PICKER"
+      v-model="dynamicValue"
+      :disabled="item.disabled"
+      class="option-select"
+      v-bind="item.props"
+    />
+
     <VueRender v-if="item.actionRender" :render-fn="item.actionRender" />
   </el-space>
 </template>
@@ -110,6 +118,9 @@ const dynamicValue = computed({
   }
   .option-select {
     width: 200px;
+    &.el-date-editor {
+      width: 200px;
+    }
   }
   .dynamic-tags {
     width: 250px;
