@@ -52,7 +52,7 @@ async function bootstrap() {
   const params = `?ck=${ck}`
   const {localhostUrl} = printServerRunningOn(host, port, params)
 
-  console.log(`EASY_API_CRYPT_KEY: ${ck}`)
+  console.log(`ck: ${ck}`)
 
   if (isDev) {
     console.log(`API Documents on: ${localhostUrl}/swagger`)

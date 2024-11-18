@@ -11,9 +11,17 @@ export default defineComponent({
     const intervalRef = ref()
 
     onMounted(() => {
+      let lastSecond = -1 // 用于存储上次打印的秒数
       intervalRef.value = setInterval(() => {
-        time.value = moment().format(timeFormat)
-      }, 1000)
+        const now = new Date() // 获取当前时间
+        const currentSecond = now.getSeconds() // 获取当前秒数
+
+        // 检查当前秒数是否与上一次不同
+        if (currentSecond !== lastSecond) {
+          lastSecond = currentSecond // 更新上一次的秒数
+          time.value = moment(now).format(timeFormat)
+        }
+      }, 100) // 每100毫秒检查一次
     })
 
     onBeforeUnmount(() => {

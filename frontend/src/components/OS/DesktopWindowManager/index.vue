@@ -84,7 +84,7 @@ const handleRestore = (index) => {
         :allow-minimum="true"
         v-model:minimized="task.minimized"
         tabindex="0"
-        @keydown.prevent="handleWindowKeydown($event, task, index)"
+        @keydown="handleWindowKeydown($event, task, index)"
       >
         <template #titleBarLeft>
           <ThemedIcon class="window-icon" :name="task.icon" />

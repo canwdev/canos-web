@@ -43,7 +43,10 @@ const handleGo = (url) => {
 
 <style lang="scss" scoped>
 .ip-chooser {
+  height: 100%;
+  overflow: auto;
   padding: 50px 20px;
+  box-sizing: border-box;
 
   .ip-chooser-main {
     max-width: 800px;
@@ -52,8 +55,6 @@ const handleGo = (url) => {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
-    padding: 10px;
     border: 1px solid $primary;
     box-shadow: 0 0 10px $primary_opacity;
     flex-wrap: wrap;
@@ -62,15 +63,20 @@ const handleGo = (url) => {
       width: 300px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      border: 1px solid $color_border;
 
       .list-item {
-        padding: 10px;
+        padding: 16px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 8px;
+        word-break: break-all;
+
+        &:nth-child(2n) {
+          background-color: $color_border;
+        }
 
         &:hover {
           background-color: $color_hover;
@@ -84,10 +90,10 @@ const handleGo = (url) => {
             position: absolute;
             display: block;
             content: '';
-            left: 0;
+            right: 0;
             top: 0;
             bottom: 0;
-            width: 3px;
+            width: 4px;
             background-color: $primary;
           }
         }
@@ -96,8 +102,7 @@ const handleGo = (url) => {
 
     .right-box {
       flex: 1;
-      padding: 10px;
-      border-left: 1px solid $color_border;
+      padding: 30px 10px;
       display: flex;
       align-items: center;
       justify-content: center;

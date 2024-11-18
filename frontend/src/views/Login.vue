@@ -82,7 +82,7 @@ onMounted(() => {
           v-if="!cryptKeyRef || isShowCryptKeyConfig"
           class="card-wrap flex-row-center-gap font-code"
         >
-          <div>请输入接口密钥:</div>
+          <div>请输入接口传输密钥(ck):</div>
           <input
             type="text"
             class="vp-input"

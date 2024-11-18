@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
 import * as Path from 'path'
 import {deepMerge, isKeyEqual} from './json-storage-utils'
 

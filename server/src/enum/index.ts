@@ -18,6 +18,7 @@ console.log('[DATA_BASE_PATH]', DATA_BASE_PATH)
 
 export const DATA_CONFIG_PATH = Path.join(DATA_BASE_PATH, 'config')
 export const DATA_DESKTOP_PATH = Path.join(DATA_BASE_PATH, 'desktop')
+fs.ensureDirSync(DATA_CONFIG_PATH)
 fs.ensureDirSync(DATA_DESKTOP_PATH)
 
 export interface ISecretStore {
@@ -27,7 +28,7 @@ export interface ISecretStore {
 }
 export const secretsStore = new JsonStorage(Path.join(DATA_CONFIG_PATH, 'secrets.json'), {
   JWT_SECRET: crypto.randomBytes(32).toString('hex'),
-  EASY_API_CRYPT_KEY: crypto.randomBytes(32).toString('hex'),
+  EASY_API_CRYPT_KEY: crypto.randomBytes(16).toString('hex'),
 } as ISecretStore)
 
 export const serverInfo: ServerInfo = {
