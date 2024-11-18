@@ -1,0 +1,76 @@
+[
+  {
+    "label": "Google",
+    "value": "https://www.google.com/webhp?igu=1"
+  },
+  {
+    "label": "Material Design Icons",
+    "value": "https://pictogrammers.com/library/mdi/"
+  },
+  {
+    "label": "OS",
+    "children": [
+      {
+        "label": "WINDOWS93",
+        "value": "https://www.windows93.net/"
+      },
+      {
+        "label": "daedalOS",
+        "value": "https://dustinbrett.com/"
+      },
+      {
+        "label": "Win11 in React",
+        "value": "https://win11.blueedge.me/"
+      },
+      {
+        "label": "Win12网页版",
+        "value": "https://tjy-gitnub.github.io/win12/desktop.html"
+      },
+      {
+        "label": "Win11 in Vue",
+        "value": "https://win11.keep-silence.com/#/home"
+      }
+    ]
+  },
+  {
+    "label": "Tools",
+    "children": [
+      {
+        "label": "Grid Layout it",
+        "value": "https://grid.layoutit.com/"
+      },
+      {
+        "label": "CSS Gradient Generator",
+        "value": "https://www.colorzilla.com/gradient-editor/"
+      },
+      {
+        "label": "Can I use",
+        "value": "https://caniuse.com/"
+      },
+      {
+        "label": "CSS clip-path maker",
+        "value": "https://bennettfeely.com/clippy/"
+      },
+      {
+        "label": "JSON Editor Online",
+        "value": "https://jsoneditoronline.org/"
+      },
+      {
+        "label": "在线工具 tool.lu",
+        "value": "https://tool.lu/"
+      },
+      {
+        "label": "二维码生成 cli.im",
+        "value": "https://cli.im/"
+      }
+    ]
+  },
+  {
+    "label": "My Blog",
+    "value": "https://canwdev.github.io/"
+  },
+  {
+    "label": "Page Craft",
+    "value": "https://canwdev.github.io/page-craft-vite/index.html#/"
+  }
+]

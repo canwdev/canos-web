@@ -32,7 +32,7 @@ export default defineConfig(({mode}) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
-        '@server': fileURLToPath(new URL('../server/src', import.meta.url)),
+        '@server': fileURLToPath(new URL('../backend/src', import.meta.url)),
       },
     },
     server: {
