@@ -51,18 +51,19 @@ export const useIconThemes = () => {
 export const useThemedIcon = () => {
   const settingsStore = useSettingsStore()
   const {iconMap} = useIconThemes()
-  const getIconPath = (filename: string, ext?: string) => {
+  const getIconPath = (filename: string, ext?: string, isFallback = false) => {
     if (isSrcHttpUrl(filename)) {
       return filename
     }
 
+    const iconTheme = isFallback ? DEFAULT_ICON_THEME : settingsStore.iconTheme
     if (ext !== undefined) {
       filename = filename + ext
     } else {
-      filename = filename + iconMap.value[settingsStore.iconTheme].fileExt
+      filename = filename + iconMap.value[iconTheme].fileExt
     }
 
-    return `${ICON_BASE_URL}/${settingsStore.iconTheme}/${filename}`
+    return `${ICON_BASE_URL}/${iconTheme}/${filename}`
   }
   return {
     getIconPath,
