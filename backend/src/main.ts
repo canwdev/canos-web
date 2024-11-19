@@ -7,6 +7,7 @@ import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
 import {AllExceptionsFilter} from '@/all-exceptions.filter'
 import {printServerRunningOn} from '@/utils'
 import {isDev, secretsStore} from '@/enum'
+import {ASCII_DIVIDER, BANNER_ASCII_ART} from '@/utils/banner'
 
 program
   .name('canos-web-server')
@@ -48,11 +49,18 @@ async function bootstrap() {
   const host = options.host || process.env.HOST || '0.0.0.0'
   await app.listen(port, host)
 
+  console.log(ASCII_DIVIDER)
+  console.log(BANNER_ASCII_ART)
+  console.log(ASCII_DIVIDER)
   const ck = secretsStore.getData().EASY_API_CRYPT_KEY
   const params = `?ck=${ck}`
-  const {localhostUrl} = printServerRunningOn(host, port, params)
-
   console.log(`ck: ${ck}`)
+  console.log(
+    `Default username/password: root/root\nPlease change the default password as soon as possible.`,
+  )
+  console.log(ASCII_DIVIDER)
+
+  const {localhostUrl} = printServerRunningOn(host, port, params)
 
   if (isDev) {
     console.log(`API Documents on: ${localhostUrl}/swagger`)

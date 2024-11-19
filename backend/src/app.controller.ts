@@ -1,6 +1,8 @@
 import {Controller, Get, Post} from '@nestjs/common'
 import {AppService} from './app.service'
 import {SkipAuth} from '@/modules/auth/roles.decorator'
+import {serverInfo} from '@/enum'
+import {ServerInfo} from '@/types/server'
 
 @Controller('server')
 export class AppController {
@@ -8,13 +10,17 @@ export class AppController {
 
   @SkipAuth()
   @Get()
-  getHello() {
-    return 'Server Online'
+  getHello(): Partial<ServerInfo> {
+    return {
+      name: serverInfo.name,
+      version: serverInfo.version,
+      hostUrls: serverInfo.hostUrls,
+    }
   }
 
   @Get('server-info')
   getServerInfo() {
-    return this.appService.getServerInfo()
+    return serverInfo
   }
 
   @Post('shutdown')
@@ -22,6 +28,6 @@ export class AppController {
     setTimeout(() => {
       process.exit(0)
     }, 100)
-    return 'ok'
+    return {message: 'shutdown command will be executed'}
   }
 }

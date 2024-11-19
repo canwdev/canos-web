@@ -39,7 +39,7 @@ const handleLogin = async (data) => {
       window.$message.error('Invalid token!')
       return
     }
-    // console.log(access_token)
+    console.log('set access_token', access_token)
     localStorage.setItem(LsKeys.LS_KEY_AUTHORIZATION, access_token)
 
     if (route.query.redirect) {
@@ -104,9 +104,9 @@ onMounted(() => {
           />
 
           <div class="login-actions">
-            <!--<button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">-->
-            <!--  IP-->
-            <!--</button>-->
+            <button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">
+              <span class="mdi mdi-ip-network"></span>
+            </button>
             <button class="vp-button" type="button" @click="isShowCryptKeyConfig = true">
               <span class="mdi mdi-security-network"></span>
             </button>

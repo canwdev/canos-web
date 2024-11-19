@@ -82,13 +82,20 @@ export const feEncryptRequest = (config) => {
  * 解密请求
  */
 export const feDecryptResponse = (response) => {
-  const {data} = response
-  if (data && data.main) {
-    const decrypted = myApiEncrypt.decrypt(data.main, cryptKeyRef.value) || 'null'
-    const dd = JSON.parse(decrypted)
-    if (isDev && dd) {
-      console.log('res [data]', dd)
+  try {
+    const {data} = response
+    if (data && data.main) {
+      const decrypted = myApiEncrypt.decrypt(data.main, cryptKeyRef.value) || 'null'
+      const dd = JSON.parse(decrypted)
+      if (isDev && dd) {
+        console.log('res [data]', dd)
+      }
+      response.data = dd
     }
-    response.data = dd
+  } catch (error: any) {
+    window.$message.error(
+      `Decryption response error, please make sure you set the correct ck! Error: ${error.message}`,
+    )
+    throw error
   }
 }

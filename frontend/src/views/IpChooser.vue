@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {useSystemStore} from '@/store/system'
 import {useQRCode} from '@vueuse/integrations/useQRCode'
+import {copyWithToast} from '@/utils'
 
 const systemStore = useSystemStore()
-const currentUrl = ref(location.href)
+const currentUrl = ref('')
 
 const qrcode = useQRCode(currentUrl, {
   errorCorrectionLevel: 'H',
@@ -17,26 +18,50 @@ const handleGo = (url) => {
 
 <template>
   <div class="ip-chooser">
-    <div class="ip-chooser-main vp-bg font-code" v-if="systemStore.serverInfo">
-      <div class="left-box">
-        <div
-          v-for="url in systemStore.serverInfo.hostUrls"
-          @click="currentUrl = url"
-          class="list-item"
-          :class="{active: url === currentUrl}"
-        >
-          {{ url }}
-          <button class="btn-go btn-no-style" @click="handleGo(url)">🔗</button>
-        </div>
+    <template v-if="systemStore.serverInfo">
+      <div class="ip-title">
+        <RouterLink :to="{name: 'HomeView'}">
+          <span class="mdi mdi-home"></span>
+        </RouterLink>
+        Welcome to {{ systemStore.serverInfo?.name }}!
       </div>
-      <div class="right-box">
-        <div class="qr-img-wrap">
-          <img :src="qrcode" class="qr-img" />
-          <div class="url-text">
-            <input class="vp-input" v-model="currentUrl" />
+      <div class="ip-title">
+        <span class="mdi mdi-ip-network"></span>
+        Select an IP address to access:
+      </div>
+      <div class="ip-chooser-main vp-bg font-code">
+        <div class="left-box">
+          <div
+            v-for="url in systemStore.serverInfo.hostUrls"
+            @click="currentUrl = url"
+            class="list-item"
+            :class="{active: url === currentUrl}"
+          >
+            {{ url }}
+            <button class="btn-go btn-no-style" @click="copyWithToast(url)">
+              <span class="mdi mdi-content-copy"></span>
+            </button>
+            <button class="btn-go btn-no-style" @click="handleGo(url)">
+              <span class="mdi mdi-open-in-new"></span>
+            </button>
+          </div>
+        </div>
+        <div class="right-box">
+          <div class="qr-img-wrap">
+            <img v-if="qrcode && currentUrl" :src="qrcode" class="qr-img" />
+            <div class="url-text">
+              <textarea
+                class="vp-input"
+                v-model="currentUrl"
+                placeholder="Select the URL on the left or input"
+              />
+            </div>
           </div>
         </div>
       </div>
+    </template>
+    <div class="ip-chooser-main vp-panel" style="padding: 10px 20px" v-else>
+      Backend server not available. <a href="">Reload</a>
     </div>
   </div>
 </template>
@@ -48,8 +73,16 @@ const handleGo = (url) => {
   padding: 50px 20px;
   box-sizing: border-box;
 
+  .ip-title {
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
   .ip-chooser-main {
-    max-width: 800px;
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -63,7 +96,13 @@ const handleGo = (url) => {
       width: 300px;
       display: flex;
       flex-direction: column;
-      border: 1px solid $color_border;
+      border-right: 1px solid $color_border;
+
+      @media screen and (max-width: 500px) {
+        width: 100%;
+        border-right: 0;
+        border-bottom: 1px solid $color_border;
+      }
 
       .list-item {
         padding: 16px;
@@ -102,7 +141,7 @@ const handleGo = (url) => {
 
     .right-box {
       flex: 1;
-      padding: 30px 10px;
+      padding: 50px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -112,15 +151,17 @@ const handleGo = (url) => {
           width: 260px;
           height: 260px;
           display: block;
+          border-radius: 4px;
         }
 
         .url-text {
           margin-top: 8px;
           text-align: center;
-          input {
+          .vp-input {
+            font-size: 14px;
             width: 100%;
-            text-align: center;
             line-height: 1;
+            height: 60px;
           }
         }
       }

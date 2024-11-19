@@ -77,7 +77,7 @@ router.beforeEach(async (to, from, next) => {
 
   // 检查服务器是否可用
   try {
-    await serverApi.getHello()
+    systemStore.serverInfo = (await serverApi.getHello()) as unknown as ServerInfo
     systemStore.isBackendAvailable = true
   } catch (e) {
     console.error(e)
@@ -99,7 +99,7 @@ router.beforeEach(async (to, from, next) => {
   if (systemStore.isBackendAvailable && token) {
     try {
       mainStore.userInfo = await usersApi.userGetInfo()
-      systemStore.serverInfo = (await serverApi.getServerInfo()) as ServerInfo
+      systemStore.serverInfo = (await serverApi.getServerInfo()) as unknown as ServerInfo
     } catch (e) {
       return next({
         name: 'LoginPage',

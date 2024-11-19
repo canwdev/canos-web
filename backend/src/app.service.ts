@@ -6,9 +6,6 @@ import {serverInfo} from '@/enum'
 export class AppService {
   private readonly myCrypt: MyCrypt
 
-  getServerInfo() {
-    return serverInfo
-  }
   getMyCrypt() {
     return this.myCrypt
   }

@@ -48,6 +48,30 @@ export const copyToClipboard = (text): Promise<void> => {
   })
 }
 
+export const copyWithToast = async (val, isShowVal = false) => {
+  if (!val) {
+    return
+  }
+  if (typeof val === 'object') {
+    console.info('object', val)
+    val = JSON.stringify(val, null, 2)
+  }
+  console.info('copy:', val)
+  await copyToClipboard(val)
+  let showVal = ''
+  if (isShowVal) {
+    if (val.length > 50) {
+      showVal = val.slice(0, 50) + '...'
+    } else {
+      showVal = val
+    }
+  }
+  if (showVal) {
+    showVal = ': ' + showVal
+  }
+  window.$message.success(`Copied${showVal}`)
+}
+
 export const isCharacterKeyPress = (evt) => {
   if (typeof evt.which == 'undefined') {
     // This is IE, which only fires keypress events for printable keys
