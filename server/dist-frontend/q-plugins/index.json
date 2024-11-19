@@ -1,8 +1,0 @@
-{
-  "plugins": [
-    "basic.js",
-    "base64.js",
-    "string-man.js",
-    "system-utils.js"
-  ]
-}

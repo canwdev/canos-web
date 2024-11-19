@@ -3,8 +3,8 @@
 /node_modules
 /data/*
 /dist-frontend/
-/dist-windows/
-/*.exe
+/can-os-web-windows/
+*.exe
 /*.blob
 
 # Logs

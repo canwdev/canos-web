@@ -22,7 +22,7 @@ export default defineConfig(({mode}) => {
     },
     base: env.VITE_PROXY_BASE || './',
     build: {
-      outDir: '../server/dist-frontend',
+      outDir: '../backend/dist-frontend',
       minify: 'terser',
       emptyOutDir: true,
       rollupOptions: {
