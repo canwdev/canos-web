@@ -8,10 +8,28 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {})
+const visible = ref(false)
+
+let timer = ref()
+const handleVisibleChange = (val) => {
+  clearTimeout(timer.value)
+  if (!val) {
+    timer.value = setTimeout(() => {
+      visible.value = false
+    }, 300)
+  } else {
+    visible.value = true
+  }
+}
 </script>
 
 <template>
-  <el-dropdown v-bind="props" options="">
+  <el-dropdown
+    v-bind="props"
+    :options="null"
+    popper-class="vp-dropdown-popper-wrap"
+    @visible-change="handleVisibleChange"
+  >
     <slot>
       <button class="btn-no-style">
         <svg
@@ -30,7 +48,21 @@ const props = withDefaults(defineProps<Props>(), {})
       </button>
     </slot>
     <template #dropdown>
-      <QuickOptions :options="options" visible :show-index="false" />
+      <QuickOptions v-if="visible" :options="options" visible :show-index="false" />
     </template>
   </el-dropdown>
 </template>
+
+<style lang="scss">
+.vp-dropdown-popper-wrap {
+  .el-dropdown__list {
+    & > .quick-options {
+      border: none !important;
+      overflow: hidden;
+      .quick-options {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+}
+</style>

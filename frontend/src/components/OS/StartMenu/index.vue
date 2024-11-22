@@ -147,7 +147,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 .start-menu {
   width: 350px;
   //background-color: rgba(255, 255, 255, 0.8);
-  //backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
   position: fixed;
   bottom: $taskbar_height;
@@ -220,6 +220,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
       position: sticky;
       top: 0;
       z-index: 10;
+      backdrop-filter: blur(10px);
     }
   }
 

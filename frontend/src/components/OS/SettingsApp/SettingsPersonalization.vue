@@ -48,12 +48,14 @@ const optionList = computed((): StOptionItem[] => {
         {
           label: '主题色',
           key: 'themeColor',
+          iconClass: 'mdi mdi-palette',
           store: settingsStore,
           type: StOptionType.COLOR_PICKER,
         },
         {
           label: '桌面壁纸',
           key: 'desktopWallpaper',
+          iconClass: 'mdi mdi-wallpaper',
           store: settingsStore,
           type:
             settingsStore.desktopWallpaper === DESKTOP_FILE_FLAG ? undefined : StOptionType.INPUT,
@@ -104,6 +106,7 @@ const optionList = computed((): StOptionItem[] => {
         settingsStore.desktopWallpaper && {
           label: '壁纸尺寸',
           key: 'desktopBackgroundSize',
+          iconClass: 'mdi mdi-image-size-select-large',
           store: settingsStore,
           type: StOptionType.SELECT,
           options: desktopBackgroundSizeOptions,
@@ -111,12 +114,14 @@ const optionList = computed((): StOptionItem[] => {
         {
           label: '桌面背景色',
           key: 'desktopBgColor',
+          iconClass: 'mdi mdi-format-color-fill',
           store: settingsStore,
           type: StOptionType.COLOR_PICKER,
         },
         {
           label: '明暗模式',
           key: 'ldTheme',
+          iconClass: 'mdi mdi-brightness-4',
           store: settingsStore,
           type: StOptionType.MULTIPLE_SWITCH,
           options: ldThemeOptions,
@@ -124,6 +129,7 @@ const optionList = computed((): StOptionItem[] => {
         {
           label: '系统主题',
           key: 'customTheme',
+          iconClass: 'mdi mdi-palette-swatch-variant',
           store: settingsStore,
           type: StOptionType.SELECT,
           options: themeOptions.value,
@@ -131,6 +137,7 @@ const optionList = computed((): StOptionItem[] => {
         {
           label: '图标主题',
           key: 'iconTheme',
+          iconClass: 'mdi mdi-star-box',
           store: settingsStore,
           type: StOptionType.SELECT,
           options: iconOptions.value,
@@ -139,6 +146,7 @@ const optionList = computed((): StOptionItem[] => {
           label: 'Disable Animation',
           subtitle: 'E-Ink optimization',
           key: 'disableAnimation',
+          iconClass: 'mdi mdi-transition',
           store: settingsStore,
           type: StOptionType.SWITCH,
         },

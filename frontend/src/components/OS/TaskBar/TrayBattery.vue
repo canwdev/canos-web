@@ -23,17 +23,19 @@ const titleDisplay = computed(() => {
 </script>
 
 <template>
-  <div class="tray-icon battery-icon-wrap" :title="titleDisplay">
-    <span>{{ (level * 100).toFixed(0) }}%</span>
-    <span v-if="charging">🗲</span>
+  <div class="battery-icon-wrap" :title="titleDisplay">
+    <div class="battery-icon">
+      <span>{{ (level * 100).toFixed(0) }}%</span>
+      <span v-if="charging" class="mdi mdi-lightning-bolt"></span>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.battery-icon-wrap {
+.battery-icon {
   position: relative;
   border: 1px solid currentColor;
-  font-size: 12px;
+  font-size: 10px;
   padding: 2px 4px;
   border-radius: 4px;
 }

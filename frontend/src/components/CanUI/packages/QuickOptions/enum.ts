@@ -8,6 +8,7 @@ export type QuickOptionItem = {
   html?: string
   // 如果传入，展示img为图标
   icon?: string
+  iconClass?: string
   iconRender?: any
   // 渲染函数
   render?: any

@@ -130,6 +130,11 @@ const handleItemClick = (e: Event, fn: any) => {
     z-index: 2;
     border-radius: 4px 4px 0 0;
 
+    @media screen and (max-width: $mq_mobile_width) {
+      min-height: 36px;
+      padding: 4px 12px;
+    }
+
     .p-left,
     .p-right {
       display: flex;
@@ -163,6 +168,12 @@ const handleItemClick = (e: Event, fn: any) => {
       justify-content: space-between;
       position: relative;
       transition: all 0.3s;
+      gap: 8px;
+
+      @media screen and (max-width: $mq_mobile_width) {
+        padding: 4px 12px;
+        gap: 4px;
+      }
 
       &._drag-over {
         background-color: $primary_opacity;
@@ -179,6 +190,12 @@ const handleItemClick = (e: Event, fn: any) => {
         display: flex;
         align-items: center;
         gap: 8px;
+
+        @media screen and (max-width: $mq_mobile_width) {
+          gap: 4px;
+          font-size: 14px;
+        }
+
         .item-icon {
           flex-shrink: 0;
           width: 32px;
@@ -187,7 +204,16 @@ const handleItemClick = (e: Event, fn: any) => {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px;
+          font-size: 26px;
+          @media screen and (max-width: $mq_mobile_width) {
+            width: 26px;
+            height: 26px;
+            font-size: 20px;
+          }
+          i,
+          span {
+            font-size: inherit;
+          }
           img {
             width: 100%;
             height: 100%;
@@ -209,6 +235,7 @@ const handleItemClick = (e: Event, fn: any) => {
           font-size: 12px;
           font-weight: 400;
           opacity: 0.6;
+          margin-top: 2px;
         }
       }
     }

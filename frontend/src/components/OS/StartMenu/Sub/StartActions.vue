@@ -25,6 +25,7 @@ const doLogout = () => {
 const doShutdown = async () => {
   systemStore.shutdown()
   await serverApi.shutdown()
+  window.close()
   location.reload()
 }
 const confirmShutdown = () => {
@@ -42,10 +43,23 @@ const handleOpenRoute = (to) => {
   systemStore.createTaskById('os.web_browser', {url})
   emit('actionOpened')
 }
+
+const handleReload = () => {
+  location.reload()
+}
 </script>
 
 <template>
   <div class="start-actions">
+    <button
+      v-if="!systemStore.isBackendAvailable"
+      class="action-button"
+      @click="handleReload"
+      title="Reload"
+    >
+      <span class="mdi mdi-refresh"></span>
+    </button>
+
     <button class="action-button" @click="$emit('startApp', 'os.settings')" title="Setting">
       <span class="mdi mdi-cog"></span>
     </button>

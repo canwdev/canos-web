@@ -99,6 +99,15 @@ const dynamicValue = computed({
       v-bind="item.props"
     />
 
+    <button
+      v-else-if="item.type === StOptionType.BUTTON"
+      :disabled="item.disabled"
+      v-bind="item.props"
+      class="vp-button"
+    >
+      {{ item.value }}
+    </button>
+
     <VueRender v-if="item.actionRender" :render-fn="item.actionRender" />
   </el-space>
 </template>

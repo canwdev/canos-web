@@ -26,12 +26,14 @@ export default defineComponent({
             {
               key: 'frontend_version',
               label: '前端版本',
+              iconClass: 'mdi mdi-application-outline',
               subtitle: pkg.name,
               actionRender: h('div', pkg.version),
             },
             {
               key: 'backend_version',
               label: '后端服务器版本',
+              iconClass: 'mdi mdi-server-network',
               subtitle: systemStore.isBackendAvailable
                 ? systemStore.serverInfo?.name
                 : '后端服务不可用',
@@ -43,6 +45,7 @@ export default defineComponent({
             {
               key: 'github',
               label: '仓库地址',
+              iconClass: 'mdi mdi-git',
               subtitle: `作者: Canwdev`,
               actionRender: h(
                 'a',
@@ -63,6 +66,7 @@ export default defineComponent({
             {
               label: '多窗口模式',
               key: 'isWindowed',
+              iconClass: 'mdi mdi-dock-window',
               store: settingsStore,
               type: StOptionType.SWITCH,
             },

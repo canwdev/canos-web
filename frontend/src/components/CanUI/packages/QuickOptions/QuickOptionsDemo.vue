@@ -6,6 +6,7 @@ import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickCont
 const menuOptions = ref<QuickOptionItem[]>([
   {
     label: '普通菜单项',
+    iconClass: 'mdi mdi mdi-shape-plus-outline',
     props: {
       onClick: () => {
         window.$message.success('普通菜单项 Click')

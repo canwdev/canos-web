@@ -83,9 +83,11 @@ const isOverDropZone = ref(false)
   <div ref="dropZoneRef" :class="{isOverDropZone}" class="desktop-wallpaper" :style="bgStyle">
     <slot></slot>
 
-    <span class="watermark-tip font-code">{{
-      `${!systemStore.isBackendAvailable ? '服务器离线模式' : ''}`
-    }}</span>
+    <template v-if="!systemStore.isBackendAvailable">
+      <span v-for="i in 4" :key="i" class="watermark-tip font-code" :class="`no-${i}`"
+        >服务器离线模式</span
+      >
+    </template>
   </div>
 </template>
 
@@ -110,12 +112,27 @@ const isOverDropZone = ref(false)
 
   .watermark-tip {
     position: absolute;
-    bottom: 48px;
-    right: 8px;
     white-space: break-spaces;
     text-align: right;
     color: white;
-    text-shadow: 1px 1px 2px rgb(0, 0, 0);
+    text-shadow: 1px 1px 1px rgb(0, 0, 0);
+    $x: 8px;
+    &.no-1 {
+      top: $x;
+      left: $x;
+    }
+    &.no-2 {
+      top: $x;
+      right: $x;
+    }
+    &.no-3 {
+      bottom: $taskbar_height + $x;
+      right: $x;
+    }
+    &.no-4 {
+      bottom: $taskbar_height + $x;
+      left: $x;
+    }
   }
 }
 </style>

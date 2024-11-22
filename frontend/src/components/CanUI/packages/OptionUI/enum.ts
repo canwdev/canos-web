@@ -50,6 +50,7 @@ export enum StOptionType {
   COLOR_PICKER = 'color_picker',
   DYNAMIC_TAGS = 'dynamic_tags',
   DATE_PICKER = 'date_picker',
+  BUTTON = 'button',
 }
 
 export type SwitchOption = {

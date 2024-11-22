@@ -206,7 +206,7 @@ const taskbarList = computed(() => {
     border: none;
     box-sizing: border-box;
     //background-color: rgba(255, 255, 255, 0.8);
-    //backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     box-shadow: none;
 
     ._fc {
@@ -257,10 +257,20 @@ const taskbarList = computed(() => {
     .task-tray {
       .tray-list {
         height: 100%;
-        padding: 0 0 0 8px;
         display: flex;
         align-items: center;
-        gap: 4px;
+
+        & > div {
+          padding-left: 8px;
+          padding-right: 8px;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          &:hover {
+            background-color: $color_border;
+          }
+        }
 
         .tray-icon {
           display: inline-flex;

@@ -47,8 +47,9 @@ export default defineComponent({
           key: 'server',
           children: [
             {
-              key: 'hostname',
               label: '服务器系统信息',
+              key: 'hostname',
+              iconClass: 'mdi mdi-desktop-classic',
               actionRender() {
                 return valueRender(`Hostname: ${systemStore.serverInfo!.os.hostname}
 Platform: ${systemStore.serverInfo!.os.platform} | Arch: ${systemStore.serverInfo!.os.arch}
@@ -65,6 +66,8 @@ CPU: ${systemStore.serverInfo!.os.cpu}
           children: [
             {
               label: '浏览器网络',
+              key: 'lan',
+              iconClass: 'mdi mdi-lan',
               actionRender() {
                 return valueRender(`Is Online: ${isOnline.value}
 Offline At: ${offlineAt.value}
@@ -77,6 +80,8 @@ Type: ${type.value}`)
             },
             {
               label: '电池',
+              key: 'battery',
+              iconClass: 'mdi mdi-battery',
               actionRender() {
                 return h('div', {
                   style: 'text-align: right',
@@ -87,6 +92,7 @@ Type: ${type.value}`)
             {
               label: '设备像素比',
               key: 'pixelRatio',
+              iconClass: 'mdi mdi-monitor-screenshot',
               actionRender() {
                 return h('div', {
                   innerHTML: `${pixelRatio.value || 'N/A'}`,
@@ -103,6 +109,7 @@ Type: ${type.value}`)
             {
               label: 'Devices',
               key: 'devices',
+              iconClass: 'mdi mdi-memory',
               actionRender: h(
                 'button',
                 {
@@ -117,6 +124,8 @@ Type: ${type.value}`)
             ...Array.from(devices.value).map((i) => {
               return {
                 label: i.label || '/',
+                key: i.devicecId,
+                iconClass: 'mdi mdi-chip',
                 subtitle: i.kind,
                 actionRender: valueRender(`deviceId: ${i.deviceId || '/'}
 groupId: ${i.groupId || '/'}`),

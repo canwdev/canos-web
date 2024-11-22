@@ -450,8 +450,11 @@ export default defineComponent({
 
     .item-icon {
       display: inline-flex;
-      width: 24px;
-      height: 24px;
+      align-content: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      font-size: 16px;
       img {
         width: 100%;
         height: 100%;
