@@ -5,7 +5,7 @@ import {Like, Repository} from 'typeorm'
 import {CreateEditUserDto} from '@/modules/users/user.dto'
 import * as bcrypt from 'bcryptjs'
 import {DefaultRootPassword, DefaultRootUsername, IUserInfo, UserRole} from '@/types/user'
-import {serverLog} from '@/utils/server-log'
+import {serverLogger} from '@/utils/server-log'
 
 @Injectable()
 export class UsersService {
@@ -168,9 +168,9 @@ export class UsersService {
         roles: [UserRole.admin],
       }
       await this.createUser(dto)
-      serverLog.log(`Default user created, please change password!`, dto)
+      serverLogger.log(`Default user created, please change password!`, dto)
     } else {
-      serverLog.log('User table already has records.')
+      serverLogger.log('User table already has records.')
     }
   }
 }

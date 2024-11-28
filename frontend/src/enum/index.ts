@@ -9,7 +9,8 @@ export const isProd = import.meta.env.MODE === 'production'
 
 export const LsKeys = {
   SETTINGS_STORAGE: 'ls_key_canos_settings',
-  LS_KEY_AUTHORIZATION: 'canos_web_authorization',
+  LS_KEY_AUTHORIZATION_TOKEN: 'canos_web_authorization_token',
+  LS_KEY_REFRESH_TOKEN: 'canos_web_refresh_token',
   STARED_PATH: 'canos_web_explorer_stared_path',
   WALLPAPER_STORAGE: 'canos_web_wallpaper_storage',
   SHOW_HIDDEN_FILES: 'canos_web_explorer_show_hidden_files',

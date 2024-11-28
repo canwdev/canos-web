@@ -34,13 +34,15 @@ const handleLogin = async (data) => {
     let {username, password} = data
 
     const res = await usersApi.userLogin(username, password)
-    const {access_token} = res as unknown as any
-    if (!access_token) {
-      window.$message.error('Invalid token!')
+    console.log('[userLogin] res', res)
+
+    const {authorizationToken, refreshToken} = res as unknown as any
+    if (!authorizationToken || !refreshToken) {
+      window.$message.error('Invalid backend token!')
       return
     }
-    console.log('set access_token', access_token)
-    localStorage.setItem(LsKeys.LS_KEY_AUTHORIZATION, access_token)
+    localStorage.setItem(LsKeys.LS_KEY_AUTHORIZATION_TOKEN, authorizationToken)
+    localStorage.setItem(LsKeys.LS_KEY_REFRESH_TOKEN, refreshToken)
 
     if (route.query.redirect) {
       await router.push({path: route.query.redirect as string})
@@ -75,13 +77,10 @@ onMounted(() => {
 <template>
   <div class="login-view">
     <DesktopWallpaper>
-      <ViewPortWindow visible :show-close="false">
-        <template #titleBarLeft>Login</template>
+      <div class="login-box-wrapper vp-panel" v-loading="isLoading">
+        <div class="l-title">Login</div>
 
-        <div
-          v-if="!cryptKeyRef || isShowCryptKeyConfig"
-          class="card-wrap flex-row-center-gap font-code"
-        >
+        <div v-if="!cryptKeyRef || isShowCryptKeyConfig" class="flex-row-center-gap font-code">
           <div>请输入接口传输密钥(ck):</div>
           <input
             type="text"
@@ -90,18 +89,18 @@ onMounted(() => {
             style="width: 100%"
             placeholder="请输入接口密钥"
           />
-          <button class="vp-button primary" @click="saveCryptKey()" :disabled="!cryptKeyEditing">
+          <button
+            class="vp-button primary"
+            @click="saveCryptKey()"
+            :disabled="!cryptKeyEditing"
+            style="margin-left: auto"
+          >
             Submit
           </button>
         </div>
 
-        <div v-else class="card-wrap">
-          <LoginForm
-            v-loading="isLoading"
-            ref="loginFormRef"
-            @submit="handleLogin"
-            :disabled="isLoading"
-          />
+        <template v-else>
+          <LoginForm ref="loginFormRef" @submit="handleLogin" :disabled="isLoading" />
 
           <div class="login-actions">
             <button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">
@@ -116,11 +115,11 @@ onMounted(() => {
               @click="beforeLogin"
               :disabled="isLoading"
             >
-              Login{{ isLoading ? 'ing...' : '' }}
+              Login
             </button>
           </div>
-        </div>
-      </ViewPortWindow>
+        </template>
+      </div>
     </DesktopWallpaper>
   </div>
 </template>
@@ -128,6 +127,14 @@ onMounted(() => {
 <style lang="scss" scoped>
 .login-view {
   height: 100%;
+  overflow: auto;
+
+  .desktop-wallpaper {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    position: unset;
+  }
 
   :deep(.n-layout-scroll-container) {
     display: flex;
@@ -137,8 +144,15 @@ onMounted(() => {
       align-items: flex-start;
     }
   }
-  .card-wrap {
-    padding: 20px;
+  .login-box-wrapper {
+    padding: 16px;
+    margin: 0 auto;
+    width: 340px;
+
+    .l-title {
+      margin-bottom: 24px;
+      text-align: center;
+    }
   }
 
   .btn-login {

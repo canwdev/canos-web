@@ -100,12 +100,17 @@ const handleContextMenu = (event) => {
         <input type="checkbox" v-model="isShowMenu" />
         显示菜单
       </label>
+
       <QuickOptions
-        :is-static="isStaticMenu"
-        v-model:visible="isShowMenu"
+        class="vp-bg"
+        v-if="isStaticMenu"
+        is-static
+        visible
         :options="menuOptions"
         show-index
       />
+
+      <QuickOptions v-else v-model:visible="isShowMenu" :options="menuOptions" show-index />
     </div>
     <div class="context-menu-demo" @contextmenu.prevent="handleContextMenu">
       <div class="inner-text">右键菜单 Demo，在此区域点击右键</div>

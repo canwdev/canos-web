@@ -1,7 +1,7 @@
 import {Injectable, CanActivate, ExecutionContext} from '@nestjs/common'
 import {Reflector} from '@nestjs/core'
 import {ROLES_KEY} from './roles.decorator'
-import {serverLog} from '@/utils/server-log'
+import {serverLogger} from '@/utils/server-log'
 import {UsersService} from '@/modules/users/users.service'
 import {UserRole} from '@/types/user'
 
@@ -29,7 +29,7 @@ export class RolesGuard implements CanActivate {
     // 从 JWT 获取当前用户 id
     const req = context.switchToHttp().getRequest()
     const user = await this.usersService.getUserProfile(req.user.sub)
-    serverLog.trace('[RolesGuard][canActivate]', roles, user)
+    serverLogger.trace('[RolesGuard][canActivate]', roles, user)
 
     // 检查用户角色
     return (

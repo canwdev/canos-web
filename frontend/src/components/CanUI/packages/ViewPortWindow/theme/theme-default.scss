@@ -100,6 +100,8 @@
     &:not(:disabled) {
       &:hover {
         border-color: $primary;
+        outline: 1px solid $primary;
+        outline-offset: -1px;
       }
       &:active {
         opacity: .6;

@@ -1,5 +1,5 @@
 import Service from '@/utils/service'
-import {HOST_URL} from '@/enum'
+import {HOST_URL, LsKeys} from '@/enum'
 import {CreateEditUserDto} from '@server/modules/users/user.dto'
 
 const service = Service({

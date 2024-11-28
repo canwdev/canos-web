@@ -1,10 +1,9 @@
 import {ExtractJwt, Strategy} from 'passport-jwt'
 import {PassportStrategy} from '@nestjs/passport'
-import {Injectable} from '@nestjs/common'
+import {ForbiddenException, Injectable, UnauthorizedException} from '@nestjs/common'
 import {APP_JWT_SECRET} from '@/enum'
-import {IUserInfo} from '@/types/user'
 import {UsersService} from '@/modules/users/users.service'
-import {serverLog} from '@/utils/server-log'
+import {serverLogger} from '@/utils/server-log'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -21,10 +20,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload) {
     // 检查用户是否可用
     const user = await this.usersService.findUser({id: payload.sub})
-    if (!user || user.disabled) {
-      return null
+    if (!user) {
+      throw new UnauthorizedException()
     }
-    serverLog.trace('[JwtStrategy][validate]', payload)
+    if (user.disabled) {
+      throw new ForbiddenException()
+    }
+    serverLogger.trace('[JwtStrategy][validate]', payload)
     return payload
   }
 }

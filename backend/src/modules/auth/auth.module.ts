@@ -3,7 +3,7 @@ import {AuthService} from './auth.service'
 import {AuthController} from './auth.controller'
 import {UsersModule} from '../users/users.module'
 import {JwtModule} from '@nestjs/jwt'
-import {APP_JWT_SECRET, isDev, JWT_TOKEN_EXPIRE} from '@/enum'
+import {APP_JWT_SECRET, isDev} from '@/enum'
 import {LocalStrategy} from '@/modules/auth/local.strategy'
 import {PassportModule} from '@nestjs/passport'
 import {JwtStrategy} from '@/modules/auth/jwt.strategy'
@@ -26,7 +26,7 @@ const envFilePath = isDev
     JwtModule.register({
       global: true,
       secret: APP_JWT_SECRET,
-      signOptions: {expiresIn: JWT_TOKEN_EXPIRE},
+      signOptions: {expiresIn: '15m'},
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

@@ -75,7 +75,6 @@ export default defineComponent({
     border-right: 1px solid $color_border;
 
     .mc-tab-list {
-      overflow: auto;
       .list-item {
         padding: 4px 8px;
         transition: background-color 0.3s;

@@ -3,14 +3,14 @@ import {isDev, LS_KEY_EASY_API_CRYPT_KEY} from '@/enum'
 import {useStorage} from '@vueuse/core'
 
 export class MyCrypt {
-  private readonly secretKey: string
+  private readonly getKey: () => string
 
-  constructor(key: string) {
+  constructor(getKey?: () => string) {
     // Must be 256 bits (32 characters), you may consider validating this input in production
-    this.secretKey = key
+    this.getKey = getKey || (() => '')
   }
 
-  encrypt(text: string, key = this.secretKey): string {
+  encrypt(text: string, key = this.getKey()): string {
     if (!text) {
       return text
     }
@@ -29,7 +29,7 @@ export class MyCrypt {
     return `${iv.toString(CryptoJS.enc.Hex)}:${encrypted.ciphertext.toString(CryptoJS.enc.Hex)}`
   }
 
-  decrypt(text: string, key = this.secretKey): string {
+  decrypt(text: string, key = this.getKey()): string {
     if (!text) {
       return text
     }
@@ -53,19 +53,22 @@ export class MyCrypt {
 
 export const cryptKeyRef = useStorage(LS_KEY_EASY_API_CRYPT_KEY, '')
 
-export const myApiEncrypt = new MyCrypt('')
+export const myApiEncrypt = new MyCrypt(() => cryptKeyRef.value)
 
 /**
  * 加密请求
  * @param config axios service.interceptors.request.use 的配置
  */
 export const feEncryptRequest = (config) => {
+  if (config.skipEncrypt) {
+    return
+  }
   if (config.data && !(config.data instanceof FormData)) {
     if (isDev) {
       console.log('req [data]', config.data)
     }
     config.data = {
-      main: myApiEncrypt.encrypt(JSON.stringify(config.data), cryptKeyRef.value),
+      main: myApiEncrypt.encrypt(JSON.stringify(config.data)),
     }
   }
   if (config.params) {
@@ -73,7 +76,7 @@ export const feEncryptRequest = (config) => {
       console.log('req [params]', config.params)
     }
     config.params = {
-      main: myApiEncrypt.encrypt(JSON.stringify(config.params), cryptKeyRef.value),
+      main: myApiEncrypt.encrypt(JSON.stringify(config.params)),
     }
   }
 }
@@ -85,7 +88,7 @@ export const feDecryptResponse = (response) => {
   try {
     const {data} = response
     if (data && data.main) {
-      const decrypted = myApiEncrypt.decrypt(data.main, cryptKeyRef.value) || 'null'
+      const decrypted = myApiEncrypt.decrypt(data.main) || 'null'
       const dd = JSON.parse(decrypted)
       if (isDev && dd) {
         console.log('res [data]', dd)

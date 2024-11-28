@@ -85,7 +85,7 @@ router.beforeEach(async (to, from, next) => {
     return next()
   }
 
-  const token = localStorage.getItem(LsKeys.LS_KEY_AUTHORIZATION)
+  const token = localStorage.getItem(LsKeys.LS_KEY_AUTHORIZATION_TOKEN)
   if (!to.meta?.skipLogin && !token) {
     return next({
       name: 'LoginPage',

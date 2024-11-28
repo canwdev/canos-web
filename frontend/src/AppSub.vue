@@ -11,7 +11,8 @@ window.$dialog = ElMessageBox
 const router = useRouter()
 
 useGlobalBusOn(GlobalEvents.GLOBAL_EVENT_LOGOUT, () => {
-  localStorage.removeItem(LsKeys.LS_KEY_AUTHORIZATION)
+  localStorage.removeItem(LsKeys.LS_KEY_AUTHORIZATION_TOKEN)
+  localStorage.removeItem(LsKeys.LS_KEY_REFRESH_TOKEN)
 
   router.replace({
     name: 'LoginPage',

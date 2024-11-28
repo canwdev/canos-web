@@ -30,6 +30,6 @@ log4js.configure(logConfig)
 const logger = log4js.getLogger()
 logger.level = 'trace'
 
-export const serverLog = logger
+export const serverLogger = logger
 
-// serverLog.trace('ok!')
+// serverLogger.trace('ok!')

@@ -205,6 +205,7 @@ const handleItemClick = (e: Event, fn: any) => {
           align-items: center;
           justify-content: center;
           font-size: 26px;
+          color: $primary;
           @media screen and (max-width: $mq_mobile_width) {
             width: 26px;
             height: 26px;

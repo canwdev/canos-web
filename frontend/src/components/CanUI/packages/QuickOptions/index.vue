@@ -294,7 +294,7 @@ export default defineComponent({
 
 <template>
   <div
-    v-show="mVisible || isStatic"
+    v-show="mVisible"
     class="quick-options"
     :class="{
       _static: isStatic,
@@ -452,9 +452,11 @@ export default defineComponent({
       display: inline-flex;
       align-content: center;
       justify-content: center;
-      width: 20px;
-      height: 20px;
-      font-size: 16px;
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+      line-height: 1;
+      color: $primary;
       img {
         width: 100%;
         height: 100%;
@@ -490,11 +492,6 @@ export default defineComponent({
       }
     }
 
-    &.active {
-      color: white !important;
-      background-color: $primary !important;
-    }
-
     &:not(.disabled) {
       &.clickable {
         user-select: none;
@@ -502,6 +499,9 @@ export default defineComponent({
         &:active {
           color: white;
           background-color: $primary !important;
+          .item-icon {
+            color: white !important;
+          }
         }
       }
     }

@@ -34,7 +34,7 @@ const {
 watch(
   () => systemStore.serverInfo,
   () => {
-    if (systemStore.serverInfo) {
+    if (systemStore.serverInfo && systemStore.serverInfo.dirs) {
       handleOpenPath(systemStore.serverInfo.dirs.dataDesktopPath)
     }
   },
