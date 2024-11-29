@@ -192,15 +192,15 @@ export class FsService {
         const ext = Path.extname(entryName) || ''
         return {
           name: entryName,
+          ext: ext,
           isDirectory,
           hidden: entryName.startsWith('.'),
           lastModified: stat?.ctimeMs || 0,
           birthtime: stat?.birthtimeMs || 0,
           size: isDirectory ? undefined : stat?.size,
-          mimeType: isDirectory ? undefined : mime.contentType(ext),
-          ext: ext,
           error,
           stat,
+          mimeType: isDirectory ? undefined : mime.contentType(ext) || '',
         }
       })
     } catch (e) {

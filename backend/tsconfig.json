@@ -23,6 +23,7 @@
     }
   },
   "exclude": [
-    "dist-frontend"
+    "dist-frontend",
+    "electron"
   ]
 }

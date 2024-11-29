@@ -28,6 +28,7 @@ export interface IEntry {
   birthtime: number
   size?: number
   error?: string
+  stat?: any
   mimeType?: string
 }
 

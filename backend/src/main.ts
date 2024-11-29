@@ -6,7 +6,7 @@ import {program} from 'commander'
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
 import {AllExceptionsFilter} from '@/all-exceptions.filter'
 import {printServerRunningOn} from '@/utils'
-import {isDev, secretsStore} from '@/enum'
+import {isDev, isElectron, secretsStore} from '@/enum'
 import {ASCII_DIVIDER, BANNER_ASCII_ART} from '@/utils/banner'
 
 program
@@ -67,8 +67,23 @@ async function bootstrap() {
   }
 
   // console.log(options)
-  if (process.env.NODE_ENV !== 'development' && options.open) {
-    await opener(localhostUrl + `/ip${params}`)
+  const openUrl = localhostUrl + `/ip${params}`
+  if (isElectron) {
+    if (global._electron_ipcMain) {
+      // 也可以响应渲染进程的请求
+      global._electron_ipcMain.on('message', (event, data) => {
+        console.log(`Received message from render:`, data)
+        if (data === 'E_GET_OPEN_URL') {
+          event.reply('message', {
+            openUrl,
+          })
+        } else {
+          event.reply('message', '响应渲染进程的请求')
+        }
+      })
+    }
+  } else if (process.env.NODE_ENV !== 'development' && options.open) {
+    await opener(openUrl)
   }
 }
 bootstrap()

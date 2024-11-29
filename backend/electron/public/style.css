@@ -1,0 +1,42 @@
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+* {
+
+  box-sizing: border-box;
+}
+.app-root {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: #1E1F22;
+  color: #BABABA;
+}
+
+.action-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #bababa32;
+}
+
+.action-row button {
+  padding: 8px 10px;
+  line-height: 1;
+}
+
+#console_output {
+  padding: 10px;
+  overflow: auto;
+  margin: 0;
+  width: 100%;
+  flex: 1;
+  white-space: pre-wrap;
+}

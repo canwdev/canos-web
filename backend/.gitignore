@@ -2,8 +2,7 @@
 /dist
 /node_modules
 /data/*
-/dist-frontend/
-/can-os-web-windows/
+/dist-*/
 *.exe
 /*.blob
 

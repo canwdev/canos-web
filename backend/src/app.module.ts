@@ -18,7 +18,7 @@ import {User} from '@/modules/users/user.entity'
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'better-sqlite3',
+      type: 'sqlite',
       database: Path.join(DATA_CONFIG_PATH, 'db.sqlite'),
       // 以下代码遍历了本地文件系统，但用webpack打包后的js只是一个main.js，会报错，所以需要手动引入。
       // entities: [__dirname + '/**/*.entity{.ts,.js}'],

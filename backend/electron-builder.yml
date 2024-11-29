@@ -1,0 +1,52 @@
+productName: "CanOS"
+appId: "com.canwdev.canos"
+
+files:
+  - ./dist-frontend/**/*
+  - ./dist/**/*
+  - ./electron/**/*
+
+directories:
+  output: dist-electron
+
+# Mac OS configuration
+mac:
+  target:
+    - "dmg"
+    - "zip"
+
+# Config for OSX dmg
+dmg:
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: "link"
+      path: "/Applications"
+
+# Windows configuration
+win:
+  target:
+#    - "zip"
+    - "nsis"
+
+# Config for the windows installer
+nsis:
+  oneClick: false
+  perMachine: true
+  allowToChangeInstallationDirectory: true
+  installerHeader: "build/installerHeader.bmp"
+  installerSidebar: "build/installerSidebar.bmp"
+  shortcutName: "CanOS"
+  deleteAppDataOnUninstall: true
+#  include: "build/installer.nsh"
+
+# Linux configuration
+linux:
+  category: Tools
+  target:
+    - "dir"
+#    - "AppImage"
+#    - "deb"
+#    - "rpm"

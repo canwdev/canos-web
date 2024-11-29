@@ -5,11 +5,14 @@
   "author": "",
   "private": true,
   "license": "MIT",
+  "main": "electron/main.js",
   "scripts": {
     "build:original": "nest build",
     "build": "nest build --webpack",
     "build-exe-not-stable": "pkg .",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "electron:start": "electron .",
+    "electron:build": "electron-builder build --dir",
     "nest:start": "nest start",
     "nest:dev": "cross-env NODE_ENV=development nest start --watch",
     "nest:debug": "nest start --debug --watch",
@@ -30,7 +33,6 @@
     "@types/mime-types": "^2.1.4",
     "archiver": "^7.0.1",
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^11.1.2",
     "commander": "^12.0.0",
     "crypto-js": "^4.2.0",
     "fs-extra": "^11.2.0",
@@ -46,8 +48,10 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.0",
+    "sqlite3": "5.1.6",
     "swagger-ui-express": "^5.0.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "archiver-utils": "^5.0.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -61,6 +65,8 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "cross-env": "^7.0.3",
+    "electron": "32.2.6",
+    "electron-builder": "^25.1.8",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

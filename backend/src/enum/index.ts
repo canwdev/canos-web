@@ -6,6 +6,7 @@ import {JsonStorage} from '@/utils/json-storage'
 import * as crypto from 'crypto'
 
 export const isDev = process.env.NODE_ENV === 'development'
+export const isElectron = !!process.versions.electron
 
 // 配置、数据库和日志存放路径
 export const DATA_BASE_PATH = isDev
