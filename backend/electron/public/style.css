@@ -1,13 +1,15 @@
 html, body {
   height: 100%;
 }
+
 body {
   margin: 0;
 }
-* {
 
+* {
   box-sizing: border-box;
 }
+
 .app-root {
   height: 100%;
   width: 100%;
@@ -25,18 +27,101 @@ body {
   align-items: center;
   padding: 8px;
   border-bottom: 1px solid #bababa32;
+  flex-wrap: wrap;
 }
 
-.action-row button {
-  padding: 8px 10px;
+.action-row a {
+  color: #03a9f4;
+}
+
+.action-row button, select {
+  padding: 2px 10px;
+  min-height: 32px;
   line-height: 1;
+  background-color: #252525;
+  color: #fff;
+  box-shadow: 0 0 2px #0006;
+  border: 1px solid rgba(91, 85, 85, .2);
+  border-radius: 4px;
+
+  &:active {
+    opacity: 0.8;
+  }
+
+  &:not(&:disabled) {
+    &:hover {
+      border-color: #03a9f4;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.action-row select {
+  max-width: 100%;
 }
 
 #console_output {
-  padding: 10px;
   overflow: auto;
   margin: 0;
   width: 100%;
   flex: 1;
   white-space: pre-wrap;
+}
+
+.console-line {
+  padding: 4px 10px;
+  &:hover {
+    background-color: rgba(91, 85, 85, .2);
+  }
+  &.trace {
+    color: #2196F3;
+  }
+  &.debug {
+    color: #00BCD4;
+  }
+  &.info {
+    color: #4CAF50;
+  }
+  &.warn {
+    color: #FF9800;
+  }
+  &.error {
+    color: #F44336;
+  }
+  &.fatal {
+    color: #E91E63;
+  }
+}
+
+
+.scrollbar-mini * {
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    overflow: overlay;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    background-color: rgba(192, 192, 192, 0.63);
+
+    &:hover {
+      background-color: #bebebe;
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
 }

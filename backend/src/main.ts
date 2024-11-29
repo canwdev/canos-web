@@ -55,12 +55,10 @@ async function bootstrap() {
   const ck = secretsStore.getData().EASY_API_CRYPT_KEY
   const params = `?ck=${ck}`
   console.log(`ck: ${ck}`)
-  console.log(
-    `Default username/password: root/root\nPlease change the default password as soon as possible.`,
-  )
+
   console.log(ASCII_DIVIDER)
 
-  const {localhostUrl} = printServerRunningOn(host, port, params)
+  const {localhostUrl, urls} = printServerRunningOn(host, port, params)
 
   if (isDev) {
     console.log(`API Documents on: ${localhostUrl}/swagger`)
@@ -72,12 +70,14 @@ async function bootstrap() {
     if (global._electron_ipcMain) {
       // 也可以响应渲染进程的请求
       global._electron_ipcMain.on('message', (event, data) => {
-        console.log(`Received message from render:`, data)
         if (data === 'E_GET_OPEN_URL') {
           event.reply('message', {
+            localhostUrl,
             openUrl,
+            urls,
           })
         } else {
+          console.log(`Received message from render:`, data)
           event.reply('message', '响应渲染进程的请求')
         }
       })

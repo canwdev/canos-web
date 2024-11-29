@@ -14,9 +14,17 @@ import {join} from 'path'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import * as Path from 'path'
 import {User} from '@/modules/users/user.entity'
+import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler'
 
 @Module({
   imports: [
+    // https://docs.nestjs.com/security/rate-limiting
+    ThrottlerModule.forRoot([
+      {
+        ttl: 600000, // 时间窗口，单位为ms
+        limit: 500, // 在时间窗口内最多允许的请求次数
+      },
+    ]),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: Path.join(DATA_CONFIG_PATH, 'db.sqlite'),
@@ -47,6 +55,10 @@ import {User} from '@/modules/users/user.entity'
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

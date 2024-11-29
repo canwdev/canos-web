@@ -2,11 +2,13 @@ productName: "CanOS"
 appId: "com.canwdev.canos"
 
 files:
+  - ./build/**/*
   - ./dist-frontend/**/*
   - ./dist/**/*
   - ./electron/**/*
 
 directories:
+  # 输出目录
   output: dist-electron
 
 # Mac OS configuration

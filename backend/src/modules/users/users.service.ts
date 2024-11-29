@@ -168,9 +168,12 @@ export class UsersService {
         roles: [UserRole.admin],
       }
       await this.createUser(dto)
-      serverLogger.log(`Default user created, please change password!`, dto)
+      serverLogger.log(`Default user created:`, dto)
+      serverLogger.warn(
+        `Default username/password: ${DefaultRootUsername}/${DefaultRootPassword}\nPlease change the default password as soon as possible.`,
+      )
     } else {
-      serverLogger.log('User table already has records.')
+      // serverLogger.log('User table already has records.')
     }
   }
 }

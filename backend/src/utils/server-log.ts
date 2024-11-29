@@ -1,6 +1,22 @@
 import * as log4js from 'log4js'
 import * as Path from 'path'
-import {DATA_BASE_PATH} from '@/enum'
+import {DATA_BASE_PATH, isElectron} from '@/enum'
+
+const electronLoggerModule = {
+  configure: (config) => {
+    return (logEvent) => {
+      if (global._electron_mainWindow) {
+        global._electron_mainWindow.webContents.send('console-log', {
+          type: logEvent.level.levelStr.toLowerCase(),
+          args: logEvent.data.map((arg) =>
+            typeof arg === 'object' ? JSON.stringify(arg) : String(arg),
+          ),
+          timestamp: logEvent.startTime,
+        })
+      }
+    }
+  },
+}
 
 const logConfig = {
   appenders: {
@@ -21,9 +37,15 @@ const logConfig = {
     out: {
       type: 'console',
     },
+    electronLogger: {
+      type: electronLoggerModule,
+    },
   },
   categories: {
-    default: {appenders: ['logFile', 'out'], level: 'debug'},
+    default: {
+      appenders: ['logFile', 'out', isElectron && 'electronLogger'].filter(Boolean),
+      level: 'debug',
+    },
   },
 }
 log4js.configure(logConfig)

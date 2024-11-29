@@ -9,6 +9,7 @@ import {usersApi} from '@/api/users'
 import {adminRoutes} from '@/router/admin'
 import {ServerInfo} from '@server/types/server'
 import {cryptKeyRef} from '@/utils/my-crypt'
+import globalEventBus, {GlobalEvents} from '@/utils/bus'
 
 // const history = createWebHashHistory()
 const history = createWebHistory(PROXY_BASE_URL)
@@ -101,6 +102,8 @@ router.beforeEach(async (to, from, next) => {
       mainStore.userInfo = await usersApi.userGetInfo()
       systemStore.serverInfo = (await serverApi.getServerInfo()) as unknown as ServerInfo
     } catch (e) {
+      globalEventBus.emit(GlobalEvents.GLOBAL_EVENT_LOGOUT)
+
       return next({
         name: 'LoginPage',
         query: {

@@ -17,8 +17,8 @@ export const printServerRunningOn = (host, port, params = '') => {
   const localhostUrl = protocol + '127.0.0.1' + ':' + port
 
   console.log(`Server running on: ${localhostUrl}${params}`)
+  const urls = []
   if (host === '0.0.0.0') {
-    const urls = []
     Object.keys(ifaces).forEach((dev) => {
       ifaces[dev].forEach((details) => {
         if (details.family === 'IPv4') {
@@ -34,5 +34,6 @@ export const printServerRunningOn = (host, port, params = '') => {
 
   return {
     localhostUrl,
+    urls,
   }
 }
