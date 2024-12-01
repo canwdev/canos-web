@@ -15,6 +15,7 @@ import {TypeOrmModule} from '@nestjs/typeorm'
 import * as Path from 'path'
 import {User} from '@/modules/users/user.entity'
 import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler'
+import {RemoteModule} from '@/modules/remote/remote.module'
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler'
     }),
     AuthModule,
     UsersModule,
+    RemoteModule,
     //  静态资源（前端）目录
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../dist-frontend', '/'),

@@ -224,6 +224,8 @@ const jumpBackward = () => {
             <el-slider
               style="width: 100px"
               :max="100"
+              :step="1"
+              :min="0"
               :tooltip="false"
               v-model="mSettingsStore.audioVolume"
             />

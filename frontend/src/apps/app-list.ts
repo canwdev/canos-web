@@ -28,7 +28,7 @@ export const SystemAppExplorer: ShortcutItem = {
   requireBackend: true,
 }
 
-export const SystemAppMusicPlayer: ShortcutItem = {
+export const SystemAppMediaPlayer: ShortcutItem = {
   appid: 'os.media-player',
   title: 'Media Player',
   icon: 'multimedia-audio-player',
@@ -70,6 +70,13 @@ export const AppPianoJs: ShortcutItem = {
   title: 'Garageband Piano Js',
   icon: 'piano',
   component: defineAsyncComponent(() => import('@/apps/PianoJs/index.vue')),
+}
+
+export const RemoteApp: ShortcutItem = {
+  appid: 'com.canwdev.remote',
+  title: 'RemoteApp',
+  icon: 'remote',
+  component: defineAsyncComponent(() => import('@/apps/RemoteApp/index.vue')),
 }
 
 export const AppMediadevicesPlayer: ShortcutItem = {
@@ -118,11 +125,12 @@ const defineWebApp = (title = 'WebApp', url): ShortcutItem => {
 
 export const AllAppList: ShortcutItem[] = [
   SystemAppExplorer,
-  SystemAppMusicPlayer,
+  SystemAppMediaPlayer,
   SystemAppTextEditor,
   SystemAppWebBrowser,
   SystemAppSettings,
   AppPianoJs,
+  RemoteApp,
   AppMediadevicesPlayer,
   {
     appid: 'os.calc',

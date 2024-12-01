@@ -20,6 +20,8 @@
     "@viselect/vanilla": "^3.5.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.9.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
     "axios": "^1.6.2",
     "change-case": "^4",
     "crypto-js": "^4.2.0",

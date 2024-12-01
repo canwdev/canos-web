@@ -33,6 +33,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "@types/mime-types": "^2.1.4",
     "archiver": "^7.0.1",
+    "archiver-utils": "^5.0.2",
     "bcryptjs": "^2.4.3",
     "commander": "^12.0.0",
     "crypto-js": "^4.2.0",
@@ -50,9 +51,9 @@
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.0",
     "sqlite3": "5.1.6",
+    "ssh2": "^1.16.0",
     "swagger-ui-express": "^5.0.1",
-    "typeorm": "^0.3.20",
-    "archiver-utils": "^5.0.2"
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

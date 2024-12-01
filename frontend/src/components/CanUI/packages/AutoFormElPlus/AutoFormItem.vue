@@ -180,6 +180,9 @@ export default defineComponent({
 
 <style lang="scss">
 .auto-form-item {
+  .el-input-number .el-input__inner {
+    text-align: left;
+  }
   .el-input-number,
   .el-date-editor {
     width: 100%;
