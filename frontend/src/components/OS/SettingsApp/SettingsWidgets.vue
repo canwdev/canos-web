@@ -26,7 +26,7 @@ const optionList = computed((): StOptionItem[] => {
       key: 'widgets',
       children: allWidgetList.map((item) => {
         return {
-          iconRender: h(ThemedIcon, {name: item.icon}),
+          iconRender: h(ThemedIcon, {name: item.icon, iconClass: item.iconClass}),
           label: item.title,
           subtitle: [
             item.appid,

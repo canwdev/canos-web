@@ -87,7 +87,7 @@ const handleRestore = (index) => {
         @keydown="handleWindowKeydown($event, task, index)"
       >
         <template #titleBarLeft>
-          <ThemedIcon class="window-icon" :name="task.icon" />
+          <ThemedIcon class="window-icon" :name="task.icon" :icon-class="task.iconClass" />
           <span>{{ task.title }}</span>
         </template>
 

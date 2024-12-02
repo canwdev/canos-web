@@ -33,6 +33,7 @@ const commonItem = computed(() => {
     ...item.value,
     title: find?.title,
     icon: find?.icon,
+    iconClass: find?.iconClass,
   }
 })
 
@@ -77,8 +78,13 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
     @click.middle.prevent="handleNewInstance(item)"
   >
     <div class="task-item-main">
-      <ThemedIcon v-if="commonItem.icon" :name="commonItem.icon" class="task-icon" />
-      <span v-else class="mdi mdi-apps task-icon"></span>
+      <ThemedIcon
+        v-if="commonItem.icon || commonItem.iconClass"
+        :name="commonItem.icon"
+        class="task-icon"
+        :icon-class="commonItem.iconClass"
+      />
+      <span v-else class="mdi mdi-help-box task-icon"></span>
       <span v-if="isTask && !settingsStore.taskbarIconOnly" class="text-overflow">
         {{ commonItem.title }}
       </span>
@@ -145,10 +151,19 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
     align-items: center;
     gap: 6px;
     overflow: hidden;
+    &:active {
+      .task-icon {
+        transform: scale(0.88);
+      }
+    }
     .task-icon {
       width: 24px;
       height: 24px;
       pointer-events: none;
+      transition: all 0.1s;
+      ::v-deep(.themed-icon-class) {
+        font-size: 24px;
+      }
     }
     .mdi {
       font-size: 24px;

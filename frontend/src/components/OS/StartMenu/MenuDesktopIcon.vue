@@ -25,7 +25,11 @@ const systemStore = useSystemStore()
     :disabled="shortcutItem.requireBackend && !systemStore.isBackendAvailable"
     :title="shortcutItem.title"
   >
-    <ThemedIcon class="desktop-icon-image" :name="shortcutItem.icon" />
+    <ThemedIcon
+      class="desktop-icon-image"
+      :name="shortcutItem.icon"
+      :icon-class="shortcutItem.iconClass"
+    />
     <span @dbclick.stop class="desktop-icon-name">{{ shortcutItem.title }}</span>
   </button>
 </template>
@@ -58,6 +62,12 @@ const systemStore = useSystemStore()
     width: 48px;
     height: 48px;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    ::v-deep(.themed-icon-class) {
+      font-size: 46px;
+    }
   }
 
   .desktop-icon-name {

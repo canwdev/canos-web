@@ -4,7 +4,7 @@ export const allWidgetList: ShortcutItem[] = [
   {
     appid: 'widgets.screen-clock',
     title: 'Screen Clock',
-    icon: 'exe',
+    iconClass: 'mdi mdi-clock-outline',
     winOptions: {
       width: '300px',
       height: '300px',
@@ -14,7 +14,7 @@ export const allWidgetList: ShortcutItem[] = [
   {
     appid: 'widgets.live-2d',
     title: 'Live2D',
-    icon: 'exe',
+    iconClass: 'mdi mdi-face-man-shimmer',
     winOptions: {
       width: '300px',
       height: '600px',
@@ -24,7 +24,7 @@ export const allWidgetList: ShortcutItem[] = [
   {
     appid: 'widgets.bouncy-ball',
     title: 'Bouncy Ball',
-    icon: 'exe',
+    iconClass: 'mdi mdi-basketball',
     winOptions: {
       width: '300px',
       height: '200px',

@@ -26,6 +26,12 @@ export const useFileItem = (props) => {
     return getFileIconName(item.value)
   })
 
+  const iconClass = computed(() => {
+    if (shortcutAppid.value) {
+      return systemStore.allAppidMap[shortcutAppid.value].iconClass
+    }
+  })
+
   const titleDesc = computed(() => {
     return `Name: ${item.value.name}
 Size: ${bytesToSize(item.value.size)}
@@ -48,6 +54,7 @@ Created: ${formatDate(item.value.birthtime, 'YYYY-MM-DD HH:mm:ss')}
 
   return {
     iconName,
+    iconClass,
     titleDesc,
     extDisplay,
     nameDisplay,

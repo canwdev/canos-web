@@ -12,7 +12,7 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {})
 
-const {iconName, titleDesc, nameDisplay, shortcutAppid} = useFileItem(props)
+const {iconName, iconClass, titleDesc, nameDisplay, shortcutAppid} = useFileItem(props)
 </script>
 
 <template>
@@ -35,6 +35,7 @@ const {iconName, titleDesc, nameDisplay, shortcutAppid} = useFileItem(props)
     <ThemedIcon
       class="desktop-icon-image"
       :name="iconName"
+      :icon-class="iconClass"
       :sub-name="shortcutAppid ? 'shortcut' : ''"
     />
     <span class="desktop-icon-name" @click.stop="$emit('open', item)" @dblclick.stop>{{
@@ -92,6 +93,9 @@ const {iconName, titleDesc, nameDisplay, shortcutAppid} = useFileItem(props)
     width: 48px;
     height: 48px;
     pointer-events: none;
+    ::v-deep(.themed-icon-class) {
+      font-size: 48px;
+    }
   }
 
   .desktop-icon-name {

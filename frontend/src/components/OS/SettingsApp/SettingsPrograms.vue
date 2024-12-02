@@ -27,7 +27,7 @@ export default defineComponent({
           key: 'app_management',
           children: systemStore.allApps.map((item) => {
             return {
-              iconRender: h(ThemedIcon, {name: item.icon}),
+              iconRender: h(ThemedIcon, {name: item.icon, iconClass: item.iconClass}),
               label: item.title,
               subtitle: [
                 item.appid,

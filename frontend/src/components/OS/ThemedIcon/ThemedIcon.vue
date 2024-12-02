@@ -4,8 +4,9 @@ import {ICON_BASE_URL, useIconThemes, useThemedIcon} from './use-icon-themes'
 import {isSrcHttpUrl} from '@/utils/is'
 
 interface Props {
-  name: string
+  name?: string
   subName?: string
+  iconClass?: string
   ext?: string
 }
 
@@ -17,6 +18,9 @@ const {getIconPath} = useThemedIcon()
 const isFallback = ref(false)
 
 const iconSrc = computed(() => {
+  if (!name.value) {
+    return null
+  }
   return getIconPath(name.value, ext.value, isFallback.value)
 })
 
@@ -30,7 +34,13 @@ const subIconSrc = computed(() => {
 
 <template>
   <div class="themed-icon">
-    <img class="themed-icon-img" :src="iconSrc" :alt="name" @error="isFallback = true" />
+    <img
+      v-if="iconSrc"
+      class="themed-icon-img"
+      :src="iconSrc"
+      :alt="name"
+      @error="isFallback = true"
+    />
     <img
       v-if="subIconSrc"
       class="themed-icon-sub-img"
@@ -38,12 +48,15 @@ const subIconSrc = computed(() => {
       :alt="subName"
       @error="isFallback = true"
     />
+    <span v-if="iconClass" class="themed-icon-class" :class="iconClass" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .themed-icon {
   display: inline-flex;
+  align-content: center;
+  justify-content: center;
   position: relative;
   width: 100%;
   height: 100%;
@@ -58,6 +71,10 @@ const subIconSrc = computed(() => {
     position: absolute;
     bottom: 0;
     left: 0;
+  }
+  .themed-icon-class {
+    line-height: 1;
+    color: $primary;
   }
 }
 </style>

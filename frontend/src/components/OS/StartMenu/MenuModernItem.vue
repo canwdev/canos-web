@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {})
   >
     <div class="shortcut-inner">
       <div v-if="shortcutItem.icon" class="shortcut-icon">
-        <ThemedIcon :name="shortcutItem.icon" />
+        <ThemedIcon :name="shortcutItem.icon" :icon-class="shortcutItem.iconClass" />
       </div>
       <div class="shortcut-title">{{ shortcutItem.title }}</div>
     </div>

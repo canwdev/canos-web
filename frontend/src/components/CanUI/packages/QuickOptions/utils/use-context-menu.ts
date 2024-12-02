@@ -211,6 +211,7 @@ export const useContextMenu = (options: any = {}) => {
       yRef.value = event.clientY
       event.preventDefault()
       isShow.value = true
+      console.log(12)
     })
   }
 

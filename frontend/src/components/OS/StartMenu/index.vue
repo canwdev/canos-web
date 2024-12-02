@@ -147,7 +147,8 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 .start-menu {
   width: 350px;
   //background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  // backdrop-filter: blur 会影响内部元素定位，考虑改成子元素渲染模糊效果
+  //backdrop-filter: blur(10px);
   //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
   position: fixed;
   bottom: $taskbar_height;

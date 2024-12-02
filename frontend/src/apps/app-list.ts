@@ -72,10 +72,10 @@ export const AppPianoJs: ShortcutItem = {
   component: defineAsyncComponent(() => import('@/apps/PianoJs/index.vue')),
 }
 
-export const RemoteApp: ShortcutItem = {
+export const AppRemote: ShortcutItem = {
   appid: 'com.canwdev.remote',
   title: 'RemoteApp',
-  icon: 'remote',
+  iconClass: 'mdi mdi-console',
   component: defineAsyncComponent(() => import('@/apps/RemoteApp/index.vue')),
 }
 
@@ -92,11 +92,11 @@ export const AppMediadevicesPlayer: ShortcutItem = {
   component: defineAsyncComponent(() => import('@/apps/MediadevicesPlayer/App.vue')),
 }
 
-const defineDemoApp = (title = 'App', component): ShortcutItem => {
+const defineDemoApp = ({title, component, iconClass}): ShortcutItem => {
   return {
     appid: title,
-    title,
-    icon: 'application-default-icon',
+    title: title,
+    iconClass: iconClass || 'mdi mdi-application-brackets-outline',
     winOptions: {
       top: '0px',
       left: '0px',
@@ -130,7 +130,7 @@ export const AllAppList: ShortcutItem[] = [
   SystemAppWebBrowser,
   SystemAppSettings,
   AppPianoJs,
-  RemoteApp,
+  AppRemote,
   AppMediadevicesPlayer,
   {
     appid: 'os.calc',
@@ -143,14 +143,16 @@ export const AllAppList: ShortcutItem[] = [
     component: defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCalculator.vue')),
     singleInstance: false,
   },
-  defineDemoApp(
-    '计数器',
-    defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCounter.vue')),
-  ),
-  defineDemoApp(
-    'ObjectSize',
-    defineAsyncComponent(() => import('@/apps/AppUtils/ObjectSizeWrap/index.vue')),
-  ),
+  defineDemoApp({
+    title: '计数器',
+    component: defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCounter.vue')),
+    iconClass: 'mdi mdi-counter',
+  }),
+  defineDemoApp({
+    title: 'ObjectSize',
+    component: defineAsyncComponent(() => import('@/apps/AppUtils/ObjectSizeWrap/index.vue')),
+    iconClass: 'mdi mdi-move-resize',
+  }),
   {
     appid: 'os.colorful-screen',
     title: '多彩屏幕 (屏幕坏点测试)',

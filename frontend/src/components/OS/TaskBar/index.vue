@@ -123,7 +123,8 @@ const taskbarList = computed(() => {
         @click="mainStore.isShowStart = !mainStore.isShowStart"
         title="Quick Start (alt+q)"
       >
-        <img class="menu-logo" src="@/assets/images/logo.svg" alt="start" />
+        <span class="menu-logo-icon mdi mdi-apps"></span>
+        <!--<img class="menu-logo" src="@/assets/images/logo.svg" alt="start" />-->
       </button>
       <div class="task-side">
         <transition-group
@@ -227,6 +228,13 @@ const taskbarList = computed(() => {
       &.active {
         background-color: rgba(198, 198, 198, 0.3);
       }
+
+      &:active {
+        .menu-logo-icon {
+          transform: scale(0.88);
+        }
+      }
+
       .start-button {
         border-radius: 0;
         height: 100%;
@@ -236,6 +244,12 @@ const taskbarList = computed(() => {
         width: 32px;
         height: 32px;
         display: block;
+      }
+      .menu-logo-icon {
+        font-size: 32px;
+        line-height: 1;
+        color: $primary;
+        transition: all 0.1s;
       }
     }
 
