@@ -12,6 +12,7 @@ export const usePinUnpinned = () => {
     const isPinned = !!settingsStore.taskbarPinnedAppidMap[appid]
     return {
       label: isPinned ? 'Unpin from taskbar' : 'Pin to taskbar',
+      iconClass: isPinned ? 'mdi mdi-pin-off' : 'mdi mdi-pin',
       props: {
         onClick() {
           if (isPinned) {

@@ -117,51 +117,63 @@ const {
   emit,
 })
 
-const allContextMenu = computed((): QuickOptionItem[] => {
-  if (selectedItems.value.length) {
-    return ctxMenuOptions.value
-  }
-  return [
-    {
-      label: 'Create Document',
-      props: {
-        onClick() {
-          handleCreateFile()
+const contextMenuOptions = ref<QuickOptionItem[]>([])
+const updateMenuOptions = (item: IEntry | null, event: MouseEvent) => {
+  handleShowCtxMenu(item, event, () => {
+    if (selectedItems.value.length) {
+      contextMenuOptions.value = ctxMenuOptions.value
+    } else {
+      contextMenuOptions.value = [
+        {
+          label: 'Create Document',
+          iconClass: 'mdi mdi-file-document-plus-outline',
+          props: {
+            onClick() {
+              handleCreateFile()
+            },
+          },
         },
-      },
-    },
-    {
-      label: 'Create Folder',
-      props: {
-        onClick() {
-          handleCreateFolder()
+        {
+          label: 'Create Folder',
+          iconClass: 'mdi mdi-folder-plus-outline',
+          props: {
+            onClick() {
+              handleCreateFolder()
+            },
+          },
         },
-      },
-    },
-    {split: true},
-    {
-      label: 'Upload Files...',
-      props: {
-        onClick() {
-          selectUploadFiles()
+        {split: true},
+        {
+          label: 'Upload Files...',
+          iconClass: 'mdi mdi-file-upload-outline',
+          props: {
+            onClick() {
+              selectUploadFiles()
+            },
+          },
         },
-      },
-    },
-    {
-      label: 'Upload Folder...',
-      props: {
-        onClick() {
-          selectUploadFolder()
+        {
+          label: 'Upload Folder...',
+          iconClass: 'mdi mdi-folder-upload-outline',
+          props: {
+            onClick() {
+              selectUploadFolder()
+            },
+          },
         },
-      },
-    },
-    {split: true},
-    {label: 'Sort', children: sortOptions.value},
-    {split: true},
-    ...ctxMenuOptions.value,
-    ...moreOptions.value,
-  ]
-})
+        {split: true},
+        {
+          label: 'Sort',
+          iconClass: 'mdi mdi-sort-alphabetical-variant',
+          children: sortOptions.value,
+        },
+        {split: true},
+        ...ctxMenuOptions.value,
+        ...moreOptions.value,
+      ]
+    }
+  })
+}
 
 const sortOptionsMenuRef = ref()
 
@@ -183,7 +195,7 @@ const handleShortcutKey = (event) => {
     } else if (key === 'h') {
       showHidden.value = !showHidden.value
     } else if (key === 'm') {
-      handleShowCtxMenu(null, event)
+      updateMenuOptions(null, event)
     }
   } else {
     if (key === 'delete') {
@@ -336,7 +348,7 @@ defineExpose({
       ref="explorerContentRef"
       class="explorer-content"
       @click="selectedItems = []"
-      @contextmenu.prevent.stop="handleShowCtxMenu(null, $event)"
+      @contextmenu.prevent.stop="updateMenuOptions(null, $event)"
     >
       <div v-if="!(isGridView || gridView)" class="explorer-list-view">
         <div class="vp-bg file-list-header file-list-row">
@@ -374,7 +386,7 @@ defineExpose({
           :show-checkbox="allowMultipleSelection"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
-          @contextmenu.prevent.stop="handleShowCtxMenu(item, $event)"
+          @contextmenu.prevent.stop="updateMenuOptions(item, $event)"
         />
       </div>
       <div v-else class="explorer-grid-view">
@@ -388,11 +400,11 @@ defineExpose({
           :show-checkbox="allowMultipleSelection"
           @open="(i) => emit('open', i)"
           @select="toggleSelect"
-          @contextmenu.prevent.stop="handleShowCtxMenu(item, $event)"
+          @contextmenu.prevent.stop="updateMenuOptions(item, $event)"
         />
       </div>
 
-      <QuickContextMenu :options="allContextMenu" ref="ctxMenuRef" />
+      <QuickContextMenu :options="contextMenuOptions" ref="ctxMenuRef" />
     </div>
     <div v-if="!contentOnly" class="explorer-status-bar">
       <span>

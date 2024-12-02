@@ -96,8 +96,13 @@ export const useFileActions = ({
   const ctxMenuOptions = computed((): QuickOptionItem[] => {
     if (!selectedItems.value.length) {
       return [
-        {label: 'Refresh', props: {onClick: () => emit('refresh')}},
-        {label: 'Paste', props: {onClick: handlePaste}, disabled: !enablePaste.value},
+        {label: 'Refresh', iconClass: 'mdi mdi-refresh', props: {onClick: () => emit('refresh')}},
+        {
+          label: 'Paste',
+          iconClass: 'mdi mdi-content-paste',
+          props: {onClick: handlePaste},
+          disabled: !enablePaste.value,
+        },
       ]
     }
     const isSingle = selectedItems.value.length === 1
@@ -105,23 +110,32 @@ export const useFileActions = ({
     return [
       isSingle && {
         label: 'Open',
+        iconClass: 'mdi mdi-open-in-app',
         props: {
           onClick: () => {
             return emit('open', selectedItems.value[0])
           },
         },
       },
-      {label: 'Download', props: {onClick: handleDownload}},
+      {label: 'Download', iconClass: 'mdi mdi-download', props: {onClick: handleDownload}},
       {split: true},
-      {label: 'Cut', props: {onClick: handleCut}},
-      {label: 'Copy', props: {onClick: handleCopy}},
+      {label: 'Cut', iconClass: 'mdi mdi-content-cut', props: {onClick: handleCut}},
+      {label: 'Copy', iconClass: 'mdi mdi-content-copy', props: {onClick: handleCopy}},
       {split: true},
-      isSingle && {label: 'Rename', props: {onClick: handleRename}},
-      {label: 'Delete', props: {onClick: confirmDelete}},
+      isSingle && {label: 'Rename', iconClass: 'mdi mdi-rename', props: {onClick: handleRename}},
+      {
+        label: 'Delete',
+        iconClass: 'mdi mdi-delete-forever-outline',
+        props: {onClick: confirmDelete},
+      },
     ].filter(Boolean)
   })
   const ctxMenuRef = ref()
-  const handleShowCtxMenu = (item: IEntry | null, event: MouseEvent) => {
+  const handleShowCtxMenu = (
+    item: IEntry | null,
+    event: MouseEvent,
+    updateOptionsFn: () => void,
+  ) => {
     if (!item) {
       selectedItems.value = []
     } else {
@@ -130,7 +144,10 @@ export const useFileActions = ({
       }
     }
     ctxMenuRef.value.isShow = false
-    setTimeout(() => {
+
+    updateOptionsFn()
+
+    nextTick(() => {
       ctxMenuRef.value.showMenu(event)
     })
   }

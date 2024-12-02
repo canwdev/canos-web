@@ -49,6 +49,7 @@ const taskItemMenuOptions = computed((): QuickOptionItem[] => {
   if (isTask) {
     options.push({
       label: 'Close window',
+      iconClass: 'mdi mdi-close',
       props: {
         onClick() {
           systemStore.closeTask(currentTaskItem.value!.guid)

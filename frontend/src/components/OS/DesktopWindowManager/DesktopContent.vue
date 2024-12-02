@@ -55,6 +55,7 @@ const moreOptions = computed((): QuickOptionItem[] => {
     {split: true},
     {
       label: 'Widgets',
+      iconClass: 'mdi mdi-widgets',
       props: {
         onClick() {
           systemStore.createTaskById('os.settings', {curTab: SettingsTabType.WIDGETS})
@@ -63,6 +64,7 @@ const moreOptions = computed((): QuickOptionItem[] => {
     },
     {
       label: 'Personalization',
+      iconClass: 'mdi mdi-brush',
       props: {
         onClick() {
           systemStore.createTaskById('os.settings', {curTab: SettingsTabType.PERSONALIZATION})

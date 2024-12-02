@@ -117,6 +117,7 @@ const getCtxMenuOptions = (menuItem: IStartMenuItem): QuickOptionItem[] => {
   return [
     {
       label: 'Send to desktop',
+      iconClass: 'mdi mdi-monitor-star',
       props: {
         onClick() {
           globalEventBus.emit(GlobalEvents.SEND_TO_DESKTOP, appid)
