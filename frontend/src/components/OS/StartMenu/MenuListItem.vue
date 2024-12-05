@@ -17,10 +17,10 @@ export default defineComponent({
 
 <template>
   <button class="shortcut-item btn-no-style">
-    <div v-if="item.icon" class="shortcut-icon">
-      <ThemedIcon :name="item.icon" />
-    </div>
-    <div class="shortcut-title">{{ item.title }}</div>
+    <span v-if="item.icon || item.iconClass" class="shortcut-icon">
+      <ThemedIcon :name="item.icon" :icon-class="item.iconClass" />
+    </span>
+    <span class="shortcut-title">{{ item.title }}</span>
   </button>
 </template>
 
@@ -41,6 +41,8 @@ export default defineComponent({
     width: 24px;
     height: 24px;
     margin-right: 5px;
+    font-size: 24px;
+    line-height: 1;
     img {
       width: 100%;
       height: 100%;

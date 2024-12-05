@@ -1,4 +1,5 @@
 import {ShortcutItem} from '@/enum/os'
+import {AppUtilsList} from '@/apps/AppUtils'
 
 export const SystemAppSettings: ShortcutItem = {
   appid: 'os.settings',
@@ -69,6 +70,10 @@ export const AppPianoJs: ShortcutItem = {
   appid: 'com.pianojs',
   title: 'Garageband Piano Js',
   icon: 'piano',
+  winOptions: {
+    width: '800px',
+    height: '400px',
+  },
   component: defineAsyncComponent(() => import('@/apps/PianoJs/index.vue')),
 }
 
@@ -92,37 +97,6 @@ export const AppMediadevicesPlayer: ShortcutItem = {
   component: defineAsyncComponent(() => import('@/apps/MediadevicesPlayer/App.vue')),
 }
 
-const defineDemoApp = ({title, component, iconClass}): ShortcutItem => {
-  return {
-    appid: title,
-    title: title,
-    iconClass: iconClass || 'mdi mdi-application-brackets-outline',
-    winOptions: {
-      top: '0px',
-      left: '0px',
-      width: '480px',
-      height: '320px',
-    },
-    component,
-    singleInstance: false,
-  }
-}
-const defineWebApp = (title = 'WebApp', url): ShortcutItem => {
-  return {
-    appid: title,
-    title,
-    icon: 'applications-internet',
-    winOptions: {
-      top: '150px',
-      left: '150px',
-      width: '480px',
-      height: '320px',
-    },
-    url,
-    singleInstance: false,
-  }
-}
-
 export const AllAppList: ShortcutItem[] = [
   SystemAppExplorer,
   SystemAppMediaPlayer,
@@ -132,50 +106,7 @@ export const AllAppList: ShortcutItem[] = [
   AppPianoJs,
   AppRemote,
   AppMediadevicesPlayer,
-  {
-    appid: 'os.calc',
-    title: 'Calculator',
-    icon: 'accessories-calculator',
-    winOptions: {
-      width: '348px',
-      height: '530px',
-    },
-    component: defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCalculator.vue')),
-    singleInstance: false,
-  },
-  defineDemoApp({
-    title: '计数器',
-    component: defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCounter.vue')),
-    iconClass: 'mdi mdi-counter',
-  }),
-  defineDemoApp({
-    title: 'ObjectSize',
-    component: defineAsyncComponent(() => import('@/apps/AppUtils/ObjectSizeWrap/index.vue')),
-    iconClass: 'mdi mdi-move-resize',
-  }),
-  {
-    appid: 'os.colorful-screen',
-    title: '多彩屏幕 (屏幕坏点测试)',
-    icon: 'video-display',
-    winOptions: {
-      width: '300px',
-      height: '300px',
-    },
-    component: defineAsyncComponent(() => import('@/apps/AppUtils/ColorfulScreen.vue')),
-  },
-  {
-    appid: 'os.wakelock',
-    title: '唤醒锁定',
-    icon: 'preferences-system-power',
-    winOptions: {
-      width: '428px',
-      height: '200px',
-    },
-    component: defineAsyncComponent(() => import('@/apps/AppUtils/WakeLock.vue')),
-    singleInstance: true,
-  },
-
-  defineWebApp('Google', 'https://www.google.com/webhp?igu=1'),
+  ...AppUtilsList,
 ]
 
 window.$appList = AllAppList
