@@ -1,16 +1,24 @@
+<script lang="ts">
+export default {
+  name: 'AutoTableElPlus',
+}
+</script>
+
 <script setup lang="ts">
 import {AutoTableColumn} from './types'
 import {useCustomColumns} from './use-custom-columns'
 import VueRender from '@/components/CanUI/packages/OptionUI/Tools/VueRender.vue'
 
-interface IAutoTableProps {
-  columns: AutoTableColumn[]
-  data: any
-  customizeColumnStorageKey?: string
-}
-const props = withDefaults(defineProps<IAutoTableProps>(), {
-  customizeColumnStorageKey: 'ate_hidden_column_keys',
-})
+const props = withDefaults(
+  defineProps<{
+    columns: AutoTableColumn[]
+    data: any
+    customizeColumnStorageKey?: string
+  }>(),
+  {
+    customizeColumnStorageKey: 'ate_hidden_column_keys',
+  },
+)
 const emit = defineEmits(['selectionChange'])
 
 // 自定义表列

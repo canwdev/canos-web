@@ -1,15 +1,37 @@
 <script setup lang="ts">
-enum EntrustSide {
-  BUY = '买入',
-  SALE = '卖出',
+import AutoTableElPlus from '@/components/CanUI/packages/AutoTableElPlus/index.vue'
+import {AutoTableColumn} from '@/components/CanUI/packages/AutoTableElPlus/types'
+import {EntrustSide, ITransactionHistory} from '@/apps/AppUtils/StockTracker/types'
+
+const props = withDefaults(
+  defineProps<{
+    historyList: ITransactionHistory[]
+  }>(),
+  {},
+)
+const emit = defineEmits([])
+const {historyList} = toRefs(props)
+
+interface IStatisticsTableItem {
+  symbol: string
+  symbolName: string
+  totalIncome: number
+  curHold: number
+  curQty: number
+  holdAvgPrice: number
 }
+const tableData = ref<IStatisticsTableItem[]>([])
 
-const loadData = async () => {
-  let data = await fetch('http://127.0.0.1:8080/stock.json').then((res) => res.json())
-  console.log(data)
-  // 按时间倒序
-  data = data.reverse()
+const tableColumns: AutoTableColumn[] = [
+  {key: 'symbol', label: '股票代码'},
+  {key: 'symbolName', label: '股票名称'},
+  {key: 'totalIncome', label: '总收益'},
+  {key: 'curHold', label: '当前持有总价'},
+  {key: 'curQty', label: '当前持有数量'},
+  {key: 'holdAvgPrice', label: '持有均价'},
+]
 
+const doCalculate = async () => {
   type IStockStatistics = {
     symbolName: string
     // 总收益
@@ -23,10 +45,11 @@ const loadData = async () => {
   }
   const symbolMap: {[key: string]: IStockStatistics} = {}
 
-  data.forEach((stock) => {
+  historyList.value.forEach((stock) => {
     const {
       symbol,
       symbolName,
+      entrustSide,
       entrustSideName,
       // entrustPrice: businessAvgPrice,
       businessAvgPrice,
@@ -53,7 +76,7 @@ const loadData = async () => {
     let {totalIncome, buyList} = symbolMap[symbol]
 
     console.log(symbolName, symbol, entrustSideName, businessQty, businessAvgPrice)
-    if (EntrustSide.BUY === entrustSideName) {
+    if (EntrustSide.BUY === entrustSide) {
       // 买入
       for (let i = 0; i < businessQty; i++) {
         buyList.push({
@@ -62,7 +85,7 @@ const loadData = async () => {
           createTime,
         })
       }
-    } else if (EntrustSide.SALE === entrustSideName) {
+    } else if (EntrustSide.SALE === entrustSide) {
       // 卖出: 按照先进先出（FIFO）的方法计算每次卖出操作的利润
       let currentEarn = 0
       for (let i = 0; i < businessQty; i++) {
@@ -86,18 +109,39 @@ const loadData = async () => {
   })
 
   console.log('--- result ---')
-  console.table(symbolMap)
+  const resultTable = Object.keys(symbolMap).map((key) => {
+    const item = symbolMap[key]
+    const curHold = item.buyList.reduce((acc, cur) => {
+      return acc + cur.price
+    }, 0)
+    const curQty = item.buyList.length
+    return {
+      symbol: key,
+      symbolName: item.symbolName,
+      totalIncome: item.totalIncome,
+      curHold,
+      curQty,
+      holdAvgPrice: parseFloat((curHold / curQty).toFixed(2)),
+    }
+  })
+  console.table(resultTable)
+  tableData.value = resultTable
 }
+watch(historyList, () => {
+  doCalculate()
+})
 onMounted(() => {
-  loadData()
+  doCalculate()
 })
 </script>
 
 <template>
-  <div class="stock-tracker vp-bg">stock-tracker</div>
+  <div class="stock-statistics">
+    <AutoTableElPlus :data="tableData" :columns="tableColumns" />
+  </div>
 </template>
 
-<style lang="css" scoped>
-.stock-tracker {
+<style lang="scss" scoped>
+.stock-statistics {
 }
 </style>

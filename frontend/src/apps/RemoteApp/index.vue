@@ -73,7 +73,7 @@ const formItems = computed((): MixedFormItems[] => {
 const command = ref('fastfetch')
 const connected = ref(false)
 const terminalEl = ref()
-const terminal = ref<Terminal>()
+const terminal = shallowRef<Terminal>()
 
 const initTerminal = () => {
   terminal.value = new Terminal({

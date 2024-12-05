@@ -47,7 +47,11 @@ export const AppStockTracker: ShortcutItem = {
   appid: 'com.canwdev.stock',
   title: 'Stock Tracker',
   iconClass: 'mdi mdi-chart-areaspline',
-  component: defineAsyncComponent(() => import('./StockTracker.vue')),
+  winOptions: {
+    width: '600px',
+    height: '400px',
+  },
+  component: defineAsyncComponent(() => import('./StockTracker/index.vue')),
 }
 
 export const AppUtilsList = [
