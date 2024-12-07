@@ -237,6 +237,7 @@ const totalHold = computed(() => {
 
   .stock-statistics {
     flex: 1;
+    overflow: hidden;
   }
 }
 </style>

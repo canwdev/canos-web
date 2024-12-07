@@ -70,7 +70,12 @@ useResizeObserver(rootRef, (entries) => {
       />
     </div>
     <div ref="rootRef" class="transaction-history">
-      <AutoTableElPlus :data="filteredList" :columns="tableColumns" :max-height="maxHeight" />
+      <AutoTableElPlus
+        class="table-ui"
+        :data="filteredList"
+        :columns="tableColumns"
+        :height="maxHeight"
+      />
     </div>
 
     <div class="st-row flex-row-center-gap">{{ filteredList.length }} items</div>
@@ -90,6 +95,7 @@ useResizeObserver(rootRef, (entries) => {
   }
   .transaction-history {
     flex: 1;
+    overflow: hidden;
   }
 }
 </style>

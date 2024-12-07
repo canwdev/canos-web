@@ -58,9 +58,9 @@ const curTab = ref(StockTrackerTab.HISTORY)
 <style lang="scss" scoped>
 .stock-tracker {
   height: 100%;
-  overflow: auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .action-row {
     display: flex;
@@ -72,6 +72,7 @@ const curTab = ref(StockTrackerTab.HISTORY)
 
   .content-wrapper {
     flex: 1;
+    overflow: hidden;
   }
 
   :deep(.price-up) {
