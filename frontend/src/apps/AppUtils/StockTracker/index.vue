@@ -3,12 +3,15 @@ import TabLayout from '@/components/CanUI/packages/Layouts/TabLayout.vue'
 import StockStatistics from '@/apps/AppUtils/StockTracker/StockStatistics.vue'
 import TransactionHistory from '@/apps/AppUtils/StockTracker/TransactionHistory.vue'
 import {ITransactionHistory} from '@/apps/AppUtils/StockTracker/types'
+import RectSwitch from '@/components/CanUI/packages/OptionUI/Tools/RectSwitch.vue'
 
 const transactionHistoryList = ref<ITransactionHistory[]>([])
 const loadData = async () => {
-  let data = await fetch('http://127.0.0.1:8080/stock.json').then((res) => res.json())
-  console.log(data)
-  transactionHistoryList.value = data.reverse()
+  let {
+    data: {list},
+  } = await fetch('http://127.0.0.1:8080/stock.json').then((res) => res.json())
+  console.log(list)
+  transactionHistoryList.value = list.reverse()
 }
 onMounted(() => {
   loadData()
@@ -19,7 +22,7 @@ enum StockTrackerTab {
   STATISTICS = 'statistics',
 }
 
-const settingsTabs = ref([
+const tabOptions = ref([
   {label: '交易记录', value: StockTrackerTab.HISTORY},
   {label: '统计', value: StockTrackerTab.STATISTICS},
 ])
@@ -28,11 +31,18 @@ const curTab = ref(StockTrackerTab.HISTORY)
 
 <template>
   <div class="stock-tracker vp-bg">
-    <div class="action-row flex-row-center-gap">
-      <button class="vp-button" @click="loadData">Refresh</button>
+    <div class="action-row">
+      <div class="flex-row-center-gap">
+        <button class="vp-button primary">添加交易记录</button>
+      </div>
+      <RectSwitch v-model="curTab" :options="tabOptions" />
+      <div class="flex-row-center-gap">
+        <button class="vp-button">导入数据</button>
+        <button class="vp-button">导出数据</button>
+      </div>
     </div>
 
-    <TabLayout v-model="curTab" :options="settingsTabs">
+    <div class="content-wrapper">
       <TransactionHistory
         v-if="curTab === StockTrackerTab.HISTORY"
         :history-list="transactionHistoryList"
@@ -41,7 +51,7 @@ const curTab = ref(StockTrackerTab.HISTORY)
         v-if="curTab === StockTrackerTab.STATISTICS"
         :history-list="transactionHistoryList"
       />
-    </TabLayout>
+    </div>
   </div>
 </template>
 
@@ -51,8 +61,24 @@ const curTab = ref(StockTrackerTab.HISTORY)
   overflow: auto;
   display: flex;
   flex-direction: column;
-  .mc-vertical-tab-layout {
+
+  .action-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px;
+    border-bottom: 1px solid $color_border;
+  }
+
+  .content-wrapper {
     flex: 1;
+  }
+
+  :deep(.price-up) {
+    color: green;
+  }
+  :deep(.price-down) {
+    color: red;
   }
 }
 </style>
