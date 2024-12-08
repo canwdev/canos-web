@@ -81,7 +81,7 @@ export const AppRemote: ShortcutItem = {
   appid: 'com.canwdev.remote',
   title: 'RemoteApp',
   iconClass: 'mdi mdi-console',
-  component: defineAsyncComponent(() => import('@/apps/RemoteApp/index.vue')),
+  component: defineAsyncComponent(() => import('@/apps/RemoteApp/TerminalApp.vue')),
 }
 
 export const AppMediadevicesPlayer: ShortcutItem = {

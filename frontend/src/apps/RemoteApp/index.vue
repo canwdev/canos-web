@@ -9,6 +9,7 @@ import {remoteApi} from '@/api/remote'
 import AutoFormElPlus from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
 import {FormRules} from 'element-plus'
 import {AutoFormItemType, MixedFormItems} from '@/components/CanUI/packages/AutoFormElPlus/enum'
+import VueTerminal from '@/components/CanUI/packages/VueTerminal/index.vue'
 
 // 创建一个对象来存储连接信息
 const dataForm = useStorage('temp_ssh_connection_info', {
@@ -72,23 +73,7 @@ const formItems = computed((): MixedFormItems[] => {
 
 const command = ref('fastfetch')
 const connected = ref(false)
-const terminalEl = ref()
-const terminal = shallowRef<Terminal>()
-
-const initTerminal = () => {
-  terminal.value = new Terminal({
-    cursorBlink: false,
-    convertEol: true, //启用时，光标将设置为下一行的开头
-    disableStdin: false, //是否应禁用输入。
-    cursorStyle: 'underline', //光标样式
-  })
-  const fitAddon = new FitAddon()
-  terminal.value.loadAddon(fitAddon)
-  terminal.value.open(terminalEl.value)
-  setInterval(() => {
-    fitAddon.fit()
-  }, 1000)
-}
+const vueTerminalRef = ref()
 
 const connectSSH = async () => {
   try {
@@ -102,7 +87,6 @@ const connectSSH = async () => {
 
     if (data.success) {
       connected.value = true
-      initTerminal()
     } else {
       throw new Error('Failed to connect')
     }
@@ -118,7 +102,7 @@ const executeCommand = async () => {
     })
 
     if (data.success) {
-      terminal.value.write(data.result)
+      vueTerminalRef.value.write(data.result)
     }
   } catch (error) {
     console.error('Command execution failed', error)
@@ -148,7 +132,7 @@ const executeCommand = async () => {
       />
       <button class="vp-button" @click="executeCommand">Execute</button>
     </div>
-    <div class="terminal-container" ref="terminalEl"></div>
+    <VueTerminal ref="vueTerminalRef" :dark="true" />
   </div>
 </template>
 
@@ -160,7 +144,6 @@ const executeCommand = async () => {
   .terminal-container {
     flex: 1;
     width: 100%;
-    overflow: hidden;
   }
 }
 </style>

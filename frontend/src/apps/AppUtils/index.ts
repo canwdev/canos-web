@@ -43,20 +43,20 @@ export const AppCalc: ShortcutItem = {
   singleInstance: false,
 }
 
-export const AppStockTracker: ShortcutItem = {
-  appid: 'com.canwdev.stock',
-  title: 'Stock Tracker',
-  iconClass: 'mdi mdi-chart-areaspline',
-  winOptions: {
-    width: '600px',
-    height: '400px',
-  },
-  component: defineAsyncComponent(() => import('./StockTracker/index.vue')),
-}
+// export const AppStockTracker: ShortcutItem = {
+//   appid: 'com.canwdev.stock',
+//   title: 'Stock Tracker',
+//   iconClass: 'mdi mdi-chart-areaspline',
+//   winOptions: {
+//     width: '600px',
+//     height: '400px',
+//   },
+//   component: defineAsyncComponent(() => import('./StockTracker/index.vue')),
+// }
 
 export const AppUtilsList = [
   AppCalc,
-  AppStockTracker,
+  // AppStockTracker,
   defineDemoApp({
     title: '计数器',
     component: defineAsyncComponent(() => import('@/apps/AppUtils/SimpleCounter.vue')),

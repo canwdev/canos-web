@@ -57,11 +57,7 @@ const handleRestore = (index) => {
 </script>
 
 <template>
-  <div
-    class="desktop-window-manager"
-    :class="{'preview-desktop': mainStore.isPreviewDesktop}"
-    @contextmenu.prevent
-  >
+  <div class="desktop-window-manager" :class="{'preview-desktop': mainStore.isPreviewDesktop}">
     <DesktopWallpaper>
       <DesktopContent />
       <WidgetsPlayground />

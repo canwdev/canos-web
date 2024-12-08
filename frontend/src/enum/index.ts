@@ -2,6 +2,8 @@
 export const PROXY_BASE_URL = import.meta.env.VITE_PROXY_BASE || ''
 export const HOST_URL_DEFAULT = import.meta.env.VITE_API_HOST
 export const API_PROXY_BASE = import.meta.env.VITE_API_PROXY_BASE || ''
+export const API_BACKEND_WS = import.meta.env.VITE_WS_API || ``
+
 export const HOST_URL = API_PROXY_BASE + HOST_URL_DEFAULT
 
 export const isDev = import.meta.env.MODE === 'development'
