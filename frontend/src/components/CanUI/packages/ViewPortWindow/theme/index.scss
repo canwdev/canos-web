@@ -151,3 +151,35 @@
   transform: translateX(20px);
   opacity: 0;
 }
+
+.fade-right-enter-active,
+.fade-right-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-right-enter-from,
+.fade-right-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+
+/* 1. declare transition */
+.fadeMove-move,
+.fadeMove-enter-active,
+.fadeMove-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. declare enter from and leave to state */
+.fadeMove-enter-from,
+.fadeMove-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01);
+}
+
+/* 3. ensure leaving items are taken out of layout flow so that moving
+      animations can be calculated correctly. */
+.fadeMove-leave-active {
+  position: absolute;
+}
