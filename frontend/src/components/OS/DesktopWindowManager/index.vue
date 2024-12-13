@@ -8,6 +8,7 @@ import {TaskItem} from '@/enum/os'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import {useMainStore} from '@/store/main'
 import WidgetsPlayground from '@/components/OS/Widgets/WidgetsPlayground.vue'
+import OfflineDesktopContent from '@/components/OS/DesktopWindowManager/OfflineDesktopContent.vue'
 
 const mainStore = useMainStore()
 const systemStore = useSystemStore()
@@ -59,7 +60,8 @@ const handleRestore = (index) => {
 <template>
   <div class="desktop-window-manager" :class="{'preview-desktop': mainStore.isPreviewDesktop}">
     <DesktopWallpaper>
-      <DesktopContent />
+      <DesktopContent v-if="systemStore.isBackendAvailable" />
+      <OfflineDesktopContent v-else />
       <WidgetsPlayground />
     </DesktopWallpaper>
 

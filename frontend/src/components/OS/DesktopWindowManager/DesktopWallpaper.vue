@@ -83,11 +83,9 @@ const isOverDropZone = ref(false)
   <div ref="dropZoneRef" :class="{isOverDropZone}" class="desktop-wallpaper" :style="bgStyle">
     <slot></slot>
 
-    <template v-if="!systemStore.isBackendAvailable">
-      <span v-for="i in 4" :key="i" class="watermark-tip font-code" :class="`no-${i}`"
-        >服务器离线模式</span
-      >
-    </template>
+    <span v-if="!systemStore.isBackendAvailable" class="watermark-tip font-code" :class="`no-3`">
+      服务器离线模式
+    </span>
   </div>
 </template>
 
