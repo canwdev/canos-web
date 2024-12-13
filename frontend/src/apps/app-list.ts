@@ -82,6 +82,7 @@ export const AppRemote: ShortcutItem = {
   title: 'RemoteApp',
   iconClass: 'mdi mdi-console',
   component: defineAsyncComponent(() => import('@/apps/RemoteApp/TerminalApp.vue')),
+  requireBackend: true,
 }
 
 export const AppMediadevicesPlayer: ShortcutItem = {
