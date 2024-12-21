@@ -77,17 +77,19 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
     @click="handleItemClick(item)"
     @click.middle.prevent="handleNewInstance(item)"
   >
-    <div class="task-item-main">
-      <ThemedIcon
-        v-if="commonItem.icon || commonItem.iconClass"
-        :name="commonItem.icon"
-        class="task-icon"
-        :icon-class="commonItem.iconClass"
-      />
-      <span v-else class="mdi mdi-help-box task-icon"></span>
-      <span v-if="isTask && !settingsStore.taskbarIconOnly" class="text-overflow">
-        {{ commonItem.title }}
-      </span>
+    <div class="taskbar-item-inner">
+      <div class="task-item-main">
+        <ThemedIcon
+          v-if="commonItem.icon || commonItem.iconClass"
+          :name="commonItem.icon"
+          class="task-icon"
+          :icon-class="commonItem.iconClass"
+        />
+        <span v-else class="mdi mdi-help-box task-icon"></span>
+        <span v-if="isTask && !settingsStore.taskbarIconOnly" class="text-overflow">
+          {{ commonItem.title }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -95,52 +97,67 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
 <style lang="scss" scoped>
 .taskbar-item {
   height: 100%;
-  padding: 0 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
   max-width: 200px;
-  overflow: hidden;
-  transition: all 0.3s;
-  gap: 8px;
-  border: none;
-  line-height: 1.2;
-  cursor: pointer;
-  background-color: transparent;
-  color: inherit;
+
+  .taskbar-item-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    overflow: hidden;
+    gap: 8px;
+    border: none;
+    line-height: 1.2;
+    cursor: pointer;
+    background-color: transparent;
+    color: inherit;
+    transition: all 0.3s;
+  }
 
   &.is-task {
-    &::after {
-      position: absolute;
-      content: '';
-      bottom: 0;
-      left: 8px;
-      right: 8px;
-      background-color: $primary;
-      opacity: 1;
-      height: 2px;
-      transition: all 0.3s;
+    .taskbar-item-inner {
+      &::after {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        left: 8px;
+        right: 8px;
+        background-color: $primary;
+        opacity: 1;
+        height: 2px;
+        transition: all 0.3s;
+      }
     }
   }
 
   &:hover,
   &.hover {
-    background-color: $color_hover;
+    .taskbar-item-inner {
+      background-color: $color_hover;
+    }
     &.is-task {
-      &::after {
-        left: 4px;
-        right: 4px;
+      .taskbar-item-inner {
+        &::after {
+          left: 4px;
+          right: 4px;
+        }
       }
     }
   }
 
   &.active {
-    background-color: $primary_opacity;
+    .taskbar-item-inner {
+      background-color: $primary_opacity;
+    }
     &.is-task {
-      &::after {
-        left: 0;
-        right: 0;
+      .taskbar-item-inner {
+        &::after {
+          left: 0;
+          right: 0;
+        }
       }
     }
   }

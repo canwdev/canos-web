@@ -97,12 +97,8 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 </script>
 
 <template>
-  <div
-    ref="rootRef"
-    v-if="mVisible"
-    class="start-menu vp-panel vp-window-panel _panel-bg"
-    :class="{_full: !settingsStore.isWindowed}"
-  >
+  <div ref="rootRef" v-if="mVisible" class="start-menu" :class="{_full: !settingsStore.isWindowed}">
+    <div class="start-menu-bg _panel-bg vp-panel vp-window-panel"></div>
     <div class="start-menu-row">
       <div class="start-menu-above">
         <div class="start-title-wrap">
@@ -147,16 +143,22 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 <style lang="scss" scoped>
 .start-menu {
   width: 350px;
-  //background-color: rgba(255, 255, 255, 0.8);
-  // backdrop-filter: blur 会影响内部元素定位，考虑改成子元素渲染模糊效果
-  //backdrop-filter: blur(10px);
-  //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
   position: fixed;
   bottom: $taskbar_height;
   user-select: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+
+  .start-menu-bg {
+    //background-color: rgba(255, 255, 255, 0.8);
+    //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    //backdrop-filter: blur 会影响内部元素定位，考虑改成子元素渲染模糊效果
+    backdrop-filter: blur(10px);
+  }
 
   &:not(&._full) {
     left: 8px;
@@ -198,6 +200,8 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
     padding: 8px;
     gap: 8px;
     box-sizing: border-box;
+    position: relative;
+    z-index: 1;
     .start-menu-above {
       flex: 1;
       display: flex;

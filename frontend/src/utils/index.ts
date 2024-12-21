@@ -153,3 +153,18 @@ export function blobToBase64(blob): Promise<string> {
     fr.readAsDataURL(blob)
   })
 }
+
+export const downloadUrl = (url: string, filename?) => {
+  // 创建一个虚拟的 <a> 标签
+  const a = document.createElement('a')
+  // 设置 href 为文件的 URL
+  a.href = url
+  // 设置 download 属性，以指定下载时的文件名
+  a.download = filename
+  // 将 <a> 标签添加到 DOM 中
+  document.body.appendChild(a)
+  // 模拟点击 <a> 标签以触发下载
+  a.click()
+  // 点击后移除 <a> 标签
+  document.body.removeChild(a)
+}

@@ -53,7 +53,7 @@ export const fsWebApi = {
   createShareLink(params) {
     return service.post('/create-share-link', params)
   },
-  async getDownloadShareLink(paths) {
+  async getDownloadShareLink(paths: string[]) {
     const {key} = await this.createShareLink({paths})
     return baseURL + `/download-share?key=${key}`
   },

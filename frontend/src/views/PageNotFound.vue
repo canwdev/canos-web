@@ -10,7 +10,7 @@ export default defineComponent({
   <div class="page-not-found" style="padding: 50px; text-align: center">
     <h1>Page Not Found</h1>
     <div>
-      <RouterLink style="color: red" to="/">Home</RouterLink>
+      <RouterLink to="/">Home</RouterLink>
     </div>
   </div>
 </template>

@@ -118,60 +118,72 @@ const {
 })
 
 const contextMenuOptions = ref<QuickOptionItem[]>([])
+
+const updateOptionsFn = () => {
+  if (selectedItems.value.length) {
+    contextMenuOptions.value = ctxMenuOptions.value
+  } else {
+    contextMenuOptions.value = [
+      {
+        label: 'Create Document',
+        iconClass: 'mdi mdi-file-document-plus-outline',
+        props: {
+          onClick() {
+            handleCreateFile()
+          },
+        },
+      },
+      {
+        label: 'Create Folder',
+        iconClass: 'mdi mdi-folder-plus-outline',
+        props: {
+          onClick() {
+            handleCreateFolder()
+          },
+        },
+      },
+      {split: true},
+      {
+        label: 'Upload Files...',
+        iconClass: 'mdi mdi-file-upload-outline',
+        props: {
+          onClick() {
+            selectUploadFiles()
+          },
+        },
+      },
+      {
+        label: 'Upload Folder...',
+        iconClass: 'mdi mdi-folder-upload-outline',
+        props: {
+          onClick() {
+            selectUploadFolder()
+          },
+        },
+      },
+      {split: true},
+      {
+        label: 'Sort',
+        iconClass: 'mdi mdi-sort-alphabetical-variant',
+        children: sortOptions.value,
+      },
+      {split: true},
+      ...ctxMenuOptions.value,
+      ...moreOptions.value,
+    ]
+  }
+}
+
 const updateMenuOptions = (item: IEntry | null, event: MouseEvent) => {
-  handleShowCtxMenu(item, event, () => {
-    if (selectedItems.value.length) {
-      contextMenuOptions.value = ctxMenuOptions.value
-    } else {
-      contextMenuOptions.value = [
-        {
-          label: 'Create Document',
-          iconClass: 'mdi mdi-file-document-plus-outline',
-          props: {
-            onClick() {
-              handleCreateFile()
-            },
-          },
-        },
-        {
-          label: 'Create Folder',
-          iconClass: 'mdi mdi-folder-plus-outline',
-          props: {
-            onClick() {
-              handleCreateFolder()
-            },
-          },
-        },
-        {split: true},
-        {
-          label: 'Upload Files...',
-          iconClass: 'mdi mdi-file-upload-outline',
-          props: {
-            onClick() {
-              selectUploadFiles()
-            },
-          },
-        },
-        {
-          label: 'Upload Folder...',
-          iconClass: 'mdi mdi-folder-upload-outline',
-          props: {
-            onClick() {
-              selectUploadFolder()
-            },
-          },
-        },
-        {split: true},
-        {
-          label: 'Sort',
-          iconClass: 'mdi mdi-sort-alphabetical-variant',
-          children: sortOptions.value,
-        },
-        {split: true},
-        ...ctxMenuOptions.value,
-        ...moreOptions.value,
-      ]
-    }
+  handleShowCtxMenu(item, event, updateOptionsFn)
+}
+const updateMenuOptions2 = (event: MouseEvent) => {
+  ctxMenuRef.value.isShow = false
+
+  updateOptionsFn()
+
+  nextTick(() => {
+    ctxMenuRef.value.showMenuByElement(event.target, 'bottom', true)
   })
 }
 
@@ -332,7 +344,7 @@ defineExpose({
 
         <button
           class="btn-action btn-no-style"
-          @click="ctxMenuRef.showMenuByElement($event.target, 'bottom', true)"
+          @click="updateMenuOptions2($event)"
           title="Menu (ctrl+m)"
         >
           <span class="mdi mdi-menu"></span>

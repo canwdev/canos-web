@@ -105,7 +105,7 @@ export const AllAppList: ShortcutItem[] = [
   SystemAppWebBrowser,
   SystemAppSettings,
   AppPianoJs,
-  AppRemote,
+  // AppRemote,
   AppMediadevicesPlayer,
   ...AppUtilsList,
 ]

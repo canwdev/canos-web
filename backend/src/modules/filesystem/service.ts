@@ -1,8 +1,6 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common'
 import * as fs from 'fs-extra'
 import * as Path from 'path'
-import {mfpTool} from './utils/mfp-tool'
-import {getMetadata} from './utils/media-tool'
 import {serverInfo} from '@/enum'
 import {IDrive, IEntry} from '@/types/server'
 import * as nodeDiskInfo from 'node-disk-info'
@@ -226,7 +224,15 @@ export class FsService {
           })
         }
       }
-      const downloadName = `archive_${moment(new Date()).format('YYYYMMDD_HHmmss')}.zip`
+      let downloadName = `download_${moment().format('YYYYMMDD_HHmmss')}.zip`
+      console.log(paths)
+
+      if (paths[0]) {
+        // 获取文件的父文件夹路径
+        const parentDir = Path.dirname(paths[0])
+        // 获取父文件夹的名称
+        downloadName = Path.basename(parentDir)
+      }
 
       const archive = Archiver('zip', {
         zlib: {level: 9},

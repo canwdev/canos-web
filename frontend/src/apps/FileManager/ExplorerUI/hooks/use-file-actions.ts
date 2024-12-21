@@ -131,6 +131,7 @@ export const useFileActions = ({
     ].filter(Boolean)
   })
   const ctxMenuRef = ref()
+
   const handleShowCtxMenu = (
     item: IEntry | null,
     event: MouseEvent,
@@ -151,6 +152,7 @@ export const useFileActions = ({
       ctxMenuRef.value.showMenu(event)
     })
   }
+
   const enableAction = computed(() => {
     return selectedItems.value.length > 0
   })

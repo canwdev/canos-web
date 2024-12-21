@@ -1,6 +1,7 @@
 import {useDropZone, useFileDialog} from '@vueuse/core'
 import {normalizePath} from '../../utils'
 import {fsWebApi} from '@/api/filesystem'
+import {downloadUrl} from '@/utils'
 
 export const useTransfer = ({basePath, isLoading, selectedItems}) => {
   const uploadFiles = async (files: File[] | FileList | null) => {
@@ -100,7 +101,8 @@ export const useTransfer = ({basePath, isLoading, selectedItems}) => {
         paths.push(normalizePath(basePath.value + '/' + item.name))
       }
 
-      window.open(fsWebApi.getDownloadShareLink(paths))
+      const url = await fsWebApi.getDownloadShareLink(paths)
+      downloadUrl(url)
     } finally {
       isLoading.value = false
     }

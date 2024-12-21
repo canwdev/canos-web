@@ -176,7 +176,6 @@ const taskbarList = computed(() => {
 .task-fade-enter-from,
 .task-fade-leave-to {
   opacity: 0;
-  transform: translateY(30px);
 }
 
 /* 3. ensure leaving items are taken out of layout flow so that moving
