@@ -1,1 +1,1 @@
-# Local web music frontend
+# canos-web frontend

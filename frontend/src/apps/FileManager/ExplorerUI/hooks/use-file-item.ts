@@ -21,14 +21,14 @@ export const useFileItem = (props) => {
 
   const iconName = computed(() => {
     if (shortcutAppid.value) {
-      return systemStore.allAppidMap[shortcutAppid.value].icon
+      return systemStore.allAppidMap[shortcutAppid.value]?.icon
     }
     return getFileIconName(item.value)
   })
 
   const iconClass = computed(() => {
     if (shortcutAppid.value) {
-      return systemStore.allAppidMap[shortcutAppid.value].iconClass
+      return systemStore.allAppidMap[shortcutAppid.value]?.iconClass
     }
   })
 
@@ -47,7 +47,7 @@ Created: ${formatDate(item.value.birthtime, 'YYYY-MM-DD HH:mm:ss')}
 
   const nameDisplay = computed(() => {
     if (shortcutAppid.value) {
-      return systemStore.allAppidMap[shortcutAppid.value].title
+      return systemStore.allAppidMap[shortcutAppid.value]?.title
     }
     return item.value.name
   })
