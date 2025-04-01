@@ -45,15 +45,15 @@ Limit: ${size(memory.value.jsHeapSizeLimit)}
   height: 15px;
   position: relative;
   overflow: hidden;
-  background-color: $primary_opacity;
-  outline: 1px solid $primary;
+  background-color: var(--vgo-primary-opacity);
+  outline: 1px solid var(--vgo-primary);
   .status-value {
     position: absolute;
     height: 0%;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: $primary;
+    background-color: var(--vgo-primary);
     transition: all 0.3s;
   }
   .status-display {

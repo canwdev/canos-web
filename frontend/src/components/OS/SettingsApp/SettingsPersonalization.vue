@@ -2,15 +2,15 @@
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
-import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
+import OptionUI from '@canwdev/vgo-ui/src/components/OptionUI/index.vue'
 import {
   DESKTOP_FILE_FLAG,
   desktopBackgroundSizeOptions,
   ldThemeOptions,
   SettingsTabType,
 } from '@/enum/settings'
-import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
-import {useThemeOptions} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
+import {StOptionItem, StOptionType} from '@canwdev/vgo-ui/src/components/OptionUI/enum'
+import {useThemeOptions} from '@canwdev/vgo-ui/src/components/ViewPortWindow/utils/use-theme'
 import {useIconThemes} from '@/components/OS/ThemedIcon/use-icon-themes'
 import {handleReadSelectedFile} from '@/utils/mc-utils/io'
 import {useStorage} from '@vueuse/core'
@@ -69,7 +69,7 @@ const optionList = computed((): StOptionItem[] => {
                 h(
                   'button',
                   {
-                    class: 'vp-button',
+                    class: 'vgo-button',
                     async onClick() {
                       const [handle] = await window.showOpenFilePicker({
                         types: [
@@ -92,7 +92,7 @@ const optionList = computed((): StOptionItem[] => {
                   h(
                     'button',
                     {
-                      class: 'vp-button',
+                      class: 'vgo-button',
                       onClick() {
                         settingsStore.desktopWallpaper = ''
                       },

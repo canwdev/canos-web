@@ -16,6 +16,7 @@
     "analyse": "vite-bundle-visualizer"
   },
   "dependencies": {
+    "@canwdev/vgo-ui": "^0.1.3",
     "@mdi/font": "^7.4.47",
     "@viselect/vanilla": "^3.9.0",
     "@vueuse/core": "^12.8.2",

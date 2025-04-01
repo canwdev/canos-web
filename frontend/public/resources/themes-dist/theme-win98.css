@@ -52,7 +52,7 @@
 /*-------------------------------------------*\
     Window
 \*-------------------------------------------*/
-.theme-win98 .vp-window {
+.theme-win98 .vgo-window {
   font-family: var(--sans-serif);
   -webkit-font-smoothing: none;
   font-size: 11px;
@@ -60,10 +60,10 @@
   background: var(--surface);
   padding: 3px;
 }
-.theme-win98 .vp-window fieldset {
+.theme-win98 .vgo-window fieldset {
   margin-bottom: 9px;
 }
-.theme-win98 .vp-window .vp-window-title-bar {
+.theme-win98 .vgo-window .vgo-window-title-bar {
   font-size: 11px;
   background: var(--title-bar-bg);
   padding: 3px 2px 3px 3px;
@@ -71,16 +71,16 @@
   justify-content: space-between;
   align-items: center;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-title-bar-text {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-title-bar-text {
   font-weight: bold;
   color: white;
   letter-spacing: 0;
   margin-right: 24px;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls {
   display: flex;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button {
   display: block;
   min-width: 16px;
   min-height: 14px;
@@ -95,59 +95,59 @@
   padding: 0 4px;
   height: auto;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button:focus {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button:focus {
   outline: none;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button svg {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button svg {
   height: 14px;
   width: 14px;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button:not(:disabled):active, .theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button:not(:disabled).active {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button:not(:disabled):active, .theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button:not(:disabled).active {
   box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button:focus, .theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button.focused {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button:focus, .theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button.focused {
   outline: 1px dotted #000000;
   outline-offset: -4px;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls button::-moz-focus-inner {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls button::-moz-focus-inner {
   border: 0;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-minimize {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-minimize {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSIyIiB2aWV3Qm94PSIwIDAgNiAyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHJlY3Qgd2lkdGg9IjYiIGhlaWdodD0iMiIgZmlsbD0iYmxhY2siLz4NCjwvc3ZnPg0K);
   background-repeat: no-repeat;
   background-position: bottom 3px left 4px;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-minimize > i {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-minimize > i {
   display: none;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-maximize, .theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-restore {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-maximize, .theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-restore {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgOSA5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik05IDBIMFYyVjhWOUgxSDhIOVY4VjJWMFpNOCAySDFWOEg4VjJaIiBmaWxsPSJibGFjayIvPg0KPC9zdmc+DQo=);
   background-repeat: no-repeat;
   background-position: top 2px left 3px;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-maximize > i, .theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-restore > i {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-maximize > i, .theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-restore > i {
   display: none;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-close {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-close {
   margin-left: 2px;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI3IiB2aWV3Qm94PSIwIDAgOCA3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0wIDBIMUgyVjFIM1YySDRINVYxSDZWMEg3SDhWMUg3VjJINlYzSDVWNEg2VjVIN1Y2SDhWN0g3SDZWNkg1VjVINEgzVjZIMlY3SDFIMFY2SDFWNUgyVjRIM1YzSDJWMkgxVjFIMFYwWiIgZmlsbD0iYmxhY2siLz4NCjwvc3ZnPg0K);
   background-repeat: no-repeat;
   background-position: top 3px left 4px;
 }
-.theme-win98 .vp-window .vp-window-title-bar .vp-window-controls .is-close > i {
+.theme-win98 .vgo-window .vgo-window-title-bar .vgo-window-controls .is-close > i {
   display: none;
 }
-.theme-win98 .vp-window .vp-window-body {
+.theme-win98 .vgo-window .vgo-window-body {
   height: calc(100% - 24px) !important;
 }
-.theme-win98 .vp-window._maximized {
+.theme-win98 .vgo-window._maximized {
   padding: 0;
 }
 
 /*-------------------------------------------*\
     Forms
 \*-------------------------------------------*/
-.theme-win98 .vp-input, .theme-win98 .n-input {
+.theme-win98 .vgo-input, .theme-win98 .n-input {
   box-shadow: var(--border-field);
 }
 .theme-win98 label,
@@ -161,7 +161,7 @@
 /*-------------------------------------------*\
     Buttons
 \*-------------------------------------------*/
-.theme-win98 .vp-button, .theme-win98 .n-button {
+.theme-win98 .vgo-button, .theme-win98 .n-button {
   font-family: var(--sans-serif);
   -webkit-font-smoothing: none;
   font-size: 11px;
@@ -172,18 +172,18 @@
   border-radius: 0;
   padding: 4px 12px;
 }
-.theme-win98 .vp-button:not(:disabled):active, .theme-win98 .vp-button:not(:disabled).active, .theme-win98 .n-button:not(:disabled):active, .theme-win98 .n-button:not(:disabled).active {
+.theme-win98 .vgo-button:not(:disabled):active, .theme-win98 .vgo-button:not(:disabled).active, .theme-win98 .n-button:not(:disabled):active, .theme-win98 .n-button:not(:disabled).active {
   box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
 }
-.theme-win98 .vp-button:focus, .theme-win98 .vp-button.focused, .theme-win98 .n-button:focus, .theme-win98 .n-button.focused {
+.theme-win98 .vgo-button:focus, .theme-win98 .vgo-button.focused, .theme-win98 .n-button:focus, .theme-win98 .n-button.focused {
   outline: 1px dotted #000000;
   outline-offset: -4px;
 }
-.theme-win98 .vp-button::-moz-focus-inner, .theme-win98 .n-button::-moz-focus-inner {
+.theme-win98 .vgo-button::-moz-focus-inner, .theme-win98 .n-button::-moz-focus-inner {
   border: 0;
 }
 
-.theme-win98 .vp-panel {
+.theme-win98 .vgo-panel {
   background-color: var(--surface);
   color: black;
   box-shadow: inset 1px 1px #fff, inset 2px 2px #dfdfdf, inset -1px -1px #0a0a0a, inset -2px -2px grey;

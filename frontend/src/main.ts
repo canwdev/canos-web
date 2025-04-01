@@ -28,14 +28,11 @@ import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import i18n from '@/i18n/index'
 import '@/apps/app-list'
-import '@/components/CanUI/packages/ViewPortWindow/theme/index.scss'
-import CanUI from '@/components/CanUI'
 import './styles/style.scss'
 
 const app = createApp(App)
 
 app.use(i18n)
-app.use(CanUI)
 app.use(ElementPlus)
 app.use(router)
 const pinia = createPinia()

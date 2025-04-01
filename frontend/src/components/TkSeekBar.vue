@@ -106,7 +106,7 @@ export default {
     transform: translateY(-50%);
     height: $bar_height;
     width: 0;
-    background: $primary;
+    background: var(--vgo-primary);
     user-select: none;
     pointer-events: none;
     z-index: 1;
@@ -122,7 +122,7 @@ export default {
     right: 0;
     appearance: none;
     height: $bar_height;
-    background: $color_border;
+    background: var(--vgo-color-border);
     outline: none;
     border-radius: 2px;
     box-shadow: none;
@@ -134,7 +134,7 @@ export default {
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: $primary;
+      background: var(--vgo-primary);
       z-index: 10;
       border: none;
       //box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);

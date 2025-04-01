@@ -3,7 +3,7 @@
 \*-------------------------------------------*/
 
 .theme-xp {
-  .vp-window-panel {
+  .vgo-window-panel {
     box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9, inset -1px -1px #001ea0, inset 1px 1px #166aee,
     inset -1px -1px #003bda, inset 1px 1px #0855dd;
     -webkit-font-smoothing: antialiased;
@@ -17,7 +17,7 @@
     }
   }
 
-  .vp-window {
+  .vgo-window {
     box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9, inset -2px -2px #001ea0, inset 2px 2px #166aee,
     inset -3px -3px #003bda, inset 3px 3px #0855dd;
     border-top-left-radius: 8px;
@@ -25,7 +25,7 @@
     padding: 0 0 3px 0;
     -webkit-font-smoothing: antialiased;
 
-    .vp-window-title-bar {
+    .vgo-window-title-bar {
       font-family: "Trebuchet MS";
       background: linear-gradient(
           180deg,
@@ -48,12 +48,12 @@
       text-shadow: 1px 1px #0f1089;
       height: 29px;
 
-      .vp-window-title-bar-text {
+      .vgo-window-title-bar-text {
         padding-left: 3px;
         color: white;
       }
     }
-    .vp-window-controls {
+    .vgo-window-controls {
       display: flex;
       color: white;
 
@@ -147,7 +147,7 @@
       }
     }
 
-    .vp-window-body {
+    .vgo-window-body {
       margin-left: 3px;
       margin-right: 3px;
       height: calc(100% - 29px) !important;
@@ -155,12 +155,12 @@
 
 
     &._maximized {
-      .vp-window-content {
-        .vp-window-title-bar {
+      .vgo-window-content {
+        .vgo-window-title-bar {
           border-top-left-radius: unset;
           border-top-right-radius: unset;
         }
-        .vp-window-body {
+        .vgo-window-body {
           margin: 0;
         }
       }

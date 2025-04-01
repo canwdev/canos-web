@@ -12,7 +12,7 @@ import MusicPlaylist from '@/apps/MediaPlayer/Playlist/index.vue'
 import {IEntry} from '@server/types/server'
 import {MediaItem} from '@/apps/MediaPlayer/utils/music-state'
 import {isSupportedMediaFormat} from '@/utils/is'
-import FoldableSidebarLayout from '@/components/CanUI/packages/Layouts/FoldableSidebarLayout.vue'
+import FoldableSidebarLayout from '@canwdev/vgo-ui/src/components/Layouts/FoldableSidebarLayout.vue'
 import {useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 import {guid} from '@/utils'
 

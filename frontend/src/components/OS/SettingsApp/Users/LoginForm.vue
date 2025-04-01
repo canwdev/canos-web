@@ -1,7 +1,7 @@
 <script lang="ts" setup="">
-import AutoFormNaive from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
+import AutoFormNaive from '@canwdev/vgo-ui/src/components/AutoFormElPlus/index.vue'
 import {computed} from 'vue'
-import {AutoFormItemType, MixedFormItems} from '@/components/CanUI/packages/AutoFormElPlus/enum'
+import {AutoFormItemType, MixedFormItems} from '@canwdev/vgo-ui/src/components/AutoFormElPlus/enum'
 import {FormRules} from 'element-plus'
 
 interface Props {

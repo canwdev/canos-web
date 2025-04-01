@@ -16,7 +16,7 @@ function onClick() {
         保持唤醒（不休眠）:
         {{ wakeLock.isActive ? '已开启✅' : '已关闭🛑' }}
       </div>
-      <button class="vp-button" @click="onClick">
+      <button class="vgo-button" @click="onClick">
         {{ text }}
       </button>
       <div>提示：必须保持此页面在前台运行，否则无效。</div>

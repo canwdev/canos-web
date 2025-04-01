@@ -36,7 +36,7 @@ const systemStore = useSystemStore()
 
 <style lang="scss" scoped>
 .desktop-widgets {
-  height: calc(100% - $taskbar_height);
+  height: calc(100% - var(--os-taskbar-height));
   width: 100%;
   position: absolute;
   top: 0;

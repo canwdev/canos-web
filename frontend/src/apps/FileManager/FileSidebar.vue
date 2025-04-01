@@ -141,7 +141,7 @@ defineExpose({
 .explorer-file-sidebar {
   //width: 180px;
   height: 100%;
-  border-right: 1px solid $color_border;
+  border-right: 1px solid var(--vgo-color-border);
   position: relative;
   display: flex;
   gap: 8px;
@@ -180,11 +180,11 @@ defineExpose({
     align-items: center;
 
     &.active {
-      background-color: $primary_opacity !important;
+      background-color: var(--vgo-primary-opacity) !important;
     }
 
     &:focus {
-      outline: 1px solid $primary;
+      outline: 1px solid var(--vgo-primary);
       outline-offset: -1px;
     }
 
@@ -213,10 +213,10 @@ defineExpose({
     }
 
     &:hover {
-      background-color: $color_hover;
+      background-color: var(--vgo-color-hover);
     }
     & + .drive-item {
-      border-top: 1px solid $color_border;
+      border-top: 1px solid var(--vgo-color-border);
     }
 
     .drive-title {
@@ -232,7 +232,7 @@ defineExpose({
       height: 2px;
       width: 100%;
       position: relative;
-      background-color: $color_border;
+      background-color: var(--vgo-color-border);
       display: flex;
 
       .volume-value {
@@ -241,7 +241,7 @@ defineExpose({
         top: 0;
         bottom: 0;
         width: 0%;
-        background-color: $primary;
+        background-color: var(--vgo-primary);
         transition: all 0.3s;
       }
     }

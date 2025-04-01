@@ -4,6 +4,7 @@ import {LsKeys} from '@/enum'
 import {useRouter} from 'vue-router'
 import {mcUtils} from '@/utils/mc-utils'
 import {ElMessage, ElMessageBox} from 'element-plus'
+import '@/components/monaco-editor-patch'
 
 window.$message = ElMessage
 window.$dialog = ElMessageBox

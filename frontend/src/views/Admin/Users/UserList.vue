@@ -2,12 +2,12 @@
 import AutoFilterList from '@/views/Admin/Common/AutoFilterList.vue'
 import {usersApi} from '@/api/users'
 import {CreateEditUserDto} from '@server/modules/users/user.dto'
-import {renderDropdownMenu} from '@/components/CanUI/packages/OptionUI/Tools/renders'
-import AutoFormNaive from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
-import {AutoFormItemType, MixedFormItems} from '@/components/CanUI/packages/AutoFormElPlus/enum'
+import {renderDropdownMenu} from '@canwdev/vgo-ui/src/components/OptionUI/Tools/renders'
+import AutoFormNaive from '@canwdev/vgo-ui/src/components/AutoFormElPlus/index.vue'
+import {AutoFormItemType, MixedFormItems} from '@canwdev/vgo-ui/src/components/AutoFormElPlus/enum'
 import {DisabledOptions, IUserInfo, UserRoleOptions} from '@server/types/user'
 import {formatDate} from '@/utils'
-import {AutoTableColumn} from '@/components/CanUI/packages/AutoTableElPlus/types'
+import {AutoTableColumn} from '@canwdev/vgo-ui/src/components/AutoTableElPlus/types'
 import {ElTag, FormRules} from 'element-plus'
 
 const autoListRef = ref()

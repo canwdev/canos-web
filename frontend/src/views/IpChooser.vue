@@ -29,7 +29,7 @@ const handleGo = (url) => {
         <span class="mdi mdi-ip-network"></span>
         Select an IP address to access:
       </div>
-      <div class="ip-chooser-main vp-bg font-code">
+      <div class="ip-chooser-main vgo-bg font-code">
         <div class="left-box">
           <div
             v-for="url in systemStore.serverInfo.hostUrls"
@@ -51,7 +51,7 @@ const handleGo = (url) => {
             <img v-if="qrcode && currentUrl" :src="qrcode" class="qr-img" />
             <div class="url-text">
               <textarea
-                class="vp-input"
+                class="vgo-input"
                 v-model="currentUrl"
                 placeholder="Select the URL on the left or input"
               />
@@ -60,7 +60,7 @@ const handleGo = (url) => {
         </div>
       </div>
     </template>
-    <div class="ip-chooser-main vp-panel" style="padding: 10px 20px" v-else>
+    <div class="ip-chooser-main vgo-panel" style="padding: 10px 20px" v-else>
       Backend server not available. <a href="">Reload</a>
     </div>
   </div>
@@ -88,20 +88,20 @@ const handleGo = (url) => {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    border: 1px solid $primary;
-    box-shadow: 0 0 10px $primary_opacity;
+    border: 1px solid var(--vgo-primary);
+    box-shadow: 0 0 10px var(--vgo-primary-opacity);
     flex-wrap: wrap;
 
     .left-box {
       width: 300px;
       display: flex;
       flex-direction: column;
-      border-right: 1px solid $color_border;
+      border-right: 1px solid var(--vgo-color-border);
 
       @media screen and (max-width: 500px) {
         width: 100%;
         border-right: 0;
-        border-bottom: 1px solid $color_border;
+        border-bottom: 1px solid var(--vgo-color-border);
       }
 
       .list-item {
@@ -114,16 +114,16 @@ const handleGo = (url) => {
         word-break: break-all;
 
         &:nth-child(2n) {
-          background-color: $color_border;
+          background-color: var(--vgo-color-border);
         }
 
         &:hover {
-          background-color: $color_hover;
+          background-color: var(--vgo-color-hover);
         }
 
         &.active {
           position: relative;
-          background-color: $primary_opacity;
+          background-color: var(--vgo-primary-opacity);
 
           &::before {
             position: absolute;
@@ -133,7 +133,7 @@ const handleGo = (url) => {
             top: 0;
             bottom: 0;
             width: 4px;
-            background-color: $primary;
+            background-color: var(--vgo-primary);
           }
         }
       }
@@ -157,7 +157,7 @@ const handleGo = (url) => {
         .url-text {
           margin-top: 8px;
           text-align: center;
-          .vp-input {
+          .vgo-input {
             font-size: 14px;
             width: 100%;
             line-height: 1;

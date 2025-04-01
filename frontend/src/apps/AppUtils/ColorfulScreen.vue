@@ -69,9 +69,9 @@ useCursorHider(rootRef, ({el, isShow}) => {
   >
     <transition name="fade">
       <div v-show="isShowBar" @dblclick.stop @click.stop class="ctrl-bar">
-        <button class="vp-button" @click="() => prev()">⏮️Prev</button>
+        <button class="vgo-button" @click="() => prev()">⏮️Prev</button>
         <span @click="toggle" class="cur-color">{{ state }}</span>
-        <button class="vp-button" @click="() => next()">Next⏭️</button>
+        <button class="vgo-button" @click="() => next()">Next⏭️</button>
       </div>
     </transition>
   </div>
@@ -109,7 +109,7 @@ useCursorHider(rootRef, ({el, isShow}) => {
       padding: 2px;
       cursor: pointer;
     }
-    .vp-button {
+    .vgo-button {
       padding: 2px 4px;
     }
   }

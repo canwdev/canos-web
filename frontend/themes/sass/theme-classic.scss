@@ -2,8 +2,8 @@
   $theme_color_inactive: #D4D0C8;
   $border_width: 1px;
   $border: $border_width solid rgba(45, 45, 45, 0.3);
-  $primary: var(--primary); // #8dbb72;
-  $primary_opacity: rgba(var(--primary-rgb), .25); //opacify($primary, 0.3);
+  var(--vgo-primary): var(--primary); // #8dbb72;
+  var(--vgo-primary)_opacity: rgba(var(--primary-rgb), .25); //opacify(var(--vgo-primary), 0.3);
 
   $box_shadow: $border_width 0 #000, 0 $border_width #000, $border_width $border_width #000, inset $border_width $border_width #fff;
 
@@ -35,24 +35,24 @@
     box-shadow: inset -1px -1px #89939C, inset 1px 1px #1a1c1e;
   }
 
-  .vp-window {
+  .vgo-window {
     padding: $border_width;
     background: $theme_color_inactive;
     border: $border;
     box-shadow: $box_shadow !important;
 
-    .vp-window-content {
-      .vp-window-title-bar {
+    .vgo-window-content {
+      .vgo-window-title-bar {
         background: linear-gradient(45deg, #808080, #C0C0C0);
         color: #D4D0C8;
         padding: 1px 1px 1px 2px;
-        .vp-window-title-bar-text {
+        .vgo-window-title-bar-text {
           font-size: 12px;
         }
       }
     }
 
-    .vp-window-controls {
+    .vgo-window-controls {
       gap: 2px;
       button {
         @include normal();
@@ -78,27 +78,27 @@
       }
     }
 
-    .vp-window-body {
+    .vgo-window-body {
       height: calc(100% - 23px) !important;
     }
 
     &._active {
-      .vp-window-content {
-        .vp-window-title-bar {
+      .vgo-window-content {
+        .vgo-window-title-bar {
           color: white;
           //background: linear-gradient(45deg, #0A246A, #A6CAF0);
-          background: linear-gradient(45deg, $primary, $primary_opacity);
+          background: linear-gradient(45deg, var(--vgo-primary), var(--vgo-primary)_opacity);
         }
       }
     }
   }
 
-  .vp-panel {
+  .vgo-panel {
     background-color: $theme_color_inactive;
     @include normal();
     border: $border;
   }
-  .vp-button, .n-button {
+  .vgo-button, .n-button {
     border: none;
     @include normal();
 
@@ -108,7 +108,7 @@
       }
     }
   }
-  .vp-input, .n-input {
+  .vgo-input, .n-input {
     background: #fff;
     @include field();
   }
@@ -124,21 +124,21 @@
   }
 
 
-  &._dark {
-    .vp-window {
+  &.dark {
+    .vgo-window {
       color: white;
-      .vp-window-body {
+      .vgo-window-body {
         &._bg {
           background-color: #31363C;
         }
       }
     }
-    .vp-panel {
+    .vgo-panel {
       background-color: #31363C;
       color: white;
       @include normal_dark()
     }
-    .vp-button, .n-button {
+    .vgo-button, .n-button {
       background-color: #3C434A;
       border-color: #7E888F;
       color: white;
@@ -150,7 +150,7 @@
         }
       }
     }
-    .vp-input, .n-input {
+    .vgo-input, .n-input {
       background: #31363C;
       color: white;
       @include field_dark();

@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import CoverDisplay from '@/apps/MediaPlayer/CoverDisplay.vue'
-import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import ViewPortWindow from '@canwdev/vgo-ui/src/components/ViewPortWindow/index.vue'
 import {MusicEvents, useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
 
 const DetailTabEnum = {
@@ -192,7 +192,7 @@ export default defineComponent({
 
     button {
       &.active {
-        color: $primary;
+        color: var(--vgo-primary);
       }
     }
 
@@ -210,7 +210,7 @@ export default defineComponent({
     position: relative;
     width: 100%;
     height: 100%;
-    box-shadow: 0 0 0 1px $color_border;
+    box-shadow: 0 0 0 1px var(--vgo-color-border);
     overflow: hidden;
 
     .big-cover {
@@ -248,13 +248,13 @@ export default defineComponent({
         flex: 1;
         padding: 10px 0;
         font-weight: bold;
-        border-bottom: 1px solid $color_border;
+        border-bottom: 1px solid var(--vgo-color-border);
         border-radius: 0;
 
         &.active {
-          color: $primary;
+          color: var(--vgo-primary);
           border-width: 2px;
-          border-bottom-color: $primary;
+          border-bottom-color: var(--vgo-primary);
         }
       }
     }

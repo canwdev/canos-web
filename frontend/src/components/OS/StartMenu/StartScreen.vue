@@ -11,8 +11,8 @@ import {useSystemStore} from '@/store/system'
 import {useStorage} from '@vueuse/core'
 import {useSettingsStore} from '@/store/settings'
 import {StartItemSizeOptions, StartLayoutGroup, IStartMenuItem} from './types'
-import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
-import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import QuickContextMenu from '@canwdev/vgo-ui/src/components/QuickOptions/QuickContextMenu.vue'
+import {QuickOptionItem} from '@canwdev/vgo-ui/src/components/QuickOptions/enum'
 import {LsKeys} from '@/enum'
 import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'
 import TitleEdit from '@/components/OS/StartMenu/Sub/TitleEdit.vue'
@@ -454,7 +454,7 @@ const handleGroupDrop = (indexData: StarIndexData) => {
           gap: 8px;
 
           .card-item {
-            //background: $primary;
+            //background: var(--vgo-primary);
             transition: all 0.2s;
 
             &.md {

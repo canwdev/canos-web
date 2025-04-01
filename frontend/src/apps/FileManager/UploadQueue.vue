@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import ViewPortWindow from '@canwdev/vgo-ui/src/components/ViewPortWindow/index.vue'
 import {TaskItem, TaskQueue} from '@/utils/task-queue'
 import {fsWebApi} from '@/api/filesystem'
 
@@ -141,7 +141,7 @@ defineExpose({
     gap: 8px;
     align-items: center;
     &:hover {
-      background-color: $color_hover;
+      background-color: var(--vgo-color-hover);
     }
     .upload-content {
       flex: 1;
@@ -152,7 +152,7 @@ defineExpose({
     .upload-status {
       font-size: 12px;
       span {
-        color: $primary;
+        color: var(--vgo-primary);
       }
     }
 
@@ -162,7 +162,7 @@ defineExpose({
       height: 4px;
       width: 100%;
       position: relative;
-      background-color: $color_border;
+      background-color: var(--vgo-color-border);
 
       .volume-value {
         position: absolute;
@@ -170,7 +170,7 @@ defineExpose({
         top: 0;
         bottom: 0;
         width: 0%;
-        background-color: $primary;
+        background-color: var(--vgo-primary);
         transition: all 0.3s;
       }
     }

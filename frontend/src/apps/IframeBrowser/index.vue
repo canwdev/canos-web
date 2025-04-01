@@ -5,10 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {useModelWrapper} from '@/hooks/use-model-wrapper'
 import {useStorage} from '@vueuse/core'
-import {useRemoteOptions} from '@/components/CanUI/packages/QuickOptions/utils/use-remote-options'
-import QuickOptions from '@/components/CanUI/packages/QuickOptions/index.vue'
+import {useRemoteOptions} from '@canwdev/vgo-ui/src/components/QuickOptions/utils/use-remote-options'
+import QuickOptions from '@canwdev/vgo-ui/src/components/QuickOptions/index.vue'
 import {TaskItem} from '@/enum/os'
 
 type AppParams = {
@@ -114,21 +113,21 @@ const showShortcuts = ref(false)
   <div class="iframe-browser-inner-wrap">
     <div class="iframe-browser-address-bar-wrap">
       <div class="button-wrap">
-        <button class="vp-button" @click="showShortcuts = true">
+        <button class="vgo-button" @click="showShortcuts = true">
           <span class="mdi mdi-star"></span>
         </button>
         <QuickOptions :options="shortcutList" v-model:visible="showShortcuts" title="Shortcuts" />
       </div>
 
       <input
-        class="iframe-browser-input vp-input font-code"
+        class="iframe-browser-input vgo-input font-code"
         v-model="addressBarUrl"
         placeholder="input url (https://)"
         type="text"
         @keyup.enter="handleGo()"
       />
       <button
-        class="vp-button"
+        class="vgo-button"
         @click="handleGo()"
         @contextmenu.stop="handleOpenNewTab"
         title="Visit Website"

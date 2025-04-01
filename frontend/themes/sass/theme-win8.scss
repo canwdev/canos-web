@@ -3,16 +3,16 @@
   $border_width: 6px;
   $box_shadow: 0 1px 5px rgba(0, 0, 0, 0.27);
   $border: 1px solid rgba(0, 0, 0, 0.5);
-  $primary: var(--primary); // #8dbb72;
-  $color_border: rgba(91, 85, 85, 0.2);
+  var(--vgo-primary): var(--primary); // #8dbb72;
+  var(--vgo-color-border): rgba(91, 85, 85, 0.2);
 
-  .vp-window {
+  .vgo-window {
     border: $border;
     padding: 0 $border_width $border_width;
     background-color: $theme_color_inactive;
 
-    .vp-window-content {
-      .vp-window-title-bar {
+    .vgo-window-content {
+      .vgo-window-title-bar {
         margin-left: -$border_width;
         margin-right: -$border_width;
         padding: 0 $border_width 5px;
@@ -20,7 +20,7 @@
           position: absolute;
           left: $border_width;
         }
-        .vp-window-title-bar-text {
+        .vgo-window-title-bar-text {
           margin-top: 4px;
           flex: 1;
           justify-content: center;
@@ -29,7 +29,7 @@
       }
     }
 
-    .vp-window-controls {
+    .vgo-window-controls {
       button {
         margin-top: 0;
         border: none;
@@ -62,8 +62,8 @@
 
     &._active {
       box-shadow: $box_shadow;
-      background-color: $primary !important;
-      .vp-window-title-bar {
+      background-color: var(--vgo-primary) !important;
+      .vgo-window-title-bar {
         color: white !important;
       }
     }
@@ -73,44 +73,44 @@
     }
   }
 
-  .vp-panel {
+  .vgo-panel {
     background-color: rgba(255, 255, 255, 0.8);
     border: $border;
     box-shadow: $box_shadow;
   }
 
-  .vp-button {
+  .vgo-button {
     background-color: white;
-    border: 1px solid $color_border;
+    border: 1px solid var(--vgo-color-border);
 
     &:not(:disabled) {
       &:hover {
-        border-color: $primary;
+        border-color: var(--vgo-primary);
       }
     }
   }
 
 
-  &._dark {
-    .vp-window {
+  &.dark {
+    .vgo-window {
       background-color: black;
       color: white;
 
-      .vp-window-body {
+      .vgo-window-body {
         &._bg {
           background-color: rgba(30, 30, 30, 1);
         }
       }
     }
-    .vp-panel {
+    .vgo-panel {
       background-color: rgba(0, 0, 0, 0.75);
       color: white;
     }
-    .vp-button {
+    .vgo-button {
       background-color: #4B4B4B;
       color: white;
     }
-    .vp-input {
+    .vgo-input {
       background-color: #2a2a2a;
       color: white;
     }

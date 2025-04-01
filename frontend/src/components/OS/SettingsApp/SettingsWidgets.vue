@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
-import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
-import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
-import {useThemeOptions} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
+import OptionUI from '@canwdev/vgo-ui/src/components/OptionUI/index.vue'
+import {StOptionItem, StOptionType} from '@canwdev/vgo-ui/src/components/OptionUI/enum'
+import {useThemeOptions} from '@canwdev/vgo-ui/src/components/ViewPortWindow/utils/use-theme'
 import {useIconThemes} from '@/components/OS/ThemedIcon/use-icon-themes'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import {ElCheckbox} from 'element-plus'

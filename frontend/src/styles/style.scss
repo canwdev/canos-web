@@ -1,3 +1,5 @@
+@use "@canwdev/vgo-ui/src/styles/base" as *;
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
 
@@ -6,14 +8,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --os-taskbar-height: 44px;
 }
 
 body {
   margin: 0;
-  accent-color: $primary;
+  accent-color: var(--vgo-primary);
 
   a {
-    color: $primary;
+    color: var(--vgo-primary);
   }
 }
 
@@ -131,8 +135,8 @@ html, body, #app {
 }
 
 .selection-area {
-  background: $primary_opacity;
-  border: 1px solid $primary;
+  background: var(--vgo-primary)_opacity;
+  border: 1px solid var(--vgo-primary);
 }
 
 

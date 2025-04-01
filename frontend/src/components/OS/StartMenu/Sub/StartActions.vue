@@ -128,7 +128,7 @@ const handleReload = () => {
     &:hover,
     &:active,
     &:focus {
-      background-color: $primary;
+      background-color: var(--vgo-primary);
     }
 
     &:active {

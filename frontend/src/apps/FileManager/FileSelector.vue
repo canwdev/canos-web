@@ -1,5 +1,5 @@
 <script lang="ts" setup="">
-import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import ViewPortWindow from '@canwdev/vgo-ui/src/components/ViewPortWindow/index.vue'
 import FileManager from '@/apps/FileManager/index.vue'
 
 const props = withDefaults(
@@ -47,7 +47,7 @@ defineExpose({
 
 <template>
   <div class="file-selector">
-    <button v-if="showButton" class="vp-button primary" @click="isShowFileSelectWindow = true">
+    <button v-if="showButton" class="vgo-button primary" @click="isShowFileSelectWindow = true">
       {{ actionLabel }}
     </button>
 

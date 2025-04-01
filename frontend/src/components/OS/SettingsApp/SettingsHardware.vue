@@ -1,8 +1,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
-import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
-import {StOptionItem, StOptionType} from '@/components/CanUI/packages/OptionUI/enum'
+import OptionUI from '@canwdev/vgo-ui/src/components/OptionUI/index.vue'
+import {StOptionItem, StOptionType} from '@canwdev/vgo-ui/src/components/OptionUI/enum'
 import {useBattery, useDevicePixelRatio, useDevicesList, useNetwork} from '@vueuse/core'
 import moment from 'moment/moment'
 import {useSystemStore} from '@/store/system'
@@ -28,7 +28,7 @@ export default defineComponent({
     const valueRender = (val) => {
       return h('textarea', {
         style: 'width: 300px; height: 100px; font-size: 12px;',
-        class: 'font-code vp-input',
+        class: 'font-code vgo-input',
         readonly: true,
         value: val,
       })
@@ -113,7 +113,7 @@ Type: ${type.value}`)
               actionRender: h(
                 'button',
                 {
-                  class: 'vp-button',
+                  class: 'vgo-button',
                   onClick: () => {
                     console.log(devices.value)
                   },

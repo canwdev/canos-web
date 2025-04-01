@@ -33,10 +33,10 @@ export default {
   <div class="simple-counter font-code">
     <div class="counter-number">{{ count }}</div>
     <p class="actions">
-      <button class="vp-button" @click="reset">重置</button>
-      <input class="vp-input" type="number" placeholder="step" v-model="step" />
-      <button class="vp-button" autofocus @click="add">+</button>
-      <button class="vp-button" autofocus @click="minus">-</button>
+      <button class="vgo-button" @click="reset">重置</button>
+      <input class="vgo-input" type="number" placeholder="step" v-model="step" />
+      <button class="vgo-button" autofocus @click="add">+</button>
+      <button class="vgo-button" autofocus @click="minus">-</button>
     </p>
     <ul class="history">
       <li v-for="(item, index) in history" :key="index">
@@ -79,7 +79,7 @@ export default {
       box-sizing: border-box;
 
       &:focus {
-        outline: 2px solid $primary;
+        outline: 2px solid var(--vgo-primary);
       }
     }
   }
@@ -99,7 +99,7 @@ export default {
 
       .no {
         width: 50px;
-        color: $primary;
+        color: var(--vgo-primary);
       }
 
       .count {
@@ -109,7 +109,7 @@ export default {
       }
 
       & + li {
-        border-top: 1px solid $color_border;
+        border-top: 1px solid var(--vgo-color-border);
       }
     }
   }

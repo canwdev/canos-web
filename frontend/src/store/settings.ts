@@ -1,5 +1,5 @@
 import {DesktopBackgroundSize, LdThemeType} from '@/enum/settings'
-import {DEFAULT_THEME} from '@/components/CanUI/packages/ViewPortWindow/utils/use-theme'
+import {DEFAULT_THEME} from '@canwdev/vgo-ui/src/components/ViewPortWindow/utils/use-theme'
 import {LsKeys} from '@/enum'
 import {DEFAULT_ICON_THEME} from '@/components/OS/ThemedIcon/use-icon-themes'
 import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'

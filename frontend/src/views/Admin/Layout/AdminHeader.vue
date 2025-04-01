@@ -75,7 +75,7 @@ const userDropdownOptions = computed(() => {
 <style lang="scss" scoped>
 .admin-header {
   height: 50px;
-  border-bottom: 1px solid $color_border;
+  border-bottom: 1px solid var(--vgo-color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -50,7 +50,7 @@
   --border-width: 1px;
 }
 
-.theme-win7 .vp-button, .theme-win7 .n-button {
+.theme-win7 .vgo-button, .theme-win7 .n-button {
   font: var(--font);
   box-sizing: border-box;
   border: var(--button-border);
@@ -66,7 +66,7 @@
   /* Button style on hovered */
   /* Button style on clicked */
 }
-.theme-win7 .vp-button::before, .theme-win7 .n-button::before {
+.theme-win7 .vgo-button::before, .theme-win7 .n-button::before {
   content: "";
   position: absolute;
   width: 100%;
@@ -82,7 +82,7 @@
   transition: opacity 0.3s;
   z-index: -1;
 }
-.theme-win7 .vp-button::after, .theme-win7 .n-button::after {
+.theme-win7 .vgo-button::after, .theme-win7 .n-button::after {
   content: "";
   position: absolute;
   width: 100%;
@@ -98,45 +98,45 @@
   transition: opacity 0.3s;
   z-index: -1;
 }
-.theme-win7 .vp-button:disabled, .theme-win7 .n-button:disabled {
+.theme-win7 .vgo-button:disabled, .theme-win7 .n-button:disabled {
   background: var(--button-face-disabled);
   border-color: var(--button-border-color-disabled);
   color: var(--button-text-color-disabled);
 }
-.theme-win7 .vp-button:not(:disabled), .theme-win7 .n-button:not(:disabled) {
+.theme-win7 .vgo-button:not(:disabled), .theme-win7 .n-button:not(:disabled) {
   /* Animation when hovered */
   /* Animation when unhovered */
 }
-.theme-win7 .vp-button:not(:disabled):hover, .theme-win7 .n-button:not(:disabled):hover {
+.theme-win7 .vgo-button:not(:disabled):hover, .theme-win7 .n-button:not(:disabled):hover {
   border-color: var(--button-border-color-hovered);
   transition: border-color 0.3s;
 }
-.theme-win7 .vp-button:not(:disabled):hover::before, .theme-win7 .n-button:not(:disabled):hover::before {
+.theme-win7 .vgo-button:not(:disabled):hover::before, .theme-win7 .n-button:not(:disabled):hover::before {
   opacity: 1;
   transition: opacity 0.3s;
 }
-.theme-win7 .vp-button:not(:disabled):not(:hover), .theme-win7 .n-button:not(:disabled):not(:hover) {
+.theme-win7 .vgo-button:not(:disabled):not(:hover), .theme-win7 .n-button:not(:disabled):not(:hover) {
   border-color: var(--button-border-color);
   transition: border-color 1s linear;
 }
-.theme-win7 .vp-button:not(:disabled):not(:hover)::before, .theme-win7 .n-button:not(:disabled):not(:hover)::before {
+.theme-win7 .vgo-button:not(:disabled):not(:hover)::before, .theme-win7 .n-button:not(:disabled):not(:hover)::before {
   opacity: 0;
   transition: opacity 1s linear;
 }
-.theme-win7 .vp-button:not(:disabled):active, .theme-win7 .vp-button:not(:disabled).active, .theme-win7 .n-button:not(:disabled):active, .theme-win7 .n-button:not(:disabled).active {
+.theme-win7 .vgo-button:not(:disabled):active, .theme-win7 .vgo-button:not(:disabled).active, .theme-win7 .n-button:not(:disabled):active, .theme-win7 .n-button:not(:disabled).active {
   border-color: var(--button-border-color-active);
   transition: border-color 0.3s;
 }
-.theme-win7 .vp-button:not(:disabled):active::after, .theme-win7 .vp-button:not(:disabled).active::after, .theme-win7 .n-button:not(:disabled):active::after, .theme-win7 .n-button:not(:disabled).active::after {
+.theme-win7 .vgo-button:not(:disabled):active::after, .theme-win7 .vgo-button:not(:disabled).active::after, .theme-win7 .n-button:not(:disabled):active::after, .theme-win7 .n-button:not(:disabled).active::after {
   opacity: 1;
   transition: opacity 0.3s;
 }
-.theme-win7 .vp-button:focus-visible, .theme-win7 .vp-button.focused, .theme-win7 .n-button:focus-visible, .theme-win7 .n-button.focused {
+.theme-win7 .vgo-button:focus-visible, .theme-win7 .vgo-button.focused, .theme-win7 .n-button:focus-visible, .theme-win7 .n-button.focused {
   box-shadow: inset 0 0 0 2px var(--button-shade-light-active);
   outline: 1px dotted #000;
   outline-offset: -4px;
 }
-.theme-win7 .vp-button.default, .theme-win7 .vp-button:focus, .theme-win7 .vp-button.focused, .theme-win7 .n-button.default, .theme-win7 .n-button:focus, .theme-win7 .n-button.focused {
+.theme-win7 .vgo-button.default, .theme-win7 .vgo-button:focus, .theme-win7 .vgo-button.focused, .theme-win7 .n-button.default, .theme-win7 .n-button:focus, .theme-win7 .n-button.focused {
   border-color: var(--button-border-color-default);
   background-image: var(--button-gradient-hovered);
   animation: 1s ease infinite alternate pulse-anim;
@@ -150,7 +150,7 @@
     box-shadow: inset 0 0 1px 1px rgba(52, 222, 255, 0.8666666667);
   }
 }
-.theme-win7 .vp-input, .theme-win7 .n-input {
+.theme-win7 .vgo-input, .theme-win7 .n-input {
   font: var(--font);
   border: 1px solid #ccc;
   border-top-color: var(--button-border-color);
@@ -158,7 +158,7 @@
   background-color: var(--button-highlight);
   box-sizing: border-box;
 }
-.theme-win7 .vp-input:focus, .theme-win7 .n-input:focus {
+.theme-win7 .vgo-input:focus, .theme-win7 .n-input:focus {
   outline: none;
   border-color: var(--button-shade-light-hovered);
   border-top-color: var(--button-shade-light-active);
@@ -272,17 +272,17 @@
   linear-gradient(#d1a894, #b67562 25% 50%, #7d0d01 50%);
 }
 
-.theme-win7 .vp-window-panel {
+.theme-win7 .vgo-window-panel {
   box-shadow: 2px 2px 10px 1px var(--window-border-color), inset 0 0 0 1px rgba(255, 255, 255, 0.6666666667);
   border: var(--window-border) var(--window-border-color);
   border-radius: var(--window-border-radius);
 }
-.theme-win7 .vp-window-panel._panel-bg {
+.theme-win7 .vgo-window-panel._panel-bg {
   backdrop-filter: blur(4px);
   background: var(--window-background-glass-stripes);
   color: white;
 }
-.theme-win7 .vp-window-panel._panel-bg::before {
+.theme-win7 .vgo-window-panel._panel-bg::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -296,13 +296,13 @@
   opacity: 0.6;
   /* filter: brightness(1.2); */
 }
-.theme-win7 .vp-window {
+.theme-win7 .vgo-window {
   font: var(--font);
   box-shadow: 2px 2px 10px 1px var(--window-border-color), inset 0 0 0 1px rgba(255, 255, 255, 0.6666666667);
   border: var(--window-border) var(--window-border-color);
   border-radius: var(--window-border-radius);
 }
-.theme-win7 .vp-window::before {
+.theme-win7 .vgo-window::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -316,7 +316,7 @@
   opacity: 0.6;
   /* filter: brightness(1.2); */
 }
-.theme-win7 .vp-window::after {
+.theme-win7 .vgo-window::after {
   content: "";
   position: absolute;
   z-index: -10;
@@ -328,7 +328,7 @@
   border: none;
   backdrop-filter: blur(4px);
 }
-.theme-win7 .vp-window .vp-window-body {
+.theme-win7 .vgo-window .vgo-window-body {
   margin: var(--window-spacing);
   margin-top: 0;
   border: var(--window-border) var(--window-border-color);
@@ -336,13 +336,13 @@
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
   height: calc(100% - 37px) !important;
 }
-.theme-win7 .vp-window .vp-window-body.has-space {
+.theme-win7 .vgo-window .vgo-window-body.has-space {
   padding: var(--window-spacing);
 }
-.theme-win7 .vp-window .vp-window-body pre {
+.theme-win7 .vgo-window .vgo-window-body pre {
   margin: calc(var(--window-spacing) * -1);
 }
-.theme-win7 .vp-window .vp-window-title-bar {
+.theme-win7 .vgo-window .vgo-window-title-bar {
   border: none !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8666666667), inset 1px 0 0 rgba(255, 255, 255, 0.8666666667), inset -1px 0 0 rgba(255, 255, 255, 0.8666666667);
   font: var(--font);
@@ -354,14 +354,14 @@
   align-items: center;
   background: var(--window-background-glass-stripes);
 }
-.theme-win7 .vp-window .vp-window-title-bar .vp-window-title-bar-text {
+.theme-win7 .vgo-window .vgo-window-title-bar .vgo-window-title-bar-text {
   color: #000;
   letter-spacing: 0;
   line-height: 15px;
   padding: 0 4px;
   text-shadow: 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff;
 }
-.theme-win7 .vp-window .vp-window-controls {
+.theme-win7 .vgo-window .vgo-window-controls {
   display: flex;
   background: rgba(255, 255, 255, 0.2);
   border: var(--window-border) var(--control-border-color);
@@ -370,7 +370,7 @@
   margin-top: -8px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6666666667), 1px 0 0 rgba(255, 255, 255, 0.6666666667), -1px 0 0 rgba(255, 255, 255, 0.6666666667);
 }
-.theme-win7 .vp-window .vp-window-controls button {
+.theme-win7 .vgo-window .vgo-window-controls button {
   position: relative;
   min-width: 29px;
   min-height: 19px;
@@ -384,24 +384,24 @@
   color: white;
   height: auto;
 }
-.theme-win7 .vp-window .vp-window-controls button > i {
+.theme-win7 .vgo-window .vgo-window-controls button > i {
   filter: drop-shadow(1px 0px 0px #535665) drop-shadow(-1px 0px 0px #535665) drop-shadow(0px 1px 0px #535665) drop-shadow(0px -1px 0px #535665);
 }
-.theme-win7 .vp-window .vp-window-controls button > i svg {
+.theme-win7 .vgo-window .vgo-window-controls button > i svg {
   width: 14px;
   height: 14px;
 }
-.theme-win7 .vp-window .vp-window-controls button::after {
+.theme-win7 .vgo-window .vgo-window-controls button::after {
   content: none;
 }
-.theme-win7 .vp-window .vp-window-controls button:hover, .theme-win7 .vp-window .vp-window-controls button:active {
+.theme-win7 .vgo-window .vgo-window-controls button:hover, .theme-win7 .vgo-window .vgo-window-controls button:active {
   /* resolve the conflict with button styles */
   background: none;
 }
-.theme-win7 .vp-window .vp-window-controls button:disabled::before {
+.theme-win7 .vgo-window .vgo-window-controls button:disabled::before {
   opacity: 0.4;
 }
-.theme-win7 .vp-window .vp-window-controls button::before {
+.theme-win7 .vgo-window .vgo-window-controls button::before {
   content: "";
   position: absolute;
   top: 0;
@@ -412,93 +412,93 @@
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3333333333);
   opacity: 1;
 }
-.theme-win7 .vp-window .vp-window-controls button:not(:hover)::before {
+.theme-win7 .vgo-window .vgo-window-controls button:not(:hover)::before {
   transition: none;
   opacity: 1;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Minimize] > i, .theme-win7 .vp-window .vp-window-controls button.is-minimize > i {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Minimize] > i, .theme-win7 .vgo-window .vgo-window-controls button.is-minimize > i {
   display: none;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Minimize]::before, .theme-win7 .vp-window .vp-window-controls button.is-minimize::before {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Minimize]::before, .theme-win7 .vgo-window .vgo-window-controls button.is-minimize::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAFCAYAAABxeg0vAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA7SURBVHgBlY+xDQAgDMNaiQ9B8AHcxAlI/NYtKwj6QOohUzxYc+1HAqQ3e03qXNpwwcyE5QsAaEGjDRf8ZAza6Bz6VQAAAABJRU5ErkJggg==") no-repeat center 10px;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Maximize] > i, .theme-win7 .vp-window .vp-window-controls button.is-maximize > i {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Maximize] > i, .theme-win7 .vgo-window .vgo-window-controls button.is-maximize > i {
   display: none;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Maximize]::before, .theme-win7 .vp-window .vp-window-controls button.is-maximize::before {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Maximize]::before, .theme-win7 .vgo-window .vgo-window-controls button.is-maximize::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABsSURBVHgBlZHBCYAwDEVT6YaKbqArOILgBLqBosP1VkhAaQ6S1lKad+ihPy8kxLT9+IACG57r2KqKu2GCBpTYtEMOOQELzrnv4z53I4vDjjJnwXsPJWTOAiJGHVNB5pGwLjPk+AlEBLUY7eFebCosBHOR7vYAAAAASUVORK5CYII=") no-repeat center;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Restore] > i, .theme-win7 .vp-window .vp-window-controls button.is-restore > i {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Restore] > i, .theme-win7 .vgo-window .vgo-window-controls button.is-restore > i {
   display: none;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Restore]::before, .theme-win7 .vp-window .vp-window-controls button.is-restore::before {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Restore]::before, .theme-win7 .vgo-window .vgo-window-controls button.is-restore::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACVSURBVHgBlVDLCoMwENwU/7ClvRYK7b2lCIJHEQQ/QEHwqujfBXJIQMnihg34iHPJ7GNm2AhYcL2/JwhAxIuhq3aXb48PiFBna2YFERVHzoQLnAQmSCmxeL5+3rBtSsdpBwVKKTcY+1rY197G+8RRoLVejed94igwxrgB/zXeJ+4Jijz2Erjg+8/WE7ZAt6EgSUsIxQwaJEWv7G6SSgAAAABJRU5ErkJggg==") no-repeat center;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Close], .theme-win7 .vp-window .vp-window-controls button.is-close {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Close], .theme-win7 .vgo-window .vgo-window-controls button.is-close {
   min-width: 48px;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Close] > i, .theme-win7 .vp-window .vp-window-controls button.is-close > i {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Close] > i, .theme-win7 .vgo-window .vgo-window-controls button.is-close > i {
   display: none;
 }
-.theme-win7 .vp-window .vp-window-controls button[aria-label=Close]::before, .theme-win7 .vp-window .vp-window-controls button.is-close::before {
+.theme-win7 .vgo-window .vgo-window-controls button[aria-label=Close]::before, .theme-win7 .vgo-window .vgo-window-controls button.is-close::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACUSURBVHgBlZFNCoQwDIVbmRvOMHOAAd0K/uDGlYKiCG4VPICi9yu0oCSQoFUXFtKEl6+voZXvr7sKay1TL690FOexY+Hz87i2decOuDKQsNGVe8AGYTRJIh0Y+orBvxszCPllOymlxN06jNE26Qnwg4zdHQLrMhFaawwAqAadDPE1ijwUxhiMKCmxCZk06OMYTz5lAx3xWDeXkLNAAAAAAElFTkSuQmCC") no-repeat center;
 }
-.theme-win7 .vp-window .vp-window-controls button:first-child, .theme-win7 .vp-window .vp-window-controls button:first-child::before {
+.theme-win7 .vgo-window .vgo-window-controls button:first-child, .theme-win7 .vgo-window .vgo-window-controls button:first-child::before {
   border-bottom-left-radius: var(--control-border-radius);
 }
-.theme-win7 .vp-window .vp-window-controls button:last-child, .theme-win7 .vp-window .vp-window-controls button:last-child::before {
+.theme-win7 .vgo-window .vgo-window-controls button:last-child, .theme-win7 .vgo-window .vgo-window-controls button:last-child::before {
   border: 0;
   border-bottom-right-radius: var(--control-border-radius);
 }
-.theme-win7 .vp-window .vp-window-controls button:focus {
+.theme-win7 .vgo-window .vgo-window-controls button:focus {
   outline: none;
   animation: none;
 }
-.theme-win7 .vp-window._maximized::before {
+.theme-win7 .vgo-window._maximized::before {
   border-radius: unset;
 }
-.theme-win7 .vp-window._maximized .vp-window-content .vp-window-title-bar {
+.theme-win7 .vgo-window._maximized .vgo-window-content .vgo-window-title-bar {
   border-top-left-radius: unset;
   border-top-right-radius: unset;
   box-shadow: none;
 }
-.theme-win7 .vp-window._maximized .vp-window-content .vp-window-body {
+.theme-win7 .vgo-window._maximized .vgo-window-content .vgo-window-body {
   border-bottom-left-radius: unset;
   border-bottom-right-radius: unset;
   margin: 0;
   height: calc(100% - 31px) !important;
 }
-.theme-win7 .vp-window._active .vp-window-controls {
+.theme-win7 .vgo-window._active .vgo-window-controls {
   border-color: var(--window-border-color);
 }
-.theme-win7 .vp-window._active .vp-window-controls button {
+.theme-win7 .vgo-window._active .vgo-window-controls button {
   border-color: var(--window-border-color);
   box-shadow: var(--control-inset-shadow);
   /*normal button start*/
   background: var(--control-background);
   /*normal button end*/
 }
-.theme-win7 .vp-window._active .vp-window-controls button::after {
+.theme-win7 .vgo-window._active .vgo-window-controls button::after {
   content: none;
 }
-.theme-win7 .vp-window._active .vp-window-controls button::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button::before {
   content: "";
   box-shadow: 0 0 7px 3px #5dc4f0, var(--control-inset-shadow);
   background: var(--control-background-hovered);
   opacity: 0;
   transition: opacity 0.3s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button:hover::before, .theme-win7 .vp-window._active .vp-window-controls button:focus-visible::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button:focus-visible::before {
   opacity: 1;
   transition: opacity 0.1s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button:active::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button:active::before {
   background: var(--control-background-active);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Minimize], .theme-win7 .vp-window._active .vp-window-controls button.is-minimize {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Minimize], .theme-win7 .vgo-window._active .vgo-window-controls button.is-minimize {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAFCAYAAABxeg0vAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA7SURBVHgBlY+xDQAgDMNaiQ9B8AHcxAlI/NYtKwj6QOohUzxYc+1HAqQ3e03qXNpwwcyE5QsAaEGjDRf8ZAza6Bz6VQAAAABJRU5ErkJggg==") no-repeat center 10px, var(--control-background);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Minimize]::before, .theme-win7 .vp-window._active .vp-window-controls button.is-minimize::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Minimize]::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-minimize::before {
   content: "";
   box-shadow: 0 0 7px 3px #5dc4f0, var(--control-inset-shadow);
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAFCAYAAABxeg0vAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA7SURBVHgBlY+xDQAgDMNaiQ9B8AHcxAlI/NYtKwj6QOohUzxYc+1HAqQ3e03qXNpwwcyE5QsAaEGjDRf8ZAza6Bz6VQAAAABJRU5ErkJggg==") no-repeat center 10px, var(--control-background-hovered);
@@ -506,52 +506,52 @@
   opacity: 0;
   transition: opacity 0.3s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Minimize]:hover::before, .theme-win7 .vp-window._active .vp-window-controls button[aria-label=Minimize]:focus-visible::before, .theme-win7 .vp-window._active .vp-window-controls button.is-minimize:hover::before, .theme-win7 .vp-window._active .vp-window-controls button.is-minimize:focus-visible::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Minimize]:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Minimize]:focus-visible::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-minimize:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-minimize:focus-visible::before {
   opacity: 1;
   transition: opacity 0.1s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Minimize]:active::before, .theme-win7 .vp-window._active .vp-window-controls button.is-minimize:active::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Minimize]:active::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-minimize:active::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAFCAYAAABxeg0vAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA7SURBVHgBlY+xDQAgDMNaiQ9B8AHcxAlI/NYtKwj6QOohUzxYc+1HAqQ3e03qXNpwwcyE5QsAaEGjDRf8ZAza6Bz6VQAAAABJRU5ErkJggg==") no-repeat center 10px, var(--control-background-active);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Maximize], .theme-win7 .vp-window._active .vp-window-controls button.is-maximize {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Maximize], .theme-win7 .vgo-window._active .vgo-window-controls button.is-maximize {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABsSURBVHgBlZHBCYAwDEVT6YaKbqArOILgBLqBosP1VkhAaQ6S1lKad+ihPy8kxLT9+IACG57r2KqKu2GCBpTYtEMOOQELzrnv4z53I4vDjjJnwXsPJWTOAiJGHVNB5pGwLjPk+AlEBLUY7eFebCosBHOR7vYAAAAASUVORK5CYII=") no-repeat center, var(--control-background);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Maximize]::before, .theme-win7 .vp-window._active .vp-window-controls button.is-maximize::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Maximize]::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-maximize::before {
   content: "";
   box-shadow: 0 0 7px 3px #5dc4f0, var(--control-inset-shadow);
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABsSURBVHgBlZHBCYAwDEVT6YaKbqArOILgBLqBosP1VkhAaQ6S1lKad+ihPy8kxLT9+IACG57r2KqKu2GCBpTYtEMOOQELzrnv4z53I4vDjjJnwXsPJWTOAiJGHVNB5pGwLjPk+AlEBLUY7eFebCosBHOR7vYAAAAASUVORK5CYII=") no-repeat center, var(--control-background-hovered);
   opacity: 0;
   transition: opacity 0.3s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Maximize]:hover::before, .theme-win7 .vp-window._active .vp-window-controls button[aria-label=Maximize]:focus-visible::before, .theme-win7 .vp-window._active .vp-window-controls button.is-maximize:hover::before, .theme-win7 .vp-window._active .vp-window-controls button.is-maximize:focus-visible::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Maximize]:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Maximize]:focus-visible::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-maximize:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-maximize:focus-visible::before {
   opacity: 1;
   transition: opacity 0.1s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Maximize]:active::before, .theme-win7 .vp-window._active .vp-window-controls button.is-maximize:active::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Maximize]:active::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-maximize:active::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABsSURBVHgBlZHBCYAwDEVT6YaKbqArOILgBLqBosP1VkhAaQ6S1lKad+ihPy8kxLT9+IACG57r2KqKu2GCBpTYtEMOOQELzrnv4z53I4vDjjJnwXsPJWTOAiJGHVNB5pGwLjPk+AlEBLUY7eFebCosBHOR7vYAAAAASUVORK5CYII=") no-repeat center, var(--control-background-active);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Restore], .theme-win7 .vp-window._active .vp-window-controls button.is-restore {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Restore], .theme-win7 .vgo-window._active .vgo-window-controls button.is-restore {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACVSURBVHgBlVDLCoMwENwU/7ClvRYK7b2lCIJHEQQ/QEHwqujfBXJIQMnihg34iHPJ7GNm2AhYcL2/JwhAxIuhq3aXb48PiFBna2YFERVHzoQLnAQmSCmxeL5+3rBtSsdpBwVKKTcY+1rY197G+8RRoLVejed94igwxrgB/zXeJ+4Jijz2Erjg+8/WE7ZAt6EgSUsIxQwaJEWv7G6SSgAAAABJRU5ErkJggg==") no-repeat center, var(--control-background);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Restore]::before, .theme-win7 .vp-window._active .vp-window-controls button.is-restore::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Restore]::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-restore::before {
   content: "";
   box-shadow: 0 0 7px 3px #5dc4f0, var(--control-inset-shadow);
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACVSURBVHgBlVDLCoMwENwU/7ClvRYK7b2lCIJHEQQ/QEHwqujfBXJIQMnihg34iHPJ7GNm2AhYcL2/JwhAxIuhq3aXb48PiFBna2YFERVHzoQLnAQmSCmxeL5+3rBtSsdpBwVKKTcY+1rY197G+8RRoLVejed94igwxrgB/zXeJ+4Jijz2Erjg+8/WE7ZAt6EgSUsIxQwaJEWv7G6SSgAAAABJRU5ErkJggg==") no-repeat center, var(--control-background-hovered);
   opacity: 0;
   transition: opacity 0.3s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Restore]:hover::before, .theme-win7 .vp-window._active .vp-window-controls button[aria-label=Restore]:focus-visible::before, .theme-win7 .vp-window._active .vp-window-controls button.is-restore:hover::before, .theme-win7 .vp-window._active .vp-window-controls button.is-restore:focus-visible::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Restore]:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Restore]:focus-visible::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-restore:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-restore:focus-visible::before {
   opacity: 1;
   transition: opacity 0.1s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Restore]:active::before, .theme-win7 .vp-window._active .vp-window-controls button.is-restore:active::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Restore]:active::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-restore:active::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACVSURBVHgBlVDLCoMwENwU/7ClvRYK7b2lCIJHEQQ/QEHwqujfBXJIQMnihg34iHPJ7GNm2AhYcL2/JwhAxIuhq3aXb48PiFBna2YFERVHzoQLnAQmSCmxeL5+3rBtSsdpBwVKKTcY+1rY197G+8RRoLVejed94igwxrgB/zXeJ+4Jijz2Erjg+8/WE7ZAt6EgSUsIxQwaJEWv7G6SSgAAAABJRU5ErkJggg==") no-repeat center, var(--control-background-active);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Close], .theme-win7 .vp-window._active .vp-window-controls button.is-close {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Close], .theme-win7 .vgo-window._active .vgo-window-controls button.is-close {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACUSURBVHgBlZFNCoQwDIVbmRvOMHOAAd0K/uDGlYKiCG4VPICi9yu0oCSQoFUXFtKEl6+voZXvr7sKay1TL690FOexY+Hz87i2decOuDKQsNGVe8AGYTRJIh0Y+orBvxszCPllOymlxN06jNE26Qnwg4zdHQLrMhFaawwAqAadDPE1ijwUxhiMKCmxCZk06OMYTz5lAx3xWDeXkLNAAAAAAElFTkSuQmCC") no-repeat center, var(--control-background), var(--control-background-close);
   box-shadow: var(--control-inset-shadow);
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Close]::before, .theme-win7 .vp-window._active .vp-window-controls button.is-close::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Close]::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-close::before {
   content: "";
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACUSURBVHgBlZFNCoQwDIVbmRvOMHOAAd0K/uDGlYKiCG4VPICi9yu0oCSQoFUXFtKEl6+voZXvr7sKay1TL690FOexY+Hz87i2decOuDKQsNGVe8AGYTRJIh0Y+orBvxszCPllOymlxN06jNE26Qnwg4zdHQLrMhFaawwAqAadDPE1ijwUxhiMKCmxCZk06OMYTz5lAx3xWDeXkLNAAAAAAElFTkSuQmCC") no-repeat center, var(--control-background), var(--control-background-close-hovered);
   box-shadow: 0 0 7px 3px #e68e75, var(--control-inset-shadow);
@@ -559,26 +559,26 @@
   opacity: 0;
   transition: opacity 0.3s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Close]:hover::before, .theme-win7 .vp-window._active .vp-window-controls button[aria-label=Close]:focus-visible::before, .theme-win7 .vp-window._active .vp-window-controls button.is-close:hover::before, .theme-win7 .vp-window._active .vp-window-controls button.is-close:focus-visible::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Close]:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Close]:focus-visible::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-close:hover::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-close:focus-visible::before {
   opacity: 1;
   transition: opacity 0.1s linear;
 }
-.theme-win7 .vp-window._active .vp-window-controls button[aria-label=Close]:active::before, .theme-win7 .vp-window._active .vp-window-controls button.is-close:active::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button[aria-label=Close]:active::before, .theme-win7 .vgo-window._active .vgo-window-controls button.is-close:active::before {
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACUSURBVHgBlZFNCoQwDIVbmRvOMHOAAd0K/uDGlYKiCG4VPICi9yu0oCSQoFUXFtKEl6+voZXvr7sKay1TL690FOexY+Hz87i2decOuDKQsNGVe8AGYTRJIh0Y+orBvxszCPllOymlxN06jNE26Qnwg4zdHQLrMhFaawwAqAadDPE1ijwUxhiMKCmxCZk06OMYTz5lAx3xWDeXkLNAAAAAAElFTkSuQmCC") no-repeat center, var(--control-background), var(--control-background-close-active);
 }
-.theme-win7 .vp-window._active .vp-window-controls button:disabled {
+.theme-win7 .vgo-window._active .vgo-window-controls button:disabled {
   /* TODO: Add rules to style disabled close button */
 }
-.theme-win7 .vp-window._active .vp-window-controls button:disabled[aria-label=Maximize], .theme-win7 .vp-window._active .vp-window-controls button:disabled.is-maximize {
+.theme-win7 .vgo-window._active .vgo-window-controls button:disabled[aria-label=Maximize], .theme-win7 .vgo-window._active .vgo-window-controls button:disabled.is-maximize {
   background: var(--control-background);
 }
-.theme-win7 .vp-window._active .vp-window-controls button:disabled[aria-label=Maximize]::before, .theme-win7 .vp-window._active .vp-window-controls button:disabled.is-maximize::before {
+.theme-win7 .vgo-window._active .vgo-window-controls button:disabled[aria-label=Maximize]::before, .theme-win7 .vgo-window._active .vgo-window-controls button:disabled.is-maximize::before {
   content: "";
   background: url("data:image/undefined;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABsSURBVHgBlZHBCYAwDEVT6YaKbqArOILgBLqBosP1VkhAaQ6S1lKad+ihPy8kxLT9+IACG57r2KqKu2GCBpTYtEMOOQELzrnv4z53I4vDjjJnwXsPJWTOAiJGHVNB5pGwLjPk+AlEBLUY7eFebCosBHOR7vYAAAAASUVORK5CYII=") no-repeat center;
   opacity: 0.4;
 }
 
-.theme-win7 .vp-panel {
+.theme-win7 .vgo-panel {
   background: var(--surface);
   color: #222;
   border: 1px solid rgba(0, 0, 0, 0.7);

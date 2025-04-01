@@ -71,19 +71,19 @@ export default {
     </div>
     <div class="actions-wrap">
       <div class="actions">
-        <button @click="handleClear" class="actions-key vp-button">C</button>
-        <button @click="handleFlagClick('+')" class="actions-key vp-button">+</button>
-        <button @click="handleFlagClick('-')" class="actions-key vp-button">−</button>
-        <button @click="handleFlagClick('*')" class="actions-key vp-button">×</button>
-        <button @click="handleFlagClick('/')" class="actions-key vp-button">÷</button>
+        <button @click="handleClear" class="actions-key vgo-button">C</button>
+        <button @click="handleFlagClick('+')" class="actions-key vgo-button">+</button>
+        <button @click="handleFlagClick('-')" class="actions-key vgo-button">−</button>
+        <button @click="handleFlagClick('*')" class="actions-key vgo-button">×</button>
+        <button @click="handleFlagClick('/')" class="actions-key vgo-button">÷</button>
       </div>
       <div class="buttons" style="flex: 1">
-        <button @click="handleNumClick" class="buttons-key vp-button" v-for="i in 9" :key="i">
+        <button @click="handleNumClick" class="buttons-key vgo-button" v-for="i in 9" :key="i">
           {{ i }}
         </button>
-        <button @click="handleNumClick" class="buttons-key vp-button">0</button>
-        <button @click="handleNumClick" class="buttons-key vp-button">.</button>
-        <button @click="handleCalc" class="buttons-key vp-button flex2">=</button>
+        <button @click="handleNumClick" class="buttons-key vgo-button">0</button>
+        <button @click="handleNumClick" class="buttons-key vgo-button">.</button>
+        <button @click="handleCalc" class="buttons-key vgo-button flex2">=</button>
       </div>
     </div>
   </div>
@@ -111,7 +111,7 @@ export default {
 
     .flag {
       position: absolute;
-      color: $primary;
+      color: var(--vgo-primary);
       right: 5px;
       top: 5px;
     }
@@ -134,10 +134,10 @@ export default {
     border-radius: 0;
 
     &:hover {
-      background-color: $primary_opacity;
+      background-color: var(--vgo-primary-opacity);
     }
     &:active {
-      background-color: $primary;
+      background-color: var(--vgo-primary);
       color: white;
     }
   }
@@ -161,10 +161,10 @@ export default {
     }
 
     &:hover {
-      background-color: $primary_opacity;
+      background-color: var(--vgo-primary-opacity);
     }
     &:active {
-      background-color: $primary;
+      background-color: var(--vgo-primary);
       color: white;
     }
   }

@@ -45,7 +45,7 @@ const isCurrent = computed(() => {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  border-bottom: 1px solid $color_border;
+  border-bottom: 1px solid var(--vgo-color-border);
 
   &:hover {
     background-color: rgba(204, 204, 204, 0.2);

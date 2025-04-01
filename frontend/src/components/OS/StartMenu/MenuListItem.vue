@@ -34,7 +34,7 @@ export default defineComponent({
   text-align: initial;
 
   &:hover {
-    background-color: $primary_opacity;
+    background-color: var(--vgo-primary-opacity);
   }
 
   .shortcut-icon {

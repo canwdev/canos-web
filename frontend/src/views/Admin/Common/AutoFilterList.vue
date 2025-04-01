@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import {computed} from 'vue'
-import AutoFormElPlus from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
+import AutoFormElPlus from '@canwdev/vgo-ui/src/components/AutoFormElPlus/index.vue'
 import {
   AutoFormItem,
   AutoFormItemType,
   AutoFormSchema,
   MixedFormItems,
-} from '@/components/CanUI/packages/AutoFormElPlus/enum'
+} from '@canwdev/vgo-ui/src/components/AutoFormElPlus/enum'
 import {useRoute} from 'vue-router'
-import {getFlatFormItems} from '@/components/CanUI/packages/AutoFormElPlus/utils'
-import AutoTableElPlus from '@/components/CanUI/packages/AutoTableElPlus/index.vue'
-import {AutoTableColumn} from '@/components/CanUI/packages/AutoTableElPlus/types'
-import AutoTableElPlusTest from '@/components/CanUI/packages/AutoTableElPlus/AutoTableElPlusTest.vue'
-import ListPagination from '@/components/CanUI/packages/AutoTableElPlus/ListPagination/index.vue'
-import {usePaginationData} from '@/components/CanUI/packages/AutoTableElPlus/ListPagination/use'
+import {getFlatFormItems} from '@canwdev/vgo-ui/src/components/AutoFormElPlus/utils'
+import AutoTableElPlus from '@canwdev/vgo-ui/src/components/AutoTableElPlus/index.vue'
+import {AutoTableColumn} from '@canwdev/vgo-ui/src/components/AutoTableElPlus/types'
+import AutoTableElPlusTest from '@canwdev/vgo-ui/src/components/AutoTableElPlus/AutoTableElPlusTest.vue'
+import ListPagination from '@canwdev/vgo-ui/src/components/AutoTableElPlus/ListPagination/index.vue'
+import {usePaginationData} from '@canwdev/vgo-ui/src/components/AutoTableElPlus/ListPagination/use'
 
 const props = withDefaults(
   defineProps<{
@@ -124,7 +124,7 @@ defineExpose({
       </div>
     </div>
 
-    <div class="vp-panel filter-card" v-if="filterFormSchema">
+    <div class="vgo-panel filter-card" v-if="filterFormSchema">
       <AutoFormElPlus :form-schema="filterFormSchema" @onSubmit="loadData({isResetPage: true})" />
     </div>
 

@@ -1,21 +1,39 @@
-import {showInputPrompt} from '@/components/CanUI/functions/input-prompt'
 import moment from 'moment'
+import FileSaver from 'file-saver'
 
 export const promptGetFileName = async (name?, fallbackPrefix = 'PageCraft') => {
-  return await showInputPrompt({
+  return await window.$mcUtils.showInputPrompt({
     title: 'Export filename',
     value: name || `${fallbackPrefix}_${moment(new Date()).format('YYYYMMDD_HHmmss')}`,
   })
 }
 export const handleExportFile = (filename, contentStr, ext) => {
   if (!filename) {
-    throw new Error('filename is required')
+    filename = `${moment(new Date()).format('YYYYMMDD_HHmmss')}`
   }
   const blob = new Blob([contentStr], {
     type: 'text/plain;charset=utf-8',
   })
   FileSaver.saveAs(blob, filename + ext)
 }
+
+export const handleImportTextFile = async (options: any) => {
+  const [handle] = await window.showOpenFilePicker(
+    options || {
+      types: [
+        {
+          description: 'Text',
+          accept: {
+            'text/plain': ['.txt'],
+          },
+        },
+      ],
+    },
+  )
+  const file = await handle.getFile()
+  return await handleReadSelectedFile(file)
+}
+
 export const handleImportJson = async () => {
   const [handle] = await window.showOpenFilePicker({
     types: [

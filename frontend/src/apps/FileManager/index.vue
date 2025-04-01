@@ -174,7 +174,7 @@ defineExpose({
 
 <template>
   <div ref="rootRef" class="explorer-wrap">
-    <div v-if="!contentOnly" class="explorer-header vp-panel">
+    <div v-if="!contentOnly" class="explorer-header vgo-panel">
       <div class="nav-address">
         <div class="nav-wrap">
           <button
@@ -207,7 +207,7 @@ defineExpose({
             ref="inputAddrRef"
             placeholder="Path"
             v-model="basePath"
-            class="input-addr vp-input"
+            class="input-addr vgo-input"
             @keyup.enter="handleRefresh"
             @change="handleRefresh"
             title="Address bar (alt+a)"
@@ -229,7 +229,7 @@ defineExpose({
             placeholder="Filter name"
             v-model="filterText"
             @keyup.esc="filterText = ''"
-            class="input-filter vp-input"
+            class="input-filter vgo-input"
             title="Filter bar (alt+f)"
           />
         </div>
@@ -274,11 +274,11 @@ defineExpose({
     </div>
 
     <!--文件选择器-->
-    <div v-if="selectFileMode && fileListRef" class="vp-bg explorer-bottom-wrap">
-      <button class="vp-button primary" @click="handleSelect">
+    <div v-if="selectFileMode && fileListRef" class="vgo-bg explorer-bottom-wrap">
+      <button class="vgo-button primary" @click="handleSelect">
         {{ selectFileMode === 'file' || isSelectAFolder ? 'Open' : 'Select Folder' }}
       </button>
-      <button class="vp-button" @click="$emit('cancelSelect')">Cancel</button>
+      <button class="vgo-button" @click="$emit('cancelSelect')">Cancel</button>
     </div>
   </div>
 </template>
@@ -292,7 +292,7 @@ defineExpose({
   position: relative;
   outline: none;
 
-  .vp-button {
+  .vgo-button {
     line-height: 1;
     min-width: 25px;
     min-height: 25px;
@@ -303,7 +303,7 @@ defineExpose({
   .explorer-header {
     padding: 4px;
     border: none;
-    border-bottom: 1px solid $color_border;
+    border-bottom: 1px solid var(--vgo-color-border);
     box-shadow: none;
     border-radius: 0;
 
@@ -366,7 +366,7 @@ defineExpose({
     }
     &:hover,
     &:focus {
-      background-color: $primary_opacity;
+      background-color: var(--vgo-primary-opacity);
     }
   }
 

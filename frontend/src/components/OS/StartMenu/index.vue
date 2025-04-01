@@ -8,15 +8,12 @@ export default {
 import MenuListItem from '@/components/OS/StartMenu/MenuListItem.vue'
 import {ShortcutItem} from '@/enum/os'
 import {useSystemStore} from '@/store/system'
-import {useModelWrapper} from '@/hooks/use-model-wrapper'
-import {onClickOutside, useFullscreen} from '@vueuse/core'
+import {onClickOutside, useFullscreen, useVModel} from '@vueuse/core'
 import {useSettingsStore} from '@/store/settings'
 import StartActions from '@/components/OS/StartMenu/Sub/StartActions.vue'
 import StartScreen from '@/components/OS/StartMenu/StartScreen.vue'
-import StartDragOver from '@/components/OS/StartMenu/Sub/StartDragOver.vue'
-import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
-import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
-import MenuDesktopIcon from '@/components/OS/StartMenu/MenuDesktopIcon.vue'
+import QuickContextMenu from '@canwdev/vgo-ui/src/components/QuickOptions/QuickContextMenu.vue'
+import {QuickOptionItem} from '@canwdev/vgo-ui/src/components/QuickOptions/enum'
 import {usePinUnpinned} from '@/components/OS/TaskBar/types'
 import globalEventBus, {GlobalEvents} from '@/utils/bus'
 
@@ -30,7 +27,7 @@ const props = withDefaults(
 )
 const emit = defineEmits(['update:visible'])
 
-const mVisible = useModelWrapper(props, emit, 'visible')
+const mVisible = useVModel(props, 'visible', emit)
 const systemStore = useSystemStore()
 const settingsStore = useSettingsStore()
 
@@ -98,7 +95,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 
 <template>
   <div ref="rootRef" v-if="mVisible" class="start-menu" :class="{_full: !settingsStore.isWindowed}">
-    <div class="start-menu-bg _panel-bg vp-panel vp-window-panel"></div>
+    <div class="start-menu-bg _panel-bg vgo-panel vgo-window-panel"></div>
     <div class="start-menu-row">
       <div class="start-menu-above">
         <div class="start-title-wrap">
@@ -113,7 +110,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
         <div class="start-main-wrap">
           <transition-group name="fade-left">
             <div v-if="settingsStore.startMenuIsAllApps" class="all-apps-list">
-              <input v-model="filterText" class="vp-input" placeholder="Filter apps" />
+              <input v-model="filterText" class="vgo-input" placeholder="Filter apps" />
               <MenuListItem
                 :item="item"
                 v-for="(item, index) in appListFiltered"
@@ -144,7 +141,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 .start-menu {
   width: 350px;
   position: fixed;
-  bottom: $taskbar_height;
+  bottom: var(--os-taskbar-height);
   user-select: none;
 
   .start-menu-bg {
@@ -162,7 +159,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 
   &:not(&._full) {
     left: 8px;
-    bottom: $taskbar_height + 8px;
+    bottom: calc(var(--os-taskbar-height) + 8px);
     .start-main-wrap {
       height: 40vh;
     }
@@ -212,7 +209,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
 
   .start-main-wrap {
     min-height: 300px;
-    border-bottom: 1px solid $color_border;
+    border-bottom: 1px solid var(--vgo-color-border);
     position: relative;
   }
 
@@ -221,7 +218,7 @@ const beforeShowContextMenu = (event, item: ShortcutItem) => {
     height: 100%;
     width: 100%;
 
-    .vp-input {
+    .vgo-input {
       width: 100%;
       position: sticky;
       top: 0;

@@ -5,7 +5,7 @@ import {fsWebApi} from '@/api/filesystem'
 import {useSystemStore} from '@/store/system'
 import {IEntry} from '@server/types/server'
 import {normalizePath} from '@/apps/FileManager/utils'
-import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import {QuickOptionItem} from '@canwdev/vgo-ui/src/components/QuickOptions/enum'
 import {SettingsTabType} from '@/enum/settings'
 import {useMainStore} from '@/store/main'
 import {GlobalEvents, useGlobalBusOn} from '@/utils/bus'
@@ -107,7 +107,7 @@ useGlobalBusOn(GlobalEvents.SEND_TO_DESKTOP, (appid) => {
 
 <style lang="scss" scoped>
 .desktop-content {
-  height: calc(100% - $taskbar_height);
+  height: calc(100% - var(--os-taskbar-height));
   width: 100%;
 
   &.preview-desktop {

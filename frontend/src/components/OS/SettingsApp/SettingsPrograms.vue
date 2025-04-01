@@ -2,8 +2,8 @@
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useSettingsStore} from '@/store/settings'
-import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
-import {StOptionItem} from '@/components/CanUI/packages/OptionUI/enum'
+import OptionUI from '@canwdev/vgo-ui/src/components/OptionUI/index.vue'
+import {StOptionItem} from '@canwdev/vgo-ui/src/components/OptionUI/enum'
 import {useSystemStore} from '@/store/system'
 import ThemedIcon from '@/components/OS/ThemedIcon/ThemedIcon.vue'
 import {ElCheckbox, ElSwitch} from 'element-plus'
@@ -41,7 +41,7 @@ export default defineComponent({
                 h(
                   'button',
                   {
-                    class: 'vp-button',
+                    class: 'vgo-button',
                     onClick() {
                       systemStore.createTaskById(item.appid)
                     },

@@ -74,7 +74,7 @@ const subIconSrc = computed(() => {
   }
   .themed-icon-class {
     line-height: 1;
-    color: $primary;
+    color: var(--vgo-primary);
   }
 }
 </style>

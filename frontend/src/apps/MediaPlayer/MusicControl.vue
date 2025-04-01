@@ -182,7 +182,7 @@ const jumpBackward = () => {
           </template>
 
           <div class="flex-row-center-gap">
-            <button class="vp-button" @click="mediaStore.playbackRate = Number(1)">重置</button>
+            <button class="vgo-button" @click="mediaStore.playbackRate = Number(1)">重置</button>
             <el-slider
               style="width: 150px"
               v-model="mediaStore.playbackRate"
@@ -256,8 +256,8 @@ const jumpBackward = () => {
     height: 25px;
     width: 100%;
     box-sizing: border-box;
-    border-top: 1px solid $color_border;
-    border-bottom: 1px solid $color_border;
+    border-top: 1px solid var(--vgo-color-border);
+    border-bottom: 1px solid var(--vgo-color-border);
     position: relative;
     z-index: $bottomZIndex;
 
@@ -287,7 +287,7 @@ const jumpBackward = () => {
 
     .btn-song-info {
       height: 100%;
-      border-right: 1px solid $color_border;
+      border-right: 1px solid var(--vgo-color-border);
       text-align: left;
       padding-left: 5px;
       line-height: 1.1;
@@ -337,11 +337,11 @@ const jumpBackward = () => {
         }
 
         &.active {
-          color: $primary;
+          color: var(--vgo-primary);
         }
 
         & + button {
-          border-left: 1px solid $color_border;
+          border-left: 1px solid var(--vgo-color-border);
         }
       }
     }

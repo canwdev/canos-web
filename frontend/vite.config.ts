@@ -50,7 +50,8 @@ export default defineConfig(({mode}) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "@/styles/_variables.scss";`,
+          additionalData: `@use "@/styles/_variables.scss" as *;`,
+          silenceDeprecations: ['import', 'legacy-js-api'], // Specifically silences @import deprecation warnings
         },
       },
     },

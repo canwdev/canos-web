@@ -26,8 +26,8 @@ onMounted(() => {
   <div class="live-2d-settings">
     <ul>
       <li>
-        模型URL：<input v-model="mModelPath" type="text" class="vp-input" style="width: 75%" />
-        <button class="vp-button" @click="mModelPath = defaultModelPath">重置</button>
+        模型URL：<input v-model="mModelPath" type="text" class="vgo-input" style="width: 75%" />
+        <button class="vgo-button" @click="mModelPath = defaultModelPath">重置</button>
       </li>
     </ul>
 

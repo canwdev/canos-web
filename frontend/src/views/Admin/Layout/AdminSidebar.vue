@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import OptionUI from '@/components/CanUI/packages/OptionUI/index.vue'
-import type {StOptionItem} from '@/components/CanUI/packages/OptionUI/enum'
+import OptionUI from '@canwdev/vgo-ui/src/components/OptionUI/index.vue'
+import type {StOptionItem} from '@canwdev/vgo-ui/src/components/OptionUI/enum'
 import {RouterLink, useRoute, useRouter} from 'vue-router'
 import {adminRoutes} from '@/router/admin'
 
@@ -79,7 +79,7 @@ function handleLogoClick() {
   width: 250px;
   height: 100%;
   overflow-y: auto;
-  border-right: 1px solid $color_border;
+  border-right: 1px solid var(--vgo-color-border);
   transition: all 0.2s;
   overflow-x: hidden;
 
@@ -87,7 +87,7 @@ function handleLogoClick() {
     width: 50px;
   }
   .logo-wrap {
-    background-color: $primary;
+    background-color: var(--vgo-primary);
     color: white;
     height: 50px;
     display: flex;
@@ -108,7 +108,7 @@ function handleLogoClick() {
 
     .sub-item {
       &.active {
-        background-color: $primary_opacity;
+        background-color: var(--vgo-primary-opacity);
       }
     }
   }

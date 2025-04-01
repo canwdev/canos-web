@@ -10,8 +10,8 @@ import SettingsPersonalization from '@/components/OS/SettingsApp/SettingsPersona
 import SettingsSystem from '@/components/OS/SettingsApp/SettingsSystem.vue'
 import SettingsPrograms from '@/components/OS/SettingsApp/SettingsPrograms.vue'
 import SettingsHardware from '@/components/OS/SettingsApp/SettingsHardware.vue'
-import TabLayout from '@/components/CanUI/packages/Layouts/TabLayout.vue'
-import RectSwitch from '@/components/CanUI/packages/OptionUI/Tools/RectSwitch.vue'
+import TabLayout from '@canwdev/vgo-ui/src/components/Layouts/TabLayout.vue'
+import RectSwitch from '@canwdev/vgo-ui/src/components/OptionUI/Tools/RectSwitch.vue'
 import SettingsWidgets from '@/components/OS/SettingsApp/SettingsWidgets.vue'
 
 type AppParams = {

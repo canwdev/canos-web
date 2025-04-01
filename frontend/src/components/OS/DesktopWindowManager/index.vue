@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
-import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import ViewPortWindow from '@canwdev/vgo-ui/src/components/ViewPortWindow/index.vue'
 import {useSystemStore} from '@/store/system'
 import DesktopContent from '@/components/OS/DesktopWindowManager/DesktopContent.vue'
 import {useSettingsStore} from '@/store/settings'
@@ -106,7 +106,7 @@ const handleRestore = (index) => {
       </ViewPortWindow>
       <div
         v-else
-        class="static-window vp-bg"
+        class="static-window vgo-bg"
         v-show="task.guid === systemStore.activeId && !task.minimized"
         tabindex="0"
         @keydown.prevent="handleWindowKeydown($event, task)"
@@ -154,7 +154,7 @@ const handleRestore = (index) => {
       color: white;
       opacity: 0.4;
       background-color: transparent !important;
-      .vp-window-body {
+      .vgo-window-body {
         opacity: 0;
       }
     }
@@ -164,7 +164,7 @@ const handleRestore = (index) => {
     top: 0;
     left: 0;
     right: 0;
-    bottom: $taskbar_height;
+    bottom: var(--os-taskbar-height);
     z-index: 10;
     outline: none;
   }

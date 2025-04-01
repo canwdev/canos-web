@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useRoute, useRouter} from 'vue-router'
 import {LsKeys} from '@/enum'
-import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import ViewPortWindow from '@canwdev/vgo-ui/src/components/ViewPortWindow/index.vue'
 import DesktopWallpaper from '@/components/OS/DesktopWindowManager/DesktopWallpaper.vue'
 import {usersApi} from '@/api/users'
 import LoginForm from '@/components/OS/SettingsApp/Users/LoginForm.vue'
@@ -77,20 +77,20 @@ onMounted(() => {
 <template>
   <div class="login-view">
     <DesktopWallpaper>
-      <div class="login-box-wrapper vp-panel" v-loading="isLoading">
+      <div class="login-box-wrapper vgo-panel" v-loading="isLoading">
         <div class="l-title">Login</div>
 
         <div v-if="!cryptKeyRef || isShowCryptKeyConfig" class="flex-row-center-gap font-code">
           <div>请输入接口传输密钥(ck):</div>
           <input
             type="text"
-            class="vp-input"
+            class="vgo-input"
             v-model="cryptKeyEditing"
             style="width: 100%"
             placeholder="请输入接口密钥"
           />
           <button
-            class="vp-button primary"
+            class="vgo-button primary"
             @click="saveCryptKey()"
             :disabled="!cryptKeyEditing"
             style="margin-left: auto"
@@ -103,14 +103,14 @@ onMounted(() => {
           <LoginForm ref="loginFormRef" @submit="handleLogin" :disabled="isLoading" />
 
           <div class="login-actions">
-            <button class="vp-button" type="button" @click="$router.push({name: 'IpChooserView'})">
+            <button class="vgo-button" type="button" @click="$router.push({name: 'IpChooserView'})">
               <span class="mdi mdi-ip-network"></span>
             </button>
-            <button class="vp-button" type="button" @click="isShowCryptKeyConfig = true">
+            <button class="vgo-button" type="button" @click="isShowCryptKeyConfig = true">
               <span class="mdi mdi-security-network"></span>
             </button>
             <button
-              class="vp-button btn-login"
+              class="vgo-button btn-login"
               type="button"
               @click="beforeLogin"
               :disabled="isLoading"
@@ -156,7 +156,7 @@ onMounted(() => {
   }
 
   .btn-login {
-    background-color: $primary;
+    background-color: var(--vgo-primary);
     color: white;
   }
 

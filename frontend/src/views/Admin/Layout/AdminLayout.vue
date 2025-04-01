@@ -7,7 +7,7 @@ const isSidebarFold = useStorage('ls_key_admin_is_sidebar_fold', false)
 </script>
 
 <template>
-  <div class="manage-layout vp-bg">
+  <div class="manage-layout vgo-bg">
     <AdminSidebar :is-folded="isSidebarFold" />
     <div class="manage-right">
       <AdminHeader v-model:isSidebarFold="isSidebarFold" />

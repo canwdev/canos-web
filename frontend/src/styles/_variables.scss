@@ -1,13 +1,2 @@
-:root {
-  --primary-rgb:37,130,146;
-  --primary:rgb(var(--primary-rgb));
-}
-$primary: var(--primary); // #8dbb72;
-$primary_opacity: rgba(var(--primary-rgb), .25); //opacify($primary, 0.3);
-
-$color_border: rgba(91, 85, 85, 0.2);
-$color_hover: rgba(91, 85, 85, 0.1);
-$taskbar_height: 44px;
-
 $mq_mobile_width: 567px;
 

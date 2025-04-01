@@ -158,7 +158,7 @@ onMounted(() => {
     .second-hand {
       width: 2px;
       height: 164px;
-      background: $primary;
+      background: var(--vgo-primary);
       transform: translate(-50%, -100%) translateY(24px);
     }
 
@@ -201,7 +201,7 @@ onMounted(() => {
   }
 
   .circle-2 {
-    background: $primary;
+    background: var(--vgo-primary);
     width: 8px;
     height: 8px;
   }

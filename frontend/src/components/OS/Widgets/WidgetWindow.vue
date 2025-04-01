@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ViewPortWindow from '@/components/CanUI/packages/ViewPortWindow/index.vue'
+import ViewPortWindow from '@canwdev/vgo-ui/src/components/ViewPortWindow/index.vue'
 import {ShortcutItem} from '@/enum/os'
 
 const props = withDefaults(
@@ -51,10 +51,10 @@ const {text} = toRefs(props)
     outline: none !important;
   }
 
-  :deep(.vp-window-title-bar) {
+  :deep(.vgo-window-title-bar) {
     //display: none;
   }
-  :deep(.vp-window-body) {
+  :deep(.vgo-window-body) {
     background-color: transparent !important;
   }
 }

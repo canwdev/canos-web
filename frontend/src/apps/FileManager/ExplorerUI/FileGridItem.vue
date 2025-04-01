@@ -74,8 +74,8 @@ const {iconName, iconClass, titleDesc, nameDisplay, shortcutAppid} = useFileItem
   }
 
   &.active {
-    background-color: $primary_opacity;
-    outline: 1px solid $primary;
+    background-color: var(--vgo-primary-opacity);
+    outline: 1px solid var(--vgo-primary);
     .file-checkbox {
       visibility: visible;
     }

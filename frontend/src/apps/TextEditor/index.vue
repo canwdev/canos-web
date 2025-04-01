@@ -5,17 +5,16 @@ export default {
 </script>
 
 <script lang="ts" setup="">
-import VueMonaco from '@/components/CanUI/packages/VueMonaco/index.vue'
+import VueMonaco from '@canwdev/vgo-ui/src/components/VueMonaco/index.vue'
 import {IEntry} from '@server/types/server'
 import {useResizeObserver} from '@vueuse/core'
 import {TaskItem} from '@/enum/os'
-import QuickOptions from '@/components/CanUI/packages/QuickOptions/index.vue'
-import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
-import {useUnSavedChanges} from '@/hooks/use-beforeunload'
+import {QuickOptionItem} from '@canwdev/vgo-ui/src/components/QuickOptions/enum'
+import {useUnSavedChanges} from '@canwdev/vgo-ui/src/hooks/use-beforeunload'
 import FileSelector from '@/apps/FileManager/FileSelector.vue'
 import {generateTextFile, normalizePath} from '@/apps/FileManager/utils'
 import {fsWebApi} from '@/api/filesystem'
-import QuickMenuStrip from '@/components/CanUI/packages/QuickOptions/QuickMenuStrip.vue'
+import QuickMenuStrip from '@canwdev/vgo-ui/src/components/QuickOptions/QuickMenuStrip.vue'
 
 type AppParams = {
   item: IEntry

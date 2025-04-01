@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // 鼠标悬浮一定时间后，显示
-import {useMouseOver} from '@/components/CanUI/packages/ViewPortWindow/utils/use-utils'
+import {useMouseOver} from '@canwdev/vgo-ui/src/components/ViewPortWindow/utils/use-utils'
 import {useMainStore} from '@/store/main'
 import {useSystemStore} from '@/store/system'
 
@@ -36,11 +36,11 @@ const handleShowDesktop = () => {
 
 <style lang="scss" scoped>
 .tray-show-desktop {
-  border-left: 1px solid $color_border;
+  border-left: 1px solid var(--vgo-color-border);
   height: 100%;
   width: 9px;
   &:hover {
-    background-color: $color_border;
+    background-color: var(--vgo-color-border);
   }
 }
 </style>

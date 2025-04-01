@@ -12,8 +12,8 @@ import TrayBattery from '@/components/OS/TaskBar/TrayBattery.vue'
 import TrayFps from '@/components/OS/TaskBar/TrayFps.vue'
 import TrayMemory from '@/components/OS/TaskBar/TrayMemory.vue'
 import TaskbarItem from '@/components/OS/TaskBar/TaskbarItem.vue'
-import QuickContextMenu from '@/components/CanUI/packages/QuickOptions/QuickContextMenu.vue'
-import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import QuickContextMenu from '@canwdev/vgo-ui/src/components/QuickOptions/QuickContextMenu.vue'
+import {QuickOptionItem} from '@canwdev/vgo-ui/src/components/QuickOptions/enum'
 import {TaskItem} from '@/enum/os'
 import {TaskbarPinnedItem, usePinUnpinned} from '@/components/OS/TaskBar/types'
 import TrayShowDesktop from '@/components/OS/TaskBar/TrayShowDesktop.vue'
@@ -107,7 +107,7 @@ const taskbarList = computed(() => {
 </script>
 
 <template>
-  <div class="canos-task-bar vp-panel" @contextmenu.prevent>
+  <div class="canos-task-bar vgo-panel" @contextmenu.prevent>
     <transition name="fade-up">
       <StartMenu v-model:visible="mainStore.isShowStart" />
     </transition>
@@ -117,7 +117,7 @@ const taskbarList = computed(() => {
       ref="taskItemMenuRef"
       @onClose="handleMenuClose"
     />
-    <div class="task-bar-container vp-window-panel">
+    <div class="task-bar-container vgo-window-panel">
       <button
         class="task-start-menu btn-no-style _fc"
         :class="{active: mainStore.isShowStart}"
@@ -157,10 +157,10 @@ const taskbarList = computed(() => {
 </template>
 
 <style lang="scss">
-.vp-window {
+.vgo-window {
   &._maximized {
-    bottom: $taskbar_height !important;
-    height: calc(100% - $taskbar_height) !important;
+    bottom: var(--os-taskbar-height) !important;
+    height: calc(100% - var(--os-taskbar-height)) !important;
   }
 }
 </style>
@@ -189,7 +189,7 @@ const taskbarList = computed(() => {
   bottom: 0px;
   left: 0;
   right: 0;
-  height: $taskbar_height;
+  height: var(--os-taskbar-height);
   font-size: 14px;
   user-select: none;
   z-index: 100;
@@ -248,7 +248,7 @@ const taskbarList = computed(() => {
       .menu-logo-icon {
         font-size: 32px;
         line-height: 1;
-        color: $primary;
+        color: var(--vgo-primary);
         transition: all 0.1s;
       }
     }
@@ -282,7 +282,7 @@ const taskbarList = computed(() => {
           align-items: center;
 
           &:hover {
-            background-color: $color_border;
+            background-color: var(--vgo-color-border);
           }
         }
 

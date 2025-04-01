@@ -6,7 +6,7 @@ import {useSystemStore} from '@/store/system'
 import {
   useElementMoveUpDetection,
   useMouseOver,
-} from '@/components/CanUI/packages/ViewPortWindow/utils/use-utils'
+} from '@canwdev/vgo-ui/src/components/ViewPortWindow/utils/use-utils'
 import {TaskbarPinnedItem} from '@/components/OS/TaskBar/types'
 
 const props = withDefaults(
@@ -125,7 +125,7 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
         bottom: 0;
         left: 8px;
         right: 8px;
-        background-color: $primary;
+        background-color: var(--vgo-primary);
         opacity: 1;
         height: 2px;
         transition: all 0.3s;
@@ -136,7 +136,7 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
   &:hover,
   &.hover {
     .taskbar-item-inner {
-      background-color: $color_hover;
+      background-color: var(--vgo-color-hover);
     }
     &.is-task {
       .taskbar-item-inner {
@@ -150,7 +150,7 @@ useElementMoveUpDetection(rootRef, 10, 'top', (event) => {
 
   &.active {
     .taskbar-item-inner {
-      background-color: $primary_opacity;
+      background-color: var(--vgo-primary-opacity);
     }
     &.is-task {
       .taskbar-item-inner {

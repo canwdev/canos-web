@@ -1,7 +1,7 @@
 .theme-mac {
   $radius: 6px;
 
-  .vp-window {
+  .vgo-window {
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
     // box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 22px 70px 4px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
     // backdrop-filter: saturate(180%) blur(20px);
@@ -9,8 +9,8 @@
     border: 1px solid #acacac;
     // overflow: hidden;
 
-    .vp-window-content {
-      .vp-window-title-bar {
+    .vgo-window-content {
+      .vgo-window-title-bar {
         display: flex;
         flex-direction: row-reverse;
         background: linear-gradient(to bottom, #ebebeb, #d5d5d5);
@@ -23,13 +23,13 @@
         height: 22px;
         border-bottom: 1px solid #b1aeb1;
 
-        .vp-window-title-bar-text {
+        .vgo-window-title-bar-text {
           font-size: 14px;
           flex-direction: row-reverse;
         }
       }
 
-      .vp-window-controls {
+      .vgo-window-controls {
         display: flex;
         flex-direction: row-reverse;
         gap: 6px;
@@ -90,7 +90,7 @@
         }
       }
 
-      .vp-window-body {
+      .vgo-window-body {
         border: none;
         height: calc(100% - 22px);
         border-bottom-left-radius: $radius;
@@ -101,12 +101,12 @@
 
 
     &._maximized {
-      .vp-window-content {
-        .vp-window-title-bar {
+      .vgo-window-content {
+        .vgo-window-title-bar {
           border-top-left-radius: unset;
           border-top-right-radius: unset;
         }
-        .vp-window-body {
+        .vgo-window-body {
           border-bottom-left-radius: unset;
           border-bottom-right-radius: unset;
         }
@@ -114,7 +114,7 @@
     }
   }
 
-  .vp-panel {
+  .vgo-panel {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
@@ -125,7 +125,7 @@
 .test-root {
   margin: 10px;
 
-  .vp-panel {
+  .vgo-panel {
     margin-top: 10px;
     margin-bottom: 10px;
   }

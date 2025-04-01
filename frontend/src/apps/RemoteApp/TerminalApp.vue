@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import VueTerminal from '@/components/CanUI/packages/VueTerminal/index.vue'
+import VueTerminal from '@/components/VueTerminal.vue'
 import {io, Socket} from 'socket.io-client'
 import {onMounted} from 'vue'
 import {API_BACKEND_WS} from '@/enum'

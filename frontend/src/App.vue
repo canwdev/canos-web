@@ -7,6 +7,8 @@ import {useMainStore} from '@/store/main'
 import {useRouter} from 'vue-router'
 
 const {isAppDarkMode} = useGlobalTheme()
+provide('darkMode', {isAppDarkMode})
+
 const mainStore = useMainStore()
 const settingsStore = useSettingsStore()
 
@@ -43,9 +45,9 @@ onMounted(() => {
 <style lang="scss">
 #app {
   font-family: 'Segoe UI';
-  .vp-window._maximized {
-    bottom: $taskbar_height !important;
-    height: calc(100% - $taskbar_height) !important;
+  .vgo-window._maximized {
+    bottom: var(--os-taskbar-height) !important;
+    height: calc(100% - var(--os-taskbar-height)) !important;
   }
 }
 .page-root {
@@ -55,7 +57,7 @@ onMounted(() => {
   overflow: hidden;
   background-color: #f8f8f8;
 }
-._dark {
+.dark {
   .page-root {
     background-color: #303030;
     //background-image: linear-gradient(#434343, #282828);

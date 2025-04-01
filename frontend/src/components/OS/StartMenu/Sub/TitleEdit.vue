@@ -29,7 +29,7 @@ onClickOutside(inputRef, (event) => {
       ref="inputRef"
       v-if="isEditing"
       v-model="group.title"
-      class="vp-input title-inner"
+      class="vgo-input title-inner"
       @keyup.enter="exitEditing"
       style="width: 100%"
       @dragstart.stop

@@ -1,3 +1,33 @@
+import {copyToClipboard} from '@/utils'
+
+export const copy = async (val, isShowVal = false) => {
+  if (!val) {
+    return
+  }
+  if (typeof val === 'object') {
+    if (isShowVal) {
+      console.info('object', val)
+    }
+    val = JSON.stringify(val, null, 2)
+  }
+  if (isShowVal) {
+    console.info('copy:', val)
+  }
+  await copyToClipboard(val)
+  let showVal = ''
+  if (isShowVal) {
+    if (val.length > 50) {
+      showVal = val.slice(0, 50) + '...'
+    } else {
+      showVal = val
+    }
+  }
+  if (showVal) {
+    showVal = ': ' + showVal
+  }
+  window.$message.success(`Copied${showVal}`)
+}
+
 export enum TextConvertMode {
   DISABLED = 'disabled',
   NUMBER = 'number',
@@ -15,7 +45,7 @@ export const TextConvertOptions = [
 export const textConvertMultipleLine = (
   str: string,
   mode: TextConvertMode = TextConvertMode.TEXT,
-  options: any = {}
+  options: any = {},
 ) => {
   if (mode === TextConvertMode.DISABLED) {
     return str
@@ -60,7 +90,7 @@ export const textConvertMultipleLine = (
 export const textConvertAdvanced = (
   val: any,
   mode: TextConvertMode = TextConvertMode.TEXT,
-  options: any = {}
+  options: any = {},
 ) => {
   if (mode === TextConvertMode.NUMBER) {
     let num = Number(val)

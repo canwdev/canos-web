@@ -104,7 +104,7 @@ const isOverDropZone = ref(false)
   bottom: 0;
 
   &.isOverDropZone {
-    outline: 2px dashed $primary;
+    outline: 2px dashed var(--vgo-primary);
     outline-offset: -3px;
   }
 
@@ -124,11 +124,11 @@ const isOverDropZone = ref(false)
       right: $x;
     }
     &.no-3 {
-      bottom: $taskbar_height + $x;
+      bottom: calc(var(--os-taskbar-height) + $x);
       right: $x;
     }
     &.no-4 {
-      bottom: $taskbar_height + $x;
+      bottom: calc(var(--os-taskbar-height) + $x);
       left: $x;
     }
   }

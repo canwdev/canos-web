@@ -5,7 +5,7 @@ import FileSelector from '@/apps/FileManager/FileSelector.vue'
 import {IEntry} from '@server/types/server'
 import {isSupportedMediaFormat} from '@/utils/is'
 import {MusicEvents, useMediaStore} from '@/apps/MediaPlayer/utils/media-store'
-import DropdownMenu from '@/components/CanUI/packages/OptionUI/Tools/DropdownMenu.vue'
+import DropdownMenu from '@canwdev/vgo-ui/src/components/QuickOptions/DropdownMenu.vue'
 
 const storeId = inject('storeId')
 const mediaStore = useMediaStore(storeId.value)
@@ -56,8 +56,8 @@ const handleSelect = (data) => {
 
 <template>
   <div class="music-play-list">
-    <div class="vp-bg playlist-action-bar">
-      <input class="vp-input" :placeholder="$t('filter-by-name')" v-model="filterText" />
+    <div class="vgo-bg playlist-action-bar">
+      <input class="vgo-input" :placeholder="$t('filter-by-name')" v-model="filterText" />
 
       <span class="number-display"
         >{{ mediaStore.playingIndex + 1 }} / {{ mediaStore.playingList.length }}</span

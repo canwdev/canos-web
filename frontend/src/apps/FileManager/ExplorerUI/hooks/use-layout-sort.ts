@@ -1,4 +1,4 @@
-import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import {QuickOptionItem} from '@canwdev/vgo-ui/src/components/QuickOptions/enum'
 import {sortMethodMap} from '../../utils/sort'
 import {SortType} from '@server/types/server'
 import {LsKeys} from '@/enum'

@@ -1,9 +1,9 @@
-import {showInputPrompt} from '@/components/CanUI/functions/input-prompt'
 import moment from 'moment/moment'
 import {fsWebApi} from '@/api/filesystem'
 import {generateTextFile, normalizePath} from '../../utils'
 import {IEntry, SortType} from '@server/types/server'
-import {QuickOptionItem} from '@/components/CanUI/packages/QuickOptions/enum'
+import {QuickOptionItem} from '@canwdev/vgo-ui/src/components/QuickOptions/enum'
+import {showInputPrompt} from '@/utils/mc-utils/input-prompt'
 
 export const useFileActions = ({
   isLoading,

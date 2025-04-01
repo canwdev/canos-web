@@ -2,7 +2,7 @@
     Window
 \*-------------------------------------------*/
 .theme-win98 {
-  .vp-window {
+  .vgo-window {
     font-family: var(--sans-serif);
     -webkit-font-smoothing: none;
     font-size: 11px;
@@ -14,7 +14,7 @@
       margin-bottom: 9px;
     }
 
-    .vp-window-title-bar {
+    .vgo-window-title-bar {
       font-size: 11px;
       background: var(--title-bar-bg);
       padding: 3px 2px 3px 3px;
@@ -22,14 +22,14 @@
       justify-content: space-between;
       align-items: center;
 
-      .vp-window-title-bar-text {
+      .vgo-window-title-bar-text {
         font-weight: bold;
         color: white;
         letter-spacing: 0;
         margin-right: 24px;
       }
 
-      .vp-window-controls {
+      .vgo-window-controls {
         display: flex;
 
         button {
@@ -109,7 +109,7 @@
       }
     }
 
-    .vp-window-body {
+    .vgo-window-body {
       height: calc(100% - 24px) !important;
     }
 

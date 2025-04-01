@@ -1,5 +1,5 @@
 import {guid} from '@/utils'
-import {WinOptions} from '@/components/CanUI/packages/ViewPortWindow/utils/window-controller'
+import {WinOptions} from '@canwdev/vgo-ui/src/components/ViewPortWindow/utils/window-controller'
 import {Component} from 'vue'
 
 export interface ShortcutItem {

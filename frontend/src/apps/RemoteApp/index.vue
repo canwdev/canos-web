@@ -6,10 +6,10 @@ import '@xterm/xterm/css/xterm.css'
 
 import {useStorage} from '@vueuse/core'
 import {remoteApi} from '@/api/remote'
-import AutoFormElPlus from '@/components/CanUI/packages/AutoFormElPlus/index.vue'
+import AutoFormElPlus from '@canwdev/vgo-ui/src/components/AutoFormElPlus/index.vue'
 import {FormRules} from 'element-plus'
-import {AutoFormItemType, MixedFormItems} from '@/components/CanUI/packages/AutoFormElPlus/enum'
-import VueTerminal from '@/components/CanUI/packages/VueTerminal/index.vue'
+import {AutoFormItemType, MixedFormItems} from '@canwdev/vgo-ui/src/components/AutoFormElPlus/enum'
+import VueTerminal from '@/components/VueTerminal.vue'
 
 // 创建一个对象来存储连接信息
 const dataForm = useStorage('temp_ssh_connection_info', {
@@ -125,12 +125,12 @@ const executeCommand = async () => {
     />
     <div v-if="connected" class="command-input flex-row-center-gap">
       <input
-        class="vp-input"
+        class="vgo-input"
         v-model="command"
         @keyup.enter="executeCommand"
         placeholder="Enter command"
       />
-      <button class="vp-button" @click="executeCommand">Execute</button>
+      <button class="vgo-button" @click="executeCommand">Execute</button>
     </div>
     <VueTerminal ref="vueTerminalRef" :dark="true" />
   </div>
