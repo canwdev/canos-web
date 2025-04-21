@@ -1,7 +1,7 @@
 import {NestFactory} from '@nestjs/core'
 import {AppModule} from './app.module'
 import * as process from 'process'
-import * as opener from 'opener'
+import opener from 'opener'
 import {program} from 'commander'
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
 import {AllExceptionsFilter} from '@/all-exceptions.filter'

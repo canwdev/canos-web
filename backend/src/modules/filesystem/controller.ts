@@ -10,7 +10,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common'
-import {Response} from 'express'
+import {type Response} from 'express'
 import {FsService} from './service'
 import * as fs from 'fs-extra'
 import {FileInterceptor} from '@nestjs/platform-express'

@@ -36,7 +36,7 @@ export default defineConfig(({mode}) => {
       },
     },
     server: {
-      host: '0.0.0.0',
+      // host: '0.0.0.0',
       port: 12021,
       proxy: {
         '/dev_proxy': {
